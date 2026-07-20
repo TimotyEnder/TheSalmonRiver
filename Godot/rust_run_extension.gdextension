@@ -4,4 +4,4 @@ compatibility_minimum = 4.1
 reloadable = true
 [libraries]
 linux.debug.x86_64 =     "res://../Rust/the_salmon_river/target/debug/libthe_salmon_river.so"
-linux.release.x86_64 =   "res://../Rust/the_salmon_river/target/release/libthe_salmon_river.so"
+linux.release.x86_64 =   "res://../Rust/the_salmon_river/target/release/lib./the_salmon_river.so"

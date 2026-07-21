@@ -1,9 +1,5 @@
 [gd_scene format=3 uid="uid://bd32uee4172cd"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s6dll"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_s6dll"]
-
 [sub_resource type="BoxMesh" id="BoxMesh_rai8w"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7dm0k"]
@@ -14,25 +10,17 @@ albedo_color = Color(0.03529412, 0.4862745, 0.7921569, 0.72156864)
 [sub_resource type="BoxShape3D" id="BoxShape3D_s6dll"]
 size = Vector3(1, 0.83154297, 7.276367)
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s6dll"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_s6dll"]
+
 [node name="Root" type="Node3D" unique_id=236819951]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1831742261]
-transform = Transform3D(-0.013719754, -0.18555224, 0.98253864, -0.0025907205, 0.9826344, 0.18553416, -0.99990255, 0, -0.013962216, 1.8513342, 1.4381279, 0)
+transform = Transform3D(-0.013719754, -0.18555224, 0.98253864, -0.0025907205, 0.9826344, 0.18553416, -0.99990255, 0, -0.013962216, 2.2025657, 1.6946778, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=512207062]
 transform = Transform3D(-0.00668736, -0.90484244, 0.42569408, -0.014212694, 0.42574656, 0.90473086, -0.9998766, 4.653394e-10, -0.015707368, -0.11735284, 3.0913627, 0)
-
-[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=101223898]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7739284, 0)
-can_sleep = false
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1376185404]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_s6dll")
-
-[node name="Player" type="MeshInstance3D" parent="RigidBody3D" unique_id=490817283]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-mesh = SubResource("CapsuleMesh_s6dll")
 
 [node name="River" type="StaticBody3D" parent="." unique_id=1051320871]
 
@@ -41,6 +29,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 7.281773, 0, 0, 0)
 mesh = SubResource("BoxMesh_rai8w")
 surface_material_override/0 = SubResource("StandardMaterial3D_7dm0k")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="River" unique_id=432875716]
+[node name="RiverCollider" type="CollisionShape3D" parent="River" unique_id=432875716]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.084228516, 0.0036621094)
 shape = SubResource("BoxShape3D_s6dll")
+
+[node name="Player" type="Player" parent="." unique_id=1926988375]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2057625, 0)
+
+[node name="PlayerCollider" type="CollisionShape3D" parent="Player" unique_id=1376185404]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.7739284, 0)
+shape = SubResource("CapsuleShape3D_s6dll")
+
+[node name="PlayerMesh" type="MeshInstance3D" parent="Player" unique_id=490817283]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.7739284, 0)
+mesh = SubResource("CapsuleMesh_s6dll")

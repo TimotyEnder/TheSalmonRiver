@@ -5,7 +5,6 @@
 [sub_resource type="BoxMesh" id="BoxMesh_rai8w"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7dm0k"]
-transparency = 1
 vertex_color_is_srgb = true
 albedo_color = Color(0.03529412, 0.4862745, 0.7921569, 1)
 
@@ -17,12 +16,19 @@ size = Vector3(1, 4.526306, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s6dll"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_njqlq"]
+transparency = 1
+albedo_color = Color(0.27058825, 0.14901961, 0.05882353, 1)
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_s6dll"]
+material = SubResource("StandardMaterial3D_njqlq")
 
 [node name="Root" type="Node3D" unique_id=236819951]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1831742261]
 transform = Transform3D(-0.013719754, -0.18555224, 0.98253864, -0.0025907205, 0.9826344, 0.18553416, -0.99990255, 0, -0.013962216, 2.2025657, 1.6946778, 0)
+fov = 74.1
+near = 0.001
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=512207062]
 transform = Transform3D(-0.00668736, -0.90484244, 0.42569408, -0.014212694, 0.42574656, 0.90473086, -0.9998766, 4.653394e-10, -0.015707368, -0.11735284, 3.0913627, 0)

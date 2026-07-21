@@ -1,14 +1,19 @@
 [gd_scene format=3 uid="uid://bd32uee4172cd"]
 
+[ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="1_jjgbg"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_rai8w"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7dm0k"]
 transparency = 1
 vertex_color_is_srgb = true
-albedo_color = Color(0.03529412, 0.4862745, 0.7921569, 0.72156864)
+albedo_color = Color(0.03529412, 0.4862745, 0.7921569, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_s6dll"]
-size = Vector3(1, 0.83154297, 7.276367)
+size = Vector3(1, 0.83154297, 13.169189)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rai8w"]
+size = Vector3(1, 4.526306, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s6dll"]
 
@@ -25,13 +30,21 @@ transform = Transform3D(-0.00668736, -0.90484244, 0.42569408, -0.014212694, 0.42
 [node name="River" type="StaticBody3D" parent="." unique_id=1051320871]
 
 [node name="RiverMesh" type="MeshInstance3D" parent="River" unique_id=1357828212]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 7.281773, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 12.587268, 0, 0, 0)
 mesh = SubResource("BoxMesh_rai8w")
 surface_material_override/0 = SubResource("StandardMaterial3D_7dm0k")
 
 [node name="RiverCollider" type="CollisionShape3D" parent="River" unique_id=432875716]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.084228516, 0.0036621094)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.084228516, -0.072143555)
 shape = SubResource("BoxShape3D_s6dll")
+
+[node name="RightWall" type="CollisionShape3D" parent="River" unique_id=1695567295]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7631531, 6.791254)
+shape = SubResource("BoxShape3D_rai8w")
+
+[node name="LeftWall" type="CollisionShape3D" parent="River" unique_id=1798810544]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7631531, -6.7913113)
+shape = SubResource("BoxShape3D_rai8w")
 
 [node name="Player" type="Player" parent="." unique_id=1926988375]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2057625, 0)
@@ -43,3 +56,7 @@ shape = SubResource("CapsuleShape3D_s6dll")
 [node name="PlayerMesh" type="MeshInstance3D" parent="Player" unique_id=490817283]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.7739284, 0)
 mesh = SubResource("CapsuleMesh_s6dll")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=176411199]
+transform = Transform3D(-1.02721756e-07, 0, 2.35, 0, 2.35, 0, -2.35, 0, -1.02721756e-07, -27.083374, 0, 9.343049e-07)
+texture = ExtResource("1_jjgbg")

@@ -9,6 +9,12 @@ struct Player {
     speed: f32,
     jump_force: f32,
     jumped: bool,
+    #[export]
+    jump_key: Key,
+    #[export]
+    left_key: Key,
+    #[export]
+    right_key: Key,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -18,6 +24,9 @@ impl ICharacterBody3D for Player {
             speed: 2.0,
             jump_force: 5.0,
             jumped: false,
+            jump_key: Key::W,
+            left_key: Key::A,
+            right_key: Key::D,
         }
     }
     fn ready(&mut self) {}
@@ -29,17 +38,17 @@ impl ICharacterBody3D for Player {
         velocity.y -= 20.0 * delta as f32;
 
         velocity.z = 0.0;
-        if input.is_key_pressed(Key::A) {
+        if input.is_key_pressed(self.left_key) {
             velocity.z += self.speed;
         }
-        if input.is_key_pressed(Key::D) {
+        if input.is_key_pressed(self.right_key) {
             velocity.z += -self.speed;
         }
-        if input.is_key_pressed(Key::W) && self.base().is_on_floor() && !self.jumped {
+        if input.is_key_pressed(self.jump_key) && self.base().is_on_floor() && !self.jumped {
             self.jumped = true;
             velocity.y = self.jump_force;
         }
-        if !input.is_key_pressed(Key::W) {
+        if !input.is_key_pressed(self.jump_key) {
             self.jumped = false;
         }
 

@@ -1,0 +1,22 @@
+Game Doc For the Salmon River:
+
+
+Basic Concept:
+
+
+Player actions:
+Move:
+Duck: avoids air thrown things and hits on the ground. If done while jumping makes you untargetable for a short time
+
+Jump: avoids ground thrown things
+
+Hit/Use: If you have nothing in hand and you manage to hit the opponent with something in hand 1dmg and steal that item. Hitting with each item has different effects.
+
+Catch/Throw: If Nothing is in you hand you can catch and item in the air. If close to the opponent, grab them and throw them away (Unduckable). Each item does a different thing when thrown.
+
+Items:
+
+Salmon: Use: Eat and gain 1hp, you next Hit does 2dmg. Throw: 1dmg
+Chunk of ice: Use: Dash in a direction, If hits an opponent they get staggered. Throw: 1dmg and a stagger.
+Stick: Use: Long range attack Throw: A range attack that hits both in the air and on the ground.
+

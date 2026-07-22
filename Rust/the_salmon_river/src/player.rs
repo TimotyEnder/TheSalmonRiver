@@ -18,7 +18,7 @@ struct Player {
     right_key: Key,
     #[export]
     duck_key: Key,
-    body_mesh: Option<Gd<MeshInstance3D>>,
+    body_mesh: Option<Gd<Node3D>>,
     body_collider: Option<Gd<CollisionShape3D>>,
 }
 #[godot_api]
@@ -45,8 +45,8 @@ impl ICharacterBody3D for Player {
             .and_then(|node| node.try_cast::<CollisionShape3D>().ok());
         self.body_mesh = self
             .base()
-            .find_child("PlayerMesh")
-            .and_then(|node| node.try_cast::<MeshInstance3D>().ok());
+            .find_child("PlayerHead")
+            .and_then(|node| node.try_cast::<Node3D>().ok());
     }
     fn physics_process(&mut self, delta: f64) {
         self.movement(delta);
@@ -85,15 +85,15 @@ impl Player {
             if duck_pressed && on_floor {
                 if !self.ducked {
                     self.ducked = true;
-                    collider_scale.y *= 0.5;
-                    mesh_scale.y *= 0.5;
+                    collider_scale.y *= 0.6;
+                    mesh_scale.y *= 0.6;
                 }
                 velocity.z = 0.0;
             }
             if !duck_pressed && self.ducked {
                 self.ducked = false;
-                collider_scale.y /= 0.5;
-                mesh_scale.y /= 0.5;
+                collider_scale.y /= 0.6;
+                mesh_scale.y /= 0.6;
             }
             collider.set_scale(collider_scale);
             mesh.set_scale(mesh_scale);

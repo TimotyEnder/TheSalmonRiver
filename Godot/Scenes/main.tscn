@@ -3,6 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://8kv0vvanmf1v" path="res://VoxelAssets/Bear/bear.gltf" id="1_bo1nx"]
 [ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="1_jjgbg"]
 
+[sub_resource type="Environment" id="Environment_bo1nx"]
+background_mode = 3
+
 [sub_resource type="BoxMesh" id="BoxMesh_rai8w"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7dm0k"]
@@ -823,6 +826,7 @@ tracks/5/keys = {
 [sub_resource type="Animation" id="Animation_6bp64"]
 resource_name = "idle"
 length = 2.0
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -1332,14 +1336,18 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3pmx8"]
 advance_mode = 2
+advance_condition = &"r_punch"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u50mg"]
 advance_mode = 2
+advance_condition = &"l_punch"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cbgmd"]
+switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1w6v2"]
+switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ueoa1"]
@@ -1374,8 +1382,11 @@ transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition
 [node name="Root" type="Node3D" unique_id=236819951]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1831742261]
-transform = Transform3D(-0.013719754, -0.18555224, 0.98253864, -0.0025907205, 0.9826344, 0.18553416, -0.99990255, 0, -0.013962216, 2.2025657, 1.6946778, 0)
+transform = Transform3D(-0.013719754, -0.18555224, 0.98253864, -0.0025907205, 0.9826344, 0.18553416, -0.99990255, 0, -0.013962216, 3.1444244, 2.731237, -0.015609028)
+environment = SubResource("Environment_bo1nx")
+projection = 1
 fov = 74.1
+size = 5.348
 near = 0.001
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=512207062]
@@ -1461,16 +1472,17 @@ parameters/conditions/run = false
 libraries/ = SubResource("AnimationLibrary_ynf5e")
 
 [node name="AnimationTree" type="AnimationTree" parent="Player/UpperAnim" unique_id=1401839994]
-active = false
 root_node = NodePath("../..")
 tree_root = SubResource("AnimationNodeStateMachine_rai8w")
 anim_player = NodePath("..")
 parameters/conditions/grab = false
 parameters/conditions/idle = false
 parameters/conditions/in_hand = false
+parameters/conditions/l_punch = false
+parameters/conditions/r_punch = false
 parameters/conditions/run = false
 parameters/conditions/throw = false
 
-[node name="Sprite3D" type="Sprite3D" parent="." unique_id=176411199]
-transform = Transform3D(-1.02721756e-07, 0, 2.35, 0, 2.35, 0, -2.35, 0, -1.02721756e-07, -27.083374, 0, 9.343049e-07)
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=721853890]
+transform = Transform3D(-1.2711583e-08, 0, 0.2, 0, 0.2908071, 0, -0.2908071, 0, -8.742278e-09, -12.021184, 0, 5.2546267e-07)
 texture = ExtResource("1_jjgbg")

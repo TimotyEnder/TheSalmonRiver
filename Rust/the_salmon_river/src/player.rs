@@ -62,6 +62,9 @@ impl ICharacterBody3D for Player {
             .unwrap()
             .find_child("AnimationTree")
             .and_then(|node| node.try_cast::<AnimationTree>().ok());
+        if let Some(ref mut anim_tree) = self.upper_anim_tree {
+            anim_tree.set_active(true);
+        }
         self.lower_anim_tree = self
             .base()
             .find_child("LowerAnim")
@@ -72,6 +75,7 @@ impl ICharacterBody3D for Player {
     fn physics_process(&mut self, delta: f64) {
         self.movement(delta);
         self.lower_animations();
+        self.upper_animations();
     }
 }
 impl Player {
@@ -160,6 +164,26 @@ impl Player {
         }
     }
     fn upper_animations(&mut self) {
-        if let Some(ref mut anim_tree) = self.upper_anim_tree {}
+        let grounded = self.base().is_on_floor();
+        let side_velocity = self.base().get_velocity();
+        if let Some(ref mut anim_tree) = self.upper_anim_tree {
+            if side_velocity.z.abs() > 0.0 && grounded {
+                anim_tree.set("parameters/conditions/jump", &false.to_variant());
+                anim_tree.set("parameters/conditions/idle", &false.to_variant());
+                anim_tree.set("parameters/conditions/run", &true.to_variant());
+                anim_tree.set("parameters/conditions/in_hand", &false.to_variant());
+                anim_tree.set("parameters/conditions/throw", &false.to_variant());
+                anim_tree.set("parameters/conditions/r_punch", &false.to_variant());
+                anim_tree.set("parameters/conditions/l_punch", &false.to_variant());
+            } else {
+                anim_tree.set("parameters/conditions/jump", &false.to_variant());
+                anim_tree.set("parameters/conditions/idle", &true.to_variant());
+                anim_tree.set("parameters/conditions/run", &false.to_variant());
+                anim_tree.set("parameters/conditions/in_hand", &false.to_variant());
+                anim_tree.set("parameters/conditions/throw", &false.to_variant());
+                anim_tree.set("parameters/conditions/r_punch", &false.to_variant());
+                anim_tree.set("parameters/conditions/l_punch", &false.to_variant());
+            }
+        }
     }
 }

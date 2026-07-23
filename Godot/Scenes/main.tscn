@@ -248,6 +248,7 @@ tracks/8/keys = {
 [sub_resource type="Animation" id="Animation_8gbba"]
 resource_name = "idle"
 length = 2.0333333
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -660,7 +661,7 @@ states/Start/position = Vector2(136, 118)
 states/duck/node = SubResource("AnimationNodeAnimation_bo1nx")
 states/duck/position = Vector2(235, 258)
 states/idle/node = SubResource("AnimationNodeAnimation_8gbba")
-states/idle/position = Vector2(343, 153)
+states/idle/position = Vector2(343, 154)
 states/jump/node = SubResource("AnimationNodeAnimation_jjvhh")
 states/jump/position = Vector2(536, 174)
 states/run/node = SubResource("AnimationNodeAnimation_kry3j")

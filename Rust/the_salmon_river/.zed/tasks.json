@@ -1,0 +1,22 @@
+[
+  {
+    "label": "cargo build (debug)",
+    "command": "cargo",
+    "args": ["build"]
+  },
+  {
+    "label": "cargo build (release)",
+    "command": "cargo",
+    "args": ["build", "--release"]
+  },
+  {
+    "label": "cargo check",
+    "command": "cargo",
+    "args": ["check"]
+  },
+  {
+    "label": "cargo clippy",
+    "command": "cargo",
+    "args": ["clippy", "--", "-D", "warnings"]
+  }
+]

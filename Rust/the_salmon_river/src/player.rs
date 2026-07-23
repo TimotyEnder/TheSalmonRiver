@@ -60,13 +60,13 @@ impl ICharacterBody3D for Player {
             .base()
             .find_child("UpperAnim")
             .unwrap()
-            .find_child("UpperAnimTree")
+            .find_child("AnimationTree")
             .and_then(|node| node.try_cast::<AnimationTree>().ok());
         self.lower_anim_tree = self
             .base()
             .find_child("LowerAnim")
             .unwrap()
-            .find_child("LowerAnimTree")
+            .find_child("AnimationTree")
             .and_then(|node| node.try_cast::<AnimationTree>().ok());
     }
     fn physics_process(&mut self, delta: f64) {

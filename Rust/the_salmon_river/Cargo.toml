@@ -7,3 +7,10 @@ crate-type = ["cdylib"]  # Compile this crate to a dynamic C library.
 
 [dependencies]
 godot = "0.5.4"
+
+[profile.dev]
+debug = 2
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3

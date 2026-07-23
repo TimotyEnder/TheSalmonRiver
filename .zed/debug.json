@@ -1,0 +1,32 @@
+[
+  {
+    "label": "Debug Godot + Rust GDExtension",
+    "adapter": "CodeLLDB",
+    "request": "launch",
+    "program": "/home/timotyender/.local/share/Steam/steamapps/common/Godot Engine/godot.x11.opt.tools.64",
+    "args": ["--path", "Godot/", "--verbose"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "sourceLanguages": ["rust"],
+    "build": {
+      "command": "cargo",
+      "args": ["build"],
+      "cwd": "$ZED_WORKTREE_ROOT/Rust/the_salmon_river"
+    }
+  },
+  {
+    "label": "Debug Godot (skip build)",
+    "adapter": "CodeLLDB",
+    "request": "launch",
+    "program": "/home/timotyender/.local/share/Steam/steamapps/common/Godot Engine/godot.x11.opt.tools.64",
+    "args": ["--path", "Godot/", "--verbose"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "sourceLanguages": ["rust"]
+  },
+  {
+    "label": "Attach to running Godot",
+    "adapter": "CodeLLDB",
+    "request": "attach",
+    "program": "/home/timotyender/.local/share/Steam/steamapps/common/Godot Engine/godot.x11.opt.tools.64",
+    "sourceLanguages": ["rust"]
+  }
+]

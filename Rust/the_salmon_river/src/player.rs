@@ -1,4 +1,7 @@
-use godot::classes::{CharacterBody3D, CollisionShape3D, ICharacterBody3D, Input, MeshInstance3D};
+use godot::classes::{
+    AnimationPlayer, AnimationTree, CharacterBody3D, CollisionShape3D, ICharacterBody3D, Input,
+    MeshInstance3D,
+};
 use godot::global::Key;
 use godot::prelude::*;
 
@@ -20,6 +23,9 @@ struct Player {
     duck_key: Key,
     body_mesh: Option<Gd<Node3D>>,
     body_collider: Option<Gd<CollisionShape3D>>,
+    lower_anim_tree: Option<Gd<AnimationTree>>,
+    upper_anim_tree: Option<Gd<AnimationTree>>,
+    facing_right: bool,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -28,6 +34,9 @@ impl ICharacterBody3D for Player {
             base,
             body_collider: None,
             body_mesh: None,
+            upper_anim_tree: None,
+            lower_anim_tree: None,
+            facing_right: true,
             speed: 2.0,
             jump_force: 5.0,
             jumped: false,
@@ -47,9 +56,22 @@ impl ICharacterBody3D for Player {
             .base()
             .find_child("PlayerHead")
             .and_then(|node| node.try_cast::<Node3D>().ok());
+        self.upper_anim_tree = self
+            .base()
+            .find_child("UpperAnim")
+            .unwrap()
+            .find_child("UpperAnimTree")
+            .and_then(|node| node.try_cast::<AnimationTree>().ok());
+        self.lower_anim_tree = self
+            .base()
+            .find_child("LowerAnim")
+            .unwrap()
+            .find_child("LowerAnimTree")
+            .and_then(|node| node.try_cast::<AnimationTree>().ok());
     }
     fn physics_process(&mut self, delta: f64) {
         self.movement(delta);
+        self.lower_animations();
     }
 }
 impl Player {
@@ -63,9 +85,15 @@ impl Player {
         velocity.z = 0.0;
         if input.is_key_pressed(self.left_key) {
             velocity.z += self.speed;
+            if self.facing_right {
+                self.facing_right = false;
+            }
         }
         if input.is_key_pressed(self.right_key) {
             velocity.z += -self.speed;
+            if !self.facing_right {
+                self.facing_right = true;
+            }
         }
         if input.is_key_pressed(self.jump_key) && self.base().is_on_floor() && !self.jumped {
             self.jumped = true;
@@ -101,5 +129,37 @@ impl Player {
 
         self.base_mut().set_velocity(velocity);
         self.base_mut().move_and_slide();
+    }
+    fn lower_animations(&mut self) {
+        let grounded = self.base().is_on_floor();
+        let side_velocity = self.base().get_velocity().z;
+        if let Some(ref mut anim_tree) = self.lower_anim_tree {
+            if !grounded {
+                anim_tree.set("parameters/conditions/jump", &true.to_variant());
+                anim_tree.set("parameters/conditions/idle", &false.to_variant());
+                anim_tree.set("parameters/conditions/run", &false.to_variant());
+                anim_tree.set("parameters/conditions/duck", &false.to_variant());
+            } else {
+                if self.ducked {
+                    anim_tree.set("parameters/conditions/jump", &false.to_variant());
+                    anim_tree.set("parameters/conditions/idle", &false.to_variant());
+                    anim_tree.set("parameters/conditions/run", &false.to_variant());
+                    anim_tree.set("parameters/conditions/duck", &true.to_variant());
+                } else if side_velocity.abs() > 0.0 {
+                    anim_tree.set("parameters/conditions/jump", &false.to_variant());
+                    anim_tree.set("parameters/conditions/idle", &false.to_variant());
+                    anim_tree.set("parameters/conditions/run", &true.to_variant());
+                    anim_tree.set("parameters/conditions/duck", &false.to_variant());
+                } else {
+                    anim_tree.set("parameters/conditions/jump", &false.to_variant());
+                    anim_tree.set("parameters/conditions/idle", &true.to_variant());
+                    anim_tree.set("parameters/conditions/run", &false.to_variant());
+                    anim_tree.set("parameters/conditions/duck", &false.to_variant());
+                }
+            }
+        }
+    }
+    fn upper_animations(&mut self) {
+        if let Some(ref mut anim_tree) = self.upper_anim_tree {}
     }
 }

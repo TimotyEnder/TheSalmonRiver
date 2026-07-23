@@ -38,7 +38,7 @@ impl ICharacterBody3D for Player {
             lower_anim_tree: None,
             facing_right: true,
             speed: 2.0,
-            jump_force: 5.0,
+            jump_force: 7.0,
             jumped: false,
             ducked: false,
             jump_key: Key::W,

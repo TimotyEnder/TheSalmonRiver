@@ -1,5 +1,6 @@
 use godot::classes::{
-    AnimationTree, CharacterBody3D, CollisionShape3D, ICharacterBody3D, Input, Timer,
+    AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, ICharacterBody3D, Input, Label3D,
+    Timer,
 };
 use godot::global::Key;
 use godot::prelude::*;
@@ -26,12 +27,16 @@ struct Player {
     throw_grab_ky: Key,
     body_mesh: Option<Gd<Node3D>>,
     body_collider: Option<Gd<CollisionShape3D>>,
+    hitbox: Option<Gd<Area3D>>,
     lower_anim_tree: Option<Gd<AnimationTree>>,
     upper_anim_tree: Option<Gd<AnimationTree>>,
     facing_right: bool,
     is_punching: bool,
     is_grab: bool,
     right_punch: bool,
+    #[export]
+    player_num: i8,
+    player_label: Option<Gd<Label3D>>,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -42,6 +47,7 @@ impl ICharacterBody3D for Player {
             body_mesh: None,
             upper_anim_tree: None,
             lower_anim_tree: None,
+            hitbox: None,
             facing_right: true,
             speed: 2.0,
             jump_force: 7.0,
@@ -56,32 +62,15 @@ impl ICharacterBody3D for Player {
             is_grab: false,
             is_punching: false,
             right_punch: false,
+            player_num: 1,
+            player_label: None,
         }
     }
     fn ready(&mut self) {
-        self.body_collider = self
-            .base()
-            .find_child("PlayerCollider")
-            .and_then(|node| node.try_cast::<CollisionShape3D>().ok());
-        self.body_mesh = self
-            .base()
-            .find_child("PlayerHead")
-            .and_then(|node| node.try_cast::<Node3D>().ok());
-        self.upper_anim_tree = self
-            .base()
-            .find_child("UpperAnim")
-            .unwrap()
-            .find_child("AnimationTree")
-            .and_then(|node| node.try_cast::<AnimationTree>().ok());
-        if let Some(ref mut anim_tree) = self.upper_anim_tree {
-            anim_tree.set_active(true);
-        }
-        self.lower_anim_tree = self
-            .base()
-            .find_child("LowerAnim")
-            .unwrap()
-            .find_child("AnimationTree")
-            .and_then(|node| node.try_cast::<AnimationTree>().ok());
+        self.ready_body();
+        self.ready_animations();
+        self.ready_hitbox();
+        self.ready_label();
     }
     fn physics_process(&mut self, delta: f64) {
         self.movement(delta);
@@ -89,6 +78,13 @@ impl ICharacterBody3D for Player {
         self.upper_animations();
         self.flip_based_on_facing_direction();
         self.action_process();
+    }
+}
+#[godot_api]
+impl Player {
+    #[func]
+    fn on_player_hit(&mut self, area: Gd<Area3D>) {
+        godot_print!("Hit!");
     }
 }
 impl Player {
@@ -121,25 +117,15 @@ impl Player {
         }
         let duck_pressed = input.is_key_pressed(self.duck_key);
         let on_floor = self.base().is_on_floor();
-
-        if let Some(ref mut collider) = self.body_collider
-            && let Some(ref mut mesh) = self.body_mesh
-        {
-            let mut collider_scale = collider.get_scale();
-            if duck_pressed && on_floor {
-                if !self.ducked {
-                    self.ducked = true;
-                    collider_scale.y *= 0.6;
-                }
-                velocity.z = 0.0;
+        if duck_pressed && on_floor {
+            if !self.ducked {
+                self.ducked = true;
             }
-            if !duck_pressed && self.ducked {
-                self.ducked = false;
-                collider_scale.y /= 0.6;
-            }
-            collider.set_scale(collider_scale);
+            velocity.z = 0.0;
         }
-
+        if !duck_pressed && self.ducked {
+            self.ducked = false;
+        }
         self.base_mut().set_velocity(velocity);
         self.base_mut().move_and_slide();
     }
@@ -197,15 +183,18 @@ impl Player {
             && !self.is_grab
         {
             scale.z *= -1.0;
+            if let Some(ref mut collider) = self.body_collider {
+                let mut collider_scale = collider.get_scale();
+                collider_scale.z *= -1.0;
+                collider.set_scale(collider_scale);
+            }
+            if let Some(ref mut label) = self.player_label {
+                let mut label_scale = label.get_scale();
+                label_scale.x *= -1.0;
+                label.set_scale(label_scale);
+            }
         }
         self.base_mut().set_scale(scale);
-        if let Some(ref mut collider) = self.body_collider {
-            let mut collider_scale = collider.get_scale();
-            if collider_scale.z < 0.0 {
-                collider_scale.z *= -1.0;
-            }
-            collider.set_scale(collider_scale);
-        }
     }
     fn action_process(&mut self) {
         let input = Input::singleton();
@@ -299,22 +288,50 @@ impl Player {
         }
         timer.upcast::<Node>().queue_free();
     }
+    fn ready_body(&mut self) {
+        self.body_collider = self
+            .base()
+            .find_child("PlayerCollider")
+            .and_then(|node| node.try_cast::<CollisionShape3D>().ok());
+        self.body_mesh = self
+            .base()
+            .find_child("PlayerHead")
+            .and_then(|node| node.try_cast::<Node3D>().ok());
+    }
+    fn ready_animations(&mut self) {
+        self.upper_anim_tree = self
+            .base()
+            .find_child("UpperAnim")
+            .unwrap()
+            .find_child("AnimationTree")
+            .and_then(|node| node.try_cast::<AnimationTree>().ok());
+        if let Some(ref mut anim_tree) = self.upper_anim_tree {
+            anim_tree.set_active(true);
+        }
+        if let Some(ref mut anim_tree) = self.lower_anim_tree {
+            anim_tree.set_active(true);
+        }
+        self.lower_anim_tree = self
+            .base()
+            .find_child("LowerAnim")
+            .unwrap()
+            .find_child("AnimationTree")
+            .and_then(|node| node.try_cast::<AnimationTree>().ok());
+    }
+    fn ready_hitbox(&mut self) {
+        self.hitbox = self
+            .base()
+            .find_child("PlayerHitBox")
+            .and_then(|p| p.try_cast::<Area3D>().ok());
+        let on_hit_callable = self.base().callable("on_player_hit");
+        if let Some(ref mut hitbox) = self.hitbox {
+            hitbox.connect("area_entered", &on_hit_callable);
+        }
+    }
+    fn ready_label(&mut self) {
+        self.player_label = self
+            .base()
+            .find_child(&format!("P{}label", self.player_num.to_string()))
+            .and_then(|f| f.try_cast::<Label3D>().ok())
+    }
 }
-// Your Current Scene Tree
-// Your hands (LeftHandBody, RightHandBody) are StaticBody3D nodes with CollisionShape3D children that are disabled = true. StaticBody3D doesn't emit collision signals — it's purely for solid obstacles. You need Area3D nodes to detect overlaps.
-// Two Approaches
-// 1. Area3D (signal-based, recommended for hitboxes)
-// Replace or add Area3D nodes alongside your hand colliders, then connect signals in Rust:
-// // In ready(), connect the area's signal
-// fn ready(&mut self) {
-//     let area: Gd<Area3D> = /* find your Area3D child */;
-//     let signal = area.signals().body_entered();
-//     let this = self.to_gd();
-//     signal.connectCallable(/* ... */);
-// }
-// Or using the #[signal] + #[func] pattern with connect:
-// area.signals().body_entered().connect_other(&other_node, method_name);
-// Key signals on Area3D:
-// - body_entered(Node3D) — fires when a PhysicsBody3D enters
-// - area_entered(Area3D) — fires when another Area3D enters
-// - body_exited / area_exited — fires when something leaves

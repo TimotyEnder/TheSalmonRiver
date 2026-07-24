@@ -300,3 +300,21 @@ impl Player {
         timer.upcast::<Node>().queue_free();
     }
 }
+// Your Current Scene Tree
+// Your hands (LeftHandBody, RightHandBody) are StaticBody3D nodes with CollisionShape3D children that are disabled = true. StaticBody3D doesn't emit collision signals — it's purely for solid obstacles. You need Area3D nodes to detect overlaps.
+// Two Approaches
+// 1. Area3D (signal-based, recommended for hitboxes)
+// Replace or add Area3D nodes alongside your hand colliders, then connect signals in Rust:
+// // In ready(), connect the area's signal
+// fn ready(&mut self) {
+//     let area: Gd<Area3D> = /* find your Area3D child */;
+//     let signal = area.signals().body_entered();
+//     let this = self.to_gd();
+//     signal.connectCallable(/* ... */);
+// }
+// Or using the #[signal] + #[func] pattern with connect:
+// area.signals().body_entered().connect_other(&other_node, method_name);
+// Key signals on Area3D:
+// - body_entered(Node3D) — fires when a PhysicsBody3D enters
+// - area_entered(Area3D) — fires when another Area3D enters
+// - body_exited / area_exited — fires when something leaves

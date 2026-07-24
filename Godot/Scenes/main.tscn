@@ -979,7 +979,7 @@ tracks/5/keys = {
 
 [sub_resource type="Animation" id="Animation_d1ilt"]
 resource_name = "left_punch"
-length = 0.5
+length = 0.25
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -1023,10 +1023,10 @@ tracks/3/path = NodePath("LeftHand:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.099999994, 0.23333333, 0.33333334, 0.46666667),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.033333324, 0.13333334, 0.23333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(-0.499, 1.708, -0.006000012), Vector3(-0.35343084, 1.708, 0.42915773), Vector3(-0.499, 1.708, -0.006000012), Vector3(-0.07705361, 1.708, -0.69602233), Vector3(0.3215435, 1.708, -0.3832839)]
+"values": [Vector3(-0.499, 1.708, -0.006000012), Vector3(-0.499, 1.708, -0.006000012), Vector3(-0.07705361, 1.708, -0.69602233), Vector3(0.3215435, 1.708, -0.3832839)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -1035,10 +1035,10 @@ tracks/4/path = NodePath("LeftHand:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.099999994, 0.23333333, 0.33333334, 0.46666667),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.033333324, 0.13333334, 0.23333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0)]
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -1047,15 +1047,15 @@ tracks/5/path = NodePath("LeftHand:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.099999994, 0.23333333, 0.33333334, 0.46666667),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.033333324, 0.13333334, 0.23333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(1, 1, 0.99999994), Vector3(1, 1, 0.99999994), Vector3(1, 1, 0.99999994), Vector3(2, 2, 2), Vector3(1, 1, 1)]
+"values": [Vector3(1, 1, 0.99999994), Vector3(1, 1, 0.99999994), Vector3(2, 2, 2), Vector3(1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_6iyac"]
 resource_name = "punch"
-length = 0.5
+length = 0.25
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -1063,7 +1063,7 @@ tracks/0/path = NodePath("RightHand:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.099999994, 0.16666667, 0.2, 0.46666667),
+"times": PackedFloat32Array(0, 0.03333333, 0.10000001, 0.13333334, 0.23333333),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector3(0.4308191, 1.7078588, 0.2385351), Vector3(0.42587668, 1.7078588, 0.4602638), Vector3(0.13023078, 1.7078588, -0.56773764), Vector3(-0.047655717, 1.8032827, -0.7556964), Vector3(-0.36024314, 1.9054048, -0.5098974)]
@@ -1075,7 +1075,7 @@ tracks/1/path = NodePath("RightHand:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.099999994, 0.16666667, 0.2, 0.46666667),
+"times": PackedFloat32Array(0, 0.03333333, 0.10000001, 0.13333334, 0.23333333),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 0.7101835, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, -0.31576794), Vector3(0, 0, -0.31576794)]
@@ -1087,7 +1087,7 @@ tracks/2/path = NodePath("RightHand:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.099999994, 0.16666667, 0.2, 0.46666667),
+"times": PackedFloat32Array(0, 0.03333333, 0.10000001, 0.13333334, 0.23333333),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector3(1, 1, 1), Vector3(1, 1, 1), Vector3(1, 1, 1), Vector3(2, 2, 2), Vector3(1, 1, 1)]

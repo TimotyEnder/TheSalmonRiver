@@ -242,7 +242,7 @@ impl Player {
             }
             bind.right_punch = right_punch;
             let mut t = Timer::new_alloc();
-            t.set_wait_time(0.5);
+            t.set_wait_time(0.25);
             t.set_one_shot(true);
             timer = t.clone();
             bind.base_mut().add_child(&t.upcast::<Node>());

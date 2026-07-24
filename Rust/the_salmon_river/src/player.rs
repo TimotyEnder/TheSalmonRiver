@@ -198,6 +198,7 @@ impl Player {
         let mut scale = self.base().get_scale();
         if (self.facing_right && scale.z < 0.0 || !self.facing_right && scale.z > 0.0)
             && !self.is_punching
+            && !self.is_grab
         {
             scale.z *= -1.0;
         }
@@ -216,6 +217,10 @@ impl Player {
             let this = self.to_gd();
             let _guard = self.base_mut();
             godot::task::spawn(Self::punch_routine(this));
+        } else if input.is_key_pressed(self.throw_grab_ky) && !self.ducked {
+            let this = self.to_gd();
+            let _guard = self.base_mut();
+            godot::task::spawn(Self::grab_routine(this));
         }
     }
     async fn punch_routine(mut this: Gd<Self>) {
@@ -229,7 +234,7 @@ impl Player {
 
             bind.is_punching = true;
             original_speed = bind.speed;
-            bind.speed *= 0.3;
+            bind.speed *= 0.0;
             let mut right_punch = bind.right_punch;
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 if right_punch {
@@ -260,6 +265,43 @@ impl Player {
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 upper_anim.set("parameters/conditions/l_punch", &false.to_variant());
                 upper_anim.set("parameters/conditions/r_punch", &false.to_variant());
+            }
+        }
+        timer.upcast::<Node>().queue_free();
+    }
+    async fn grab_routine(mut this: Gd<Self>) {
+        let original_speed;
+        let mut timer;
+        {
+            let mut bind = this.bind_mut();
+            if bind.is_punching || bind.is_grab {
+                return;
+            }
+
+            bind.is_grab = true;
+            original_speed = bind.speed;
+            bind.speed *= 0.0;
+            if let Some(ref mut upper_anim) = bind.upper_anim_tree {
+                upper_anim.set("parameters/conditions/grab", &true.to_variant());
+            }
+            let mut t = Timer::new_alloc();
+            t.set_wait_time(0.5);
+            t.set_one_shot(true);
+            timer = t.clone();
+            bind.base_mut().add_child(&t.upcast::<Node>());
+        }
+
+        timer.start();
+        Signal::from_object_signal(&timer, "timeout")
+            .to_future::<()>()
+            .await;
+
+        {
+            let mut bind = this.bind_mut();
+            bind.is_grab = false;
+            bind.speed = original_speed;
+            if let Some(ref mut upper_anim) = bind.upper_anim_tree {
+                upper_anim.set("parameters/conditions/grab", &false.to_variant());
             }
         }
         timer.upcast::<Node>().queue_free();

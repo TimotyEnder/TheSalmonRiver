@@ -1390,6 +1390,14 @@ switch_mode = 2
 advance_mode = 2
 advance_condition = &"punch"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e08e2"]
+advance_mode = 2
+advance_condition = &"grab"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_neg2b"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_rai8w"]
 states/grab/node = SubResource("AnimationNodeAnimation_21xkr")
 states/grab/position = Vector2(559, 256)
@@ -1402,10 +1410,10 @@ states/left_punch/position = Vector2(299, 191)
 states/punch/node = SubResource("AnimationNodeAnimation_hptm8")
 states/punch/position = Vector2(418, 256)
 states/run/node = SubResource("AnimationNodeAnimation_d1ilt")
-states/run/position = Vector2(492, 37)
+states/run/position = Vector2(489, 37)
 states/throw/node = SubResource("AnimationNodeAnimation_6iyac")
 states/throw/position = Vector2(812, 91)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_fevyy"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_hibaj"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "in_hand", "throw", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "throw", "idle", SubResource("AnimationNodeStateMachineTransition_gt3je"), "idle", "punch", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "idle", "left_punch", SubResource("AnimationNodeStateMachineTransition_u50mg"), "left_punch", "idle", SubResource("AnimationNodeStateMachineTransition_cbgmd"), "punch", "idle", SubResource("AnimationNodeStateMachineTransition_1w6v2"), "idle", "grab", SubResource("AnimationNodeStateMachineTransition_ueoa1"), "grab", "idle", SubResource("AnimationNodeStateMachineTransition_6vcvc"), "idle", "in_hand", SubResource("AnimationNodeStateMachineTransition_7k868"), "run", "punch", SubResource("AnimationNodeStateMachineTransition_bo1nx"), "punch", "run", SubResource("AnimationNodeStateMachineTransition_8gbba"), "left_punch", "run", SubResource("AnimationNodeStateMachineTransition_jjvhh"), "run", "left_punch", SubResource("AnimationNodeStateMachineTransition_kry3j"), "left_punch", "punch", SubResource("AnimationNodeStateMachineTransition_hpc6h"), "punch", "left_punch", SubResource("AnimationNodeStateMachineTransition_kltya")]
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_fevyy"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_hibaj"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "in_hand", "throw", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "throw", "idle", SubResource("AnimationNodeStateMachineTransition_gt3je"), "idle", "punch", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "idle", "left_punch", SubResource("AnimationNodeStateMachineTransition_u50mg"), "left_punch", "idle", SubResource("AnimationNodeStateMachineTransition_cbgmd"), "punch", "idle", SubResource("AnimationNodeStateMachineTransition_1w6v2"), "idle", "grab", SubResource("AnimationNodeStateMachineTransition_ueoa1"), "grab", "idle", SubResource("AnimationNodeStateMachineTransition_6vcvc"), "idle", "in_hand", SubResource("AnimationNodeStateMachineTransition_7k868"), "run", "punch", SubResource("AnimationNodeStateMachineTransition_bo1nx"), "punch", "run", SubResource("AnimationNodeStateMachineTransition_8gbba"), "left_punch", "run", SubResource("AnimationNodeStateMachineTransition_jjvhh"), "run", "left_punch", SubResource("AnimationNodeStateMachineTransition_kry3j"), "left_punch", "punch", SubResource("AnimationNodeStateMachineTransition_hpc6h"), "punch", "left_punch", SubResource("AnimationNodeStateMachineTransition_kltya"), "run", "grab", SubResource("AnimationNodeStateMachineTransition_e08e2"), "grab", "run", SubResource("AnimationNodeStateMachineTransition_neg2b")]
 
 [node name="Root" type="Node3D" unique_id=236819951]
 

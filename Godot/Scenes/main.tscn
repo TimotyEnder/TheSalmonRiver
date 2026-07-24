@@ -25,6 +25,12 @@ albedo_color = Color(0.29411766, 0.19215687, 0.14509805, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_c4elv"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_bo1nx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ba2sc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
+
 [sub_resource type="Animation" id="Animation_bo1nx"]
 length = 0.001
 tracks/0/type = "value"
@@ -746,6 +752,42 @@ tracks/5/keys = {
 "update": 0,
 "values": [Vector3(1, 1, 1)]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("LeftHand/LeftHandBody/GrabBox:disabled")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("LeftHand/LeftHandBody/LeftHandHurtBox:disabled")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("RightHand/RightHandBody/RightHandHurtBox:disabled")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_jkdf5"]
 resource_name = "grab"
@@ -821,6 +863,18 @@ tracks/5/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Vector3(1, 1, 1), Vector3(1, 1, 1), Vector3(1, 1, 1), Vector3(1.5, 1.5, 1.5)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("LeftHand/LeftHandBody/GrabBox:disabled")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
 }
 
 [sub_resource type="Animation" id="Animation_6bp64"]
@@ -1052,6 +1106,18 @@ tracks/5/keys = {
 "update": 0,
 "values": [Vector3(1, 1, 0.99999994), Vector3(1, 1, 0.99999994), Vector3(2, 2, 2), Vector3(1, 1, 1)]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("LeftHand/LeftHandBody/LeftHandHurtBox:disabled")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.20000002),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
 
 [sub_resource type="Animation" id="Animation_6iyac"]
 resource_name = "punch"
@@ -1127,6 +1193,18 @@ tracks/5/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(1, 1, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("RightHand/RightHandBody/RightHandHurtBox:disabled")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.20000002),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
 }
 
 [sub_resource type="Animation" id="Animation_344ge"]
@@ -1453,6 +1531,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2057625, 0)
 [node name="PlayerCollider" type="CollisionShape3D" parent="Player" unique_id=1376185404]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.6397266, 0)
 shape = SubResource("CapsuleShape3D_s6dll")
+debug_color = Color(0.3264353, 0.6243242, 9.62615e-07, 1)
 
 [node name="PlayerHead" type="Node3D" parent="Player" unique_id=1654501405]
 transform = Transform3D(0.3987029, 0, 0.91708, 0, 1, 0, -0.91708, 0, 0.3987029, 0, 1.7, 0)
@@ -1468,6 +1547,18 @@ transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_ba2sc")
 mesh = SubResource("BoxMesh_c4elv")
 
+[node name="LeftHandBody" type="StaticBody3D" parent="Player/LeftHand" unique_id=698238268]
+
+[node name="LeftHandHurtBox" type="CollisionShape3D" parent="Player/LeftHand/LeftHandBody" unique_id=523934422]
+transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
+shape = SubResource("BoxShape3D_bo1nx")
+disabled = true
+
+[node name="GrabBox" type="CollisionShape3D" parent="Player/LeftHand/LeftHandBody" unique_id=935767126]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
+shape = SubResource("BoxShape3D_ba2sc")
+disabled = true
+
 [node name="RightHand" type="Node3D" parent="Player" unique_id=1210297607]
 transform = Transform3D(0.75824225, 0, 0.65197295, 0, 1, 0, -0.65197295, 0, 0.75824225, 0.4308191, 1.7078588, 0.2385351)
 
@@ -1475,6 +1566,13 @@ transform = Transform3D(0.75824225, 0, 0.65197295, 0, 1, 0, -0.65197295, 0, 0.75
 transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_ba2sc")
 mesh = SubResource("BoxMesh_c4elv")
+
+[node name="RightHandBody" type="StaticBody3D" parent="Player/RightHand" unique_id=603673457]
+
+[node name="RightHandHurtBox" type="CollisionShape3D" parent="Player/RightHand/RightHandBody" unique_id=2074013885]
+transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
+shape = SubResource("BoxShape3D_c4elv")
+disabled = true
 
 [node name="RightFoot" type="Node3D" parent="Player" unique_id=2077509894]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.253, 1.186, 0.019)

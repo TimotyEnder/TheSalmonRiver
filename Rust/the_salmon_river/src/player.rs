@@ -1,6 +1,5 @@
 use godot::classes::{
-    AnimationPlayer, AnimationTree, CharacterBody3D, CollisionShape3D, ICharacterBody3D, Input,
-    MeshInstance3D,
+    AnimationTree, CharacterBody3D, CollisionShape3D, ICharacterBody3D, Input, Timer,
 };
 use godot::global::Key;
 use godot::prelude::*;
@@ -21,11 +20,18 @@ struct Player {
     right_key: Key,
     #[export]
     duck_key: Key,
+    #[export]
+    punch_use_key: Key,
+    #[export]
+    throw_grab_ky: Key,
     body_mesh: Option<Gd<Node3D>>,
     body_collider: Option<Gd<CollisionShape3D>>,
     lower_anim_tree: Option<Gd<AnimationTree>>,
     upper_anim_tree: Option<Gd<AnimationTree>>,
     facing_right: bool,
+    is_punching: bool,
+    is_grab: bool,
+    right_punch: bool,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -45,6 +51,11 @@ impl ICharacterBody3D for Player {
             left_key: Key::A,
             right_key: Key::D,
             duck_key: Key::S,
+            punch_use_key: Key::F,
+            throw_grab_ky: Key::G,
+            is_grab: false,
+            is_punching: false,
+            right_punch: false,
         }
     }
     fn ready(&mut self) {
@@ -76,6 +87,8 @@ impl ICharacterBody3D for Player {
         self.movement(delta);
         self.lower_animations();
         self.upper_animations();
+        self.flip_based_on_facing_direction();
+        self.action_process();
     }
 }
 impl Player {
@@ -164,6 +177,9 @@ impl Player {
         }
     }
     fn upper_animations(&mut self) {
+        if self.is_punching {
+            return;
+        }
         let grounded = self.base().is_on_floor();
         let side_velocity = self.base().get_velocity();
         if let Some(ref mut anim_tree) = self.upper_anim_tree {
@@ -171,19 +187,81 @@ impl Player {
                 anim_tree.set("parameters/conditions/jump", &false.to_variant());
                 anim_tree.set("parameters/conditions/idle", &false.to_variant());
                 anim_tree.set("parameters/conditions/run", &true.to_variant());
-                anim_tree.set("parameters/conditions/in_hand", &false.to_variant());
-                anim_tree.set("parameters/conditions/throw", &false.to_variant());
-                anim_tree.set("parameters/conditions/r_punch", &false.to_variant());
-                anim_tree.set("parameters/conditions/l_punch", &false.to_variant());
             } else {
                 anim_tree.set("parameters/conditions/jump", &false.to_variant());
                 anim_tree.set("parameters/conditions/idle", &true.to_variant());
                 anim_tree.set("parameters/conditions/run", &false.to_variant());
-                anim_tree.set("parameters/conditions/in_hand", &false.to_variant());
-                anim_tree.set("parameters/conditions/throw", &false.to_variant());
-                anim_tree.set("parameters/conditions/r_punch", &false.to_variant());
-                anim_tree.set("parameters/conditions/l_punch", &false.to_variant());
             }
         }
+    }
+    fn flip_based_on_facing_direction(&mut self) {
+        let mut scale = self.base().get_scale();
+        if (self.facing_right && scale.z < 0.0 || !self.facing_right && scale.z > 0.0)
+            && !self.is_punching
+        {
+            scale.z *= -1.0;
+        }
+        self.base_mut().set_scale(scale);
+        if let Some(ref mut collider) = self.body_collider {
+            let mut collider_scale = collider.get_scale();
+            if collider_scale.z < 0.0 {
+                collider_scale.z *= -1.0;
+            }
+            collider.set_scale(collider_scale);
+        }
+    }
+    fn action_process(&mut self) {
+        let input = Input::singleton();
+        if input.is_key_pressed(self.punch_use_key) && !self.ducked {
+            let this = self.to_gd();
+            let _guard = self.base_mut();
+            godot::task::spawn(Self::punch_routine(this));
+        }
+    }
+    async fn punch_routine(mut this: Gd<Self>) {
+        let original_speed;
+        let mut timer;
+        {
+            let mut bind = this.bind_mut();
+            if bind.is_punching || bind.is_grab {
+                return;
+            }
+
+            bind.is_punching = true;
+            original_speed = bind.speed;
+            bind.speed *= 0.3;
+            let mut right_punch = bind.right_punch;
+            if let Some(ref mut upper_anim) = bind.upper_anim_tree {
+                if right_punch {
+                    upper_anim.set("parameters/conditions/r_punch", &true.to_variant());
+                    right_punch = false;
+                } else if !right_punch {
+                    upper_anim.set("parameters/conditions/l_punch", &true.to_variant());
+                    right_punch = true;
+                }
+            }
+            bind.right_punch = right_punch;
+            let mut t = Timer::new_alloc();
+            t.set_wait_time(0.5);
+            t.set_one_shot(true);
+            timer = t.clone();
+            bind.base_mut().add_child(&t.upcast::<Node>());
+        }
+
+        timer.start();
+        Signal::from_object_signal(&timer, "timeout")
+            .to_future::<()>()
+            .await;
+
+        {
+            let mut bind = this.bind_mut();
+            bind.is_punching = false;
+            bind.speed = original_speed;
+            if let Some(ref mut upper_anim) = bind.upper_anim_tree {
+                upper_anim.set("parameters/conditions/l_punch", &false.to_variant());
+                upper_anim.set("parameters/conditions/r_punch", &false.to_variant());
+            }
+        }
+        timer.upcast::<Node>().queue_free();
     }
 }

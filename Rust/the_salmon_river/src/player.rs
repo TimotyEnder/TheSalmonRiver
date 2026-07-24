@@ -126,22 +126,18 @@ impl Player {
             && let Some(ref mut mesh) = self.body_mesh
         {
             let mut collider_scale = collider.get_scale();
-            let mut mesh_scale = mesh.get_scale();
             if duck_pressed && on_floor {
                 if !self.ducked {
                     self.ducked = true;
                     collider_scale.y *= 0.6;
-                    mesh_scale.y *= 0.6;
                 }
                 velocity.z = 0.0;
             }
             if !duck_pressed && self.ducked {
                 self.ducked = false;
                 collider_scale.y /= 0.6;
-                mesh_scale.y /= 0.6;
             }
             collider.set_scale(collider_scale);
-            mesh.set_scale(mesh_scale);
         }
 
         self.base_mut().set_velocity(velocity);
@@ -270,7 +266,6 @@ impl Player {
         timer.upcast::<Node>().queue_free();
     }
     async fn grab_routine(mut this: Gd<Self>) {
-        let original_speed;
         let mut timer;
         {
             let mut bind = this.bind_mut();
@@ -279,13 +274,11 @@ impl Player {
             }
 
             bind.is_grab = true;
-            original_speed = bind.speed;
-            bind.speed *= 0.0;
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 upper_anim.set("parameters/conditions/grab", &true.to_variant());
             }
             let mut t = Timer::new_alloc();
-            t.set_wait_time(0.5);
+            t.set_wait_time(0.4);
             t.set_one_shot(true);
             timer = t.clone();
             bind.base_mut().add_child(&t.upcast::<Node>());
@@ -299,7 +292,7 @@ impl Player {
         {
             let mut bind = this.bind_mut();
             bind.is_grab = false;
-            bind.speed = original_speed;
+
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 upper_anim.set("parameters/conditions/grab", &false.to_variant());
             }

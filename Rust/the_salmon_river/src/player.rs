@@ -58,7 +58,7 @@ impl ICharacterBody3D for Player {
             speed: 2.0,
             jump_force: 7.0,
             punch_force: 0.5,
-            knock_back_force: 5.0,
+            knock_back_force: 6.0,
             jumped: false,
             ducked: false,
             hit_stun: false,

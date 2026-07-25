@@ -5,6 +5,8 @@ use godot::classes::{
 use godot::global::Key;
 use godot::prelude::*;
 
+use crate::utils;
+
 #[derive(GodotClass)]
 #[class(base=CharacterBody3D)]
 struct Player {
@@ -30,12 +32,13 @@ struct Player {
     hitbox: Option<Gd<Area3D>>,
     lower_anim_tree: Option<Gd<AnimationTree>>,
     upper_anim_tree: Option<Gd<AnimationTree>>,
+    #[export]
     facing_right: bool,
     is_punching: bool,
     is_grab: bool,
     right_punch: bool,
     #[export]
-    player_num: i8,
+    player_num: u8,
     player_label: Option<Gd<Label3D>>,
 }
 #[godot_api]
@@ -84,7 +87,17 @@ impl ICharacterBody3D for Player {
 impl Player {
     #[func]
     fn on_player_hit(&mut self, area: Gd<Area3D>) {
-        godot_print!("Hit!");
+        if area.get_groups().contains("p1") && self.player_num != 1
+            || area.get_groups().contains("p2") && self.player_num != 2
+        {
+            let area_name = area.get_name();
+            godot_print!("{}", area_name);
+            if area_name.contains("GrabBox") {
+                godot_print!("Grab");
+            } else {
+                godot_print!("Hit!")
+            }
+        }
     }
 }
 impl Player {
@@ -331,7 +344,12 @@ impl Player {
     fn ready_label(&mut self) {
         self.player_label = self
             .base()
-            .find_child(&format!("P{}label", self.player_num.to_string()))
-            .and_then(|f| f.try_cast::<Label3D>().ok())
+            .find_child(&format!("PlayerLabel"))
+            .and_then(|f| f.try_cast::<Label3D>().ok());
+        if let Some(ref mut label) = self.player_label {
+            let label_string = format!("P{}", self.player_num.to_string());
+            label.set_text(&label_string);
+            label.set_modulate(utils::player_color_based_on_number(self.player_num));
+        }
     }
 }

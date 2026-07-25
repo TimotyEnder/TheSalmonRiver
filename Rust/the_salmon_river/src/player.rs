@@ -13,6 +13,7 @@ struct Player {
     base: Base<CharacterBody3D>,
     speed: f32,
     jump_force: f32,
+    punch_force: f32,
     jumped: bool,
     ducked: bool,
     #[export]
@@ -54,6 +55,7 @@ impl ICharacterBody3D for Player {
             facing_right: true,
             speed: 2.0,
             jump_force: 7.0,
+            punch_force: 0.5,
             jumped: false,
             ducked: false,
             jump_key: Key::W,
@@ -92,10 +94,12 @@ impl Player {
         {
             let area_name = area.get_name();
             godot_print!("{}", area_name);
-            if area_name.contains("GrabBox") {
+            if area_name.contains("Grab") {
                 godot_print!("Grab");
+            } else if area_name.contains("Area") {
+                godot_print!("Hit!");
             } else {
-                godot_print!("Hit!")
+                godot_print!("Touch!")
             }
         }
     }
@@ -108,14 +112,16 @@ impl Player {
         // Apply gravity
         velocity.y -= 20.0 * delta as f32;
 
-        velocity.z = 0.0;
-        if input.is_key_pressed(self.left_key) {
+        if !self.is_punching {
+            velocity.z = 0.0;
+        }
+        if input.is_key_pressed(self.left_key) && !self.is_punching {
             velocity.z += self.speed;
             if self.facing_right {
                 self.facing_right = false;
             }
         }
-        if input.is_key_pressed(self.right_key) {
+        if input.is_key_pressed(self.right_key) && !self.is_punching {
             velocity.z += -self.speed;
             if !self.facing_right {
                 self.facing_right = true;
@@ -223,6 +229,19 @@ impl Player {
     }
     async fn punch_routine(mut this: Gd<Self>) {
         let original_speed;
+        let mut speed_timer;
+        {
+            let mut bind = this.bind_mut();
+            let mut velocity = bind.base().get_velocity();
+            let direction = if bind.facing_right { -1.0 } else { 1.0 };
+            velocity.z = direction * bind.punch_force;
+            bind.base_mut().set_velocity(velocity);
+            let mut t = Timer::new_alloc();
+            t.set_wait_time(0.01);
+            t.set_one_shot(true);
+            speed_timer = t.clone();
+            bind.base_mut().add_child(&t.upcast::<Node>());
+        }
         let mut timer;
         {
             let mut bind = this.bind_mut();
@@ -250,8 +269,18 @@ impl Player {
             timer = t.clone();
             bind.base_mut().add_child(&t.upcast::<Node>());
         }
-
+        speed_timer.start();
         timer.start();
+        Signal::from_object_signal(&speed_timer, "timeout")
+            .to_future::<()>()
+            .await;
+        {
+            let mut bind = this.bind_mut();
+            bind.speed = original_speed;
+            let mut velocity = bind.base().get_velocity();
+            velocity.z = 0.0;
+            bind.base_mut().set_velocity(velocity);
+        }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
@@ -259,7 +288,6 @@ impl Player {
         {
             let mut bind = this.bind_mut();
             bind.is_punching = false;
-            bind.speed = original_speed;
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 upper_anim.set("parameters/conditions/l_punch", &false.to_variant());
                 upper_anim.set("parameters/conditions/r_punch", &false.to_variant());

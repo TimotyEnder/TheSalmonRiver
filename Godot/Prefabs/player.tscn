@@ -238,6 +238,118 @@ tracks/8/keys = {
 "values": [Vector3(1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_y6xdh"]
+resource_name = "hit"
+length = 0.19999999999999998
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RightFoot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.253, 1.186, 0.019)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RightFoot:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("RightFoot:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("LeftFoot:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.216, 1.186, -0.002)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("LeftFoot:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5707964, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("LeftFoot:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("PlayerHead:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.10000001),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1.7, 0), Vector3(-0.012727974, 1.6774889, 0.08734689)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("PlayerHead:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.10000001),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1.1606942, 0), Vector3(0, 1.4260972, 0.24970551)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("PlayerHead:scale")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.10000001),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.9999998, 1, 0.9999998), Vector3(0.99999976, 1, 0.99999976)]
+}
+
 [sub_resource type="Animation" id="Animation_8gbba"]
 resource_name = "idle"
 length = 2.0333333
@@ -581,6 +693,7 @@ tracks/8/keys = {
 _data = {
 &"RESET": SubResource("Animation_bo1nx"),
 &"duck": SubResource("Animation_kry3j"),
+&"hit": SubResource("Animation_y6xdh"),
 &"idle": SubResource("Animation_8gbba"),
 &"jump": SubResource("Animation_ynf5e"),
 &"run": SubResource("Animation_jjvhh")
@@ -588,6 +701,9 @@ _data = {
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bo1nx"]
 animation = &"duck"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_y6xdh"]
+animation = &"hit"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8gbba"]
 animation = &"idle"
@@ -649,17 +765,51 @@ advance_condition = &"run"
 advance_mode = 2
 advance_condition = &"duck"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5wxv7"]
+advance_mode = 2
+advance_condition = &"hit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y5hcb"]
+advance_mode = 2
+advance_condition = &"hit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2nftw"]
+advance_mode = 2
+advance_condition = &"hit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_knrd4"]
+advance_mode = 2
+advance_condition = &"hit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hck1p"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_juxdh"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4qbli"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_08u7w"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_s6dll"]
 states/Start/position = Vector2(136, 118)
 states/duck/node = SubResource("AnimationNodeAnimation_bo1nx")
 states/duck/position = Vector2(235, 258)
+states/hit/node = SubResource("AnimationNodeAnimation_y6xdh")
+states/hit/position = Vector2(663.3959, -13)
 states/idle/node = SubResource("AnimationNodeAnimation_8gbba")
 states/idle/position = Vector2(343, 154)
 states/jump/node = SubResource("AnimationNodeAnimation_jjvhh")
 states/jump/position = Vector2(536, 174)
 states/run/node = SubResource("AnimationNodeAnimation_kry3j")
 states/run/position = Vector2(272, 4)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_21xkr"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_6bp64"), "idle", "duck", SubResource("AnimationNodeStateMachineTransition_344ge"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_ynf5e"), "duck", "idle", SubResource("AnimationNodeStateMachineTransition_hptm8"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_d1ilt"), "jump", "idle", SubResource("AnimationNodeStateMachineTransition_6iyac"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_fdnlq"), "jump", "run", SubResource("AnimationNodeStateMachineTransition_jkdf5"), "jump", "duck", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "duck", "jump", SubResource("AnimationNodeStateMachineTransition_k12tt"), "duck", "run", SubResource("AnimationNodeStateMachineTransition_h1bgf"), "run", "duck", SubResource("AnimationNodeStateMachineTransition_b3802")]
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_21xkr"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_6bp64"), "idle", "duck", SubResource("AnimationNodeStateMachineTransition_344ge"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_ynf5e"), "duck", "idle", SubResource("AnimationNodeStateMachineTransition_hptm8"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_d1ilt"), "jump", "idle", SubResource("AnimationNodeStateMachineTransition_6iyac"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_fdnlq"), "jump", "run", SubResource("AnimationNodeStateMachineTransition_jkdf5"), "jump", "duck", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "duck", "jump", SubResource("AnimationNodeStateMachineTransition_k12tt"), "duck", "run", SubResource("AnimationNodeStateMachineTransition_h1bgf"), "run", "duck", SubResource("AnimationNodeStateMachineTransition_b3802"), "run", "hit", SubResource("AnimationNodeStateMachineTransition_5wxv7"), "jump", "hit", SubResource("AnimationNodeStateMachineTransition_y5hcb"), "idle", "hit", SubResource("AnimationNodeStateMachineTransition_2nftw"), "duck", "hit", SubResource("AnimationNodeStateMachineTransition_knrd4"), "hit", "run", SubResource("AnimationNodeStateMachineTransition_hck1p"), "hit", "idle", SubResource("AnimationNodeStateMachineTransition_juxdh"), "hit", "jump", SubResource("AnimationNodeStateMachineTransition_4qbli"), "hit", "duck", SubResource("AnimationNodeStateMachineTransition_08u7w")]
 graph_offset = Vector2(-307.60413, -58)
 
 [sub_resource type="Animation" id="Animation_21xkr"]
@@ -1580,6 +1730,7 @@ root_node = NodePath("../..")
 tree_root = SubResource("AnimationNodeStateMachine_s6dll")
 anim_player = NodePath("..")
 parameters/conditions/duck = false
+parameters/conditions/hit = false
 parameters/conditions/idle = false
 parameters/conditions/jump = false
 parameters/conditions/run = false

@@ -98,6 +98,9 @@ impl Player {
                 godot_print!("Grab");
             } else if area_name.contains("Area") {
                 godot_print!("Hit!");
+                if let Some(ref mut anim_tree) = self.lower_anim_tree {
+                    anim_tree.set("parameters/conditions/hit", &true.to_variant());
+                }
             } else {
                 godot_print!("Touch!")
             }

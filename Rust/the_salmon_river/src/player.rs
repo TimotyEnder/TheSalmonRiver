@@ -16,6 +16,8 @@ struct Player {
     punch_force: f32,
     jumped: bool,
     ducked: bool,
+    hit_stun: bool,
+    knock_back_force: f32,
     #[export]
     jump_key: Key,
     #[export]
@@ -56,8 +58,10 @@ impl ICharacterBody3D for Player {
             speed: 2.0,
             jump_force: 7.0,
             punch_force: 0.5,
+            knock_back_force: 5.0,
             jumped: false,
             ducked: false,
+            hit_stun: false,
             jump_key: Key::W,
             left_key: Key::A,
             right_key: Key::D,
@@ -77,30 +81,45 @@ impl ICharacterBody3D for Player {
         self.ready_hitbox();
         self.ready_label();
     }
-    fn physics_process(&mut self, delta: f64) {
-        self.movement(delta);
-        self.lower_animations();
-        self.upper_animations();
-        self.flip_based_on_facing_direction();
-        self.action_process();
+    fn process(&mut self, delta: f64) {
+        if !self.hit_stun {
+            self.movement(delta);
+            self.lower_animations();
+            self.upper_animations();
+            self.flip_based_on_facing_direction();
+            self.action_process();
+        }
     }
 }
 #[godot_api]
 impl Player {
     #[func]
     fn on_player_hit(&mut self, area: Gd<Area3D>) {
-        if area.get_groups().contains("p1") && self.player_num != 1
-            || area.get_groups().contains("p2") && self.player_num != 2
-        {
-            let area_name = area.get_name();
+        let area_name = area.get_name();
+        if !self.ducked {
             godot_print!("{}", area_name);
             if area_name.contains("Grab") {
                 godot_print!("Grab");
-            } else if area_name.contains("Area") {
+            } else if area_name.contains("Hand") {
                 godot_print!("Hit!");
-                if let Some(ref mut anim_tree) = self.lower_anim_tree {
-                    anim_tree.set("parameters/conditions/hit", &true.to_variant());
+                let other_player_opt = area
+                    .get_parent()
+                    .and_then(|a| a.get_parent().and_then(|p| p.try_cast::<Player>().ok()));
+                if let Some(other) = other_player_opt {
+                    let knockback_direction =
+                        self.base().get_global_position().z - other.get_global_position().z;
+                    let mut velocity = self.base().get_velocity();
+                    if knockback_direction > 0.0 {
+                        velocity.z = self.knock_back_force;
+                    } else {
+                        velocity.z = -1.0 * self.knock_back_force;
+                    }
+                    self.base_mut().set_velocity(velocity);
+                    self.base_mut().move_and_slide();
                 }
+                let this = self.to_gd();
+                let _guard = self.base_mut();
+                godot::task::spawn(Self::hitstun_routine(this));
             } else {
                 godot_print!("Touch!")
             }
@@ -329,6 +348,43 @@ impl Player {
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 upper_anim.set("parameters/conditions/grab", &false.to_variant());
             }
+        }
+        timer.upcast::<Node>().queue_free();
+    }
+    async fn hitstun_routine(mut this: Gd<Self>) {
+        let mut timer;
+        {
+            let mut bind = this.bind_mut();
+            bind.hit_stun = true;
+            if let Some(ref mut anim) = bind.lower_anim_tree {
+                anim.set("parameters/conditions/hit", &true.to_variant());
+            }
+            if let Some(ref mut anim) = bind.upper_anim_tree {
+                anim.set("parameters/conditions/hit", &true.to_variant());
+            }
+            let mut t = Timer::new_alloc();
+            t.set_wait_time(0.5);
+            t.set_one_shot(true);
+            timer = t.clone();
+            bind.base_mut().add_child(&t.upcast::<Node>());
+        }
+        timer.start();
+        Signal::from_object_signal(&timer, "timeout")
+            .to_future::<()>()
+            .await;
+        {
+            let mut bind = this.bind_mut();
+            bind.hit_stun = false;
+            bind.is_punching = false;
+            if let Some(ref mut anim) = bind.lower_anim_tree {
+                anim.set("parameters/conditions/hit", &false.to_variant());
+            }
+            if let Some(ref mut anim) = bind.upper_anim_tree {
+                anim.set("parameters/conditions/hit", &false.to_variant());
+            }
+            let mut velocity = bind.base().get_velocity();
+            velocity.z = 0.0;
+            bind.base_mut().set_velocity(velocity);
         }
         timer.upcast::<Node>().queue_free();
     }

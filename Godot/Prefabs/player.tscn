@@ -1799,14 +1799,14 @@ transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_ba2sc")
 mesh = SubResource("BoxMesh_c4elv")
 
-[node name="LeftHandArea" type="Area3D" parent="LeftHand" unique_id=522928415 groups=["p1"]]
+[node name="LeftHandArea" type="Area3D" parent="LeftHand" unique_id=522928415]
 
 [node name="LeftHandHurtBox" type="CollisionShape3D" parent="LeftHand/LeftHandArea" unique_id=1790064307]
 transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
 shape = SubResource("BoxShape3D_bo1nx")
 disabled = true
 
-[node name="GrabArea" type="Area3D" parent="LeftHand" unique_id=712101929 groups=["p1"]]
+[node name="GrabArea" type="Area3D" parent="LeftHand" unique_id=712101929]
 
 [node name="GrabBox" type="CollisionShape3D" parent="LeftHand/GrabArea" unique_id=702007459]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0, 0)
@@ -1821,7 +1821,7 @@ transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_ba2sc")
 mesh = SubResource("BoxMesh_c4elv")
 
-[node name="RightHandArea" type="Area3D" parent="RightHand" unique_id=1746554017 groups=["p1"]]
+[node name="RightHandArea" type="Area3D" parent="RightHand" unique_id=1746554017]
 
 [node name="RightHandHurtBox" type="CollisionShape3D" parent="RightHand/RightHandArea" unique_id=883064508]
 transform = Transform3D(0.17000002, 0, -7.450581e-09, 0, 0.17, 0, 7.450581e-09, 0, 0.17000002, 0, 0, 0)
@@ -1874,7 +1874,7 @@ parameters/conditions/r_punch = false
 parameters/conditions/run = false
 parameters/conditions/throw = false
 
-[node name="PlayerHitBox" type="Area3D" parent="." unique_id=337895282 groups=["p1"]]
+[node name="PlayerHitBox" type="Area3D" parent="." unique_id=337895282]
 
 [node name="PlayerHitboxCollider" type="CollisionShape3D" parent="PlayerHitBox" unique_id=1422745037]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.6397266, 0)

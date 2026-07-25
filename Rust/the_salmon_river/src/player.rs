@@ -80,6 +80,7 @@ impl ICharacterBody3D for Player {
         self.ready_animations();
         self.ready_hitbox();
         self.ready_label();
+        self.ready_groups();
     }
     fn process(&mut self, delta: f64) {
         if !self.hit_stun {
@@ -96,36 +97,27 @@ impl Player {
     #[func]
     fn on_player_hit(&mut self, area: Gd<Area3D>) {
         let area_name = area.get_name();
-        if !self.ducked {
+        let area_groups = area.get_groups();
+        if !area_groups.contains(&format!("p{}", self.player_num)) {
             godot_print!("{}", area_name);
             if area_name.contains("Grab") {
                 godot_print!("Grab");
             } else if area_name.contains("Hand") {
-                godot_print!("Hit!");
-                let other_player_opt = area
-                    .get_parent()
-                    .and_then(|a| a.get_parent().and_then(|p| p.try_cast::<Player>().ok()));
-                if let Some(other) = other_player_opt {
-                    let knockback_direction =
-                        self.base().get_global_position().z - other.get_global_position().z;
-                    let mut velocity = self.base().get_velocity();
-                    if knockback_direction > 0.0 {
-                        velocity.z = self.knock_back_force;
-                    } else {
-                        velocity.z = -1.0 * self.knock_back_force;
-                    }
-                    self.base_mut().set_velocity(velocity);
-                    self.base_mut().move_and_slide();
+                if !self.ducked {
+                    self.apply_knockback(area);
+                    let this = self.to_gd();
+                    let _guard = self.base_mut();
+                    godot::task::spawn(Self::hitstun_routine(this));
                 }
-                let this = self.to_gd();
-                let _guard = self.base_mut();
-                godot::task::spawn(Self::hitstun_routine(this));
             } else {
-                godot_print!("Touch!")
+                godot_print!("dodge");
             }
+        } else {
+            godot_print!("Touch!")
         }
     }
 }
+
 impl Player {
     fn movement(&mut self, delta: f64) {
         let input = Input::singleton();
@@ -315,6 +307,7 @@ impl Player {
                 upper_anim.set("parameters/conditions/r_punch", &false.to_variant());
             }
         }
+        speed_timer.upcast::<Node>().queue_free();
         timer.upcast::<Node>().queue_free();
     }
     async fn grab_routine(mut this: Gd<Self>) {
@@ -375,7 +368,6 @@ impl Player {
         {
             let mut bind = this.bind_mut();
             bind.hit_stun = false;
-            bind.is_punching = false;
             if let Some(ref mut anim) = bind.lower_anim_tree {
                 anim.set("parameters/conditions/hit", &false.to_variant());
             }
@@ -437,6 +429,43 @@ impl Player {
             let label_string = format!("P{}", self.player_num.to_string());
             label.set_text(&label_string);
             label.set_modulate(utils::player_color_based_on_number(self.player_num));
+        }
+    }
+    fn ready_groups(&mut self) {
+        let left_hand_area = self.base().find_child("LeftHand").and_then(|f| {
+            f.find_child("LeftHandArea")
+                .and_then(|f| f.try_cast::<Area3D>().ok())
+        });
+        let grab_area = self.base().find_child("LeftHand").and_then(|f| {
+            f.find_child("GrabArea")
+                .and_then(|f| f.try_cast::<Area3D>().ok())
+        });
+        let right_hand_area = self.base().find_child("RightHand").and_then(|f| {
+            f.find_child("RightHandArea")
+                .and_then(|f| f.try_cast::<Area3D>().ok())
+        });
+        let _ = [left_hand_area, grab_area, right_hand_area].map(|mut f| {
+            if let Some(ref mut u) = f {
+                u.add_to_group(&format!("p{}", self.player_num));
+            }
+        });
+    }
+    fn apply_knockback(&mut self, area: Gd<Area3D>) {
+        godot_print!("Hit!");
+        let other_player_opt = area
+            .get_parent()
+            .and_then(|a| a.get_parent().and_then(|p| p.try_cast::<Player>().ok()));
+        if let Some(other) = other_player_opt {
+            let knockback_direction =
+                self.base().get_global_position().z - other.get_global_position().z;
+            let mut velocity = self.base().get_velocity();
+            if knockback_direction > 0.0 {
+                velocity.z = self.knock_back_force;
+            } else {
+                velocity.z = -1.0 * self.knock_back_force;
+            }
+            self.base_mut().set_velocity(velocity);
+            self.base_mut().move_and_slide();
         }
     }
 }

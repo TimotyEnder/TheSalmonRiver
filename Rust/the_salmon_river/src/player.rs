@@ -17,6 +17,8 @@ struct Player {
     jumped: bool,
     ducked: bool,
     hit_stun: bool,
+    hit_stun_routine_entries: u8,
+    hit_stun_hits: u8,
     knock_back_force: f32,
     #[export]
     jump_key: Key,
@@ -73,6 +75,8 @@ impl ICharacterBody3D for Player {
             right_punch: false,
             player_num: 1,
             player_label: None,
+            hit_stun_routine_entries: 0,
+            hit_stun_hits: 0,
         }
     }
     fn ready(&mut self) {
@@ -348,6 +352,13 @@ impl Player {
         let mut timer;
         {
             let mut bind = this.bind_mut();
+            if bind.hit_stun {
+                bind.hit_stun_routine_entries += 1;
+                bind.hit_stun_hits += 1;
+            }
+            if bind.hit_stun_hits > 2 {
+                godot_print!("KnockDown!")
+            }
             bind.hit_stun = true;
             if let Some(ref mut anim) = bind.lower_anim_tree {
                 anim.set("parameters/conditions/hit", &true.to_variant());
@@ -367,7 +378,12 @@ impl Player {
             .await;
         {
             let mut bind = this.bind_mut();
-            bind.hit_stun = false;
+            if bind.hit_stun_routine_entries > 0 {
+                bind.hit_stun_routine_entries -= 1;
+            } else {
+                bind.hit_stun = false;
+                bind.hit_stun_hits = 0;
+            }
             if let Some(ref mut anim) = bind.lower_anim_tree {
                 anim.set("parameters/conditions/hit", &false.to_variant());
             }

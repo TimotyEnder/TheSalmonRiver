@@ -17,6 +17,7 @@ struct Player {
     jumped: bool,
     ducked: bool,
     hit_stun: bool,
+    knock_back: bool,
     hit_stun_routine_entries: u8,
     hit_stun_hits: u8,
     hitstun_force: f32,
@@ -66,11 +67,12 @@ impl ICharacterBody3D for Player {
             speed: 2.0,
             jump_force: 7.0,
             punch_force: 0.5,
-            hitstun_force: 1.0,
-            knock_back_force: 10.0,
+            hitstun_force: 0.6,
+            knock_back_force: 7.0,
             jumped: false,
             ducked: false,
             hit_stun: false,
+            knock_back: false,
             jump_key: Key::W,
             left_key: Key::A,
             right_key: Key::D,
@@ -95,7 +97,7 @@ impl ICharacterBody3D for Player {
     }
     fn process(&mut self, delta: f64) {
         self.movement(delta);
-        if !self.hit_stun {
+        if !self.hit_stun && !self.knock_back {
             self.lower_animations();
             self.upper_animations();
             self.flip_based_on_facing_direction();
@@ -137,7 +139,7 @@ impl Player {
         let mut velocity = self.base().get_velocity();
         // Apply gravity
         velocity.y -= 20.0 * delta as f32;
-        if !self.is_punching && !self.hit_stun {
+        if !self.is_punching && !self.hit_stun && !self.knock_back {
             velocity.z = 0.0;
         }
         if input.is_key_pressed(self.left_key) && !self.is_punching && !self.hit_stun {
@@ -360,17 +362,23 @@ impl Player {
         timer.upcast::<Node>().queue_free();
     }
     async fn hitstun_routine(mut this: Gd<Self>, knock_dir: KnockDirection) {
-        let mut timer;
+        let should_knockback;
         {
             let mut bind = this.bind_mut();
             if bind.hit_stun {
                 bind.hit_stun_routine_entries += 1;
                 bind.hit_stun_hits += 1;
             }
-            if bind.hit_stun_hits > 2 {
-                bind.knockback(knock_dir);
-            }
+            should_knockback = bind.hit_stun_hits > 1;
             bind.hit_stun = true;
+        }
+        if should_knockback {
+            godot::task::spawn(Self::knockback_routine(this, knock_dir));
+            return;
+        }
+        let mut timer;
+        {
+            let mut bind = this.bind_mut();
             if let Some(ref mut anim) = bind.lower_anim_tree {
                 anim.set("parameters/conditions/hit", &true.to_variant());
             }
@@ -402,19 +410,66 @@ impl Player {
                 anim.set("parameters/conditions/hit", &false.to_variant());
             }
             let mut velocity = bind.base().get_velocity();
-            velocity.z = 0.0;
-            bind.base_mut().set_velocity(velocity);
+            if !bind.knock_back {
+                velocity.z = 0.0;
+                bind.base_mut().set_velocity(velocity);
+            }
         }
         timer.upcast::<Node>().queue_free();
     }
-    fn knockback(&mut self, knock_dir: KnockDirection) {
-        let mut velocity = self.base().get_velocity();
-        velocity.y += self.knock_back_force;
-        match knock_dir {
-            KnockDirection::Left => velocity.z -= self.knock_back_force,
-            KnockDirection::Right => velocity.z += self.knock_back_force,
+    async fn knockback_routine(mut this: Gd<Self>, knock_dir: KnockDirection) {
+        let mut timer;
+        {
+            let mut bind = this.bind_mut();
+            bind.knock_back = true;
+            let mut velocity = bind.base().get_velocity();
+            velocity.y += bind.knock_back_force;
+            match knock_dir {
+                KnockDirection::Left => velocity.z -= bind.knock_back_force * 0.4,
+                KnockDirection::Right => velocity.z += bind.knock_back_force * 0.4,
+            }
+            bind.base_mut().set_velocity(velocity);
+            if let Some(ref mut low_anim) = bind.lower_anim_tree {
+                low_anim.set("parameters/conditions/jump", &false.to_variant());
+                low_anim.set("parameters/conditions/idle", &false.to_variant());
+                low_anim.set("parameters/conditions/run", &false.to_variant());
+                low_anim.set("parameters/conditions/duck", &false.to_variant());
+                low_anim.set("parameters/conditions/hit", &false.to_variant());
+                low_anim.set("parameters/conditions/knock", &true.to_variant());
+            }
+            if let Some(ref mut upp_anim) = bind.upper_anim_tree {
+                upp_anim.set("parameters/conditions/jump", &false.to_variant());
+                upp_anim.set("parameters/conditions/idle", &false.to_variant());
+                upp_anim.set("parameters/conditions/run", &false.to_variant());
+                upp_anim.set("parameters/conditions/hit", &false.to_variant());
+                upp_anim.set("parameters/conditions/knock", &true.to_variant());
+            }
+            let mut t = Timer::new_alloc();
+            t.set_wait_time(1.0);
+            t.set_one_shot(true);
+            timer = t.clone();
+            bind.base_mut().add_child(&t.upcast::<Node>());
         }
-        self.base_mut().set_velocity(velocity);
+        timer.start();
+        Signal::from_object_signal(&timer, "timeout")
+            .to_future::<()>()
+            .await;
+        {
+            let mut bind = this.bind_mut();
+            let mut velocity = bind.base().get_velocity();
+            velocity.z = 0.0;
+            bind.base_mut().set_velocity(velocity);
+            bind.knock_back = false;
+            bind.hit_stun_hits = 0;
+            bind.hit_stun = false;
+            if let Some(ref mut low_anim) = bind.lower_anim_tree {
+                low_anim.set("parameters/conditions/hit", &false.to_variant());
+                low_anim.set("parameters/conditions/knock", &false.to_variant());
+            }
+            if let Some(ref mut upp_anim) = bind.upper_anim_tree {
+                upp_anim.set("parameters/conditions/knock", &false.to_variant());
+            }
+        }
     }
     fn ready_body(&mut self) {
         self.body_collider = self

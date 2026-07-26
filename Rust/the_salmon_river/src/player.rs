@@ -19,6 +19,7 @@ struct Player {
     hit_stun: bool,
     hit_stun_routine_entries: u8,
     hit_stun_hits: u8,
+    hitstun_force: f32,
     knock_back_force: f32,
     #[export]
     jump_key: Key,
@@ -46,6 +47,11 @@ struct Player {
     player_num: u8,
     player_label: Option<Gd<Label3D>>,
 }
+//helper structures
+enum KnockDirection {
+    Left,
+    Right,
+}
 #[godot_api]
 impl ICharacterBody3D for Player {
     fn init(base: Base<CharacterBody3D>) -> Self {
@@ -60,7 +66,8 @@ impl ICharacterBody3D for Player {
             speed: 2.0,
             jump_force: 7.0,
             punch_force: 0.5,
-            knock_back_force: 6.0,
+            hitstun_force: 1.0,
+            knock_back_force: 10.0,
             jumped: false,
             ducked: false,
             hit_stun: false,
@@ -87,8 +94,8 @@ impl ICharacterBody3D for Player {
         self.ready_groups();
     }
     fn process(&mut self, delta: f64) {
+        self.movement(delta);
         if !self.hit_stun {
-            self.movement(delta);
             self.lower_animations();
             self.upper_animations();
             self.flip_based_on_facing_direction();
@@ -108,10 +115,12 @@ impl Player {
                 godot_print!("Grab");
             } else if area_name.contains("Hand") {
                 if !self.ducked {
-                    self.apply_knockback(area);
-                    let this = self.to_gd();
-                    let _guard = self.base_mut();
-                    godot::task::spawn(Self::hitstun_routine(this));
+                    let knock_dir_opt = self.apply_hitstun_force(area);
+                    if let Some(knock_dir) = knock_dir_opt {
+                        let this = self.to_gd();
+                        let _guard = self.base_mut();
+                        godot::task::spawn(Self::hitstun_routine(this, knock_dir));
+                    }
                 }
             } else {
                 godot_print!("dodge");
@@ -126,26 +135,28 @@ impl Player {
     fn movement(&mut self, delta: f64) {
         let input = Input::singleton();
         let mut velocity = self.base().get_velocity();
-
         // Apply gravity
         velocity.y -= 20.0 * delta as f32;
-
-        if !self.is_punching {
+        if !self.is_punching && !self.hit_stun {
             velocity.z = 0.0;
         }
-        if input.is_key_pressed(self.left_key) && !self.is_punching {
+        if input.is_key_pressed(self.left_key) && !self.is_punching && !self.hit_stun {
             velocity.z += self.speed;
             if self.facing_right {
                 self.facing_right = false;
             }
         }
-        if input.is_key_pressed(self.right_key) && !self.is_punching {
+        if input.is_key_pressed(self.right_key) && !self.is_punching && !self.hit_stun {
             velocity.z += -self.speed;
             if !self.facing_right {
                 self.facing_right = true;
             }
         }
-        if input.is_key_pressed(self.jump_key) && self.base().is_on_floor() && !self.jumped {
+        if input.is_key_pressed(self.jump_key)
+            && self.base().is_on_floor()
+            && !self.jumped
+            && !self.hit_stun
+        {
             self.jumped = true;
             velocity.y = self.jump_force;
         }
@@ -154,7 +165,7 @@ impl Player {
         }
         let duck_pressed = input.is_key_pressed(self.duck_key);
         let on_floor = self.base().is_on_floor();
-        if duck_pressed && on_floor {
+        if duck_pressed && on_floor && !self.hit_stun {
             if !self.ducked {
                 self.ducked = true;
             }
@@ -348,7 +359,7 @@ impl Player {
         }
         timer.upcast::<Node>().queue_free();
     }
-    async fn hitstun_routine(mut this: Gd<Self>) {
+    async fn hitstun_routine(mut this: Gd<Self>, knock_dir: KnockDirection) {
         let mut timer;
         {
             let mut bind = this.bind_mut();
@@ -357,7 +368,7 @@ impl Player {
                 bind.hit_stun_hits += 1;
             }
             if bind.hit_stun_hits > 2 {
-                godot_print!("KnockDown!")
+                bind.knockback(knock_dir);
             }
             bind.hit_stun = true;
             if let Some(ref mut anim) = bind.lower_anim_tree {
@@ -395,6 +406,15 @@ impl Player {
             bind.base_mut().set_velocity(velocity);
         }
         timer.upcast::<Node>().queue_free();
+    }
+    fn knockback(&mut self, knock_dir: KnockDirection) {
+        let mut velocity = self.base().get_velocity();
+        velocity.y += self.knock_back_force;
+        match knock_dir {
+            KnockDirection::Left => velocity.z -= self.knock_back_force,
+            KnockDirection::Right => velocity.z += self.knock_back_force,
+        }
+        self.base_mut().set_velocity(velocity);
     }
     fn ready_body(&mut self) {
         self.body_collider = self
@@ -466,7 +486,7 @@ impl Player {
             }
         });
     }
-    fn apply_knockback(&mut self, area: Gd<Area3D>) {
+    fn apply_hitstun_force(&mut self, area: Gd<Area3D>) -> Option<KnockDirection> {
         godot_print!("Hit!");
         let other_player_opt = area
             .get_parent()
@@ -475,13 +495,19 @@ impl Player {
             let knockback_direction =
                 self.base().get_global_position().z - other.get_global_position().z;
             let mut velocity = self.base().get_velocity();
+            let mut to_ret = None;
             if knockback_direction > 0.0 {
-                velocity.z = self.knock_back_force;
+                velocity.z = self.hitstun_force;
+                to_ret = Some(KnockDirection::Right);
             } else {
-                velocity.z = -1.0 * self.knock_back_force;
+                velocity.z = -1.0 * self.hitstun_force;
+                to_ret = Some(KnockDirection::Left);
             }
             self.base_mut().set_velocity(velocity);
             self.base_mut().move_and_slide();
-        }
+            return to_ret;
+        } else {
+            return None;
+        };
     }
 }

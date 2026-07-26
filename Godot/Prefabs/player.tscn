@@ -1800,6 +1800,7 @@ material_override = SubResource("StandardMaterial3D_ba2sc")
 mesh = SubResource("BoxMesh_c4elv")
 
 [node name="LeftHandArea" type="Area3D" parent="LeftHand" unique_id=522928415]
+visible = false
 
 [node name="LeftHandHurtBox" type="CollisionShape3D" parent="LeftHand/LeftHandArea" unique_id=1790064307]
 transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)

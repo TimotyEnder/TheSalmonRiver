@@ -2127,6 +2127,9 @@ transform = Transform3D(0.17000002, 0, -7.450581e-09, 0, 0.17, 0, 7.450581e-09, 
 shape = SubResource("BoxShape3D_c4elv")
 disabled = true
 
+[node name="PickUpArea" type="Node3D" parent="RightHand" unique_id=582517407]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.043755546, 0.093753815, -0.1852251)
+
 [node name="RightFoot" type="Node3D" parent="." unique_id=405913214]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.253, 1.186, 0.019)
 

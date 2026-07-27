@@ -2,6 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://bgjwcisjbhwp1" path="res://Prefabs/player.tscn" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://0it7070plwa8" path="res://VoxelAssets/Throwables/IceChunk.gltf" id="3_8gbba"]
+[ext_resource type="PackedScene" uid="uid://c3lxdj1odxlc" path="res://VoxelAssets/Throwables/Log.gltf" id="4_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://q77euy4nq86g" path="res://VoxelAssets/Throwables/Salmon.gltf" id="5_kry3j"]
 
 [sub_resource type="Environment" id="Environment_bo1nx"]
 background_mode = 3
@@ -17,6 +20,8 @@ size = Vector3(1, 0.98132324, 13.169189)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rai8w"]
 size = Vector3(1, 4.526306, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
 
 [node name="Root" type="Node3D" unique_id=236819951]
 
@@ -68,3 +73,35 @@ texture = ExtResource("1_jjgbg")
 
 [node name="Player" parent="." unique_id=275605898 instance=ExtResource("2_bo1nx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.6827694)
+
+[node name="Throwable" type="Throwable" parent="." unique_id=1778278673]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9153982, 0)
+collision_layer = 2
+
+[node name="ThrowableCollider" type="CollisionShape3D" parent="Throwable" unique_id=1543654302]
+transform = Transform3D(0.645, 0, 0, 0, 0.645, 0, 0, 0, 0.645, 0, 0, 0)
+shape = SubResource("BoxShape3D_c4elv")
+debug_color = Color(0.9680441, 0, 0.46732366, 1)
+
+[node name="IceChunk" type="Node3D" parent="Throwable" unique_id=922891784]
+transform = Transform3D(1.795, 0, 0, 0, 1.795, 0, 0, 0, 1.795, 0.06320736, 0, 0)
+visible = false
+
+[node name="IceChunkMesh" parent="Throwable/IceChunk" unique_id=414986963 instance=ExtResource("3_8gbba")]
+transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, 0.103794456, -0.14446664, 0)
+
+[node name="Log" type="Node3D" parent="Throwable" unique_id=232051475]
+visible = false
+
+[node name="LogMesh" parent="Throwable/Log" unique_id=693505904 instance=ExtResource("4_jjvhh")]
+transform = Transform3D(-4.808253e-09, 0.11, 0, -0.11, -4.808253e-09, 0, 0, 0, 0.11, -0.12990256, 0.87228805, -0.109236225)
+
+[node name="Salmon" type="Node3D" parent="Throwable" unique_id=219429266]
+visible = false
+
+[node name="SalmonMesh" parent="Throwable/Salmon" unique_id=209535160 instance=ExtResource("5_kry3j")]
+transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, 0.84577566, -0.444417, 0)
+
+[node name="GrabBox" type="Area3D" parent="Throwable" unique_id=1105864744]
+
+[node name="GrabCollider" type="CollisionShape3D" parent="Throwable/GrabBox" unique_id=1975802255]

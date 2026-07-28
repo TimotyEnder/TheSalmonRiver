@@ -16,7 +16,7 @@ impl IRigidBody3D for Throwable {
         Self {
             base: base,
             grab_area: None,
-            throw_force: 10.0,
+            throw_force: 1.0,
         }
     }
     fn ready(&mut self) {
@@ -63,9 +63,9 @@ impl Throwable {
             .base()
             .find_child("GrabArea")
             .and_then(|g| g.try_cast::<Area3D>().ok());
-        let on_grab_callable = self.base().callable("on_grab");
+        let this = self.to_gd();
         if let Some(ref mut grab) = self.grab_area {
-            grab.connect("area_entered", &on_grab_callable);
+            grab.signals().area_entered().connect_other(&this, Self::on_grab);
         }
     }
     fn on_thrown(&mut self, dir: Direction) {
@@ -83,6 +83,6 @@ impl Throwable {
                 }
             },
         };
-        self.base_mut().apply_force(force_vector);
+        self.base_mut().apply_central_impulse(force_vector);
     }
 }

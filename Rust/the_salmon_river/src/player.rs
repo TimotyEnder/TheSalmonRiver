@@ -1,6 +1,5 @@
 use godot::classes::{
     AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, ICharacterBody3D, Input, Label3D,
-    Timer,
 };
 use godot::global::Key;
 use godot::prelude::*;
@@ -134,18 +133,6 @@ impl Player {
 }
 
 impl Player {
-    fn throw(&mut self) {
-        if let Some(ref mut upper_anim) = self.upper_anim_tree {
-            upper_anim.set("parameters/conditions/throw", &true.to_variant());
-        }
-        let facing_right = self.facing_right;
-        self.signals().on_throwable_throw().emit({
-            match facing_right {
-                true => Direction::Right,
-                false => Direction::Left,
-            }
-        });
-    }
     pub fn pick_up(&mut self) {
         self.in_hand = true;
         if let Some(ref mut upper_anim) = self.upper_anim_tree {
@@ -278,26 +265,53 @@ impl Player {
                 let _guard = self.base_mut();
                 godot::task::spawn(Self::grab_routine(this));
             } else {
-                self.throw();
+                let this = self.to_gd();
+                let _guard = self.base_mut();
+                godot::task::spawn(Self::throw_routine(this));
             }
+        }
+    }
+    async fn throw_routine(mut this: Gd<Self>) {
+        let timer;
+        {
+            let mut bind = this.bind_mut();
+            if let Some(ref mut upper_anim) = bind.upper_anim_tree {
+                upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
+                upper_anim.set("parameters/conditions/throw", &true.to_variant());
+            }
+            timer = bind.base().get_tree().create_timer(0.5);
+        }
+        Signal::from_object_signal(&timer, "timeout")
+            .to_future::<()>()
+            .await;
+        {
+            let mut bind = this.bind_mut();
+            let facing_right = bind.facing_right;
+            if let Some(ref mut upper_anim) = bind.upper_anim_tree {
+                upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
+                upper_anim.set("parameters/conditions/throw", &false.to_variant());
+            }
+            bind.signals().on_throwable_throw().emit({
+                match facing_right {
+                    true => Direction::Right,
+                    false => Direction::Left,
+                }
+            });
+            bind.in_hand = false;
         }
     }
     async fn punch_routine(mut this: Gd<Self>) {
         let original_speed;
-        let mut speed_timer;
+        let speed_timer;
         {
             let mut bind = this.bind_mut();
             let mut velocity = bind.base().get_velocity();
             let direction = if bind.facing_right { -1.0 } else { 1.0 };
             velocity.z = direction * bind.punch_force;
             bind.base_mut().set_velocity(velocity);
-            let mut t = Timer::new_alloc();
-            t.set_wait_time(0.01);
-            t.set_one_shot(true);
-            speed_timer = t.clone();
-            bind.base_mut().add_child(&t.upcast::<Node>());
+            speed_timer = bind.base().get_tree().create_timer(0.01);
         }
-        let mut timer;
+        let timer;
         {
             let mut bind = this.bind_mut();
             if bind.is_punching || bind.is_grab {
@@ -318,14 +332,8 @@ impl Player {
                 }
             }
             bind.right_punch = right_punch;
-            let mut t = Timer::new_alloc();
-            t.set_wait_time(0.25);
-            t.set_one_shot(true);
-            timer = t.clone();
-            bind.base_mut().add_child(&t.upcast::<Node>());
+            timer = bind.base().get_tree().create_timer(0.25);
         }
-        speed_timer.start();
-        timer.start();
         Signal::from_object_signal(&speed_timer, "timeout")
             .to_future::<()>()
             .await;
@@ -348,11 +356,9 @@ impl Player {
                 upper_anim.set("parameters/conditions/r_punch", &false.to_variant());
             }
         }
-        speed_timer.upcast::<Node>().queue_free();
-        timer.upcast::<Node>().queue_free();
     }
     async fn grab_routine(mut this: Gd<Self>) {
-        let mut timer;
+        let timer;
         {
             let mut bind = this.bind_mut();
             if bind.is_punching || bind.is_grab {
@@ -363,14 +369,9 @@ impl Player {
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 upper_anim.set("parameters/conditions/grab", &true.to_variant());
             }
-            let mut t = Timer::new_alloc();
-            t.set_wait_time(0.4);
-            t.set_one_shot(true);
-            timer = t.clone();
-            bind.base_mut().add_child(&t.upcast::<Node>());
+            timer = bind.base().get_tree().create_timer(0.4);
         }
 
-        timer.start();
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
@@ -383,7 +384,6 @@ impl Player {
                 upper_anim.set("parameters/conditions/grab", &false.to_variant());
             }
         }
-        timer.upcast::<Node>().queue_free();
     }
     async fn hitstun_routine(mut this: Gd<Self>, knock_dir: Direction) {
         let should_knockback;
@@ -400,7 +400,7 @@ impl Player {
             godot::task::spawn(Self::knockback_routine(this, knock_dir));
             return;
         }
-        let mut timer;
+        let timer;
         {
             let mut bind = this.bind_mut();
             if let Some(ref mut anim) = bind.lower_anim_tree {
@@ -409,13 +409,8 @@ impl Player {
             if let Some(ref mut anim) = bind.upper_anim_tree {
                 anim.set("parameters/conditions/hit", &true.to_variant());
             }
-            let mut t = Timer::new_alloc();
-            t.set_wait_time(0.5);
-            t.set_one_shot(true);
-            timer = t.clone();
-            bind.base_mut().add_child(&t.upcast::<Node>());
+            timer = bind.base().get_tree().create_timer(0.5);
         }
-        timer.start();
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
@@ -439,10 +434,9 @@ impl Player {
                 bind.base_mut().set_velocity(velocity);
             }
         }
-        timer.upcast::<Node>().queue_free();
     }
     async fn knockback_routine(mut this: Gd<Self>, knock_dir: Direction) {
-        let mut timer;
+        let timer;
         {
             let mut bind = this.bind_mut();
             bind.knock_back = true;
@@ -468,13 +462,8 @@ impl Player {
                 upp_anim.set("parameters/conditions/hit", &false.to_variant());
                 upp_anim.set("parameters/conditions/knock", &true.to_variant());
             }
-            let mut t = Timer::new_alloc();
-            t.set_wait_time(1.0);
-            t.set_one_shot(true);
-            timer = t.clone();
-            bind.base_mut().add_child(&t.upcast::<Node>());
+            timer = bind.base().get_tree().create_timer(1.0);
         }
-        timer.start();
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
@@ -530,9 +519,9 @@ impl Player {
             .base()
             .find_child("PlayerHitBox")
             .and_then(|p| p.try_cast::<Area3D>().ok());
-        let on_hit_callable = self.base().callable("on_player_hit");
+        let this = self.to_gd();
         if let Some(ref mut hitbox) = self.hitbox {
-            hitbox.connect("area_entered", &on_hit_callable);
+            hitbox.signals().area_entered().connect_other(&this, Self::on_player_hit);
         }
     }
     fn ready_label(&mut self) {

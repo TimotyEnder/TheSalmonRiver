@@ -279,7 +279,7 @@ impl Player {
                 upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
                 upper_anim.set("parameters/conditions/throw", &true.to_variant());
             }
-            timer = bind.base().get_tree().create_timer(0.5);
+            timer = bind.base().get_tree().create_timer(0.25);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
@@ -521,7 +521,10 @@ impl Player {
             .and_then(|p| p.try_cast::<Area3D>().ok());
         let this = self.to_gd();
         if let Some(ref mut hitbox) = self.hitbox {
-            hitbox.signals().area_entered().connect_other(&this, Self::on_player_hit);
+            hitbox
+                .signals()
+                .area_entered()
+                .connect_other(&this, Self::on_player_hit);
         }
     }
     fn ready_label(&mut self) {

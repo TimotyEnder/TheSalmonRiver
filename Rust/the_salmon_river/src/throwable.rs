@@ -9,6 +9,7 @@ pub struct Throwable {
     base: Base<RigidBody3D>,
     grab_area: Option<Gd<Area3D>>,
     throw_force: f32,
+    in_hand: bool,
 }
 #[godot_api]
 impl IRigidBody3D for Throwable {
@@ -16,13 +17,19 @@ impl IRigidBody3D for Throwable {
         Self {
             base: base,
             grab_area: None,
-            throw_force: 1.0,
+            throw_force: 8.0,
+            in_hand: false,
         }
     }
     fn ready(&mut self) {
         self.ready_grab_area();
     }
-    fn process(&mut self, delta: f64) {}
+    fn process(&mut self, delta: f64) {
+        if self.in_hand {
+            self.base_mut().set_scale(Vector3::ONE);
+            self.base_mut().set_rotation(Vector3::ZERO);
+        }
+    }
 }
 #[godot_api]
 impl Throwable {
@@ -52,6 +59,7 @@ impl Throwable {
                 if let Some(pickup_area) = pickup_area_opt {
                     self.base_mut().reparent(&pickup_area);
                     self.base_mut().set_position(Vector3::ZERO);
+                    self.in_hand = true;
                 }
             }
         }
@@ -65,7 +73,9 @@ impl Throwable {
             .and_then(|g| g.try_cast::<Area3D>().ok());
         let this = self.to_gd();
         if let Some(ref mut grab) = self.grab_area {
-            grab.signals().area_entered().connect_other(&this, Self::on_grab);
+            grab.signals()
+                .area_entered()
+                .connect_other(&this, Self::on_grab);
         }
     }
     fn on_thrown(&mut self, dir: Direction) {
@@ -73,9 +83,13 @@ impl Throwable {
         if let Some(scene_root) = scene_root_opt {
             self.base_mut().reparent(&scene_root);
         }
+        self.in_hand = false;
+        self.base_mut().set_linear_velocity(Vector3::ZERO);
+        self.base_mut().set_rotation(Vector3::ZERO);
+        self.base_mut().set_scale(Vector3::ONE);
         let force_vector = Vector3 {
             x: 0.0,
-            y: self.throw_force,
+            y: self.throw_force / 3.0,
             z: {
                 match dir {
                     Direction::Right => -self.throw_force,

@@ -5,11 +5,11 @@ use godot::classes::{
 use godot::global::Key;
 use godot::prelude::*;
 
-use crate::utils;
+use crate::utils::*;
 
 #[derive(GodotClass)]
 #[class(base=CharacterBody3D)]
-struct Player {
+pub struct Player {
     base: Base<CharacterBody3D>,
     speed: f32,
     jump_force: f32,
@@ -18,6 +18,7 @@ struct Player {
     ducked: bool,
     hit_stun: bool,
     knock_back: bool,
+    in_hand: bool,
     hit_stun_routine_entries: u8,
     hit_stun_hits: u8,
     hitstun_force: f32,
@@ -45,13 +46,9 @@ struct Player {
     is_grab: bool,
     right_punch: bool,
     #[export]
+    #[var(pub)]
     player_num: u8,
     player_label: Option<Gd<Label3D>>,
-}
-//helper structures
-enum KnockDirection {
-    Left,
-    Right,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -73,6 +70,7 @@ impl ICharacterBody3D for Player {
             ducked: false,
             hit_stun: false,
             knock_back: false,
+            in_hand: false,
             jump_key: Key::W,
             left_key: Key::A,
             right_key: Key::D,
@@ -107,6 +105,8 @@ impl ICharacterBody3D for Player {
 }
 #[godot_api]
 impl Player {
+    #[signal]
+    pub fn on_throwable_throw(dir: Direction);
     #[func]
     fn on_player_hit(&mut self, area: Gd<Area3D>) {
         let area_name = area.get_name();
@@ -134,6 +134,24 @@ impl Player {
 }
 
 impl Player {
+    fn throw(&mut self) {
+        if let Some(ref mut upper_anim) = self.upper_anim_tree {
+            upper_anim.set("parameters/conditions/throw", &true.to_variant());
+        }
+        let facing_right = self.facing_right;
+        self.signals().on_throwable_throw().emit({
+            match facing_right {
+                true => Direction::Right,
+                false => Direction::Left,
+            }
+        });
+    }
+    pub fn pick_up(&mut self) {
+        self.in_hand = true;
+        if let Some(ref mut upper_anim) = self.upper_anim_tree {
+            upper_anim.set("parameters/conditions/in_hand", &true.to_variant());
+        }
+    }
     fn movement(&mut self, delta: f64) {
         let input = Input::singleton();
         let mut velocity = self.base().get_velocity();
@@ -249,13 +267,19 @@ impl Player {
     fn action_process(&mut self) {
         let input = Input::singleton();
         if input.is_key_pressed(self.punch_use_key) && !self.ducked {
-            let this = self.to_gd();
-            let _guard = self.base_mut();
-            godot::task::spawn(Self::punch_routine(this));
+            if !self.in_hand {
+                let this = self.to_gd();
+                let _guard = self.base_mut();
+                godot::task::spawn(Self::punch_routine(this));
+            }
         } else if input.is_key_pressed(self.throw_grab_ky) && !self.ducked {
-            let this = self.to_gd();
-            let _guard = self.base_mut();
-            godot::task::spawn(Self::grab_routine(this));
+            if !self.in_hand {
+                let this = self.to_gd();
+                let _guard = self.base_mut();
+                godot::task::spawn(Self::grab_routine(this));
+            } else {
+                self.throw();
+            }
         }
     }
     async fn punch_routine(mut this: Gd<Self>) {
@@ -361,7 +385,7 @@ impl Player {
         }
         timer.upcast::<Node>().queue_free();
     }
-    async fn hitstun_routine(mut this: Gd<Self>, knock_dir: KnockDirection) {
+    async fn hitstun_routine(mut this: Gd<Self>, knock_dir: Direction) {
         let should_knockback;
         {
             let mut bind = this.bind_mut();
@@ -417,7 +441,7 @@ impl Player {
         }
         timer.upcast::<Node>().queue_free();
     }
-    async fn knockback_routine(mut this: Gd<Self>, knock_dir: KnockDirection) {
+    async fn knockback_routine(mut this: Gd<Self>, knock_dir: Direction) {
         let mut timer;
         {
             let mut bind = this.bind_mut();
@@ -425,8 +449,8 @@ impl Player {
             let mut velocity = bind.base().get_velocity();
             velocity.y += bind.knock_back_force;
             match knock_dir {
-                KnockDirection::Left => velocity.z -= bind.knock_back_force * 0.4,
-                KnockDirection::Right => velocity.z += bind.knock_back_force * 0.4,
+                Direction::Left => velocity.z -= bind.knock_back_force * 0.4,
+                Direction::Right => velocity.z += bind.knock_back_force * 0.4,
             }
             bind.base_mut().set_velocity(velocity);
             if let Some(ref mut low_anim) = bind.lower_anim_tree {
@@ -519,7 +543,7 @@ impl Player {
         if let Some(ref mut label) = self.player_label {
             let label_string = format!("P{}", self.player_num.to_string());
             label.set_text(&label_string);
-            label.set_modulate(utils::player_color_based_on_number(self.player_num));
+            label.set_modulate(player_color_based_on_number(self.player_num));
         }
     }
     fn ready_groups(&mut self) {
@@ -541,7 +565,7 @@ impl Player {
             }
         });
     }
-    fn apply_hitstun_force(&mut self, area: Gd<Area3D>) -> Option<KnockDirection> {
+    fn apply_hitstun_force(&mut self, area: Gd<Area3D>) -> Option<Direction> {
         godot_print!("Hit!");
         let other_player_opt = area
             .get_parent()
@@ -553,10 +577,10 @@ impl Player {
             let mut to_ret = None;
             if knockback_direction > 0.0 {
                 velocity.z = self.hitstun_force;
-                to_ret = Some(KnockDirection::Right);
+                to_ret = Some(Direction::Right);
             } else {
                 velocity.z = -1.0 * self.hitstun_force;
-                to_ret = Some(KnockDirection::Left);
+                to_ret = Some(Direction::Left);
             }
             self.base_mut().set_velocity(velocity);
             self.base_mut().move_and_slide();

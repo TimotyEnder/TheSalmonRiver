@@ -1,3 +1,4 @@
+use crate::{player::Player, utils::Direction};
 use godot::{
     classes::{Area3D, IRigidBody3D, RigidBody3D},
     prelude::*,
@@ -7,6 +8,7 @@ use godot::{
 pub struct Throwable {
     base: Base<RigidBody3D>,
     grab_area: Option<Gd<Area3D>>,
+    throw_force: f32,
 }
 #[godot_api]
 impl IRigidBody3D for Throwable {
@@ -14,20 +16,73 @@ impl IRigidBody3D for Throwable {
         Self {
             base: base,
             grab_area: None,
+            throw_force: 10.0,
         }
     }
-    fn ready(&mut self) {}
+    fn ready(&mut self) {
+        self.ready_grab_area();
+    }
     fn process(&mut self, delta: f64) {}
 }
+#[godot_api]
 impl Throwable {
-    fn ready_hitbox(&mut self) {
-        // self.hitbox = self
-        //     .base()
-        //     .find_child("PlayerHitBox")
-        //     .and_then(|p| p.try_cast::<Area3D>().ok());
-        // let on_hit_callable = self.base().callable("on_player_hit");
-        // if let Some(ref mut hitbox) = self.hitbox {
-        //     hitbox.connect("area_entered", &on_hit_callable);
-        // }
+    #[signal]
+    fn throwable_grabbed(player_num: u8);
+    #[func]
+    fn on_grab(&mut self, area: Gd<Area3D>) {
+        if area.get_name().contains("Grab") {
+            let grab_player = area.get_parent().and_then(|hand| {
+                hand.get_parent()
+                    .and_then(|player| player.try_cast::<Player>().ok())
+            });
+            if let Some(mut player) = grab_player {
+                player.bind_mut().pick_up();
+                let this = self.to_gd();
+                player
+                    .signals()
+                    .on_throwable_throw()
+                    .connect_other(&this, Self::on_thrown);
+                let player_script = player.bind();
+                let player_num = player_script.get_player_num();
+                self.signals().throwable_grabbed().emit(player_num);
+                let pickup_area_opt = player.find_child("RightHand").and_then(|rh| {
+                    rh.find_child("PickUpArea")
+                        .and_then(|pua| pua.try_cast::<Node3D>().ok())
+                });
+                if let Some(pickup_area) = pickup_area_opt {
+                    self.base_mut().reparent(&pickup_area);
+                    self.base_mut().set_position(Vector3::ZERO);
+                }
+            }
+        }
+    }
+}
+impl Throwable {
+    fn ready_grab_area(&mut self) {
+        self.grab_area = self
+            .base()
+            .find_child("GrabArea")
+            .and_then(|g| g.try_cast::<Area3D>().ok());
+        let on_grab_callable = self.base().callable("on_grab");
+        if let Some(ref mut grab) = self.grab_area {
+            grab.connect("area_entered", &on_grab_callable);
+        }
+    }
+    fn on_thrown(&mut self, dir: Direction) {
+        let scene_root_opt = self.base().get_tree().get_current_scene();
+        if let Some(scene_root) = scene_root_opt {
+            self.base_mut().reparent(&scene_root);
+        }
+        let force_vector = Vector3 {
+            x: 0.0,
+            y: self.throw_force,
+            z: {
+                match dir {
+                    Direction::Right => -self.throw_force,
+                    Direction::Left => self.throw_force,
+                }
+            },
+        };
+        self.base_mut().apply_force(force_vector);
     }
 }

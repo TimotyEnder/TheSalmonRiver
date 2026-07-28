@@ -37,3 +37,10 @@ fn hsv_to_rgb(h: f32, s: f32, v: f32) -> (f32, f32, f32) {
         _ => unreachable!(),
     }
 }
+#[derive(GodotConvert, Var, Export, Default, Clone, Copy, Debug)]
+#[godot(via = GString)]
+pub enum Direction {
+    #[default]
+    Left,
+    Right,
+}

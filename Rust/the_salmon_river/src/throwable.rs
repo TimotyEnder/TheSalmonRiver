@@ -81,7 +81,8 @@ impl Throwable {
     fn on_thrown(&mut self, dir: Direction) {
         let scene_root_opt = self.base().get_tree().get_current_scene();
         if let Some(scene_root) = scene_root_opt {
-            self.base_mut().reparent(&scene_root);
+            self.base_mut()
+                .call_deferred("reparent", &[scene_root.to_variant()]);
         }
         self.in_hand = false;
         self.base_mut().set_linear_velocity(Vector3::ZERO);

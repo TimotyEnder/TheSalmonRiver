@@ -60,7 +60,7 @@ impl ICharacterBody3D for Player {
             lower_anim_tree: None,
             hitbox: None,
             facing_right: true,
-            speed: 2.0,
+            speed: 3.0,
             jump_force: 7.0,
             punch_force: 0.5,
             hitstun_force: 0.6,
@@ -118,7 +118,9 @@ impl Player {
                 if !self.ducked {
                     let knock_dir_opt = self.apply_hitstun_force(area);
                     if let Some(knock_dir) = knock_dir_opt {
-                        godot::task::spawn(Self::hitstun_routine(self.to_gd(), knock_dir));
+                        let mut this = self.to_gd();
+                        let _guard = self.base_mut();
+                        godot::task::spawn(Self::hitstun_routine(this, knock_dir));
                     }
                 }
             } else {
@@ -142,18 +144,17 @@ impl Player {
         let mut velocity = self.base().get_velocity();
         // Apply gravity
         velocity.y -= 20.0 * delta as f32;
-        let speed = self.speed * delta as f32;
         if !self.is_punching && !self.hit_stun && !self.knock_back {
             velocity.z = 0.0;
         }
         if input.is_key_pressed(self.left_key) && !self.is_punching && !self.hit_stun {
-            velocity.z += speed;
+            velocity.z += self.speed;
             if self.facing_right {
                 self.facing_right = false;
             }
         }
         if input.is_key_pressed(self.right_key) && !self.is_punching && !self.hit_stun {
-            velocity.z += -speed;
+            velocity.z += -self.speed;
             if !self.facing_right {
                 self.facing_right = true;
             }
@@ -254,13 +255,19 @@ impl Player {
         let input = Input::singleton();
         if input.is_key_pressed(self.punch_use_key) && !self.ducked {
             if !self.in_hand {
-                godot::task::spawn(Self::punch_routine(self.to_gd()));
+                let this = self.to_gd();
+                let _guard = self.base_mut();
+                godot::task::spawn(Self::punch_routine(this));
             }
         } else if input.is_key_pressed(self.throw_grab_ky) && !self.ducked {
             if !self.in_hand {
-                godot::task::spawn(Self::grab_routine(self.to_gd()));
+                let this = self.to_gd();
+                let _guard = self.base_mut();
+                godot::task::spawn(Self::grab_routine(this));
             } else {
-                godot::task::spawn(Self::throw_routine(self.to_gd()));
+                let this = self.to_gd();
+                let _guard = self.base_mut();
+                godot::task::spawn(Self::throw_routine(this));
             }
         }
     }

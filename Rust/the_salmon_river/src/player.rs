@@ -118,9 +118,7 @@ impl Player {
                 if !self.ducked {
                     let knock_dir_opt = self.apply_hitstun_force(area);
                     if let Some(knock_dir) = knock_dir_opt {
-                        let this = self.to_gd();
-                        let _guard = self.base_mut();
-                        godot::task::spawn(Self::hitstun_routine(this, knock_dir));
+                        godot::task::spawn(Self::hitstun_routine(self.to_gd(), knock_dir));
                     }
                 }
             } else {
@@ -144,17 +142,18 @@ impl Player {
         let mut velocity = self.base().get_velocity();
         // Apply gravity
         velocity.y -= 20.0 * delta as f32;
+        let speed = self.speed * delta as f32;
         if !self.is_punching && !self.hit_stun && !self.knock_back {
             velocity.z = 0.0;
         }
         if input.is_key_pressed(self.left_key) && !self.is_punching && !self.hit_stun {
-            velocity.z += self.speed;
+            velocity.z += speed;
             if self.facing_right {
                 self.facing_right = false;
             }
         }
         if input.is_key_pressed(self.right_key) && !self.is_punching && !self.hit_stun {
-            velocity.z += -self.speed;
+            velocity.z += -speed;
             if !self.facing_right {
                 self.facing_right = true;
             }
@@ -255,19 +254,13 @@ impl Player {
         let input = Input::singleton();
         if input.is_key_pressed(self.punch_use_key) && !self.ducked {
             if !self.in_hand {
-                let this = self.to_gd();
-                let _guard = self.base_mut();
-                godot::task::spawn(Self::punch_routine(this));
+                godot::task::spawn(Self::punch_routine(self.to_gd()));
             }
         } else if input.is_key_pressed(self.throw_grab_ky) && !self.ducked {
             if !self.in_hand {
-                let this = self.to_gd();
-                let _guard = self.base_mut();
-                godot::task::spawn(Self::grab_routine(this));
+                godot::task::spawn(Self::grab_routine(self.to_gd()));
             } else {
-                let this = self.to_gd();
-                let _guard = self.base_mut();
-                godot::task::spawn(Self::throw_routine(this));
+                godot::task::spawn(Self::throw_routine(self.to_gd()));
             }
         }
     }
@@ -498,8 +491,7 @@ impl Player {
         self.upper_anim_tree = self
             .base()
             .find_child("UpperAnim")
-            .unwrap()
-            .find_child("AnimationTree")
+            .and_then(|node| node.find_child("AnimationTree"))
             .and_then(|node| node.try_cast::<AnimationTree>().ok());
         if let Some(ref mut anim_tree) = self.upper_anim_tree {
             anim_tree.set_active(true);
@@ -510,8 +502,7 @@ impl Player {
         self.lower_anim_tree = self
             .base()
             .find_child("LowerAnim")
-            .unwrap()
-            .find_child("AnimationTree")
+            .and_then(|node| node.find_child("AnimationTree"))
             .and_then(|node| node.try_cast::<AnimationTree>().ok());
     }
     fn ready_hitbox(&mut self) {

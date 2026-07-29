@@ -2112,6 +2112,21 @@ states/throw/position = Vector2(843, 36)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_fevyy"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_hibaj"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "in_hand", "throw", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "throw", "idle", SubResource("AnimationNodeStateMachineTransition_gt3je"), "idle", "punch", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "idle", "left_punch", SubResource("AnimationNodeStateMachineTransition_u50mg"), "left_punch", "idle", SubResource("AnimationNodeStateMachineTransition_cbgmd"), "punch", "idle", SubResource("AnimationNodeStateMachineTransition_1w6v2"), "idle", "grab", SubResource("AnimationNodeStateMachineTransition_ueoa1"), "grab", "idle", SubResource("AnimationNodeStateMachineTransition_6vcvc"), "idle", "in_hand", SubResource("AnimationNodeStateMachineTransition_7k868"), "run", "punch", SubResource("AnimationNodeStateMachineTransition_bo1nx"), "punch", "run", SubResource("AnimationNodeStateMachineTransition_8gbba"), "left_punch", "run", SubResource("AnimationNodeStateMachineTransition_jjvhh"), "run", "left_punch", SubResource("AnimationNodeStateMachineTransition_kry3j"), "left_punch", "punch", SubResource("AnimationNodeStateMachineTransition_hpc6h"), "punch", "left_punch", SubResource("AnimationNodeStateMachineTransition_kltya"), "run", "grab", SubResource("AnimationNodeStateMachineTransition_e08e2"), "grab", "run", SubResource("AnimationNodeStateMachineTransition_neg2b"), "left_punch", "hit", SubResource("AnimationNodeStateMachineTransition_kgmex"), "punch", "hit", SubResource("AnimationNodeStateMachineTransition_2xbkd"), "grab", "hit", SubResource("AnimationNodeStateMachineTransition_3vpsw"), "idle", "hit", SubResource("AnimationNodeStateMachineTransition_m62uw"), "run", "hit", SubResource("AnimationNodeStateMachineTransition_b30ri"), "hit", "run", SubResource("AnimationNodeStateMachineTransition_ms580"), "hit", "grab", SubResource("AnimationNodeStateMachineTransition_q7l0e"), "hit", "punch", SubResource("AnimationNodeStateMachineTransition_0fs2y"), "hit", "left_punch", SubResource("AnimationNodeStateMachineTransition_wphcr"), "hit", "idle", SubResource("AnimationNodeStateMachineTransition_and0b"), "hit", "knock_back", SubResource("AnimationNodeStateMachineTransition_405c5"), "knock_back", "run", SubResource("AnimationNodeStateMachineTransition_i3mxk"), "knock_back", "idle", SubResource("AnimationNodeStateMachineTransition_qvmbc"), "knock_back", "punch", SubResource("AnimationNodeStateMachineTransition_qjulh"), "knock_back", "hit", SubResource("AnimationNodeStateMachineTransition_evqxc"), "knock_back", "grab", SubResource("AnimationNodeStateMachineTransition_6gc6r"), "left_punch", "knock_back", SubResource("AnimationNodeStateMachineTransition_jxrwi"), "run", "knock_back", SubResource("AnimationNodeStateMachineTransition_s2pui"), "grab", "knock_back", SubResource("AnimationNodeStateMachineTransition_acf7d"), "punch", "knock_back", SubResource("AnimationNodeStateMachineTransition_0srn8"), "idle", "knock_back", SubResource("AnimationNodeStateMachineTransition_ba8jc"), "in_hand", "knock_back", SubResource("AnimationNodeStateMachineTransition_131b1"), "throw", "knock_back", SubResource("AnimationNodeStateMachineTransition_qelst"), "throw", "hit", SubResource("AnimationNodeStateMachineTransition_ob8dk"), "run", "in_hand", SubResource("AnimationNodeStateMachineTransition_faewp")]
 graph_offset = Vector2(-344.1626, -131.32295)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s6dll"]
+direction = Vector3(0, 0, 0)
+spread = 180.0
+flatness = 0.69
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.19999999
+scale_max = 0.19999999
+color = Color(0, 0.60852087, 0.41622525, 1)
+hue_variation_min = -0.79
+hue_variation_max = 0.89
+
+[sub_resource type="BoxMesh" id="BoxMesh_5wxv7"]
+
 [node name="Player" type="Player" unique_id=786188032]
 collision_layer = 2
 axis_lock_linear_x = true
@@ -2237,3 +2252,17 @@ visible = false
 
 [node name="duck0" parent="Duck" unique_id=508784506 instance=ExtResource("2_5wxv7")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -0.048531428, -0.30274355, -0.009244084)
+
+[node name="DuckPoofParticles" type="GPUParticles3D" parent="." unique_id=1569583201]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6169777, 0)
+emitting = false
+amount = 30
+lifetime = 0.5
+one_shot = true
+speed_scale = 0.75
+explosiveness = 1.0
+randomness = 0.54
+transform_align = 1
+transform_align_channel_filter = 1
+process_material = SubResource("ParticleProcessMaterial_s6dll")
+draw_pass_1 = SubResource("BoxMesh_5wxv7")

@@ -1,5 +1,6 @@
 use godot::classes::{
-    AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, ICharacterBody3D, Input, Label3D,
+    AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, GpuParticles3D, ICharacterBody3D,
+    Input, Label3D,
 };
 use godot::global::Key;
 use godot::prelude::*;
@@ -39,6 +40,7 @@ pub struct Player {
     hitbox: Option<Gd<Area3D>>,
     lower_anim_tree: Option<Gd<AnimationTree>>,
     upper_anim_tree: Option<Gd<AnimationTree>>,
+    duck_pafrticles: Option<Gd<GpuParticles3D>>,
     #[export]
     facing_right: bool,
     is_punching: bool,
@@ -83,6 +85,7 @@ impl ICharacterBody3D for Player {
             right_punch: false,
             player_num: 1,
             player_label: None,
+            duck_pafrticles: None,
             hit_stun_routine_entries: 0,
             hit_stun_hits: 0,
         }
@@ -93,6 +96,7 @@ impl ICharacterBody3D for Player {
         self.ready_hitbox();
         self.ready_label();
         self.ready_groups();
+        self.ready_particle_system();
     }
     fn process(&mut self, delta: f64) {
         self.movement(delta);
@@ -183,6 +187,9 @@ impl Player {
         {
             if !self.ducked {
                 self.ducked = true;
+                if let Some(ref mut particles) = self.duck_pafrticles {
+                    particles.restart();
+                }
             }
             velocity.z = 0.0;
         }
@@ -564,6 +571,12 @@ impl Player {
                 u.add_to_group(&format!("p{}", self.player_num));
             }
         });
+    }
+    fn ready_particle_system(&mut self) {
+        self.duck_pafrticles = self
+            .base()
+            .find_child("DuckPoofParticles")
+            .and_then(|p| p.try_cast::<GpuParticles3D>().ok());
     }
     fn apply_hitstun_force(&mut self, area: Gd<Area3D>) -> Option<Direction> {
         godot_print!("Hit!");

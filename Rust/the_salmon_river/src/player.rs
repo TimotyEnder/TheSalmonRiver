@@ -43,6 +43,7 @@ pub struct Player {
     facing_right: bool,
     is_punching: bool,
     is_grab: bool,
+    is_throwing: bool,
     right_punch: bool,
     #[export]
     #[var(pub)]
@@ -70,6 +71,7 @@ impl ICharacterBody3D for Player {
             hit_stun: false,
             knock_back: false,
             in_hand: false,
+            is_throwing: false,
             jump_key: Key::W,
             left_key: Key::A,
             right_key: Key::D,
@@ -172,7 +174,13 @@ impl Player {
         }
         let duck_pressed = input.is_key_pressed(self.duck_key);
         let on_floor = self.base().is_on_floor();
-        if duck_pressed && on_floor && !self.hit_stun {
+        if duck_pressed
+            && on_floor
+            && !self.hit_stun
+            && !self.is_grab
+            && !self.is_punching
+            && !self.is_throwing
+        {
             if !self.ducked {
                 self.ducked = true;
             }
@@ -275,6 +283,7 @@ impl Player {
         let timer;
         {
             let mut bind = this.bind_mut();
+            bind.is_throwing = true;
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
                 upper_anim.set("parameters/conditions/throw", &true.to_variant());
@@ -298,6 +307,7 @@ impl Player {
                 }
             });
             bind.in_hand = false;
+            bind.is_throwing = false;
         }
     }
     async fn punch_routine(mut this: Gd<Self>) {

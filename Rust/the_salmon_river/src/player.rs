@@ -5,6 +5,7 @@ use godot::classes::{
 use godot::global::Key;
 use godot::prelude::*;
 
+use crate::throwable::Throwable;
 use crate::utils::*;
 
 #[derive(GodotClass)]
@@ -65,7 +66,7 @@ impl ICharacterBody3D for Player {
             facing_right: true,
             speed: 3.0,
             jump_force: 7.0,
-            punch_force: 0.5,
+            punch_force: 1.0,
             hitstun_force: 0.6,
             knock_back_force: 7.0,
             jumped: false,
@@ -121,16 +122,9 @@ impl Player {
             if area_name.contains("Grab") {
                 godot_print!("Grab");
             } else if area_name.contains("Hand") {
-                if !self.ducked {
-                    let knock_dir_opt = self.apply_hitstun_force(area);
-                    if let Some(knock_dir) = knock_dir_opt {
-                        let mut this = self.to_gd();
-                        let _guard = self.base_mut();
-                        godot::task::spawn(Self::hitstun_routine(this, knock_dir));
-                    }
-                }
-            } else {
-                godot_print!("dodge");
+                self.handle_getting_punched(area);
+            } else if area_name.contains("ThrowableArea") {
+                self.handle_throwable_hit(area);
             }
         } else {
             godot_print!("Touch!")
@@ -276,13 +270,17 @@ impl Player {
     }
     fn action_process(&mut self) {
         let input = Input::singleton();
-        if input.is_key_pressed(self.punch_use_key) && !self.ducked {
+        if input.is_key_pressed(self.punch_use_key) && !self.ducked && !self.is_punching {
             if !self.in_hand {
                 let this = self.to_gd();
                 let _guard = self.base_mut();
                 godot::task::spawn(Self::punch_routine(this));
             }
-        } else if input.is_key_pressed(self.throw_grab_ky) && !self.ducked {
+        } else if input.is_key_pressed(self.throw_grab_ky)
+            && !self.ducked
+            && !self.is_throwing
+            && !self.is_grab
+        {
             if !self.in_hand {
                 let this = self.to_gd();
                 let _guard = self.base_mut();
@@ -334,7 +332,7 @@ impl Player {
             let direction = if bind.facing_right { -1.0 } else { 1.0 };
             velocity.z = direction * bind.punch_force;
             bind.base_mut().set_velocity(velocity);
-            speed_timer = bind.base().get_tree().create_timer(0.01);
+            speed_timer = bind.base().get_tree().create_timer(0.1);
         }
         let timer;
         {
@@ -567,7 +565,7 @@ impl Player {
                 .and_then(|f| f.try_cast::<Area3D>().ok())
         });
         let grab_area = self.base().find_child("LeftHand").and_then(|f| {
-            f.find_child("GrabArea")
+            f.find_child("ThrowableArea")
                 .and_then(|f| f.try_cast::<Area3D>().ok())
         });
         let right_hand_area = self.base().find_child("RightHand").and_then(|f| {
@@ -588,26 +586,54 @@ impl Player {
     }
     fn apply_hitstun_force(&mut self, area: Gd<Area3D>) -> Option<Direction> {
         godot_print!("Hit!");
-        let other_player_opt = area
-            .get_parent()
-            .and_then(|a| a.get_parent().and_then(|p| p.try_cast::<Player>().ok()));
-        if let Some(other) = other_player_opt {
-            let knockback_direction =
-                self.base().get_global_position().z - other.get_global_position().z;
-            let mut velocity = self.base().get_velocity();
-            let mut to_ret = None;
-            if knockback_direction > 0.0 {
-                velocity.z = self.hitstun_force;
-                to_ret = Some(Direction::Right);
+        let knockback_direction = {
+            let other_player_opt = area
+                .get_parent()
+                .and_then(|a| a.get_parent().and_then(|p| p.try_cast::<Player>().ok()));
+            if let Some(other) = other_player_opt {
+                self.base().get_global_position().z - other.get_global_position().z
             } else {
-                velocity.z = -1.0 * self.hitstun_force;
-                to_ret = Some(Direction::Left);
+                self.base().get_global_position().z - area.get_global_position().z
             }
-            self.base_mut().set_velocity(velocity);
-            self.base_mut().move_and_slide();
-            return to_ret;
-        } else {
-            return None;
         };
+        let mut velocity = self.base().get_velocity();
+        let mut to_ret = None;
+        if knockback_direction > 0.0 {
+            velocity.z = self.hitstun_force;
+            to_ret = Some(Direction::Right);
+        } else {
+            velocity.z = -1.0 * self.hitstun_force;
+            to_ret = Some(Direction::Left);
+        }
+        self.base_mut().set_velocity(velocity);
+        self.base_mut().move_and_slide();
+        return to_ret;
+    }
+    fn handle_getting_punched(&mut self, area: Gd<Area3D>) {
+        if !self.ducked {
+            let knock_dir_opt = self.apply_hitstun_force(area);
+            if let Some(knock_dir) = knock_dir_opt {
+                let mut this = self.to_gd();
+                let _guard = self.base_mut();
+                godot::task::spawn(Self::hitstun_routine(this, knock_dir));
+            }
+        }
+    }
+    fn handle_throwable_hit(&mut self, area: Gd<Area3D>) {
+        let throwable_opt = area
+            .get_parent()
+            .and_then(|th| th.try_cast::<Throwable>().ok());
+
+        if !self.ducked
+            && let Some(throwable) = throwable_opt
+            && throwable.bind().does_player_hitstun(self.player_num)
+        {
+            let knock_dir_opt = self.apply_hitstun_force(area);
+            if let Some(knock_dir) = knock_dir_opt {
+                let this = self.to_gd();
+                let _guard = self.base_mut();
+                godot::task::spawn(Self::hitstun_routine(this, knock_dir));
+            }
+        }
     }
 }

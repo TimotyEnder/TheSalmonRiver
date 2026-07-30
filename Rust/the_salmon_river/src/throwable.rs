@@ -1,28 +1,37 @@
-use crate::{player::Player, utils::Direction};
+use crate::{player::Player, throwables::throwability::Throwability, utils::Direction};
 use godot::{
-    classes::{Area3D, IRigidBody3D, RigidBody3D},
+    classes::{Area3D, CollisionShape3D, IRigidBody3D, RigidBody3D},
     prelude::*,
 };
 #[derive(GodotClass)]
 #[class(base=RigidBody3D)]
 pub struct Throwable {
     base: Base<RigidBody3D>,
-    grab_area: Option<Gd<Area3D>>,
+    hitbox_area: Option<Gd<Area3D>>,
     throw_force: f32,
     in_hand: bool,
+    thrown: bool,
+    throwable_inner: Option<Box<dyn Throwability>>,
+    thrower_id: Option<u8>,
 }
 #[godot_api]
 impl IRigidBody3D for Throwable {
     fn init(base: Base<RigidBody3D>) -> Self {
         Self {
             base: base,
-            grab_area: None,
+            hitbox_area: None,
             throw_force: 8.0,
             in_hand: false,
+            thrown: false,
+            throwable_inner: None,
+            thrower_id: None,
         }
     }
     fn ready(&mut self) {
-        self.ready_grab_area();
+        self.base_mut().set_contact_monitor(true);
+        self.base_mut().set_max_contacts_reported(1);
+        self.ready_area();
+        self.ready_collider();
     }
     fn process(&mut self, delta: f64) {
         if self.in_hand {
@@ -36,7 +45,7 @@ impl Throwable {
     #[signal]
     fn throwable_grabbed(player_num: u8);
     #[func]
-    fn on_grab(&mut self, area: Gd<Area3D>) {
+    fn on_hitbox_entered(&mut self, area: Gd<Area3D>) {
         if area.get_name().contains("Grab") {
             let grab_player = area.get_parent().and_then(|hand| {
                 hand.get_parent()
@@ -51,34 +60,46 @@ impl Throwable {
                     .connect_other(&this, Self::on_thrown);
                 let player_script = player.bind();
                 let player_num = player_script.get_player_num();
-                self.signals().throwable_grabbed().emit(player_num);
-                let pickup_area_opt = player.find_child("RightHand").and_then(|rh| {
-                    rh.find_child("PickUpArea")
-                        .and_then(|pua| pua.try_cast::<Node3D>().ok())
-                });
-                if let Some(pickup_area) = pickup_area_opt {
-                    self.base_mut().reparent(&pickup_area);
-                    self.base_mut().set_position(Vector3::ZERO);
-                    self.in_hand = true;
+                self.thrower_id = Some(player_num);
+                if !self.thrown {
+                    self.signals().throwable_grabbed().emit(player_num);
+                    let pickup_area_opt = player.find_child("RightHand").and_then(|rh| {
+                        rh.find_child("PickUpArea")
+                            .and_then(|pua| pua.try_cast::<Node3D>().ok())
+                    });
+                    if let Some(pickup_area) = pickup_area_opt {
+                        self.base_mut().reparent(&pickup_area);
+                        self.base_mut().set_position(Vector3::ZERO);
+                        self.in_hand = true;
+                    }
+                } else {
+                    //hit signal
                 }
             }
         }
     }
 }
 impl Throwable {
-    fn ready_grab_area(&mut self) {
-        self.grab_area = self
+    fn ready_area(&mut self) {
+        self.hitbox_area = self
             .base()
-            .find_child("GrabArea")
+            .find_child("ThrowableArea")
             .and_then(|g| g.try_cast::<Area3D>().ok());
         let this = self.to_gd();
-        if let Some(ref mut grab) = self.grab_area {
+        if let Some(ref mut grab) = self.hitbox_area {
             grab.signals()
                 .area_entered()
-                .connect_other(&this, Self::on_grab);
+                .connect_other(&this, Self::on_hitbox_entered);
         }
     }
+    fn ready_collider(&mut self) {
+        let this = self.to_gd();
+        self.signals()
+            .body_entered()
+            .connect_other(&this, Self::on_physics_collision);
+    }
     fn on_thrown(&mut self, dir: Direction) {
+        self.thrown = true;
         let scene_root_opt = self.base().get_tree().get_current_scene();
         if let Some(scene_root) = scene_root_opt {
             self.base_mut()
@@ -90,7 +111,7 @@ impl Throwable {
         self.base_mut().set_scale(Vector3::ONE);
         let force_vector = Vector3 {
             x: 0.0,
-            y: self.throw_force / 3.0,
+            y: self.throw_force / 4.0,
             z: {
                 match dir {
                     Direction::Right => -self.throw_force,
@@ -99,5 +120,17 @@ impl Throwable {
             },
         };
         self.base_mut().apply_central_impulse(force_vector);
+    }
+    fn on_physics_collision(&mut self, body: Gd<Node>) {
+        if self.thrown {
+            self.base_mut().queue_free();
+        }
+    }
+    pub fn does_player_hitstun(&self, player_num: u8) -> bool {
+        if let Some(thrower) = self.thrower_id {
+            return self.thrown && thrower != player_num;
+        } else {
+            false
+        }
     }
 }

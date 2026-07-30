@@ -195,6 +195,9 @@ impl Player {
         }
         if !duck_pressed && self.ducked {
             self.ducked = false;
+            if let Some(ref mut particles) = self.duck_pafrticles {
+                particles.restart();
+            }
         }
         self.base_mut().set_velocity(velocity);
         self.base_mut().move_and_slide();
@@ -262,6 +265,11 @@ impl Player {
                 let mut label_scale = label.get_scale();
                 label_scale.x *= -1.0;
                 label.set_scale(label_scale);
+            }
+            if let Some(ref mut duck_particles) = self.duck_pafrticles {
+                let mut particles_scale = duck_particles.get_scale();
+                particles_scale.x *= -1.0;
+                duck_particles.set_scale(particles_scale);
             }
         }
         self.base_mut().set_scale(scale);

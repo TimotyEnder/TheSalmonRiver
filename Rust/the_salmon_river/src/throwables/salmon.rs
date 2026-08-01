@@ -9,4 +9,7 @@ impl Throwability for Salmon {
     fn use_ability(&mut self) {
         //heal player and make their next attack do double dmg and apply double hitstun
     }
+    fn visual_node_name(&self) -> &'static str {
+        "Salmon"
+    }
 }

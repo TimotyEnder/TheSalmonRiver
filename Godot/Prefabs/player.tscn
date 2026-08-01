@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://8kv0vvanmf1v" path="res://VoxelAssets/Bear/bear.gltf" id="1_y6xdh"]
 [ext_resource type="PackedScene" uid="uid://dpem28diunogk" path="res://VoxelAssets/Duck/duck0.gltf" id="2_5wxv7"]
+[ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="2_y5hcb"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s6dll"]
 
@@ -2248,6 +2249,24 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 3
 modulate = Color(1, 1, 1, 0.49019608)
 text = "P0"
 font_size = 185
+
+[node name="HealthBar" type="Sprite3D" parent="PlayerLabel" unique_id=754399058]
+transform = Transform3D(2.6303203, 0, 0, 0, 0.40526935, 0, 0, 0, 1, 1.8251514e-16, -0.47147584, 0.025564134)
+gi_mode = 0
+gi_lightmap_texel_scale = 0.01
+modulate = Color(0.69879425, 0, 0.24260226, 1)
+pixel_size = 0.0001
+alpha_scissor_threshold = 0.53
+texture = ExtResource("2_y5hcb")
+
+[node name="HealthBarBG" type="Sprite3D" parent="PlayerLabel" unique_id=1686891630]
+transform = Transform3D(2.6303203, 0, 0, 0, 0.40526935, 0, -7.1054274e-15, 0, 1, 0, -0.47147584, -0.00078248983)
+gi_mode = 0
+gi_lightmap_texel_scale = 0.01
+modulate = Color(0.35722935, 0.37976655, 0.37090522, 1)
+pixel_size = 0.0001
+alpha_scissor_threshold = 0.53
+texture = ExtResource("2_y5hcb")
 
 [node name="Duck" type="Node3D" parent="." unique_id=1311941392]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4046476, 0)

@@ -1,4 +1,8 @@
-use crate::{player::Player, throwables::throwability::Throwability, utils::Direction};
+use crate::{
+    player::Player,
+    throwables::{ice_chunk::IceChunk, throwability::Throwability},
+    utils::Direction,
+};
 use godot::{
     classes::{Area3D, CollisionShape3D, IRigidBody3D, RigidBody3D},
     prelude::*,
@@ -11,7 +15,7 @@ pub struct Throwable {
     throw_force: f32,
     in_hand: bool,
     thrown: bool,
-    throwable_inner: Option<Box<dyn Throwability>>,
+    pub throwable_inner: Option<Box<dyn Throwability>>,
     thrower_id: Option<u8>,
 }
 #[godot_api]
@@ -28,6 +32,7 @@ impl IRigidBody3D for Throwable {
         }
     }
     fn ready(&mut self) {
+        self.become_throwable(Box::new(IceChunk {}));
         self.base_mut().set_contact_monitor(true);
         self.base_mut().set_max_contacts_reported(1);
         self.ready_area();
@@ -80,6 +85,16 @@ impl Throwable {
     }
 }
 impl Throwable {
+    pub fn become_throwable(&mut self, throwable: Box<dyn Throwability>) {
+        self.base()
+            .find_child(throwable.visual_node_name())
+            .and_then(|f| f.try_cast::<Node3D>().ok())
+            .and_then(|mut f| {
+                f.set_visible(true);
+                Some(())
+            });
+        self.throwable_inner = Some(throwable);
+    }
     fn ready_area(&mut self) {
         self.hitbox_area = self
             .base()

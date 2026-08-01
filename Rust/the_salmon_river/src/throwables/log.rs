@@ -9,4 +9,7 @@ impl Throwability for Log {
     fn use_ability(&mut self) {
         // deploy it as a shild that eats one projectile or punch
     }
+    fn visual_node_name(&self) -> &'static str {
+        "Log"
+    }
 }

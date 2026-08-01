@@ -1,11 +1,12 @@
 use godot::classes::{
     AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, GpuParticles3D, ICharacterBody3D,
-    Input, Label3D,
+    Input, Label3D, Sprite3D,
 };
 use godot::global::Key;
 use godot::prelude::*;
 
 use crate::throwable::Throwable;
+use crate::throwables::throwability::Throwability;
 use crate::utils::*;
 
 #[derive(GodotClass)]
@@ -52,6 +53,11 @@ pub struct Player {
     #[var(pub)]
     player_num: u8,
     player_label: Option<Gd<Label3D>>,
+    player_healthbar: Option<Gd<Sprite3D>>,
+    health: u8,
+    pub punch_damage: u8,
+    initial_heealthbar_scale: f32,
+    max_health: u8,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -89,9 +95,15 @@ impl ICharacterBody3D for Player {
             duck_pafrticles: None,
             hit_stun_routine_entries: 0,
             hit_stun_hits: 0,
+            health: 9,
+            max_health: 9,
+            punch_damage: 1,
+            player_healthbar: None,
+            initial_heealthbar_scale: 0.0,
         }
     }
     fn ready(&mut self) {
+        self.ready_health_systems();
         self.ready_body();
         self.ready_animations();
         self.ready_hitbox();
@@ -100,6 +112,7 @@ impl ICharacterBody3D for Player {
         self.ready_particle_system();
     }
     fn process(&mut self, delta: f64) {
+        self.health_check();
         self.movement(delta);
         if !self.hit_stun && !self.knock_back {
             self.lower_animations();
@@ -139,6 +152,13 @@ impl Player {
             upper_anim.set("parameters/conditions/in_hand", &true.to_variant());
         }
     }
+    fn health_check(&mut self) {
+        self.scale_healthbar_with_health();
+        if self.health <= 0 {
+            self.base_mut().queue_free();
+        }
+    }
+
     fn movement(&mut self, delta: f64) {
         let input = Input::singleton();
         let mut velocity = self.base().get_velocity();
@@ -584,6 +604,26 @@ impl Player {
             .find_child("DuckPoofParticles")
             .and_then(|p| p.try_cast::<GpuParticles3D>().ok());
     }
+    fn ready_health_systems(&mut self) {
+        self.health = self.max_health;
+        self.player_healthbar = self
+            .base()
+            .find_child("PlayerLabel")
+            .and_then(|f| f.find_child("HealthBar"))
+            .and_then(|hb| hb.try_cast::<Sprite3D>().ok());
+        if let Some(ref mut healthbar) = self.player_healthbar {
+            self.initial_heealthbar_scale = healthbar.get_scale().x;
+            healthbar.set_modulate(crate::utils::player_color_based_on_number(self.player_num));
+        }
+    }
+    fn scale_healthbar_with_health(&mut self) {
+        if let Some(ref mut healthbar) = self.player_healthbar {
+            let health_ratio = self.health as f32 / self.max_health as f32;
+            let mut hb_scale = healthbar.get_scale();
+            hb_scale.x = self.initial_heealthbar_scale * health_ratio;
+            healthbar.set_scale(hb_scale);
+        }
+    }
     fn apply_hitstun_force(&mut self, area: Gd<Area3D>) -> Option<Direction> {
         godot_print!("Hit!");
         let knockback_direction = {
@@ -611,9 +651,16 @@ impl Player {
     }
     fn handle_getting_punched(&mut self, area: Gd<Area3D>) {
         if !self.ducked {
+            let player_opt = area
+                .get_parent()
+                .and_then(|hand| hand.get_parent())
+                .and_then(|player| player.try_cast::<Player>().ok());
             let knock_dir_opt = self.apply_hitstun_force(area);
+            if let Some(player) = player_opt {
+                self.health -= player.bind().punch_damage;
+            }
             if let Some(knock_dir) = knock_dir_opt {
-                let mut this = self.to_gd();
+                let this = self.to_gd();
                 let _guard = self.base_mut();
                 godot::task::spawn(Self::hitstun_routine(this, knock_dir));
             }
@@ -625,9 +672,12 @@ impl Player {
             .and_then(|th| th.try_cast::<Throwable>().ok());
 
         if !self.ducked
-            && let Some(throwable) = throwable_opt
+            && let Some(mut throwable) = throwable_opt
             && throwable.bind().does_player_hitstun(self.player_num)
         {
+            if let Some(ref mut inner) = throwable.bind_mut().throwable_inner {
+                self.health -= inner.deal_dmg();
+            }
             let knock_dir_opt = self.apply_hitstun_force(area);
             if let Some(knock_dir) = knock_dir_opt {
                 let this = self.to_gd();

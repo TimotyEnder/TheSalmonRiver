@@ -9,4 +9,7 @@ impl Throwability for IceChunk {
     fn use_ability(&mut self) {
         //implement a dash
     }
+    fn visual_node_name(&self) -> &'static str {
+        "IceChunk"
+    }
 }

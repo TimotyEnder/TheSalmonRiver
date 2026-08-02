@@ -147,9 +147,14 @@ impl Player {
         }
     }
     #[func]
-    pub fn on_throwable_grabbed(&mut self, player_num: u8) {
-        if (self.player_num == player_num) {
-            self.search_for_throwable_in_hand();
+    pub fn search_for_throwable_in_hand(&mut self, player_num: u8) {
+        if self.player_num == player_num {
+            self.throwable_in_hand = self.base().find_child("RightHand").and_then(|rh| {
+                rh.find_child("PickUpArea").and_then(|pua| {
+                    pua.get_child(0)
+                        .and_then(|th| th.try_cast::<Throwable>().ok())
+                })
+            });
         }
     }
 }
@@ -160,14 +165,6 @@ impl Player {
         if let Some(ref mut upper_anim) = self.upper_anim_tree {
             upper_anim.set("parameters/conditions/in_hand", &true.to_variant());
         }
-    }
-    pub fn search_for_throwable_in_hand(&mut self) {
-        self.throwable_in_hand = self.base().find_child("RightHand").and_then(|rh| {
-            rh.find_child("PickUpArea").and_then(|pua| {
-                pua.get_child(0)
-                    .and_then(|th| th.try_cast::<Throwable>().ok())
-            })
-        })
     }
     fn health_check(&mut self) {
         self.scale_healthbar_with_health();

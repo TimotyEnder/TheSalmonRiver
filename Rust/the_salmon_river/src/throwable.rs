@@ -65,7 +65,7 @@ impl Throwable {
                     .connect_other(&this, Self::on_thrown);
                 self.signals()
                     .throwable_grabbed()
-                    .connect_other(&player, Player::on_throwable_grabbed);
+                    .connect_other(&player, Player::search_for_throwable_in_hand);
                 let player_script = player.bind();
                 let player_num = player_script.get_player_num();
                 self.thrower_id = Some(player_num);

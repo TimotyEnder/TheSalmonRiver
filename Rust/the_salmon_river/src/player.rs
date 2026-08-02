@@ -310,9 +310,12 @@ impl Player {
                 let _guard = self.base_mut();
                 godot::task::spawn(Self::punch_routine(this));
             } else {
-                let this = self.to_gd();
-                if let Some(ref mut throwable) = self.throwable_in_hand {
-                    throwable.bind_mut().use_ability(this);
+                if let Some(mut throwable) = self.throwable_in_hand.take() {
+                    throwable.bind_mut().use_ability(self);
+                    self.in_hand = false;
+                    if let Some(ref mut upper_anim) = self.upper_anim_tree {
+                        upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
+                    }
                 }
             }
         } else if input.is_key_pressed(self.throw_grab_ky)

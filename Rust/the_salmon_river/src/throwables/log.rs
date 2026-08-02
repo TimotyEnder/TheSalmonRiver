@@ -1,5 +1,3 @@
-use godot::classes::class_macros::private::virtuals::Xrvrs::Gd;
-
 use crate::throwables::throwability::Throwability;
 
 pub struct Log {}
@@ -12,7 +10,7 @@ impl Throwability for Log {
         "Log"
     }
 
-    fn use_ability(&mut self, player: Gd<crate::player::Player>) {
+    fn use_ability(&mut self, _player: &mut crate::player::Player) {
         todo!()
     }
 }

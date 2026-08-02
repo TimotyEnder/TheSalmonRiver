@@ -66,8 +66,10 @@ impl Throwable {
                 self.signals()
                     .throwable_grabbed()
                     .connect_other(&player, Player::search_for_throwable_in_hand);
-                let player_script = player.bind();
-                let player_num = player_script.get_player_num();
+                let player_num = {
+                    let player_script = player.bind();
+                    player_script.get_player_num()
+                };
                 self.thrower_id = Some(player_num);
                 if !self.thrown {
                     let pickup_area_opt = player.find_child("RightHand").and_then(|rh| {
@@ -137,9 +139,9 @@ impl Throwable {
         };
         self.base_mut().apply_central_impulse(force_vector);
     }
-    fn on_physics_collision(&mut self, body: Gd<Node>) {
+    fn on_physics_collision(&mut self, _body: Gd<Node>) {
         if self.thrown {
-            self.base_mut().queue_free();
+            self.base_mut().call_deferred("queue_free", &[]);
         }
     }
     pub fn does_player_hitstun(&self, player_num: u8) -> bool {
@@ -149,7 +151,7 @@ impl Throwable {
             false
         }
     }
-    pub fn use_ability(&mut self, mut player: Gd<Player>) {
+    pub fn use_ability(&mut self, player: &mut Player) {
         if let Some(ti) = self.throwable_inner.as_mut() {
             ti.use_ability(player);
         }

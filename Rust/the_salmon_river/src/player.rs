@@ -166,6 +166,12 @@ impl Player {
             upper_anim.set("parameters/conditions/in_hand", &true.to_variant());
         }
     }
+    pub fn heal(&mut self, amount: u8) {
+        self.health = (self.health + amount).min(self.max_health);
+    }
+    pub fn damage(&mut self, amount: u8) {
+        self.health = self.health.saturating_sub(amount);
+    }
     fn health_check(&mut self) {
         self.scale_healthbar_with_health();
         if self.health <= 0 {
@@ -270,10 +276,12 @@ impl Player {
                 anim_tree.set("parameters/conditions/jump", &false.to_variant());
                 anim_tree.set("parameters/conditions/idle", &false.to_variant());
                 anim_tree.set("parameters/conditions/run", &true.to_variant());
+                anim_tree.set("parameters/conditions/drop", &false.to_variant());
             } else {
                 anim_tree.set("parameters/conditions/jump", &false.to_variant());
                 anim_tree.set("parameters/conditions/idle", &true.to_variant());
                 anim_tree.set("parameters/conditions/run", &false.to_variant());
+                anim_tree.set("parameters/conditions/drop", &false.to_variant());
             }
         }
     }
@@ -315,6 +323,7 @@ impl Player {
                     self.in_hand = false;
                     if let Some(ref mut upper_anim) = self.upper_anim_tree {
                         upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
+                        upper_anim.set("parameters/conditions/drop", &true.to_variant());
                     }
                 }
             }
@@ -628,7 +637,7 @@ impl Player {
             .and_then(|p| p.try_cast::<GpuParticles3D>().ok());
     }
     fn ready_health_systems(&mut self) {
-        self.health = self.max_health;
+        self.heal(self.max_health);
         self.player_healthbar = self
             .base()
             .find_child("PlayerLabel")
@@ -680,7 +689,7 @@ impl Player {
                 .and_then(|player| player.try_cast::<Player>().ok());
             let knock_dir_opt = self.apply_hitstun_force(area);
             if let Some(player) = player_opt {
-                self.health -= player.bind().punch_damage;
+                self.damage(player.bind().punch_damage);
             }
             if let Some(knock_dir) = knock_dir_opt {
                 let this = self.to_gd();
@@ -699,7 +708,7 @@ impl Player {
             && throwable.bind().does_player_hitstun(self.player_num)
         {
             if let Some(ref mut inner) = throwable.bind_mut().throwable_inner {
-                self.health -= inner.deal_dmg();
+                self.damage(inner.deal_dmg());
             }
             let knock_dir_opt = self.apply_hitstun_force(area);
             if let Some(knock_dir) = knock_dir_opt {

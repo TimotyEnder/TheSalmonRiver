@@ -11,6 +11,6 @@ impl Throwability for Salmon {
     }
 
     fn use_ability(&mut self, player: &mut crate::player::Player) {
-        player.health += 2;
+        player.heal(2);
     }
 }

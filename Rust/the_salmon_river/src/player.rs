@@ -1,3 +1,4 @@
+use godot::classes::xr_positional_tracker::SignalsOfXrPositionalTracker;
 use godot::classes::{
     AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, GpuParticles3D, ICharacterBody3D,
     Input, Label3D, Sprite3D,
@@ -54,10 +55,11 @@ pub struct Player {
     player_num: u8,
     player_label: Option<Gd<Label3D>>,
     player_healthbar: Option<Gd<Sprite3D>>,
-    health: u8,
+    pub health: u8,
     pub punch_damage: u8,
     initial_heealthbar_scale: f32,
     max_health: u8,
+    throwable_in_hand: Option<Gd<Throwable>>,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -100,6 +102,7 @@ impl ICharacterBody3D for Player {
             punch_damage: 1,
             player_healthbar: None,
             initial_heealthbar_scale: 0.0,
+            throwable_in_hand: None,
         }
     }
     fn ready(&mut self) {
@@ -143,14 +146,28 @@ impl Player {
             godot_print!("Touch!")
         }
     }
+    #[func]
+    pub fn on_throwable_grabbed(&mut self, player_num: u8) {
+        if (self.player_num == player_num) {
+            self.search_for_throwable_in_hand();
+        }
+    }
 }
 
 impl Player {
-    pub fn pick_up(&mut self) {
+    pub fn pick_up_throwable(&mut self) {
         self.in_hand = true;
         if let Some(ref mut upper_anim) = self.upper_anim_tree {
             upper_anim.set("parameters/conditions/in_hand", &true.to_variant());
         }
+    }
+    pub fn search_for_throwable_in_hand(&mut self) {
+        self.throwable_in_hand = self.base().find_child("RightHand").and_then(|rh| {
+            rh.find_child("PickUpArea").and_then(|pua| {
+                pua.get_child(0)
+                    .and_then(|th| th.try_cast::<Throwable>().ok())
+            })
+        })
     }
     fn health_check(&mut self) {
         self.scale_healthbar_with_health();
@@ -295,6 +312,11 @@ impl Player {
                 let this = self.to_gd();
                 let _guard = self.base_mut();
                 godot::task::spawn(Self::punch_routine(this));
+            } else {
+                let this = self.to_gd();
+                if let Some(ref mut throwable) = self.throwable_in_hand {
+                    throwable.bind_mut().use_ability(this);
+                }
             }
         } else if input.is_key_pressed(self.throw_grab_ky)
             && !self.ducked
@@ -340,6 +362,7 @@ impl Player {
                 }
             });
             bind.in_hand = false;
+            bind.throwable_in_hand = None;
             bind.is_throwing = false;
         }
     }

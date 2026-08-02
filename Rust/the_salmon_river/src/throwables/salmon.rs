@@ -1,3 +1,5 @@
+use godot::classes::class_macros::private::virtuals::Xrvrs::Gd;
+
 use crate::throwables::throwability::Throwability;
 
 pub struct Salmon {}
@@ -6,10 +8,11 @@ impl Throwability for Salmon {
         1
     }
 
-    fn use_ability(&mut self) {
-        //heal player and make their next attack do double dmg and apply double hitstun
-    }
     fn visual_node_name(&self) -> &'static str {
         "Salmon"
+    }
+
+    fn use_ability(&mut self, mut player: Gd<crate::player::Player>) {
+        player.bind_mut().health += 2;
     }
 }

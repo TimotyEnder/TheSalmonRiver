@@ -1,3 +1,5 @@
+use godot::classes::class_macros::private::virtuals::Xrvrs::Gd;
+
 use crate::throwables::throwability::Throwability;
 
 pub struct Log {}
@@ -6,10 +8,11 @@ impl Throwability for Log {
         1
     }
 
-    fn use_ability(&mut self) {
-        // deploy it as a shild that eats one projectile or punch
-    }
     fn visual_node_name(&self) -> &'static str {
         "Log"
+    }
+
+    fn use_ability(&mut self, player: Gd<crate::player::Player>) {
+        todo!()
     }
 }

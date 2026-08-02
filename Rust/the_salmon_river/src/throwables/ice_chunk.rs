@@ -1,3 +1,5 @@
+use godot::classes::class_macros::private::virtuals::Xrvrs::Gd;
+
 use crate::throwables::throwability::Throwability;
 
 pub struct IceChunk {}
@@ -6,10 +8,11 @@ impl Throwability for IceChunk {
         2
     }
 
-    fn use_ability(&mut self) {
-        //implement a dash
-    }
     fn visual_node_name(&self) -> &'static str {
         "IceChunk"
+    }
+
+    fn use_ability(&mut self, player: Gd<crate::player::Player>) {
+        todo!()
     }
 }

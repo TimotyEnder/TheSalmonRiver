@@ -1,6 +1,6 @@
 use crate::{
     player::Player,
-    throwables::{ice_chunk::IceChunk, throwability::Throwability},
+    throwables::{ice_chunk::IceChunk, salmon::Salmon, throwability::Throwability},
     utils::Direction,
 };
 use godot::{
@@ -32,7 +32,7 @@ impl IRigidBody3D for Throwable {
         }
     }
     fn ready(&mut self) {
-        self.become_throwable(Box::new(IceChunk {}));
+        self.become_throwable(Box::new(Salmon {}));
         self.base_mut().set_contact_monitor(true);
         self.base_mut().set_max_contacts_reported(1);
         self.ready_area();
@@ -57,17 +57,19 @@ impl Throwable {
                     .and_then(|player| player.try_cast::<Player>().ok())
             });
             if let Some(mut player) = grab_player {
-                player.bind_mut().pick_up();
+                player.bind_mut().pick_up_throwable();
                 let this = self.to_gd();
                 player
                     .signals()
                     .on_throwable_throw()
                     .connect_other(&this, Self::on_thrown);
+                self.signals()
+                    .throwable_grabbed()
+                    .connect_other(&player, Player::on_throwable_grabbed);
                 let player_script = player.bind();
                 let player_num = player_script.get_player_num();
                 self.thrower_id = Some(player_num);
                 if !self.thrown {
-                    self.signals().throwable_grabbed().emit(player_num);
                     let pickup_area_opt = player.find_child("RightHand").and_then(|rh| {
                         rh.find_child("PickUpArea")
                             .and_then(|pua| pua.try_cast::<Node3D>().ok())
@@ -77,8 +79,7 @@ impl Throwable {
                         self.base_mut().set_position(Vector3::ZERO);
                         self.in_hand = true;
                     }
-                } else {
-                    //hit signal
+                    self.signals().throwable_grabbed().emit(player_num);
                 }
             }
         }
@@ -147,5 +148,11 @@ impl Throwable {
         } else {
             false
         }
+    }
+    pub fn use_ability(&mut self, mut player: Gd<Player>) {
+        if let Some(ti) = self.throwable_inner.as_mut() {
+            ti.use_ability(player);
+        }
+        self.base_mut().queue_free();
     }
 }

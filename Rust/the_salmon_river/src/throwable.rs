@@ -32,7 +32,7 @@ impl IRigidBody3D for Throwable {
         }
     }
     fn ready(&mut self) {
-        self.become_throwable(Box::new(Salmon {}));
+        self.become_throwable(Box::new(IceChunk {}));
         self.base_mut().set_contact_monitor(true);
         self.base_mut().set_max_contacts_reported(1);
         self.ready_area();

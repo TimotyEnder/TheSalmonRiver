@@ -1,4 +1,6 @@
-use crate::throwables::throwability::Throwability;
+use godot::obj::WithBaseField;
+
+use crate::{player::Player, throwables::throwability::Throwability};
 
 pub struct IceChunk {}
 impl Throwability for IceChunk {
@@ -10,7 +12,9 @@ impl Throwability for IceChunk {
         "IceChunk"
     }
 
-    fn use_ability(&mut self, _player: &mut crate::player::Player) {
-        todo!()
+    fn use_ability(&mut self, player: &mut crate::player::Player) {
+        let this = player.to_gd();
+        let _guard = player.base_mut();
+        godot::task::spawn(Player::ice_chunk_dash_routine(this));
     }
 }

@@ -17,6 +17,7 @@ pub struct Player {
     speed: f32,
     jump_force: f32,
     punch_force: f32,
+    ice_chunk_dash_force: f32,
     jumped: bool,
     ducked: bool,
     hit_stun: bool,
@@ -50,6 +51,7 @@ pub struct Player {
     is_grab: bool,
     is_throwing: bool,
     is_using_throwable_ability: bool,
+    is_dashing: bool,
     right_punch: bool,
     #[export]
     #[var(pub)]
@@ -77,6 +79,7 @@ impl ICharacterBody3D for Player {
             speed: 3.0,
             jump_force: 7.0,
             punch_force: 1.0,
+            ice_chunk_dash_force: 10.0,
             hitstun_force: 0.6,
             knock_back_force: 7.0,
             jumped: false,
@@ -85,6 +88,7 @@ impl ICharacterBody3D for Player {
             knock_back: false,
             in_hand: false,
             is_throwing: false,
+            is_dashing: false,
             is_using_throwable_ability: false,
             jump_key: Key::W,
             left_key: Key::A,
@@ -188,16 +192,24 @@ impl Player {
         let mut velocity = self.base().get_velocity();
         // Apply gravity
         velocity.y -= 20.0 * delta as f32;
-        if !self.is_punching && !self.hit_stun && !self.knock_back {
+        if !self.is_punching && !self.hit_stun && !self.knock_back && !self.is_dashing {
             velocity.z = 0.0;
         }
-        if input.is_key_pressed(self.left_key) && !self.is_punching && !self.hit_stun {
+        if input.is_key_pressed(self.left_key)
+            && !self.is_punching
+            && !self.hit_stun
+            && !self.is_dashing
+        {
             velocity.z += self.speed;
             if self.facing_right {
                 self.facing_right = false;
             }
         }
-        if input.is_key_pressed(self.right_key) && !self.is_punching && !self.hit_stun {
+        if input.is_key_pressed(self.right_key)
+            && !self.is_punching
+            && !self.hit_stun
+            && !self.is_dashing
+        {
             velocity.z += -self.speed;
             if !self.facing_right {
                 self.facing_right = true;
@@ -456,6 +468,25 @@ impl Player {
                 upper_anim.set("parameters/conditions/l_punch", &false.to_variant());
                 upper_anim.set("parameters/conditions/r_punch", &false.to_variant());
             }
+        }
+    }
+    pub async fn ice_chunk_dash_routine(mut this: Gd<Self>) {
+        let dash_timer;
+        {
+            let mut bind = this.bind_mut();
+            bind.is_dashing = true;
+            let mut velocity = bind.base().get_velocity();
+            let direction = if bind.facing_right { -1.0 } else { 1.0 };
+            velocity.z = direction * bind.ice_chunk_dash_force;
+            bind.base_mut().set_velocity(velocity);
+            dash_timer = bind.base().get_tree().create_timer(0.2);
+        }
+        Signal::from_object_signal(&dash_timer, "timeout")
+            .to_future::<()>()
+            .await;
+        {
+            let mut bind = this.bind_mut();
+            bind.is_dashing = false;
         }
     }
     async fn grab_routine(mut this: Gd<Self>) {

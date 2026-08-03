@@ -1,6 +1,6 @@
 use crate::{
     player::Player,
-    throwables::{ice_chunk::IceChunk, salmon::Salmon, throwability::Throwability},
+    throwables::{ice_chunk::IceChunk, log::Log, salmon::Salmon, throwability::Throwability},
     utils::Direction,
 };
 use godot::{
@@ -32,7 +32,7 @@ impl IRigidBody3D for Throwable {
         }
     }
     fn ready(&mut self) {
-        self.become_throwable(Box::new(IceChunk {}));
+        self.become_throwable(Box::new(Log {}));
         self.base_mut().set_contact_monitor(true);
         self.base_mut().set_max_contacts_reported(1);
         self.ready_area();
@@ -84,6 +84,13 @@ impl Throwable {
                     self.signals().throwable_grabbed().emit(player_num);
                 }
             }
+        }
+        if area.get_name().contains("Log") && (!self.in_hand || self.thrown) {
+            let log_root_node_opt = area.get_parent().and_then(|f| f.try_cast::<Node3D>().ok());
+            if let Some(mut log_root_node) = log_root_node_opt {
+                log_root_node.call_deferred("queue_free", &[]);
+            }
+            self.base_mut().call_deferred("queue_free", &[]);
         }
     }
 }

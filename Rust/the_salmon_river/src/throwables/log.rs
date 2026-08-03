@@ -10,7 +10,7 @@ impl Throwability for Log {
         "Log"
     }
 
-    fn use_ability(&mut self, _player: &mut crate::player::Player) {
-        todo!()
+    fn use_ability(&mut self, player: &mut crate::player::Player) {
+        player.spawn_log_obsticle();
     }
 }

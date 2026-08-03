@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cje4e1c0kvkxp"]
+
+[ext_resource type="PackedScene" uid="uid://c3lxdj1odxlc" path="res://VoxelAssets/Throwables/Log.gltf" id="1_uf5xu"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
+size = Vector3(0.21557617, 2.0839233, 0.22387695)
+
+[node name="LogObsticle" type="Node3D" unique_id=250317386]
+
+[node name="Log" parent="." unique_id=693505904 instance=ExtResource("1_uf5xu")]
+transform = Transform3D(-4.808253e-09, 0.11, 0, -0.11, -4.808253e-09, 0, 0, 0, 0.11, -0.12990257, 0.38565117, -0.109236225)
+
+[node name="LogObsticleCollider" type="Area3D" parent="." unique_id=609728782]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LogObsticleCollider" unique_id=1599150249]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.024536133, 0.33291626, 0.0059814453)
+shape = SubResource("BoxShape3D_c4elv")

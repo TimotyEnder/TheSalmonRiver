@@ -470,6 +470,31 @@ impl Player {
             }
         }
     }
+    pub fn spawn_log_obsticle(&self) {
+        let scene = load::<PackedScene>("res://Prefabs/log_obsticle.tscn");
+        if let Some(mut log_obsticle) = scene
+            .instantiate()
+            .and_then(|log| log.try_cast::<Node3D>().ok())
+        {
+            let mut log_pos = self.base().get_position();
+            match self.facing_right {
+                true => log_pos.z -= 2.0,
+                _ => log_pos.z += 2.0,
+            }
+            log_pos.y = 1.3;
+            log_obsticle.set_position(log_pos);
+            if let Some(mut root) = self.base().get_tree().get_current_scene() {
+                root.add_child(&log_obsticle);
+            }
+            let timer = self.base().get_tree().create_timer(4.0);
+            godot::task::spawn(async move {
+                Signal::from_object_signal(&timer, "timeout")
+                    .to_future::<()>()
+                    .await;
+                log_obsticle.call_deferred("queue_free", &[]);
+            });
+        }
+    }
     pub async fn ice_chunk_dash_routine(mut this: Gd<Self>) {
         let dash_timer;
         {

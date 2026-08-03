@@ -49,6 +49,7 @@ pub struct Player {
     is_punching: bool,
     is_grab: bool,
     is_throwing: bool,
+    is_using_throwable_ability: bool,
     right_punch: bool,
     #[export]
     #[var(pub)]
@@ -56,7 +57,8 @@ pub struct Player {
     player_label: Option<Gd<Label3D>>,
     player_healthbar: Option<Gd<Sprite3D>>,
     pub health: u8,
-    pub punch_damage: u8,
+    punch_damage: u8,
+    additional_next_punch_damage: u8,
     initial_heealthbar_scale: f32,
     max_health: u8,
     throwable_in_hand: Option<Gd<Throwable>>,
@@ -83,6 +85,7 @@ impl ICharacterBody3D for Player {
             knock_back: false,
             in_hand: false,
             is_throwing: false,
+            is_using_throwable_ability: false,
             jump_key: Key::W,
             left_key: Key::A,
             right_key: Key::D,
@@ -100,6 +103,7 @@ impl ICharacterBody3D for Player {
             health: 9,
             max_health: 9,
             punch_damage: 1,
+            additional_next_punch_damage: 0,
             player_healthbar: None,
             initial_heealthbar_scale: 0.0,
             throwable_in_hand: None,
@@ -312,7 +316,11 @@ impl Player {
     }
     fn action_process(&mut self) {
         let input = Input::singleton();
-        if input.is_key_pressed(self.punch_use_key) && !self.ducked && !self.is_punching {
+        if input.is_key_pressed(self.punch_use_key)
+            && !self.ducked
+            && !self.is_punching
+            && !self.is_using_throwable_ability
+        {
             if !self.in_hand {
                 let this = self.to_gd();
                 let _guard = self.base_mut();
@@ -326,6 +334,9 @@ impl Player {
                         upper_anim.set("parameters/conditions/drop", &true.to_variant());
                     }
                 }
+                let this = self.to_gd();
+                let _guard = self.base_mut();
+                godot::task::spawn(Self::use_routine(this));
             }
         } else if input.is_key_pressed(self.throw_grab_ky)
             && !self.ducked
@@ -373,6 +384,21 @@ impl Player {
             bind.in_hand = false;
             bind.throwable_in_hand = None;
             bind.is_throwing = false;
+        }
+    }
+    async fn use_routine(mut this: Gd<Self>) {
+        let timer;
+        {
+            let mut bind = this.bind_mut();
+            bind.is_using_throwable_ability = true;
+            timer = bind.base().get_tree().create_timer(0.1);
+        }
+        Signal::from_object_signal(&timer, "timeout")
+            .to_future::<()>()
+            .await;
+        {
+            let mut bind = this.bind_mut();
+            bind.is_using_throwable_ability = false;
         }
     }
     async fn punch_routine(mut this: Gd<Self>) {
@@ -688,8 +714,8 @@ impl Player {
                 .and_then(|hand| hand.get_parent())
                 .and_then(|player| player.try_cast::<Player>().ok());
             let knock_dir_opt = self.apply_hitstun_force(area);
-            if let Some(player) = player_opt {
-                self.damage(player.bind().punch_damage);
+            if let Some(mut player) = player_opt {
+                self.damage(player.bind_mut().calculate_punch_damage());
             }
             if let Some(knock_dir) = knock_dir_opt {
                 let this = self.to_gd();
@@ -697,6 +723,14 @@ impl Player {
                 godot::task::spawn(Self::hitstun_routine(this, knock_dir));
             }
         }
+    }
+    fn calculate_punch_damage(&mut self) -> u8 {
+        let to_ret = self.punch_damage + self.additional_next_punch_damage;
+        self.additional_next_punch_damage = 0;
+        to_ret
+    }
+    pub fn add_additional_punch_damage(&mut self, amount: u8) {
+        self.additional_next_punch_damage += amount;
     }
     fn handle_throwable_hit(&mut self, area: Gd<Area3D>) {
         let throwable_opt = area

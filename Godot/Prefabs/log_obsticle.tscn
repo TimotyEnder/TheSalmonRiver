@@ -5,9 +5,18 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
 size = Vector3(0.21557617, 2.0839233, 0.22387695)
 
-[node name="LogObsticle" type="Node3D" unique_id=250317386]
+[sub_resource type="BoxShape3D" id="BoxShape3D_uf5xu"]
+size = Vector3(0.21014404, 1.8500366, 0.2230835)
 
-[node name="Log" parent="." unique_id=693505904 instance=ExtResource("1_uf5xu")]
+[node name="LogObsticle" type="RigidBody3D" unique_id=1730844675]
+collision_layer = 2
+axis_lock_linear_x = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+
+[node name="LogMesh" parent="." unique_id=693505904 instance=ExtResource("1_uf5xu")]
 transform = Transform3D(-4.808253e-09, 0.11, 0, -0.11, -4.808253e-09, 0, 0, 0, 0.11, -0.12990257, 0.38565117, -0.109236225)
 
 [node name="LogObsticleCollider" type="Area3D" parent="." unique_id=609728782]
@@ -15,3 +24,7 @@ transform = Transform3D(-4.808253e-09, 0.11, 0, -0.11, -4.808253e-09, 0, 0, 0, 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LogObsticleCollider" unique_id=1599150249]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.024536133, 0.33291626, 0.0059814453)
 shape = SubResource("BoxShape3D_c4elv")
+
+[node name="PhysicsCollider" type="CollisionShape3D" parent="." unique_id=1649075871]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.024383545, 0.55426025, 0.001739502)
+shape = SubResource("BoxShape3D_uf5xu")

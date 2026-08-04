@@ -478,8 +478,8 @@ impl Player {
         {
             let mut log_pos = self.base().get_position();
             match self.facing_right {
-                true => log_pos.z -= 2.0,
-                _ => log_pos.z += 2.0,
+                true => log_pos.z -= 1.0,
+                _ => log_pos.z += 1.0,
             }
             log_pos.y += 2.0;
             log_obsticle.set_position(log_pos);

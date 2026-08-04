@@ -176,6 +176,9 @@ impl Player {
             upper_anim.set("parameters/conditions/in_hand", &true.to_variant());
         }
     }
+    pub fn can_pick_up_throwable(&self) -> bool {
+        !self.in_hand
+    }
     pub fn heal(&mut self, amount: u8) {
         self.health = (self.health + amount).min(self.max_health);
     }

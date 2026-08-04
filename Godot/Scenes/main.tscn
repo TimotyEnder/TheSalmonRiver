@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://bgjwcisjbhwp1" path="res://Prefabs/player.tscn" id="2_bo1nx"]
-[ext_resource type="PackedScene" uid="uid://6kfta1e3nyfs" path="res://Prefabs/throwable.tscn" id="3_8gbba"]
 [ext_resource type="PackedScene" uid="uid://b4u8wkqpnfjns" path="res://VoxelAssets/Environment/GrassRiverBank.gltf" id="4_jjvhh"]
 
 [sub_resource type="Environment" id="Environment_bo1nx"]
@@ -54,9 +53,6 @@ texture = ExtResource("1_jjgbg")
 [node name="Player" parent="." unique_id=275605898 instance=ExtResource("2_bo1nx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5126703, 3.464838)
 
-[node name="Throwable" parent="." unique_id=616814539 instance=ExtResource("3_8gbba")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9153982, 0)
-
 [node name="Environment" type="Node3D" parent="." unique_id=1142828596]
 
 [node name="River" type="StaticBody3D" parent="Environment" unique_id=1051320871]
@@ -103,3 +99,6 @@ transform = Transform3D(0.21281703, 0, 0, 0, 0.1, 0, -8.881784e-16, 0, 0.1, -1.6
 transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.05606082)
 shape = SubResource("BoxShape3D_c4elv")
 debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="ThrowableSpawner" type="ThrowableSpawner" parent="." unique_id=453820178]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7953838, 0)

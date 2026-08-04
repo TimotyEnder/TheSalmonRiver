@@ -32,7 +32,6 @@ impl IRigidBody3D for Throwable {
         }
     }
     fn ready(&mut self) {
-        self.become_throwable(Box::new(Log {}));
         self.base_mut().set_contact_monitor(true);
         self.base_mut().set_max_contacts_reported(1);
         self.ready_area();
@@ -57,35 +56,37 @@ impl Throwable {
                     .and_then(|player| player.try_cast::<Player>().ok())
             });
             if let Some(mut player) = grab_player {
-                player.bind_mut().pick_up_throwable();
-                let this = self.to_gd();
-                player
-                    .signals()
-                    .on_throwable_throw()
-                    .connect_other(&this, Self::on_thrown);
-                self.signals()
-                    .throwable_grabbed()
-                    .connect_other(&player, Player::search_for_throwable_in_hand);
-                let player_num = {
-                    let player_script = player.bind();
-                    player_script.get_player_num()
-                };
-                self.thrower_id = Some(player_num);
-                if !self.thrown {
-                    let pickup_area_opt = player.find_child("RightHand").and_then(|rh| {
-                        rh.find_child("PickUpArea")
-                            .and_then(|pua| pua.try_cast::<Node3D>().ok())
-                    });
-                    if let Some(pickup_area) = pickup_area_opt {
-                        self.base_mut().reparent(&pickup_area);
-                        self.base_mut().set_position(Vector3::ZERO);
-                        self.in_hand = true;
+                if player.bind().can_pick_up_throwable() {
+                    player.bind_mut().pick_up_throwable();
+                    let this = self.to_gd();
+                    player
+                        .signals()
+                        .on_throwable_throw()
+                        .connect_other(&this, Self::on_thrown);
+                    self.signals()
+                        .throwable_grabbed()
+                        .connect_other(&player, Player::search_for_throwable_in_hand);
+                    let player_num = {
+                        let player_script = player.bind();
+                        player_script.get_player_num()
+                    };
+                    self.thrower_id = Some(player_num);
+                    if !self.thrown {
+                        let pickup_area_opt = player.find_child("RightHand").and_then(|rh| {
+                            rh.find_child("PickUpArea")
+                                .and_then(|pua| pua.try_cast::<Node3D>().ok())
+                        });
+                        if let Some(pickup_area) = pickup_area_opt {
+                            self.base_mut().reparent(&pickup_area);
+                            self.base_mut().set_position(Vector3::ZERO);
+                            self.in_hand = true;
+                        }
+                        self.signals().throwable_grabbed().emit(player_num);
                     }
-                    self.signals().throwable_grabbed().emit(player_num);
                 }
             }
         }
-        if area.get_name().contains("Log") && (!self.in_hand || self.thrown) {
+        if area.get_name().contains("Log") && (self.thrown) {
             let log_root_node_opt = area.get_parent().and_then(|f| f.try_cast::<Node3D>().ok());
             if let Some(mut log_root_node) = log_root_node_opt {
                 log_root_node.call_deferred("queue_free", &[]);

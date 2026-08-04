@@ -19,6 +19,7 @@ pub struct Player {
     punch_force: f32,
     ice_chunk_dash_force: f32,
     jumped: bool,
+    duck_jumped: bool,
     ducked: bool,
     hit_stun: bool,
     knock_back: bool,
@@ -83,6 +84,7 @@ impl ICharacterBody3D for Player {
             hitstun_force: 0.6,
             knock_back_force: 7.0,
             jumped: false,
+            duck_jumped: false,
             ducked: false,
             hit_stun: false,
             knock_back: false,
@@ -226,10 +228,18 @@ impl Player {
         if !input.is_key_pressed(self.jump_key) {
             self.jumped = false;
         }
-        let duck_pressed = input.is_key_pressed(self.duck_key);
-        let on_floor = self.base().is_on_floor();
-        if duck_pressed
-            && on_floor
+        if input.is_key_pressed(self.duck_key) && !self.base().is_on_floor() && !self.duck_jumped {
+            velocity.y = self.jump_force;
+            self.duck_jumped = true;
+            let this = self.to_gd();
+            let _guard = self.base_mut();
+            godot::task::spawn(Self::duck_jump_routine(this));
+        }
+        if self.base().is_on_floor() {
+            self.duck_jumped = false;
+        }
+        if input.is_key_pressed(self.duck_key)
+            && self.base().is_on_floor()
             && !self.hit_stun
             && !self.is_grab
             && !self.is_punching
@@ -243,7 +253,7 @@ impl Player {
             }
             velocity.z = 0.0;
         }
-        if !duck_pressed && self.ducked {
+        if !input.is_key_pressed(self.duck_key) && self.ducked {
             self.ducked = false;
             if let Some(ref mut particles) = self.duck_pafrticles {
                 particles.restart();
@@ -363,6 +373,31 @@ impl Player {
                 let this = self.to_gd();
                 let _guard = self.base_mut();
                 godot::task::spawn(Self::throw_routine(this));
+            }
+        }
+    }
+    async fn duck_jump_routine(mut this: Gd<Self>) {
+        let timer;
+        {
+            let mut bind = this.bind_mut();
+            if let Some(ref mut duck_particles) = bind.duck_pafrticles {
+                duck_particles.restart();
+            }
+            if let Some(ref mut lower_anim) = bind.lower_anim_tree {
+                lower_anim.set("parameters/conditions/duck_jump", &true.to_variant());
+            }
+            timer = bind.base().get_tree().create_timer(0.5);
+        }
+        Signal::from_object_signal(&timer, "timeout")
+            .to_future::<()>()
+            .await;
+        {
+            let mut bind = this.bind_mut();
+            if let Some(ref mut duck_particles) = bind.duck_pafrticles {
+                duck_particles.restart();
+            }
+            if let Some(ref mut lower_anim) = bind.lower_anim_tree {
+                lower_anim.set("parameters/conditions/duck_jump", &false.to_variant());
             }
         }
     }

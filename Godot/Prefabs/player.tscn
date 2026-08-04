@@ -199,6 +199,114 @@ tracks/14/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("PlayerHead/PlayerHeadMesh:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("RightFoot/RightFootMesh:visible")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("LeftFoot/LeftFootMesh:visible")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("Duck/LeftWing:position")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.152, 0.07500005, 0)]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("Duck/LeftWing:rotation")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -3.1415927, -0.2687807)]
+}
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("Duck/LeftWing:scale")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+tracks/21/type = "value"
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/path = NodePath("Duck/RightWing:position")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.1519677, 0.07495713, 0)]
+}
+tracks/22/type = "value"
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/path = NodePath("Duck/RightWing:rotation")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, -0.26962966)]
+}
+tracks/23/type = "value"
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/path = NodePath("Duck/RightWing:scale")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_kry3j"]
 resource_name = "duck"
@@ -274,6 +382,154 @@ tracks/5/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_knrd4"]
+resource_name = "duck_jump"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerHead/PlayerHeadMesh:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LeftHand/LeftHandMesh:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("RightHand/RightHandMesh:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("RightFoot/RightFootMesh:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("LeftFoot/LeftFootMesh:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Duck:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Duck/LeftWing:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.19999999, 0.46666664),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.152, 0.07500005, 0), Vector3(-0.152, 0.07500005, 0), Vector3(-0.152, 0.07500005, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Duck/LeftWing:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.19999999, 0.46666664),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 3.1415927, -0.2687807), Vector3(0, 3.1415927, 0.5235988), Vector3(0, 3.1415927, -0.5235988)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Duck/LeftWing:scale")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.19999999, 0.46666664),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1, 1, 1), Vector3(1, 1, 1)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Duck/RightWing:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.19999999, 0.46666664),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.1519677, 0.07495713, 0), Vector3(0.1519677, 0.07495713, 0), Vector3(0.1519677, 0.07495713, 0)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Duck/RightWing:rotation")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 0.19999999, 0.46666664),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, -0.26962966), Vector3(0, 0, 0.5235988), Vector3(0, 0, -0.5235988)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Duck/RightWing:scale")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 0.19999999, 0.46666664),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1, 1, 1), Vector3(1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_y6xdh"]
@@ -844,6 +1100,7 @@ tracks/8/keys = {
 _data = {
 &"RESET": SubResource("Animation_bo1nx"),
 &"duck": SubResource("Animation_kry3j"),
+&"duck_jump": SubResource("Animation_knrd4"),
 &"hit": SubResource("Animation_y6xdh"),
 &"idle": SubResource("Animation_8gbba"),
 &"jump": SubResource("Animation_ynf5e"),
@@ -853,6 +1110,9 @@ _data = {
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bo1nx"]
 animation = &"duck"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_knrd4"]
+animation = &"duck_jump"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_y6xdh"]
 animation = &"hit"
@@ -992,10 +1252,20 @@ advance_condition = &"knock"
 advance_mode = 2
 advance_condition = &"knock"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_375py"]
+advance_mode = 2
+advance_condition = &"duck_jump"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3rsih"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_s6dll"]
 states/Start/position = Vector2(136, 118)
 states/duck/node = SubResource("AnimationNodeAnimation_bo1nx")
 states/duck/position = Vector2(235, 258)
+states/duck_jump/node = SubResource("AnimationNodeAnimation_knrd4")
+states/duck_jump/position = Vector2(823.3959, 174)
 states/hit/node = SubResource("AnimationNodeAnimation_y6xdh")
 states/hit/position = Vector2(663.3959, -12)
 states/idle/node = SubResource("AnimationNodeAnimation_8gbba")
@@ -1006,8 +1276,8 @@ states/knock_back/node = SubResource("AnimationNodeAnimation_2nftw")
 states/knock_back/position = Vector2(610.3959, 340)
 states/run/node = SubResource("AnimationNodeAnimation_kry3j")
 states/run/position = Vector2(272, 4)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_21xkr"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_6bp64"), "idle", "duck", SubResource("AnimationNodeStateMachineTransition_344ge"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_ynf5e"), "duck", "idle", SubResource("AnimationNodeStateMachineTransition_hptm8"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_d1ilt"), "jump", "idle", SubResource("AnimationNodeStateMachineTransition_6iyac"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_fdnlq"), "jump", "run", SubResource("AnimationNodeStateMachineTransition_jkdf5"), "jump", "duck", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "duck", "jump", SubResource("AnimationNodeStateMachineTransition_k12tt"), "duck", "run", SubResource("AnimationNodeStateMachineTransition_h1bgf"), "run", "duck", SubResource("AnimationNodeStateMachineTransition_b3802"), "run", "hit", SubResource("AnimationNodeStateMachineTransition_5wxv7"), "jump", "hit", SubResource("AnimationNodeStateMachineTransition_y5hcb"), "idle", "hit", SubResource("AnimationNodeStateMachineTransition_2nftw"), "duck", "hit", SubResource("AnimationNodeStateMachineTransition_knrd4"), "hit", "run", SubResource("AnimationNodeStateMachineTransition_hck1p"), "hit", "idle", SubResource("AnimationNodeStateMachineTransition_juxdh"), "hit", "jump", SubResource("AnimationNodeStateMachineTransition_4qbli"), "hit", "duck", SubResource("AnimationNodeStateMachineTransition_08u7w"), "hit", "knock_back", SubResource("AnimationNodeStateMachineTransition_vjsh3"), "knock_back", "jump", SubResource("AnimationNodeStateMachineTransition_7c0pg"), "knock_back", "idle", SubResource("AnimationNodeStateMachineTransition_unxwf"), "knock_back", "duck", SubResource("AnimationNodeStateMachineTransition_0u5bp"), "knock_back", "run", SubResource("AnimationNodeStateMachineTransition_di5ps"), "knock_back", "hit", SubResource("AnimationNodeStateMachineTransition_qkk0s"), "idle", "knock_back", SubResource("AnimationNodeStateMachineTransition_y6xdh"), "duck", "knock_back", SubResource("AnimationNodeStateMachineTransition_ygfkb"), "jump", "knock_back", SubResource("AnimationNodeStateMachineTransition_l3blc"), "run", "knock_back", SubResource("AnimationNodeStateMachineTransition_1q4fu")]
-graph_offset = Vector2(32.395874, -170)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_21xkr"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_6bp64"), "idle", "duck", SubResource("AnimationNodeStateMachineTransition_344ge"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_ynf5e"), "duck", "idle", SubResource("AnimationNodeStateMachineTransition_hptm8"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_d1ilt"), "jump", "idle", SubResource("AnimationNodeStateMachineTransition_6iyac"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_fdnlq"), "jump", "run", SubResource("AnimationNodeStateMachineTransition_jkdf5"), "jump", "duck", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "duck", "jump", SubResource("AnimationNodeStateMachineTransition_k12tt"), "duck", "run", SubResource("AnimationNodeStateMachineTransition_h1bgf"), "run", "duck", SubResource("AnimationNodeStateMachineTransition_b3802"), "run", "hit", SubResource("AnimationNodeStateMachineTransition_5wxv7"), "jump", "hit", SubResource("AnimationNodeStateMachineTransition_y5hcb"), "idle", "hit", SubResource("AnimationNodeStateMachineTransition_2nftw"), "duck", "hit", SubResource("AnimationNodeStateMachineTransition_knrd4"), "hit", "run", SubResource("AnimationNodeStateMachineTransition_hck1p"), "hit", "idle", SubResource("AnimationNodeStateMachineTransition_juxdh"), "hit", "jump", SubResource("AnimationNodeStateMachineTransition_4qbli"), "hit", "duck", SubResource("AnimationNodeStateMachineTransition_08u7w"), "hit", "knock_back", SubResource("AnimationNodeStateMachineTransition_vjsh3"), "knock_back", "jump", SubResource("AnimationNodeStateMachineTransition_7c0pg"), "knock_back", "idle", SubResource("AnimationNodeStateMachineTransition_unxwf"), "knock_back", "duck", SubResource("AnimationNodeStateMachineTransition_0u5bp"), "knock_back", "run", SubResource("AnimationNodeStateMachineTransition_di5ps"), "knock_back", "hit", SubResource("AnimationNodeStateMachineTransition_qkk0s"), "idle", "knock_back", SubResource("AnimationNodeStateMachineTransition_y6xdh"), "duck", "knock_back", SubResource("AnimationNodeStateMachineTransition_ygfkb"), "jump", "knock_back", SubResource("AnimationNodeStateMachineTransition_l3blc"), "run", "knock_back", SubResource("AnimationNodeStateMachineTransition_1q4fu"), "jump", "duck_jump", SubResource("AnimationNodeStateMachineTransition_375py"), "duck_jump", "jump", SubResource("AnimationNodeStateMachineTransition_3rsih")]
+graph_offset = Vector2(66.395874, -6)
 
 [sub_resource type="Animation" id="Animation_21xkr"]
 length = 0.001
@@ -2117,6 +2387,12 @@ states/throw/position = Vector2(843, 36)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_fevyy"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_hibaj"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "in_hand", "throw", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "throw", "idle", SubResource("AnimationNodeStateMachineTransition_gt3je"), "idle", "punch", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "idle", "left_punch", SubResource("AnimationNodeStateMachineTransition_u50mg"), "left_punch", "idle", SubResource("AnimationNodeStateMachineTransition_cbgmd"), "punch", "idle", SubResource("AnimationNodeStateMachineTransition_1w6v2"), "idle", "grab", SubResource("AnimationNodeStateMachineTransition_ueoa1"), "grab", "idle", SubResource("AnimationNodeStateMachineTransition_6vcvc"), "idle", "in_hand", SubResource("AnimationNodeStateMachineTransition_7k868"), "run", "punch", SubResource("AnimationNodeStateMachineTransition_bo1nx"), "punch", "run", SubResource("AnimationNodeStateMachineTransition_8gbba"), "left_punch", "run", SubResource("AnimationNodeStateMachineTransition_jjvhh"), "run", "left_punch", SubResource("AnimationNodeStateMachineTransition_kry3j"), "left_punch", "punch", SubResource("AnimationNodeStateMachineTransition_hpc6h"), "punch", "left_punch", SubResource("AnimationNodeStateMachineTransition_kltya"), "run", "grab", SubResource("AnimationNodeStateMachineTransition_e08e2"), "grab", "run", SubResource("AnimationNodeStateMachineTransition_neg2b"), "left_punch", "hit", SubResource("AnimationNodeStateMachineTransition_kgmex"), "punch", "hit", SubResource("AnimationNodeStateMachineTransition_2xbkd"), "grab", "hit", SubResource("AnimationNodeStateMachineTransition_3vpsw"), "idle", "hit", SubResource("AnimationNodeStateMachineTransition_m62uw"), "run", "hit", SubResource("AnimationNodeStateMachineTransition_b30ri"), "hit", "run", SubResource("AnimationNodeStateMachineTransition_ms580"), "hit", "grab", SubResource("AnimationNodeStateMachineTransition_q7l0e"), "hit", "punch", SubResource("AnimationNodeStateMachineTransition_0fs2y"), "hit", "left_punch", SubResource("AnimationNodeStateMachineTransition_wphcr"), "hit", "idle", SubResource("AnimationNodeStateMachineTransition_and0b"), "hit", "knock_back", SubResource("AnimationNodeStateMachineTransition_405c5"), "knock_back", "run", SubResource("AnimationNodeStateMachineTransition_i3mxk"), "knock_back", "idle", SubResource("AnimationNodeStateMachineTransition_qvmbc"), "knock_back", "punch", SubResource("AnimationNodeStateMachineTransition_qjulh"), "knock_back", "hit", SubResource("AnimationNodeStateMachineTransition_evqxc"), "knock_back", "grab", SubResource("AnimationNodeStateMachineTransition_6gc6r"), "left_punch", "knock_back", SubResource("AnimationNodeStateMachineTransition_jxrwi"), "run", "knock_back", SubResource("AnimationNodeStateMachineTransition_s2pui"), "grab", "knock_back", SubResource("AnimationNodeStateMachineTransition_acf7d"), "punch", "knock_back", SubResource("AnimationNodeStateMachineTransition_0srn8"), "idle", "knock_back", SubResource("AnimationNodeStateMachineTransition_ba8jc"), "in_hand", "knock_back", SubResource("AnimationNodeStateMachineTransition_131b1"), "throw", "knock_back", SubResource("AnimationNodeStateMachineTransition_qelst"), "throw", "hit", SubResource("AnimationNodeStateMachineTransition_ob8dk"), "run", "in_hand", SubResource("AnimationNodeStateMachineTransition_faewp"), "in_hand", "idle", SubResource("AnimationNodeStateMachineTransition_da5es")]
 graph_offset = Vector2(-367.1626, -68.32295)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y5hcb"]
+albedo_color = Color(0.26, 0.221, 0.14299999, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s6dll"]
+size = Vector3(0.47662354, 0.09082031, 0.35302734)
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s6dll"]
 angle_min = -385.5
 angle_max = 350.40002
@@ -2217,6 +2493,7 @@ root_node = NodePath("../..")
 tree_root = SubResource("AnimationNodeStateMachine_s6dll")
 anim_player = NodePath("..")
 parameters/conditions/duck = false
+parameters/conditions/duck_jump = false
 parameters/conditions/hit = false
 parameters/conditions/idle = true
 parameters/conditions/jump = false
@@ -2280,6 +2557,22 @@ visible = false
 [node name="duck0" parent="Duck" unique_id=508784506 instance=ExtResource("2_5wxv7")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -0.048531428, -0.30274355, -0.009244084)
 
+[node name="RightWing" type="Node3D" parent="Duck" unique_id=1119167330]
+transform = Transform3D(0.96386963, 0.2663745, 0, -0.2663745, 0.96386963, 0, 0, 0, 1, 0.1519677, 0.07495713, 0)
+
+[node name="WingMesh" type="MeshInstance3D" parent="Duck/RightWing" unique_id=728889869]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23477021, 0.0018013716, 0.00644812)
+material_override = SubResource("StandardMaterial3D_y5hcb")
+mesh = SubResource("BoxMesh_s6dll")
+
+[node name="LeftWing" type="Node3D" parent="Duck" unique_id=1266484139]
+transform = Transform3D(-0.9640954, -0.26555613, 8.742278e-08, -0.26555613, 0.9640954, 0, -8.42839e-08, -2.3215653e-08, -1, -0.152, 0.07500005, 0)
+
+[node name="WingMesh" type="MeshInstance3D" parent="Duck/LeftWing" unique_id=1316285363]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23477021, 0.0018013716, 0.00644812)
+material_override = SubResource("StandardMaterial3D_y5hcb")
+mesh = SubResource("BoxMesh_s6dll")
+
 [node name="DuckPoofParticles" type="GPUParticles3D" parent="." unique_id=1569583201]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6169777, 0)
 emitting = false
@@ -2289,6 +2582,7 @@ one_shot = true
 speed_scale = 1.5
 explosiveness = 1.0
 randomness = 0.54
+local_coords = true
 transform_align = 1
 transform_align_channel_filter = 1
 process_material = SubResource("ParticleProcessMaterial_s6dll")

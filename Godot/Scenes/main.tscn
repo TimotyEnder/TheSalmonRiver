@@ -18,7 +18,7 @@ albedo_color = Color(0.03529412, 0.4862745, 0.7921569, 1)
 size = Vector3(2.0368652, 0.98132324, 2.41333)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rai8w"]
-size = Vector3(1, 4.526306, 1)
+size = Vector3(1, 4.526306, 3.1507492)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
 size = Vector3(6.6301575, 1.168457, 3.1865845)
@@ -73,11 +73,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.018920898, -0.009338379, -0
 shape = SubResource("BoxShape3D_s6dll")
 
 [node name="RightWall" type="CollisionShape3D" parent="Environment/River" unique_id=1695567295]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7631531, 6.791254)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.136755, 3.3724613, -0.40993524)
 shape = SubResource("BoxShape3D_rai8w")
 
 [node name="LeftWall" type="CollisionShape3D" parent="Environment/River" unique_id=1798810544]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7631531, -6.7913113)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.146003, 3.4253054, -0.3481499)
 shape = SubResource("BoxShape3D_rai8w")
 
 [node name="LeftBank" type="StaticBody3D" parent="Environment" unique_id=722134106]

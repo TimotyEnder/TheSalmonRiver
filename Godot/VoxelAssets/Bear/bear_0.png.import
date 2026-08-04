@@ -3,10 +3,9 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bhuf3joptvchs"
-path.s3tc="res://.godot/imported/bear_0.png-b5f66c4564b181a7c05f5a0021948729.s3tc.ctex"
+path="res://.godot/imported/bear_0.png-b5f66c4564b181a7c05f5a0021948729.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 generator_parameters={
 "md5": "4901fc06c9ec1e22cb10e97d14b917e1"
@@ -15,11 +14,11 @@ generator_parameters={
 [deps]
 
 source_file="res://VoxelAssets/Bear/bear_0.png"
-dest_files=["res://.godot/imported/bear_0.png-b5f66c4564b181a7c05f5a0021948729.s3tc.ctex"]
+dest_files=["res://.godot/imported/bear_0.png-b5f66c4564b181a7c05f5a0021948729.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -27,7 +26,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

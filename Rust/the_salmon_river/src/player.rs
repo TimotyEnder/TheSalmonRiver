@@ -481,7 +481,7 @@ impl Player {
                 true => log_pos.z -= 2.0,
                 _ => log_pos.z += 2.0,
             }
-            log_pos.y = 1.3;
+            log_pos.y += 2.0;
             log_obsticle.set_position(log_pos);
             if let Some(mut root) = self.base().get_tree().get_current_scene() {
                 root.add_child(&log_obsticle);

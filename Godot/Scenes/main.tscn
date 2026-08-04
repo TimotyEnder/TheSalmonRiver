@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://bgjwcisjbhwp1" path="res://Prefabs/player.tscn" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://6kfta1e3nyfs" path="res://Prefabs/throwable.tscn" id="3_8gbba"]
+[ext_resource type="PackedScene" uid="uid://b4u8wkqpnfjns" path="res://VoxelAssets/Environment/GrassRiverBank.gltf" id="4_jjvhh"]
 
 [sub_resource type="Environment" id="Environment_bo1nx"]
 background_mode = 3
@@ -14,10 +15,13 @@ vertex_color_is_srgb = true
 albedo_color = Color(0.03529412, 0.4862745, 0.7921569, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_s6dll"]
-size = Vector3(1, 0.98132324, 13.169189)
+size = Vector3(2.0368652, 0.98132324, 2.41333)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rai8w"]
 size = Vector3(1, 4.526306, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
+size = Vector3(6.6301575, 1.168457, 3.1865845)
 
 [node name="Root" type="Node3D" unique_id=236819951]
 
@@ -30,45 +34,72 @@ punch_use_key = 76
 throw_grab_ky = 59
 facing_right = false
 player_num = 2
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.4454663)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.513, -3.465)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1831742261]
-transform = Transform3D(-0.013719754, -0.18555224, 0.98253864, -0.0025907205, 0.9826344, 0.18553416, -0.99990255, 0, -0.013962216, 3.1444244, 2.731237, -0.015609028)
+transform = Transform3D(-0.01374388, -0.18587853, 0.9842664, -0.002595276, 0.98436236, 0.18586043, -1.0016608, 0, -0.013986767, 3.1130846, 4.910619, -0.015609028)
 environment = SubResource("Environment_bo1nx")
 projection = 1
 fov = 74.1
-size = 5.348
+size = 7.64
 near = 0.001
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=512207062]
 transform = Transform3D(-0.00668736, -0.90484244, 0.42569408, -0.014212694, 0.42574656, 0.90473086, -0.9998766, 4.653394e-10, -0.015707368, -0.11735284, 3.0913627, 0)
 
-[node name="River" type="StaticBody3D" parent="." unique_id=1051320871]
-collision_mask = 3
-
-[node name="RiverMesh" type="MeshInstance3D" parent="River" unique_id=1357828212]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 12.587268, 0, 0, 0)
-mesh = SubResource("BoxMesh_rai8w")
-surface_material_override/0 = SubResource("StandardMaterial3D_7dm0k")
-
-[node name="RiverCollider" type="CollisionShape3D" parent="River" unique_id=432875716]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.009338379, -0.072143555)
-shape = SubResource("BoxShape3D_s6dll")
-
-[node name="RightWall" type="CollisionShape3D" parent="River" unique_id=1695567295]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7631531, 6.791254)
-shape = SubResource("BoxShape3D_rai8w")
-
-[node name="LeftWall" type="CollisionShape3D" parent="River" unique_id=1798810544]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7631531, -6.7913113)
-shape = SubResource("BoxShape3D_rai8w")
-
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=721853890]
-transform = Transform3D(-1.2711583e-08, 0, 0.2, 0, 0.2908071, 0, -0.2908071, 0, -8.742278e-09, -12.021184, 0, 5.2546267e-07)
+transform = Transform3D(-2.0615369e-08, 0, 0.2, 0, 0.4716246, 0, -0.4716246, 0, -8.742278e-09, -12.021184, 1.2831969, 5.2546267e-07)
 texture = ExtResource("1_jjgbg")
 
 [node name="Player" parent="." unique_id=275605898 instance=ExtResource("2_bo1nx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.6827694)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5126703, 3.464838)
 
 [node name="Throwable" parent="." unique_id=616814539 instance=ExtResource("3_8gbba")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9153982, 0)
+
+[node name="Environment" type="Node3D" parent="." unique_id=1142828596]
+
+[node name="River" type="StaticBody3D" parent="Environment" unique_id=1051320871]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+collision_mask = 3
+
+[node name="RiverMesh" type="MeshInstance3D" parent="Environment/River" unique_id=1357828212]
+transform = Transform3D(2.0577488, 0, 0, 0, 1, 0, 0, 0, 2.4311264, 0, 0.30762458, 0)
+mesh = SubResource("BoxMesh_rai8w")
+surface_material_override/0 = SubResource("StandardMaterial3D_7dm0k")
+
+[node name="RiverCollider" type="CollisionShape3D" parent="Environment/River" unique_id=432875716]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.018920898, -0.009338379, -0.016967773)
+shape = SubResource("BoxShape3D_s6dll")
+
+[node name="RightWall" type="CollisionShape3D" parent="Environment/River" unique_id=1695567295]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7631531, 6.791254)
+shape = SubResource("BoxShape3D_rai8w")
+
+[node name="LeftWall" type="CollisionShape3D" parent="Environment/River" unique_id=1798810544]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7631531, -6.7913113)
+shape = SubResource("BoxShape3D_rai8w")
+
+[node name="LeftBank" type="StaticBody3D" parent="Environment" unique_id=722134106]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.3750771, 0.73130685, 2.5910273)
+collision_mask = 3
+
+[node name="GrassRiverBankMesh" parent="Environment/LeftBank" unique_id=499760013 instance=ExtResource("4_jjvhh")]
+transform = Transform3D(0.21281703, 0, 0, 0, 0.1, 0, -8.881784e-16, 0, 0.1, -1.6570005, -0.5272394, -5.9604645e-08)
+
+[node name="LeftBankCollider" type="CollisionShape3D" parent="Environment/LeftBank" unique_id=1908957823]
+transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.05606082)
+shape = SubResource("BoxShape3D_c4elv")
+debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="RightBank" type="StaticBody3D" parent="Environment" unique_id=1206110942]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.375, 0.731, -2.591)
+collision_mask = 3
+
+[node name="GrassRiverBankMesh" parent="Environment/RightBank" unique_id=660070864 instance=ExtResource("4_jjvhh")]
+transform = Transform3D(0.21281703, 0, 0, 0, 0.1, 0, -8.881784e-16, 0, 0.1, -1.6570005, -0.5272394, -5.9604645e-08)
+
+[node name="LeftBankCollider" type="CollisionShape3D" parent="Environment/RightBank" unique_id=1500111804]
+transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.05606082)
+shape = SubResource("BoxShape3D_c4elv")
+debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)

@@ -2,19 +2,19 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://frq1susyeg5n"
-path="res://.godot/imported/Salmon_0.png-591d2bde5c6ba5020693c43300dc3138.ctex"
+uid="uid://bce6a41ckxik1"
+path="res://.godot/imported/GrassRiverBank_0.png-84673bd2b5bd15a011c70958984fee2f.ctex"
 metadata={
 "vram_texture": false
 }
 generator_parameters={
-"md5": "b92db6b8afd735e17a3458f82508c46e"
+"md5": "6a36b8e10618309183395fb9430f43e2"
 }
 
 [deps]
 
-source_file="res://VoxelAssets/Throwables/Salmon_0.png"
-dest_files=["res://.godot/imported/Salmon_0.png-591d2bde5c6ba5020693c43300dc3138.ctex"]
+source_file="res://VoxelAssets/Environment/GrassRiverBank_0.png"
+dest_files=["res://.godot/imported/GrassRiverBank_0.png-84673bd2b5bd15a011c70958984fee2f.ctex"]
 
 [params]
 

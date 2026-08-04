@@ -3,10 +3,9 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dko7nc5pj8gvh"
-path.s3tc="res://.godot/imported/duck0_0.png-ae7cc33397d22163969a6d84cd0e23f8.s3tc.ctex"
+path="res://.godot/imported/duck0_0.png-ae7cc33397d22163969a6d84cd0e23f8.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 generator_parameters={
 "md5": "8bf7adb1b1f4fb6f0cbf02841b6d682a"
@@ -15,11 +14,11 @@ generator_parameters={
 [deps]
 
 source_file="res://VoxelAssets/Duck/duck0_0.png"
-dest_files=["res://.godot/imported/duck0_0.png-ae7cc33397d22163969a6d84cd0e23f8.s3tc.ctex"]
+dest_files=["res://.godot/imported/duck0_0.png-ae7cc33397d22163969a6d84cd0e23f8.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -27,7 +26,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

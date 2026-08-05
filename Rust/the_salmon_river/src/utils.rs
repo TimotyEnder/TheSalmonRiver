@@ -1,3 +1,5 @@
+use std::default;
+
 use godot::prelude::*;
 pub fn player_color_based_on_number(player_num: u8) -> Color {
     // Golden ratio conjugate for optimal hue spacing
@@ -49,6 +51,14 @@ fn hsv_to_rgb(h: f32, s: f32, v: f32) -> (f32, f32, f32) {
 #[godot(via = GString)]
 pub enum Direction {
     #[default]
+    Left,
+    Right,
+}
+#[derive(GodotConvert, Var, Export, Default, Clone, Copy, Debug)]
+#[godot(via = GString)]
+pub enum ThrowableSpawnDirection {
+    #[default]
+    Up,
     Left,
     Right,
 }

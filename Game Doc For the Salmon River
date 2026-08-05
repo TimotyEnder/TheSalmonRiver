@@ -20,3 +20,10 @@ Salmon: Use: Eat and gain 1hp, you next Hit does 2dmg. Throw: 1dmg
 Chunk of ice: Use: Dash in a direction, If hits an opponent they get staggered. Throw: 1dmg and a stagger.
 Stick: Use: Long range attack Throw: A range attack that hits both in the air and on the ground.
 
+
+todo:
+add particle polish to the abilities and walking and punching
+add game ui
+add animation on death
+setup 3 round system
+menu ui and victory screen

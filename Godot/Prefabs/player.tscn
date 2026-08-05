@@ -12,10 +12,12 @@ albedo_color = Color(0.29411766, 0.19215687, 0.14509805, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_c4elv"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bo1nx"]
+size = Vector3(1, 1, 2.7792969)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ba2sc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
+size = Vector3(1, 1, 2.0625)
 
 [sub_resource type="Animation" id="Animation_bo1nx"]
 length = 0.001
@@ -2440,7 +2442,7 @@ mesh = SubResource("BoxMesh_c4elv")
 [node name="LeftHandArea" type="Area3D" parent="LeftHand" unique_id=522928415]
 
 [node name="LeftHandHurtBox" type="CollisionShape3D" parent="LeftHand/LeftHandArea" unique_id=1790064307]
-transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
+transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0.15124023)
 shape = SubResource("BoxShape3D_bo1nx")
 disabled = true
 
@@ -2462,7 +2464,7 @@ mesh = SubResource("BoxMesh_c4elv")
 [node name="RightHandArea" type="Area3D" parent="RightHand" unique_id=1746554017]
 
 [node name="RightHandHurtBox" type="CollisionShape3D" parent="RightHand/RightHandArea" unique_id=883064508]
-transform = Transform3D(0.17000002, 0, -7.450581e-09, 0, 0.17, 0, 7.450581e-09, 0, 0.17000002, 0, 0, 0)
+transform = Transform3D(0.17000008, 3.7252903e-09, -7.450581e-09, -3.7252903e-09, 0.17000008, 0, 7.450581e-09, 0, 0.17000002, 0, 0, 0.09031251)
 shape = SubResource("BoxShape3D_c4elv")
 disabled = true
 

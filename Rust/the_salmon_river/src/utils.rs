@@ -15,6 +15,14 @@ pub fn player_color_based_on_number(player_num: u8) -> Color {
 
     Color::from_rgb(r, g, b)
 }
+pub fn complementary_color(color: Color) -> Color {
+    Color {
+        r: 1.0 - color.r,
+        g: 1.0 - color.g,
+        b: 1.0 - color.b,
+        a: color.a,
+    }
+}
 
 fn hsv_to_rgb(h: f32, s: f32, v: f32) -> (f32, f32, f32) {
     if s == 0.0 {

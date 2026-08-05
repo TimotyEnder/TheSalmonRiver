@@ -1,11 +1,10 @@
-use godot::{
-    classes::{RandomNumberGenerator, Time},
-    prelude::*,
-};
-
 use crate::{
     throwable::Throwable,
     throwables::{ice_chunk::IceChunk, log::Log, salmon::Salmon},
+};
+use godot::{
+    classes::{RandomNumberGenerator, Time},
+    prelude::*,
 };
 #[derive(GodotClass)]
 #[class(base=Node3D)]
@@ -20,12 +19,14 @@ impl INode3D for ThrowableSpawner {
     fn init(base: Base<Node3D>) -> Self {
         Self {
             base: base,
-            throw_force: 2.0,
+            throw_force: 5.0,
             next_spawn_time_ms: 0,
             spawn_rate_ms: 4000,
         }
     }
-    fn ready(&mut self) {}
+    fn ready(&mut self) {
+        self.next_spawn_time_ms = self.spawn_rate_ms;
+    }
     fn process(&mut self, delta: f64) {
         let time = Time::singleton();
         let current_time_ms = time.get_ticks_msec();
@@ -53,8 +54,8 @@ impl ThrowableSpawner {
                 y: self.throw_force,
                 z: {
                     match direction {
-                        0 => -self.throw_force,
-                        _ => self.throw_force,
+                        0 => -self.throw_force / 2.0,
+                        _ => self.throw_force / 2.0,
                     }
                 },
             };

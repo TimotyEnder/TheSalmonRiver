@@ -1,11 +1,12 @@
 use godot::classes::xr_positional_tracker::SignalsOfXrPositionalTracker;
 use godot::classes::{
     AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, GpuParticles3D, ICharacterBody3D,
-    Input, Label3D, Sprite3D,
+    Input, Label3D, Sprite3D, Time,
 };
 use godot::global::Key;
 use godot::prelude::*;
 
+use crate::duck_meter_manager::DuckMeterManager;
 use crate::throwable::Throwable;
 use crate::throwables::throwability::Throwability;
 use crate::utils::*;
@@ -59,12 +60,15 @@ pub struct Player {
     player_num: u8,
     player_label: Option<Gd<Label3D>>,
     player_healthbar: Option<Gd<Sprite3D>>,
+    player_duck_bar: Option<Gd<Sprite3D>>,
     pub health: u8,
     punch_damage: u8,
     additional_next_punch_damage: u8,
     initial_heealthbar_scale: f32,
+    intitial_duck_bar_scale: f32,
     max_health: u8,
     throwable_in_hand: Option<Gd<Throwable>>,
+    duck_meter_manager: DuckMeterManager,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -112,11 +116,15 @@ impl ICharacterBody3D for Player {
             additional_next_punch_damage: 0,
             player_healthbar: None,
             initial_heealthbar_scale: 0.0,
+            intitial_duck_bar_scale: 0.0,
             throwable_in_hand: None,
+            player_duck_bar: None,
+            duck_meter_manager: DuckMeterManager::new(100, 2, 5, 33),
         }
     }
     fn ready(&mut self) {
         self.ready_health_systems();
+        self.ready_duck_meter_systems();
         self.ready_body();
         self.ready_animations();
         self.ready_hitbox();
@@ -133,6 +141,7 @@ impl ICharacterBody3D for Player {
             self.flip_based_on_facing_direction();
             self.action_process();
         }
+        self.duck_bar_systems();
     }
 }
 #[godot_api]
@@ -170,6 +179,14 @@ impl Player {
 }
 
 impl Player {
+    pub fn duck_bar_systems(&mut self) {
+        self.duck_meter_manager.duck_meter_update(
+            self.duck_jumped,
+            self.ducked,
+            Time::singleton().get_ticks_msec(),
+        );
+        self.scale_duckbar();
+    }
     pub fn pick_up_throwable(&mut self) {
         self.in_hand = true;
         if let Some(ref mut upper_anim) = self.upper_anim_tree {
@@ -191,7 +208,6 @@ impl Player {
             self.base_mut().queue_free();
         }
     }
-
     fn movement(&mut self, delta: f64) {
         let input = Input::singleton();
         let mut velocity = self.base().get_velocity();
@@ -231,7 +247,11 @@ impl Player {
         if !input.is_key_pressed(self.jump_key) {
             self.jumped = false;
         }
-        if input.is_key_pressed(self.duck_key) && !self.base().is_on_floor() && !self.duck_jumped {
+        if input.is_key_pressed(self.duck_key)
+            && !self.base().is_on_floor()
+            && !self.duck_jumped
+            && self.duck_meter_manager.can_duck_jump()
+        {
             velocity.y = self.jump_force;
             self.duck_jumped = true;
             let this = self.to_gd();
@@ -247,6 +267,7 @@ impl Player {
             && !self.is_grab
             && !self.is_punching
             && !self.is_throwing
+            && self.duck_meter_manager.can_duck()
         {
             if !self.ducked {
                 self.ducked = true;
@@ -256,7 +277,9 @@ impl Player {
             }
             velocity.z = 0.0;
         }
-        if !input.is_key_pressed(self.duck_key) && self.ducked {
+        if !input.is_key_pressed(self.duck_key) && self.ducked
+            || !self.duck_meter_manager.can_duck() && self.ducked
+        {
             self.ducked = false;
             if let Some(ref mut particles) = self.duck_pafrticles {
                 particles.restart();
@@ -768,12 +791,34 @@ impl Player {
             healthbar.set_modulate(crate::utils::player_color_based_on_number(self.player_num));
         }
     }
+    fn ready_duck_meter_systems(&mut self) {
+        self.player_duck_bar = self
+            .base()
+            .find_child("PlayerLabel")
+            .and_then(|f| f.find_child("DuckBar"))
+            .and_then(|db| db.try_cast::<Sprite3D>().ok());
+        if let Some(ref mut duckbar) = self.player_duck_bar {
+            self.intitial_duck_bar_scale = duckbar.get_scale().x;
+            duckbar.set_modulate(crate::utils::complementary_color(
+                crate::utils::player_color_based_on_number(self.player_num),
+            ));
+        }
+    }
     fn scale_healthbar_with_health(&mut self) {
         if let Some(ref mut healthbar) = self.player_healthbar {
             let health_ratio = self.health as f32 / self.max_health as f32;
             let mut hb_scale = healthbar.get_scale();
             hb_scale.x = self.initial_heealthbar_scale * health_ratio;
             healthbar.set_scale(hb_scale);
+        }
+    }
+    fn scale_duckbar(&mut self) {
+        if let Some(ref mut duckbar) = self.player_duck_bar {
+            let duck_bar_ratio = self.duck_meter_manager.get_duck_meter() as f32
+                / self.duck_meter_manager.get_max_duck_meter() as f32;
+            let mut hb_scale = duckbar.get_scale();
+            hb_scale.x = self.initial_heealthbar_scale * duck_bar_ratio;
+            duckbar.set_scale(hb_scale);
         }
     }
     fn apply_hitstun_force(&mut self, area: Gd<Area3D>) -> Option<Direction> {

@@ -2550,6 +2550,24 @@ pixel_size = 0.0001
 alpha_scissor_threshold = 0.53
 texture = ExtResource("2_y5hcb")
 
+[node name="DuckBar" type="Sprite3D" parent="PlayerLabel" unique_id=947686062]
+transform = Transform3D(2.6303203, 0, 0, 0, 0.40526935, 0, 0, 0, 1, 2.220446e-16, -0.59492946, 0.025564134)
+gi_mode = 0
+gi_lightmap_texel_scale = 0.01
+modulate = Color(0.17486718, 0.44472843, 0, 1)
+pixel_size = 0.0001
+alpha_scissor_threshold = 0.53
+texture = ExtResource("2_y5hcb")
+
+[node name="DuckBarBg" type="Sprite3D" parent="PlayerLabel" unique_id=1302540508]
+transform = Transform3D(2.6303203, 0, 0, 0, 0.40526935, 0, -7.1054274e-15, 0, 1, 0, -0.59492946, -0.00078248983)
+gi_mode = 0
+gi_lightmap_texel_scale = 0.01
+modulate = Color(0.17486718, 0.44472843, 0, 1)
+pixel_size = 0.0001
+alpha_scissor_threshold = 0.53
+texture = ExtResource("2_y5hcb")
+
 [node name="Duck" type="Node3D" parent="." unique_id=1311941392]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4046476, 0)
 visible = false

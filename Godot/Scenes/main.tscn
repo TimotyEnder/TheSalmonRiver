@@ -40,7 +40,7 @@ transform = Transform3D(-0.01374388, -0.18587853, 0.9842664, -0.002595276, 0.984
 environment = SubResource("Environment_bo1nx")
 projection = 1
 fov = 74.1
-size = 7.64
+size = 8.2
 near = 0.001
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=512207062]

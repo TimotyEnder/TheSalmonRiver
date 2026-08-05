@@ -69,6 +69,7 @@ pub struct Player {
     max_health: u8,
     throwable_in_hand: Option<Gd<Throwable>>,
     duck_meter_manager: DuckMeterManager,
+    duck_jumping: bool,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -120,6 +121,7 @@ impl ICharacterBody3D for Player {
             throwable_in_hand: None,
             player_duck_bar: None,
             duck_meter_manager: DuckMeterManager::new(100, 2, 5, 33),
+            duck_jumping: false,
         }
     }
     fn ready(&mut self) {
@@ -406,6 +408,7 @@ impl Player {
         let timer;
         {
             let mut bind = this.bind_mut();
+            bind.duck_jumping = true;
             if let Some(ref mut duck_particles) = bind.duck_pafrticles {
                 duck_particles.restart();
             }
@@ -419,6 +422,7 @@ impl Player {
             .await;
         {
             let mut bind = this.bind_mut();
+            bind.duck_jumping = false;
             if let Some(ref mut duck_particles) = bind.duck_pafrticles {
                 duck_particles.restart();
             }
@@ -847,7 +851,7 @@ impl Player {
         return to_ret;
     }
     fn handle_getting_punched(&mut self, area: Gd<Area3D>) {
-        if !self.ducked {
+        if !self.ducked && !self.duck_jumping {
             let player_opt = area
                 .get_parent()
                 .and_then(|hand| hand.get_parent())
@@ -877,6 +881,7 @@ impl Player {
             .and_then(|th| th.try_cast::<Throwable>().ok());
 
         if !self.ducked
+            && !self.duck_jumping
             && let Some(mut throwable) = throwable_opt
             && throwable.bind().does_player_hitstun(self.player_num)
         {

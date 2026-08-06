@@ -355,27 +355,31 @@ impl Player {
         }
     }
     fn flip_based_on_facing_direction(&mut self) {
-        let mut scale = self.base().get_scale();
+        let scale = self.base().get_scale();
         if (self.facing_right && scale.z < 0.0 || !self.facing_right && scale.z > 0.0)
             && !self.is_punching
             && !self.is_grab
         {
-            scale.z *= -1.0;
-            if let Some(ref mut collider) = self.body_collider {
-                let mut collider_scale = collider.get_scale();
-                collider_scale.z *= -1.0;
-                collider.set_scale(collider_scale);
-            }
-            if let Some(ref mut label) = self.player_label {
-                let mut label_scale = label.get_scale();
-                label_scale.x *= -1.0;
-                label.set_scale(label_scale);
-            }
-            if let Some(ref mut duck_particles) = self.duck_pafrticles {
-                let mut particles_scale = duck_particles.get_scale();
-                particles_scale.x *= -1.0;
-                duck_particles.set_scale(particles_scale);
-            }
+            self.flip();
+        }
+    }
+    fn flip(&mut self) {
+        let mut scale = self.base().get_scale();
+        scale.z *= -1.0;
+        if let Some(ref mut collider) = self.body_collider {
+            let mut collider_scale = collider.get_scale();
+            collider_scale.z *= -1.0;
+            collider.set_scale(collider_scale);
+        }
+        if let Some(ref mut label) = self.player_label {
+            let mut label_scale = label.get_scale();
+            label_scale.x *= -1.0;
+            label.set_scale(label_scale);
+        }
+        if let Some(ref mut duck_particles) = self.duck_pafrticles {
+            let mut particles_scale = duck_particles.get_scale();
+            particles_scale.x *= -1.0;
+            duck_particles.set_scale(particles_scale);
         }
         self.base_mut().set_scale(scale);
     }
@@ -917,9 +921,17 @@ impl Player {
         if knockback_direction > 0.0 {
             velocity.z = self.hitstun_force;
             to_ret = Some(Direction::Right);
+            if !self.facing_right {
+                self.flip();
+                self.facing_right = true;
+            }
         } else {
             velocity.z = -1.0 * self.hitstun_force;
             to_ret = Some(Direction::Left);
+            if self.facing_right {
+                self.flip();
+                self.facing_right = false;
+            }
         }
         self.base_mut().set_velocity(velocity);
         self.base_mut().move_and_slide();

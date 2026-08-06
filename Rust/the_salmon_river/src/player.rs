@@ -71,6 +71,9 @@ pub struct Player {
     duck_meter_manager: DuckMeterManager,
     duck_jumping: bool,
     dead: bool,
+    ice_chunk_dash_particles: Option<Gd<GpuParticles3D>>,
+    left_hand_fire_particles: Option<Gd<GpuParticles3D>>,
+    right_hand_fire_particles: Option<Gd<GpuParticles3D>>,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -124,9 +127,13 @@ impl ICharacterBody3D for Player {
             duck_meter_manager: DuckMeterManager::new(100, 2, 5, 50),
             duck_jumping: false,
             dead: false,
+            ice_chunk_dash_particles: None,
+            left_hand_fire_particles: None,
+            right_hand_fire_particles: None,
         }
     }
     fn ready(&mut self) {
+        self.ready_throwable_effect_particles();
         self.ready_health_systems();
         self.ready_duck_meter_systems();
         self.ready_body();
@@ -583,6 +590,9 @@ impl Player {
         let dash_timer;
         {
             let mut bind = this.bind_mut();
+            if let Some(ref mut particles) = bind.ice_chunk_dash_particles {
+                particles.set_emitting(true);
+            }
             bind.is_dashing = true;
             let mut velocity = bind.base().get_velocity();
             let direction = if bind.facing_right { -1.0 } else { 1.0 };
@@ -595,6 +605,9 @@ impl Player {
             .await;
         {
             let mut bind = this.bind_mut();
+            if let Some(ref mut particles) = bind.ice_chunk_dash_particles {
+                particles.set_emitting(false);
+            }
             bind.is_dashing = false;
         }
     }
@@ -887,6 +900,24 @@ impl Player {
             ));
         }
     }
+    fn ready_throwable_effect_particles(&mut self) {
+        self.ice_chunk_dash_particles = self.base().find_child("PlayerHead").and_then(|head| {
+            head.find_child("IceChunkDashParticles")
+                .and_then(|p| p.try_cast::<GpuParticles3D>().ok())
+        });
+        self.left_hand_fire_particles = self.base().find_child("LeftHand").and_then(|hand| {
+            hand.find_child("LeftHandMesh").and_then(|mesh| {
+                mesh.find_child("BuffParticlesHand")
+                    .and_then(|bph| bph.try_cast::<GpuParticles3D>().ok())
+            })
+        });
+        self.right_hand_fire_particles = self.base().find_child("RightHand").and_then(|hand| {
+            hand.find_child("RightHandMesh").and_then(|mesh| {
+                mesh.find_child("BuffParticlesHand")
+                    .and_then(|bph| bph.try_cast::<GpuParticles3D>().ok())
+            })
+        });
+    }
     fn scale_healthbar_with_health(&mut self) {
         if let Some(ref mut healthbar) = self.player_healthbar {
             let health_ratio = self.health as f32 / self.max_health as f32;
@@ -962,10 +993,22 @@ impl Player {
     fn calculate_punch_damage(&mut self) -> u8 {
         let to_ret = self.punch_damage + self.additional_next_punch_damage;
         self.additional_next_punch_damage = 0;
+        if let Some(ref mut right_particles) = self.right_hand_fire_particles {
+            right_particles.set_emitting(false);
+        }
+        if let Some(ref mut left_particles) = self.left_hand_fire_particles {
+            left_particles.set_emitting(false);
+        }
         to_ret
     }
     pub fn add_additional_punch_damage(&mut self, amount: u8) {
         self.additional_next_punch_damage += amount;
+        if let Some(ref mut right_particles) = self.right_hand_fire_particles {
+            right_particles.set_emitting(true);
+        }
+        if let Some(ref mut left_particles) = self.left_hand_fire_particles {
+            left_particles.set_emitting(true);
+        }
     }
     fn handle_throwable_hit(&mut self, area: Gd<Area3D>) {
         let throwable_opt = area

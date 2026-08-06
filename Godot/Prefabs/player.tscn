@@ -6,10 +6,60 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s6dll"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hck1p"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="Gradient" id="Gradient_y5hcb"]
+colors = PackedColorArray(0.08808193, 0.6330607, 0.86331064, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2nftw"]
+gradient = SubResource("Gradient_y5hcb")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y5hcb"]
+emission_shape = 1
+emission_sphere_radius = 0.41
+gravity = Vector3(0, 0, 0)
+scale_min = 0.099999994
+scale_max = 0.099999994
+color_ramp = SubResource("GradientTexture1D_2nftw")
+
+[sub_resource type="BoxMesh" id="BoxMesh_2nftw"]
+
+[sub_resource type="Skin" id="Skin_knrd4"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ba2sc"]
 albedo_color = Color(0.29411766, 0.19215687, 0.14509805, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_c4elv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_riw1m"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="Gradient" id="Gradient_2nftw"]
+offsets = PackedFloat32Array(0.005154639, 0.9896907)
+colors = PackedColorArray(1.0384669, 0, 0, 1, 1, 1, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_knrd4"]
+gradient = SubResource("Gradient_2nftw")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rai8w"]
+emission_shape = 1
+emission_sphere_radius = 1.59
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(1, 0, 1)
+spread = 180.0
+initial_velocity_min = 5.0
+initial_velocity_max = 5.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.099999994
+scale_max = 0.099999994
+color = Color(1.1952729, 1.1952729, 1.1952729, 1)
+color_ramp = SubResource("GradientTexture1D_knrd4")
+
+[sub_resource type="BoxMesh" id="BoxMesh_ba2sc"]
+
+[sub_resource type="Skin" id="Skin_doogp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bo1nx"]
 size = Vector3(1, 1, 2.7792969)
@@ -2723,6 +2773,17 @@ transform = Transform3D(0.3987029, 0, 0.91708, 0, 1, 0, -0.91708, 0, 0.3987029, 
 [node name="PlayerHeadMesh" parent="PlayerHead" unique_id=1732134774 instance=ExtResource("1_y6xdh")]
 transform = Transform3D(0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, -0.15247035, -0.5891471, -0.11744065)
 
+[node name="IceChunkDashParticles" type="GPUParticles3D" parent="PlayerHead" unique_id=960280552]
+transform = Transform3D(1.0000002, 0, 0, 0, 1, 0, 0, 0, 1.0000002, 0.024818929, -0.0036610365, -0.010790094)
+material_override = SubResource("StandardMaterial3D_hck1p")
+emitting = false
+amount = 40
+lifetime = 0.2
+preprocess = 1.0
+process_material = SubResource("ParticleProcessMaterial_y5hcb")
+draw_pass_1 = SubResource("BoxMesh_2nftw")
+draw_skin = SubResource("Skin_knrd4")
+
 [node name="LeftHand" type="Node3D" parent="." unique_id=1679546711]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.44968557, 1.755, -0.27574423)
 
@@ -2730,6 +2791,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.44968557, 1.755, -0.275744
 transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_ba2sc")
 mesh = SubResource("BoxMesh_c4elv")
+
+[node name="BuffParticlesHand" type="GPUParticles3D" parent="LeftHand/LeftHandMesh" unique_id=1868649568]
+material_override = SubResource("StandardMaterial3D_riw1m")
+emitting = false
+amount = 50
+lifetime = 0.09999999999999999
+process_material = SubResource("ParticleProcessMaterial_rai8w")
+draw_pass_1 = SubResource("BoxMesh_ba2sc")
+draw_skin = SubResource("Skin_doogp")
+
+[node name="GPUParticlesAttractorBox3D" type="GPUParticlesAttractorBox3D" parent="LeftHand/LeftHandMesh" unique_id=1998620712]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051243782, 2.1444712, 0.040278316)
+strength = 45.57
+size = Vector3(2, 8.0946045, 2)
 
 [node name="LeftHandArea" type="Area3D" parent="LeftHand" unique_id=522928415]
 
@@ -2752,6 +2827,20 @@ transform = Transform3D(0.75824225, 0, 0.65197295, 0, 1, 0, -0.65197295, 0, 0.75
 transform = Transform3D(0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_ba2sc")
 mesh = SubResource("BoxMesh_c4elv")
+
+[node name="BuffParticlesHand" type="GPUParticles3D" parent="RightHand/RightHandMesh" unique_id=26130936]
+material_override = SubResource("StandardMaterial3D_riw1m")
+emitting = false
+amount = 50
+lifetime = 0.09999999999999999
+process_material = SubResource("ParticleProcessMaterial_rai8w")
+draw_pass_1 = SubResource("BoxMesh_ba2sc")
+draw_skin = SubResource("Skin_doogp")
+
+[node name="GPUParticlesAttractorBox3D" type="GPUParticlesAttractorBox3D" parent="RightHand/RightHandMesh" unique_id=1782095273]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051243782, 2.1444712, 0.040278316)
+strength = 45.57
+size = Vector3(2, 8.0946045, 2)
 
 [node name="RightHandArea" type="Area3D" parent="RightHand" unique_id=1746554017]
 

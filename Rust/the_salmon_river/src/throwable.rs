@@ -96,6 +96,14 @@ impl Throwable {
     }
 }
 impl Throwable {
+    pub fn drop_itself(&mut self) {
+        let scene_root_opt = self.base().get_tree().get_current_scene();
+        if let Some(scene_root) = scene_root_opt {
+            self.base_mut()
+                .call_deferred("reparent", &[scene_root.to_variant()]);
+        }
+        self.in_hand = false;
+    }
     pub fn become_throwable(&mut self, throwable: Box<dyn Throwability>) {
         self.base()
             .find_child(throwable.visual_node_name())

@@ -70,6 +70,7 @@ pub struct Player {
     throwable_in_hand: Option<Gd<Throwable>>,
     duck_meter_manager: DuckMeterManager,
     duck_jumping: bool,
+    dead: bool,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -120,8 +121,9 @@ impl ICharacterBody3D for Player {
             intitial_duck_bar_scale: 0.0,
             throwable_in_hand: None,
             player_duck_bar: None,
-            duck_meter_manager: DuckMeterManager::new(100, 2, 5, 33),
+            duck_meter_manager: DuckMeterManager::new(100, 2, 5, 50),
             duck_jumping: false,
+            dead: false,
         }
     }
     fn ready(&mut self) {
@@ -137,7 +139,7 @@ impl ICharacterBody3D for Player {
     fn process(&mut self, delta: f64) {
         self.health_check();
         self.movement(delta);
-        if !self.hit_stun && !self.knock_back {
+        if !self.hit_stun && !self.knock_back && !self.dead {
             self.lower_animations();
             self.upper_animations();
             self.flip_based_on_facing_direction();
@@ -181,6 +183,9 @@ impl Player {
 }
 
 impl Player {
+    pub fn is_dead(&self) -> bool {
+        self.dead
+    }
     pub fn duck_bar_systems(&mut self) {
         self.duck_meter_manager.duck_meter_update(
             self.duck_jumped,
@@ -195,6 +200,15 @@ impl Player {
             upper_anim.set("parameters/conditions/in_hand", &true.to_variant());
         }
     }
+    pub fn drop_throwable(&mut self) {
+        self.in_hand = false;
+        if let Some(mut throwable) = self.throwable_in_hand.take() {
+            throwable.bind_mut().drop_itself();
+        }
+        if let Some(ref mut upper_anim) = self.upper_anim_tree {
+            upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
+        }
+    }
     pub fn can_pick_up_throwable(&self) -> bool {
         !self.in_hand
     }
@@ -206,16 +220,17 @@ impl Player {
     }
     fn health_check(&mut self) {
         self.scale_healthbar_with_health();
-        if self.health <= 0 {
-            self.base_mut().queue_free();
-        }
+        // if self.health <= 0 {
+        //     self.base_mut().queue_free();
+        // }
     }
     fn movement(&mut self, delta: f64) {
         let input = Input::singleton();
         let mut velocity = self.base().get_velocity();
         // Apply gravity
         velocity.y -= 20.0 * delta as f32;
-        if !self.is_punching && !self.hit_stun && !self.knock_back && !self.is_dashing {
+        if !self.is_punching && !self.hit_stun && !self.knock_back && !self.is_dashing && !self.dead
+        {
             velocity.z = 0.0;
         }
         if input.is_key_pressed(self.left_key)
@@ -657,12 +672,72 @@ impl Player {
             }
         }
     }
+    async fn death_routine(mut this: Gd<Self>, knock_dir: Direction) {
+        let timer;
+        {
+            let mut bind = this.bind_mut();
+            bind.dead = true;
+            let mut velocity = bind.base().get_velocity();
+            bind.drop_throwable();
+            velocity.y += bind.knock_back_force;
+            match knock_dir {
+                Direction::Left => velocity.z -= bind.knock_back_force * 0.4,
+                Direction::Right => velocity.z += bind.knock_back_force * 0.4,
+            }
+            bind.base_mut().set_velocity(velocity);
+            if let Some(ref mut low_anim) = bind.lower_anim_tree {
+                low_anim.set("parameters/conditions/jump", &false.to_variant());
+                low_anim.set("parameters/conditions/idle", &false.to_variant());
+                low_anim.set("parameters/conditions/run", &false.to_variant());
+                low_anim.set("parameters/conditions/duck", &false.to_variant());
+                low_anim.set("parameters/conditions/hit", &false.to_variant());
+                low_anim.set("parameters/conditions/knock", &false.to_variant());
+                low_anim.set("parameters/conditions/death", &true.to_variant());
+            }
+            if let Some(ref mut upp_anim) = bind.upper_anim_tree {
+                upp_anim.set("parameters/conditions/jump", &false.to_variant());
+                upp_anim.set("parameters/conditions/idle", &false.to_variant());
+                upp_anim.set("parameters/conditions/run", &false.to_variant());
+                upp_anim.set("parameters/conditions/hit", &false.to_variant());
+                upp_anim.set("parameters/conditions/knock", &false.to_variant());
+                upp_anim.set("parameters/conditions/death", &true.to_variant());
+            }
+            timer = bind.base().get_tree().create_timer(1.0);
+        }
+        Signal::from_object_signal(&timer, "timeout")
+            .to_future::<()>()
+            .await;
+        {
+            let mut bind = this.bind_mut();
+            let mut velocity = bind.base().get_velocity();
+            velocity.z = 0.0;
+            bind.base_mut().set_velocity(velocity);
+            if let Some(ref mut low_anim) = bind.lower_anim_tree {
+                low_anim.set("parameters/conditions/jump", &false.to_variant());
+                low_anim.set("parameters/conditions/idle", &false.to_variant());
+                low_anim.set("parameters/conditions/run", &false.to_variant());
+                low_anim.set("parameters/conditions/duck", &false.to_variant());
+                low_anim.set("parameters/conditions/hit", &false.to_variant());
+                low_anim.set("parameters/conditions/knock", &false.to_variant());
+                low_anim.set("parameters/conditions/death", &false.to_variant());
+            }
+            if let Some(ref mut upp_anim) = bind.upper_anim_tree {
+                upp_anim.set("parameters/conditions/jump", &false.to_variant());
+                upp_anim.set("parameters/conditions/idle", &false.to_variant());
+                upp_anim.set("parameters/conditions/run", &false.to_variant());
+                upp_anim.set("parameters/conditions/hit", &false.to_variant());
+                upp_anim.set("parameters/conditions/knock", &false.to_variant());
+                upp_anim.set("parameters/conditions/death", &false.to_variant());
+            }
+        }
+    }
     async fn knockback_routine(mut this: Gd<Self>, knock_dir: Direction) {
         let timer;
         {
             let mut bind = this.bind_mut();
             bind.knock_back = true;
             let mut velocity = bind.base().get_velocity();
+            bind.drop_throwable();
             velocity.y += bind.knock_back_force;
             match knock_dir {
                 Direction::Left => velocity.z -= bind.knock_back_force * 0.4,
@@ -684,7 +759,7 @@ impl Player {
                 upp_anim.set("parameters/conditions/hit", &false.to_variant());
                 upp_anim.set("parameters/conditions/knock", &true.to_variant());
             }
-            timer = bind.base().get_tree().create_timer(1.0);
+            timer = bind.base().get_tree().create_timer(1.3);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
@@ -861,9 +936,14 @@ impl Player {
                 self.damage(player.bind_mut().calculate_punch_damage());
             }
             if let Some(knock_dir) = knock_dir_opt {
+                let health = self.health;
                 let this = self.to_gd();
                 let _guard = self.base_mut();
-                godot::task::spawn(Self::hitstun_routine(this, knock_dir));
+                if health <= 0 {
+                    godot::task::spawn(Self::death_routine(this, knock_dir));
+                } else {
+                    godot::task::spawn(Self::hitstun_routine(this, knock_dir));
+                }
             }
         }
     }

@@ -103,7 +103,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_6bp64"]
 resource_name = "left_point"
-length = 2.0100000000000002
+length = 2.01
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -185,7 +185,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_21xkr"]
 resource_name = "up_point"
-length = 2.0100000000000002
+length = 2.01
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false

@@ -208,6 +208,7 @@ impl Player {
         self.in_hand = true;
         if let Some(ref mut upper_anim) = self.upper_anim_tree {
             upper_anim.set("parameters/conditions/in_hand", &true.to_variant());
+            upper_anim.set("parameters/conditions/drop", &false.to_variant());
         }
     }
     pub fn hold_throwable(&mut self, throwable: Gd<Throwable>) {
@@ -227,6 +228,7 @@ impl Player {
         }
         if let Some(ref mut upper_anim) = self.upper_anim_tree {
             upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
+            upper_anim.set("parameters/conditions/drop", &true.to_variant());
         }
     }
     pub fn can_pick_up_throwable(&self) -> bool {
@@ -386,12 +388,10 @@ impl Player {
                 anim_tree.set("parameters/conditions/jump", &false.to_variant());
                 anim_tree.set("parameters/conditions/idle", &false.to_variant());
                 anim_tree.set("parameters/conditions/run", &true.to_variant());
-                anim_tree.set("parameters/conditions/drop", &false.to_variant());
             } else {
                 anim_tree.set("parameters/conditions/jump", &false.to_variant());
                 anim_tree.set("parameters/conditions/idle", &true.to_variant());
                 anim_tree.set("parameters/conditions/run", &false.to_variant());
-                anim_tree.set("parameters/conditions/drop", &false.to_variant());
             }
         }
     }
@@ -689,7 +689,7 @@ impl Player {
             bind.hit_stun = true;
         }
         if should_knockback {
-            godot::task::spawn(Self::knockback_routine(this, knock_dir));
+            godot::task::spawn(Self::knockback_routine(this, knock_dir, false));
             return;
         }
         let timer;
@@ -786,17 +786,21 @@ impl Player {
             }
         }
     }
-    async fn knockback_routine(mut this: Gd<Self>, knock_dir: Direction) {
+    async fn knockback_routine(mut this: Gd<Self>, knock_dir: Direction, from_throw: bool) {
         let timer;
         {
             let mut bind = this.bind_mut();
             bind.knock_back = true;
             let mut velocity = bind.base().get_velocity();
             bind.drop_throwable();
-            velocity.y += bind.knock_back_force;
+            let mut knock_back_force_used = bind.knock_back_force;
+            if from_throw {
+                knock_back_force_used *= 1.5;
+            }
+            velocity.y += knock_back_force_used;
             match knock_dir {
-                Direction::Left => velocity.z -= bind.knock_back_force * 0.4,
-                Direction::Right => velocity.z += bind.knock_back_force * 0.4,
+                Direction::Left => velocity.z -= knock_back_force_used * 0.4,
+                Direction::Right => velocity.z += knock_back_force_used * 0.4,
             }
             bind.base_mut().set_velocity(velocity);
             if let Some(ref mut low_anim) = bind.lower_anim_tree {
@@ -1040,6 +1044,21 @@ impl Player {
             self.base_mut()
                 .call_deferred("reparent", &[scene_root.to_variant()]);
         }
+        if let Some(ref mut low_anim) = self.lower_anim_tree {
+            low_anim.set("parameters/conditions/jump", &false.to_variant());
+            low_anim.set("parameters/conditions/idle", &false.to_variant());
+            low_anim.set("parameters/conditions/run", &false.to_variant());
+            low_anim.set("parameters/conditions/duck", &false.to_variant());
+            low_anim.set("parameters/conditions/hit", &false.to_variant());
+            low_anim.set("parameters/conditions/knock", &false.to_variant());
+        }
+        if let Some(ref mut upp_anim) = self.upper_anim_tree {
+            upp_anim.set("parameters/conditions/jump", &false.to_variant());
+            upp_anim.set("parameters/conditions/idle", &false.to_variant());
+            upp_anim.set("parameters/conditions/run", &false.to_variant());
+            upp_anim.set("parameters/conditions/hit", &false.to_variant());
+            upp_anim.set("parameters/conditions/knock", &false.to_variant());
+        }
         self.grabbed_by_another_player = false;
     }
     fn on_thrown_by_another_player(&mut self, dir: Direction) {
@@ -1071,12 +1090,16 @@ impl Player {
         self.base_mut().set_scale(Vector3::ONE);
         let this = self.to_gd();
         let _guard = self.base_mut();
-        godot::task::spawn(Self::knockback_routine(this, {
-            match dir {
-                Direction::Left => Direction::Right,
-                _ => Direction::Left,
-            }
-        }));
+        godot::task::spawn(Self::knockback_routine(
+            this,
+            {
+                match dir {
+                    Direction::Left => Direction::Right,
+                    _ => Direction::Left,
+                }
+            },
+            true,
+        ));
     }
     fn handle_grab(&mut self, area: Gd<Area3D>) {
         if !self.knock_back {
@@ -1125,6 +1148,13 @@ impl Player {
                         upp_anim.set("parameters/conditions/hit", &false.to_variant());
                         upp_anim.set("parameters/conditions/knock", &true.to_variant());
                     }
+                    let drop_timer = self.base().get_tree().create_timer(2.0);
+                    godot::task::spawn(async move {
+                        Signal::from_object_signal(&drop_timer, "timeout")
+                            .to_future::<()>()
+                            .await;
+                        grabber.bind_mut().drop_throwable();
+                    });
                 }
             }
         }

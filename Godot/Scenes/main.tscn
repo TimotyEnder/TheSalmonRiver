@@ -349,6 +349,10 @@ transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9
 shape = SubResource("BoxShape3D_c4elv")
 debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
 
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="Environment/LeftBank" unique_id=1350785815]
+transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.05606067)
+size = Vector3(7.5808105, 1.6069336, 2)
+
 [node name="RightBank" type="StaticBody3D" parent="Environment" unique_id=1206110942]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.375, 0.731, -2.591)
 collision_mask = 3
@@ -360,6 +364,10 @@ transform = Transform3D(0.21281703, 0, 0, 0, 0.1, 0, -8.881784e-16, 0, 0.1, -1.6
 transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.05606082)
 shape = SubResource("BoxShape3D_c4elv")
 debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="Environment/RightBank" unique_id=1375707903]
+transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.05606067)
+size = Vector3(7.5808105, 1.6069336, 2)
 
 [node name="ThrowableSpawner" type="ThrowableSpawner" parent="." unique_id=453820178]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7953838, 0)

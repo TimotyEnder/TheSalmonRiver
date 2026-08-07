@@ -8,6 +8,32 @@ size = Vector3(0.21557617, 2.0839233, 0.22387695)
 [sub_resource type="BoxShape3D" id="BoxShape3D_uf5xu"]
 size = Vector3(0.21014404, 1.8500366, 0.2230835)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uf5xu"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xkblx"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_h3b0f"]
+emission_shape_scale = Vector3(0.475, 0.33, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(1, 1, 1)
+spread = 180.0
+initial_velocity_min = 2.5
+initial_velocity_max = 2.5
+angular_velocity_min = -1.6093254e-05
+angular_velocity_max = -1.6093254e-05
+gravity = Vector3(0, -20, 0)
+color = Color(0.51333654, 0.39170495, 0.11393844, 1)
+collision_mode = 1
+collision_friction = 1.0
+collision_bounce = 0.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_cv87q"]
+size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="Skin" id="Skin_q7x64"]
+
 [node name="LogObsticle" type="RigidBody3D" unique_id=1730844675]
 collision_layer = 2
 axis_lock_linear_x = true
@@ -28,3 +54,16 @@ shape = SubResource("BoxShape3D_c4elv")
 [node name="PhysicsCollider" type="CollisionShape3D" parent="." unique_id=1649075871]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.024383545, 0.55426025, 0.001739502)
 shape = SubResource("BoxShape3D_uf5xu")
+
+[node name="BreakParticles" type="GPUParticles3D" parent="." unique_id=1244448803]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.006845951, 0.35472918, 1.5505705e-08)
+material_override = SubResource("StandardMaterial3D_uf5xu")
+material_overlay = SubResource("StandardMaterial3D_xkblx")
+emitting = false
+amount = 20
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_h3b0f")
+draw_pass_1 = SubResource("BoxMesh_cv87q")
+draw_skin = SubResource("Skin_q7x64")

@@ -6,6 +6,74 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ba2sc"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_doogp"]
+
+[sub_resource type="Gradient" id="Gradient_r447o"]
+colors = PackedColorArray(0.41960785, 0.84705883, 0.9647059, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1yhin"]
+gradient = SubResource("Gradient_r447o")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1yhin"]
+emission_shape = 1
+emission_sphere_radius = 0.5
+direction = Vector3(1, 1, 1)
+spread = 180.0
+initial_velocity_min = 2.5
+initial_velocity_max = 2.5
+angular_velocity_min = -1.6093254e-05
+angular_velocity_max = -1.6093254e-05
+gravity = Vector3(0, -20, 0)
+color_ramp = SubResource("GradientTexture1D_1yhin")
+collision_mode = 1
+collision_friction = 1.0
+collision_bounce = 0.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_rai8w"]
+size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="Skin" id="Skin_c4elv"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qhpb6"]
+emission_shape_scale = Vector3(0.475, 0.33, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(1, 1, 1)
+spread = 180.0
+initial_velocity_min = 2.5
+initial_velocity_max = 2.5
+angular_velocity_min = -1.6093254e-05
+angular_velocity_max = -1.6093254e-05
+gravity = Vector3(0, -20, 0)
+color = Color(0.51333654, 0.39170495, 0.11393844, 1)
+collision_mode = 1
+collision_friction = 1.0
+collision_bounce = 0.2
+
+[sub_resource type="Gradient" id="Gradient_7qa0y"]
+colors = PackedColorArray(0.39588735, 0.40505219, 0.42337885, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qhpb6"]
+gradient = SubResource("Gradient_7qa0y")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_idx6p"]
+emission_shape = 1
+emission_sphere_radius = 0.5
+direction = Vector3(1, 1, 1)
+spread = 180.0
+initial_velocity_min = 2.5
+initial_velocity_max = 2.5
+angular_velocity_min = -1.6093254e-05
+angular_velocity_max = -1.6093254e-05
+gravity = Vector3(0, -20, 0)
+color_ramp = SubResource("GradientTexture1D_qhpb6")
+collision_mode = 1
+collision_friction = 1.0
+collision_bounce = 0.2
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_kry3j"]
 size = Vector3(0.7802124, 1, 0.78619385)
 
@@ -24,17 +92,53 @@ visible = false
 [node name="IceChunkMesh" parent="IceChunk" unique_id=414986963 instance=ExtResource("1_r447o")]
 transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, 0.103794456, -0.14446664, 0)
 
+[node name="BreakParticles" type="GPUParticles3D" parent="IceChunk" unique_id=1204719171]
+material_override = SubResource("StandardMaterial3D_ba2sc")
+material_overlay = SubResource("StandardMaterial3D_doogp")
+emitting = false
+amount = 20
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_1yhin")
+draw_pass_1 = SubResource("BoxMesh_rai8w")
+draw_skin = SubResource("Skin_c4elv")
+
 [node name="Log" type="Node3D" parent="." unique_id=439990241]
 visible = false
 
 [node name="LogMesh" parent="Log" unique_id=693505904 instance=ExtResource("2_1yhin")]
 transform = Transform3D(-0.032627974, 0.10504959, 4.440892e-16, -4.591863e-09, -1.4262144e-09, 0.11000001, 0.105049595, 0.032627974, 4.808253e-09, -0.1299026, 0.006646633, -0.109236225)
 
+[node name="BreakParticles" type="GPUParticles3D" parent="Log" unique_id=551732934]
+material_override = SubResource("StandardMaterial3D_ba2sc")
+material_overlay = SubResource("StandardMaterial3D_doogp")
+emitting = false
+amount = 20
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_qhpb6")
+draw_pass_1 = SubResource("BoxMesh_rai8w")
+draw_skin = SubResource("Skin_c4elv")
+
 [node name="Salmon" type="Node3D" parent="." unique_id=1126566610]
 visible = false
 
 [node name="SalmonMesh" parent="Salmon" unique_id=209535160 instance=ExtResource("3_qhpb6")]
 transform = Transform3D(0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, 0.84577566, -0.444417, 0)
+
+[node name="BreakParticles" type="GPUParticles3D" parent="Salmon" unique_id=531103772]
+material_override = SubResource("StandardMaterial3D_ba2sc")
+material_overlay = SubResource("StandardMaterial3D_doogp")
+emitting = false
+amount = 20
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_idx6p")
+draw_pass_1 = SubResource("BoxMesh_rai8w")
+draw_skin = SubResource("Skin_c4elv")
 
 [node name="ThrowableArea" type="Area3D" parent="." unique_id=46299995]
 

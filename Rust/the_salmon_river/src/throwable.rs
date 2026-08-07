@@ -1,10 +1,12 @@
+use std::fmt::format;
+
 use crate::{
     player::Player,
     throwables::{ice_chunk::IceChunk, log::Log, salmon::Salmon, throwability::Throwability},
     utils::Direction,
 };
 use godot::{
-    classes::{Area3D, CollisionShape3D, IRigidBody3D, RigidBody3D},
+    classes::{Area3D, CollisionShape3D, GpuParticles3D, IRigidBody3D, RigidBody3D},
     prelude::*,
 };
 #[derive(GodotClass)]
@@ -86,7 +88,25 @@ impl Throwable {
         if area.get_name().contains("Log") && (self.thrown) {
             let log_root_node_opt = area.get_parent().and_then(|f| f.try_cast::<Node3D>().ok());
             if let Some(mut log_root_node) = log_root_node_opt {
-                log_root_node.call_deferred("queue_free", &[]);
+                let log_particles = log_root_node
+                    .find_child("BreakParticles")
+                    .and_then(|bp| bp.try_cast::<GpuParticles3D>().ok());
+                let log_mesh = log_root_node
+                    .find_child("LogMesh")
+                    .and_then(|bp| bp.try_cast::<Node3D>().ok());
+                if let Some(mut logmesh) = log_mesh
+                    && let Some(mut log_p) = log_particles
+                {
+                    logmesh.set_visible(false);
+                    log_p.set_emitting(true);
+                }
+                let timer = self.base().get_tree().create_timer(2.0);
+                godot::task::spawn(async move {
+                    Signal::from_object_signal(&timer, "timeout")
+                        .to_future::<()>()
+                        .await;
+                    log_root_node.call_deferred("queue_free", &[]);
+                });
             }
             self.base_mut().call_deferred("queue_free", &[]);
         }
@@ -153,7 +173,40 @@ impl Throwable {
     }
     fn on_physics_collision(&mut self, _body: Gd<Node>) {
         if self.thrown {
-            self.base_mut().call_deferred("queue_free", &[]);
+            self.break_itself();
+        }
+    }
+    fn break_itself(&mut self) {
+        if let Some(throwability) = self.throwable_inner.take() {
+            let particles_to_explode = self
+                .base()
+                .find_child(throwability.visual_node_name())
+                .and_then(|th| {
+                    th.find_child("BreakParticles")
+                        .and_then(|bp| bp.try_cast::<GpuParticles3D>().ok())
+                });
+            if let Some(mut particles) = particles_to_explode {
+                particles.set_emitting(true);
+                let timer = self.base().get_tree().create_timer(2.0);
+                let mut this = self.to_gd();
+                let mesh_name = format!("{}Mesh", throwability.visual_node_name());
+                let mesh = self
+                    .base()
+                    .find_child(throwability.visual_node_name())
+                    .and_then(|th| {
+                        th.find_child(&mesh_name)
+                            .and_then(|mesh| mesh.try_cast::<Node3D>().ok())
+                    });
+                if let Some(mut mesh) = mesh {
+                    mesh.set_visible(false);
+                }
+                godot::task::spawn(async move {
+                    Signal::from_object_signal(&timer, "timeout")
+                        .to_future::<()>()
+                        .await;
+                    this.call_deferred("queue_free", &[]);
+                });
+            }
         }
     }
     pub fn does_player_hitstun(&self, player_num: u8) -> bool {

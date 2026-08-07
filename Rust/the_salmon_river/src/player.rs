@@ -1,7 +1,6 @@
-use godot::classes::xr_positional_tracker::SignalsOfXrPositionalTracker;
 use godot::classes::{
     AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, GpuParticles3D, ICharacterBody3D,
-    Input, Label3D, Sprite3D, Time,
+    Input, Label3D, Sprite3D, Time, VisualShaderNodeGroupBase,
 };
 use godot::global::Key;
 use godot::prelude::*;
@@ -9,6 +8,7 @@ use godot::prelude::*;
 use crate::duck_meter_manager::DuckMeterManager;
 use crate::throwable::Throwable;
 use crate::throwables::throwability::Throwability;
+use crate::utils::Direction::Left;
 use crate::utils::*;
 
 #[derive(GodotClass)]
@@ -68,12 +68,16 @@ pub struct Player {
     intitial_duck_bar_scale: f32,
     max_health: u8,
     throwable_in_hand: Option<Gd<Throwable>>,
+    player_throwable_in_hand: Option<Gd<Player>>,
     duck_meter_manager: DuckMeterManager,
     duck_jumping: bool,
     dead: bool,
     ice_chunk_dash_particles: Option<Gd<GpuParticles3D>>,
     left_hand_fire_particles: Option<Gd<GpuParticles3D>>,
     right_hand_fire_particles: Option<Gd<GpuParticles3D>>,
+    grabbed_by_another_player: bool,
+    thrown_by_another_player: bool,
+    force_on_thrown: f32,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -130,6 +134,10 @@ impl ICharacterBody3D for Player {
             ice_chunk_dash_particles: None,
             left_hand_fire_particles: None,
             right_hand_fire_particles: None,
+            grabbed_by_another_player: false,
+            thrown_by_another_player: false,
+            force_on_thrown: 8.0,
+            player_throwable_in_hand: None,
         }
     }
     fn ready(&mut self) {
@@ -145,8 +153,11 @@ impl ICharacterBody3D for Player {
     }
     fn process(&mut self, delta: f64) {
         self.health_check();
-        self.movement(delta);
-        if !self.hit_stun && !self.knock_back && !self.dead {
+        self.negate_scale_changes_on_grab();
+        if !self.grabbed_by_another_player {
+            self.movement(delta);
+        }
+        if !self.hit_stun && !self.knock_back && !self.dead && !self.grabbed_by_another_player {
             self.lower_animations();
             self.upper_animations();
             self.flip_based_on_facing_direction();
@@ -159,6 +170,8 @@ impl ICharacterBody3D for Player {
 impl Player {
     #[signal]
     pub fn on_throwable_throw(dir: Direction);
+    #[signal]
+    pub fn on_player_grabbed(grabber_id: u8);
     #[func]
     fn on_player_hit(&mut self, area: Gd<Area3D>) {
         let area_name = area.get_name();
@@ -166,9 +179,9 @@ impl Player {
         if !area_groups.contains(&format!("p{}", self.player_num)) {
             godot_print!("{}", area_name);
             if area_name.contains("Grab") {
-                godot_print!("Grab");
+                self.handle_grab(area);
             } else if area_name.contains("Hand") {
-                self.handle_getting_punched(area);
+                self.handle_punch(area);
             } else if area_name.contains("ThrowableArea") {
                 self.handle_throwable_hit(area);
             }
@@ -185,6 +198,14 @@ impl Player {
                         .and_then(|th| th.try_cast::<Throwable>().ok())
                 })
             });
+            if !self.throwable_in_hand.is_some() {
+                self.player_throwable_in_hand =
+                    self.base().find_child("RightHand").and_then(|rh| {
+                        rh.find_child("PickUpArea").and_then(|pua| {
+                            pua.get_child(0).and_then(|th| th.try_cast::<Player>().ok())
+                        })
+                    });
+            }
         }
     }
 }
@@ -212,6 +233,9 @@ impl Player {
         if let Some(mut throwable) = self.throwable_in_hand.take() {
             throwable.bind_mut().drop_itself();
         }
+        if let Some(mut player_throwable) = self.player_throwable_in_hand.take() {
+            player_throwable.bind_mut().on_dropped_by_another_player();
+        }
         if let Some(ref mut upper_anim) = self.upper_anim_tree {
             upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
         }
@@ -225,6 +249,13 @@ impl Player {
     pub fn damage(&mut self, amount: u8) {
         self.health = self.health.saturating_sub(amount);
     }
+    fn negate_scale_changes_on_grab(&mut self) {
+        if self.grabbed_by_another_player {
+            self.base_mut().set_scale(Vector3::ONE);
+            self.base_mut().set_rotation(Vector3::ZERO);
+        }
+    }
+
     fn health_check(&mut self) {
         self.scale_healthbar_with_health();
         // if self.health <= 0 {
@@ -236,6 +267,10 @@ impl Player {
         let mut velocity = self.base().get_velocity();
         // Apply gravity
         velocity.y -= 20.0 * delta as f32;
+        let mut speed_to_use = self.speed;
+        if self.player_throwable_in_hand.is_some() {
+            speed_to_use *= 0.5;
+        }
         if !self.is_punching && !self.hit_stun && !self.knock_back && !self.is_dashing && !self.dead
         {
             velocity.z = 0.0;
@@ -244,8 +279,9 @@ impl Player {
             && !self.is_punching
             && !self.hit_stun
             && !self.is_dashing
+            && !self.dead
         {
-            velocity.z += self.speed;
+            velocity.z += speed_to_use;
             if self.facing_right {
                 self.facing_right = false;
             }
@@ -254,8 +290,9 @@ impl Player {
             && !self.is_punching
             && !self.hit_stun
             && !self.is_dashing
+            && !self.dead
         {
-            velocity.z += -self.speed;
+            velocity.z += -speed_to_use;
             if !self.facing_right {
                 self.facing_right = true;
             }
@@ -264,6 +301,7 @@ impl Player {
             && self.base().is_on_floor()
             && !self.jumped
             && !self.hit_stun
+            && !self.dead
         {
             self.jumped = true;
             velocity.y = self.jump_force;
@@ -274,6 +312,7 @@ impl Player {
         if input.is_key_pressed(self.duck_key)
             && !self.base().is_on_floor()
             && !self.duck_jumped
+            && !self.dead
             && self.duck_meter_manager.can_duck_jump()
         {
             velocity.y = self.jump_force;
@@ -291,6 +330,7 @@ impl Player {
             && !self.is_grab
             && !self.is_punching
             && !self.is_throwing
+            && !self.dead
             && self.duck_meter_manager.can_duck()
         {
             if !self.ducked {
@@ -484,6 +524,7 @@ impl Player {
                     false => Direction::Left,
                 }
             });
+            bind.drop_throwable();
             bind.in_hand = false;
             bind.throwable_in_hand = None;
             bind.is_throwing = false;
@@ -643,6 +684,9 @@ impl Player {
         let should_knockback;
         {
             let mut bind = this.bind_mut();
+            if bind.knock_back {
+                return;
+            }
             if bind.hit_stun {
                 bind.hit_stun_routine_entries += 1;
                 bind.hit_stun_hits += 1;
@@ -968,7 +1012,121 @@ impl Player {
         self.base_mut().move_and_slide();
         return to_ret;
     }
-    fn handle_getting_punched(&mut self, area: Gd<Area3D>) {
+    fn calculate_punch_damage(&mut self) -> u8 {
+        let to_ret = self.punch_damage + self.additional_next_punch_damage;
+        self.additional_next_punch_damage = 0;
+        if let Some(ref mut right_particles) = self.right_hand_fire_particles {
+            right_particles.set_emitting(false);
+        }
+        if let Some(ref mut left_particles) = self.left_hand_fire_particles {
+            left_particles.set_emitting(false);
+        }
+        to_ret
+    }
+    pub fn add_additional_punch_damage(&mut self, amount: u8) {
+        self.additional_next_punch_damage += amount;
+        if let Some(ref mut right_particles) = self.right_hand_fire_particles {
+            right_particles.set_emitting(true);
+        }
+        if let Some(ref mut left_particles) = self.left_hand_fire_particles {
+            left_particles.set_emitting(true);
+        }
+    }
+    fn on_dropped_by_another_player(&mut self) {
+        let scene_root_opt = self.base().get_tree().get_current_scene();
+        if let Some(scene_root) = scene_root_opt {
+            self.base_mut()
+                .call_deferred("reparent", &[scene_root.to_variant()]);
+        }
+        self.grabbed_by_another_player = false;
+    }
+    fn on_thrown_by_another_player(&mut self, dir: Direction) {
+        if let Some(ref mut low_anim) = self.lower_anim_tree {
+            low_anim.set("parameters/conditions/jump", &false.to_variant());
+            low_anim.set("parameters/conditions/idle", &false.to_variant());
+            low_anim.set("parameters/conditions/run", &false.to_variant());
+            low_anim.set("parameters/conditions/duck", &false.to_variant());
+            low_anim.set("parameters/conditions/hit", &false.to_variant());
+            low_anim.set("parameters/conditions/knock", &false.to_variant());
+        }
+        if let Some(ref mut upp_anim) = self.upper_anim_tree {
+            upp_anim.set("parameters/conditions/jump", &false.to_variant());
+            upp_anim.set("parameters/conditions/idle", &false.to_variant());
+            upp_anim.set("parameters/conditions/run", &false.to_variant());
+            upp_anim.set("parameters/conditions/hit", &false.to_variant());
+            upp_anim.set("parameters/conditions/knock", &false.to_variant());
+        }
+        self.thrown_by_another_player = true;
+        let scene_root_opt = self.base().get_tree().get_current_scene();
+        if let Some(scene_root) = scene_root_opt {
+            self.base_mut()
+                .call_deferred("reparent", &[scene_root.to_variant()]);
+        }
+        self.grabbed_by_another_player = false;
+        self.base_mut().set_velocity(Vector3::ZERO);
+        self.base_mut().set_rotation(Vector3::ZERO);
+        self.base_mut().set_scale(Vector3::ONE);
+        let this = self.to_gd();
+        let _guard = self.base_mut();
+        godot::task::spawn(Self::knockback_routine(this, {
+            match dir {
+                Direction::Left => Direction::Right,
+                _ => Direction::Left,
+            }
+        }));
+    }
+    fn handle_grab(&mut self, area: Gd<Area3D>) {
+        let other_player_opt = area.get_parent().and_then(|left_hand| {
+            left_hand
+                .get_parent()
+                .and_then(|player| player.try_cast::<Player>().ok())
+        });
+        if let Some(mut grabber) = other_player_opt {
+            if grabber.bind().can_pick_up_throwable() {
+                grabber.bind_mut().pick_up_throwable();
+                let this = self.to_gd();
+                grabber
+                    .signals()
+                    .on_throwable_throw()
+                    .connect_other(&this, Self::on_thrown_by_another_player);
+                self.signals()
+                    .on_player_grabbed()
+                    .connect_other(&grabber, Player::search_for_throwable_in_hand);
+                let player_num = {
+                    let player_script = grabber.bind();
+                    player_script.get_player_num()
+                };
+                let pickup_area_opt = grabber.find_child("RightHand").and_then(|rh| {
+                    rh.find_child("PickUpArea")
+                        .and_then(|pua| pua.try_cast::<Node3D>().ok())
+                });
+                if let Some(pickup_area) = pickup_area_opt {
+                    self.base_mut().reparent(&pickup_area);
+                    let mut local_pos = Vector3::ZERO;
+                    local_pos.y -= 1.5;
+                    self.base_mut().set_position(local_pos);
+                    self.grabbed_by_another_player = true;
+                }
+                self.signals().on_player_grabbed().emit(player_num);
+                if let Some(ref mut low_anim) = self.lower_anim_tree {
+                    low_anim.set("parameters/conditions/jump", &false.to_variant());
+                    low_anim.set("parameters/conditions/idle", &false.to_variant());
+                    low_anim.set("parameters/conditions/run", &false.to_variant());
+                    low_anim.set("parameters/conditions/duck", &false.to_variant());
+                    low_anim.set("parameters/conditions/hit", &false.to_variant());
+                    low_anim.set("parameters/conditions/knock", &true.to_variant());
+                }
+                if let Some(ref mut upp_anim) = self.upper_anim_tree {
+                    upp_anim.set("parameters/conditions/jump", &false.to_variant());
+                    upp_anim.set("parameters/conditions/idle", &false.to_variant());
+                    upp_anim.set("parameters/conditions/run", &false.to_variant());
+                    upp_anim.set("parameters/conditions/hit", &false.to_variant());
+                    upp_anim.set("parameters/conditions/knock", &true.to_variant());
+                }
+            }
+        }
+    }
+    fn handle_punch(&mut self, area: Gd<Area3D>) {
         if !self.ducked && !self.duck_jumping {
             let player_opt = area
                 .get_parent()
@@ -988,26 +1146,6 @@ impl Player {
                     godot::task::spawn(Self::hitstun_routine(this, knock_dir));
                 }
             }
-        }
-    }
-    fn calculate_punch_damage(&mut self) -> u8 {
-        let to_ret = self.punch_damage + self.additional_next_punch_damage;
-        self.additional_next_punch_damage = 0;
-        if let Some(ref mut right_particles) = self.right_hand_fire_particles {
-            right_particles.set_emitting(false);
-        }
-        if let Some(ref mut left_particles) = self.left_hand_fire_particles {
-            left_particles.set_emitting(false);
-        }
-        to_ret
-    }
-    pub fn add_additional_punch_damage(&mut self, amount: u8) {
-        self.additional_next_punch_damage += amount;
-        if let Some(ref mut right_particles) = self.right_hand_fire_particles {
-            right_particles.set_emitting(true);
-        }
-        if let Some(ref mut left_particles) = self.left_hand_fire_particles {
-            left_particles.set_emitting(true);
         }
     }
     fn handle_throwable_hit(&mut self, area: Gd<Area3D>) {

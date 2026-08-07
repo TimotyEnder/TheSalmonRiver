@@ -47,7 +47,7 @@ impl IRigidBody3D for Throwable {
 #[godot_api]
 impl Throwable {
     #[signal]
-    fn throwable_grabbed(player_num: u8);
+    fn on_throwable_grabbed(player_num: u8);
     #[func]
     fn on_hitbox_entered(&mut self, area: Gd<Area3D>) {
         if area.get_name().contains("Grab") {
@@ -64,7 +64,7 @@ impl Throwable {
                         .on_throwable_throw()
                         .connect_other(&this, Self::on_thrown);
                     self.signals()
-                        .throwable_grabbed()
+                        .on_throwable_grabbed()
                         .connect_other(&player, Player::search_for_throwable_in_hand);
                     let player_num = {
                         let player_script = player.bind();
@@ -81,7 +81,7 @@ impl Throwable {
                             self.base_mut().set_position(Vector3::ZERO);
                             self.in_hand = true;
                         }
-                        self.signals().throwable_grabbed().emit(player_num);
+                        self.signals().on_throwable_grabbed().emit(player_num);
                     }
                 }
             }
@@ -134,12 +134,11 @@ impl Throwable {
     }
     fn on_thrown(&mut self, dir: Direction) {
         self.thrown = true;
-        let scene_root_opt = self.base().get_tree().get_current_scene();
-        if let Some(scene_root) = scene_root_opt {
-            self.base_mut()
-                .call_deferred("reparent", &[scene_root.to_variant()]);
-        }
-        self.in_hand = false;
+        // let scene_root_opt = self.base().get_tree().get_current_scene();
+        // if let Some(scene_root) = scene_root_opt {
+        //     self.base_mut()
+        //         .call_deferred("reparent", &[scene_root.to_variant()]);
+        // }
         self.base_mut().set_linear_velocity(Vector3::ZERO);
         self.base_mut().set_rotation(Vector3::ZERO);
         self.base_mut().set_scale(Vector3::ONE);

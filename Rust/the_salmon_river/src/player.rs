@@ -4,6 +4,7 @@ use godot::classes::{
 };
 use godot::global::Key;
 use godot::prelude::*;
+use godot::signal::ConnectHandle;
 
 use crate::duck_meter_manager::DuckMeterManager;
 use crate::throwable::Throwable;
@@ -77,6 +78,7 @@ pub struct Player {
     right_hand_fire_particles: Option<Gd<GpuParticles3D>>,
     grabbed_by_another_player: bool,
     thrown_by_another_player: bool,
+    on_thrown_by_another_conn: Option<ConnectHandle>,
     force_on_thrown: f32,
 }
 #[godot_api]
@@ -136,6 +138,7 @@ impl ICharacterBody3D for Player {
             right_hand_fire_particles: None,
             grabbed_by_another_player: false,
             thrown_by_another_player: false,
+            on_thrown_by_another_conn: None,
             force_on_thrown: 8.0,
             player_throwable_in_hand: None,
         }
@@ -170,8 +173,6 @@ impl ICharacterBody3D for Player {
 impl Player {
     #[signal]
     pub fn on_throwable_throw(dir: Direction);
-    #[signal]
-    pub fn on_player_grabbed(grabber_id: u8);
     #[func]
     fn on_player_hit(&mut self, area: Gd<Area3D>) {
         let area_name = area.get_name();
@@ -187,25 +188,6 @@ impl Player {
             }
         } else {
             godot_print!("Touch!")
-        }
-    }
-    #[func]
-    pub fn search_for_throwable_in_hand(&mut self, player_num: u8) {
-        if self.player_num == player_num {
-            self.throwable_in_hand = self.base().find_child("RightHand").and_then(|rh| {
-                rh.find_child("PickUpArea").and_then(|pua| {
-                    pua.get_child(0)
-                        .and_then(|th| th.try_cast::<Throwable>().ok())
-                })
-            });
-            if !self.throwable_in_hand.is_some() {
-                self.player_throwable_in_hand =
-                    self.base().find_child("RightHand").and_then(|rh| {
-                        rh.find_child("PickUpArea").and_then(|pua| {
-                            pua.get_child(0).and_then(|th| th.try_cast::<Player>().ok())
-                        })
-                    });
-            }
         }
     }
 }
@@ -228,13 +210,20 @@ impl Player {
             upper_anim.set("parameters/conditions/in_hand", &true.to_variant());
         }
     }
+    pub fn hold_throwable(&mut self, throwable: Gd<Throwable>) {
+        self.throwable_in_hand = Some(throwable);
+    }
     pub fn drop_throwable(&mut self) {
         self.in_hand = false;
         if let Some(mut throwable) = self.throwable_in_hand.take() {
-            throwable.bind_mut().drop_itself();
+            if throwable.is_instance_valid() {
+                throwable.bind_mut().drop_itself();
+            }
         }
         if let Some(mut player_throwable) = self.player_throwable_in_hand.take() {
-            player_throwable.bind_mut().on_dropped_by_another_player();
+            if player_throwable.is_instance_valid() {
+                player_throwable.bind_mut().on_dropped_by_another_player();
+            }
         }
         if let Some(ref mut upper_anim) = self.upper_anim_tree {
             upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
@@ -280,6 +269,7 @@ impl Player {
             && !self.hit_stun
             && !self.is_dashing
             && !self.dead
+            && !self.knock_back
         {
             velocity.z += speed_to_use;
             if self.facing_right {
@@ -291,6 +281,7 @@ impl Player {
             && !self.hit_stun
             && !self.is_dashing
             && !self.dead
+            && !self.knock_back
         {
             velocity.z += -speed_to_use;
             if !self.facing_right {
@@ -302,6 +293,7 @@ impl Player {
             && !self.jumped
             && !self.hit_stun
             && !self.dead
+            && !self.knock_back
         {
             self.jumped = true;
             velocity.y = self.jump_force;
@@ -313,6 +305,7 @@ impl Player {
             && !self.base().is_on_floor()
             && !self.duck_jumped
             && !self.dead
+            && !self.knock_back
             && self.duck_meter_manager.can_duck_jump()
         {
             velocity.y = self.jump_force;
@@ -331,6 +324,7 @@ impl Player {
             && !self.is_punching
             && !self.is_throwing
             && !self.dead
+            && !self.knock_back
             && self.duck_meter_manager.can_duck()
         {
             if !self.ducked {
@@ -900,7 +894,7 @@ impl Player {
                 .and_then(|f| f.try_cast::<Area3D>().ok())
         });
         let grab_area = self.base().find_child("LeftHand").and_then(|f| {
-            f.find_child("ThrowableArea")
+            f.find_child("GrabArea")
                 .and_then(|f| f.try_cast::<Area3D>().ok())
         });
         let right_hand_area = self.base().find_child("RightHand").and_then(|f| {
@@ -1032,7 +1026,15 @@ impl Player {
             left_particles.set_emitting(true);
         }
     }
+    fn disconnect_grabbed_connections(&mut self) {
+        if let Some(handle) = self.on_thrown_by_another_conn.take() {
+            if handle.is_connected() {
+                handle.disconnect();
+            }
+        }
+    }
     fn on_dropped_by_another_player(&mut self) {
+        self.disconnect_grabbed_connections();
         let scene_root_opt = self.base().get_tree().get_current_scene();
         if let Some(scene_root) = scene_root_opt {
             self.base_mut()
@@ -1041,6 +1043,7 @@ impl Player {
         self.grabbed_by_another_player = false;
     }
     fn on_thrown_by_another_player(&mut self, dir: Direction) {
+        self.disconnect_grabbed_connections();
         if let Some(ref mut low_anim) = self.lower_anim_tree {
             low_anim.set("parameters/conditions/jump", &false.to_variant());
             low_anim.set("parameters/conditions/idle", &false.to_variant());
@@ -1076,52 +1079,52 @@ impl Player {
         }));
     }
     fn handle_grab(&mut self, area: Gd<Area3D>) {
-        let other_player_opt = area.get_parent().and_then(|left_hand| {
-            left_hand
-                .get_parent()
-                .and_then(|player| player.try_cast::<Player>().ok())
-        });
-        if let Some(mut grabber) = other_player_opt {
-            if grabber.bind().can_pick_up_throwable() {
-                grabber.bind_mut().pick_up_throwable();
-                let this = self.to_gd();
-                grabber
-                    .signals()
-                    .on_throwable_throw()
-                    .connect_other(&this, Self::on_thrown_by_another_player);
-                self.signals()
-                    .on_player_grabbed()
-                    .connect_other(&grabber, Player::search_for_throwable_in_hand);
-                let player_num = {
-                    let player_script = grabber.bind();
-                    player_script.get_player_num()
-                };
-                let pickup_area_opt = grabber.find_child("RightHand").and_then(|rh| {
-                    rh.find_child("PickUpArea")
-                        .and_then(|pua| pua.try_cast::<Node3D>().ok())
-                });
-                if let Some(pickup_area) = pickup_area_opt {
-                    self.base_mut().reparent(&pickup_area);
-                    let mut local_pos = Vector3::ZERO;
-                    local_pos.y -= 1.5;
-                    self.base_mut().set_position(local_pos);
-                    self.grabbed_by_another_player = true;
-                }
-                self.signals().on_player_grabbed().emit(player_num);
-                if let Some(ref mut low_anim) = self.lower_anim_tree {
-                    low_anim.set("parameters/conditions/jump", &false.to_variant());
-                    low_anim.set("parameters/conditions/idle", &false.to_variant());
-                    low_anim.set("parameters/conditions/run", &false.to_variant());
-                    low_anim.set("parameters/conditions/duck", &false.to_variant());
-                    low_anim.set("parameters/conditions/hit", &false.to_variant());
-                    low_anim.set("parameters/conditions/knock", &true.to_variant());
-                }
-                if let Some(ref mut upp_anim) = self.upper_anim_tree {
-                    upp_anim.set("parameters/conditions/jump", &false.to_variant());
-                    upp_anim.set("parameters/conditions/idle", &false.to_variant());
-                    upp_anim.set("parameters/conditions/run", &false.to_variant());
-                    upp_anim.set("parameters/conditions/hit", &false.to_variant());
-                    upp_anim.set("parameters/conditions/knock", &true.to_variant());
+        if !self.knock_back {
+            let other_player_opt = area.get_parent().and_then(|left_hand| {
+                left_hand
+                    .get_parent()
+                    .and_then(|player| player.try_cast::<Player>().ok())
+            });
+            if let Some(mut grabber) = other_player_opt {
+                if grabber.bind().can_pick_up_throwable() {
+                    grabber.bind_mut().pick_up_throwable();
+                    self.disconnect_grabbed_connections();
+                    let this = self.to_gd();
+                    self.on_thrown_by_another_conn = Some(
+                        grabber
+                            .signals()
+                            .on_throwable_throw()
+                            .connect_other(&this, Self::on_thrown_by_another_player),
+                    );
+                    grabber.bind_mut().player_throwable_in_hand = Some(this);
+                    let pickup_area_opt = grabber.find_child("RightHand").and_then(|rh| {
+                        rh.find_child("PickUpArea")
+                            .and_then(|pua| pua.try_cast::<Node3D>().ok())
+                    });
+                    if let Some(pickup_area) = pickup_area_opt {
+                        self.base_mut()
+                            .call_deferred("reparent", &[pickup_area.to_variant()]);
+                        let mut local_pos = Vector3::ZERO;
+                        local_pos.y -= 1.5;
+                        self.base_mut()
+                            .call_deferred("set_position", &[local_pos.to_variant()]);
+                        self.grabbed_by_another_player = true;
+                    }
+                    if let Some(ref mut low_anim) = self.lower_anim_tree {
+                        low_anim.set("parameters/conditions/jump", &false.to_variant());
+                        low_anim.set("parameters/conditions/idle", &false.to_variant());
+                        low_anim.set("parameters/conditions/run", &false.to_variant());
+                        low_anim.set("parameters/conditions/duck", &false.to_variant());
+                        low_anim.set("parameters/conditions/hit", &false.to_variant());
+                        low_anim.set("parameters/conditions/knock", &true.to_variant());
+                    }
+                    if let Some(ref mut upp_anim) = self.upper_anim_tree {
+                        upp_anim.set("parameters/conditions/jump", &false.to_variant());
+                        upp_anim.set("parameters/conditions/idle", &false.to_variant());
+                        upp_anim.set("parameters/conditions/run", &false.to_variant());
+                        upp_anim.set("parameters/conditions/hit", &false.to_variant());
+                        upp_anim.set("parameters/conditions/knock", &true.to_variant());
+                    }
                 }
             }
         }

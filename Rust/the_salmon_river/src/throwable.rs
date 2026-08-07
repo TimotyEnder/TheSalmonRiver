@@ -46,8 +46,6 @@ impl IRigidBody3D for Throwable {
 }
 #[godot_api]
 impl Throwable {
-    #[signal]
-    fn on_throwable_grabbed(player_num: u8);
     #[func]
     fn on_hitbox_entered(&mut self, area: Gd<Area3D>) {
         if area.get_name().contains("Grab") {
@@ -63,9 +61,7 @@ impl Throwable {
                         .signals()
                         .on_throwable_throw()
                         .connect_other(&this, Self::on_thrown);
-                    self.signals()
-                        .on_throwable_grabbed()
-                        .connect_other(&player, Player::search_for_throwable_in_hand);
+                    player.bind_mut().hold_throwable(this);
                     let player_num = {
                         let player_script = player.bind();
                         player_script.get_player_num()
@@ -77,11 +73,12 @@ impl Throwable {
                                 .and_then(|pua| pua.try_cast::<Node3D>().ok())
                         });
                         if let Some(pickup_area) = pickup_area_opt {
-                            self.base_mut().reparent(&pickup_area);
-                            self.base_mut().set_position(Vector3::ZERO);
+                            self.base_mut()
+                                .call_deferred("reparent", &[pickup_area.to_variant()]);
+                            self.base_mut()
+                                .call_deferred("set_position", &[Vector3::ZERO.to_variant()]);
                             self.in_hand = true;
                         }
-                        self.signals().on_throwable_grabbed().emit(player_num);
                     }
                 }
             }

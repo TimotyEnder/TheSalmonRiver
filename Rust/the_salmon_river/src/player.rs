@@ -1,6 +1,6 @@
 use godot::classes::{
-    AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, GpuParticles3D, ICharacterBody3D,
-    Input, Label3D, Sprite3D, Time, VisualShaderNodeGroupBase,
+    AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, Engine, GpuParticles3D,
+    ICharacterBody3D, Input, Label3D, Sprite3D, Time, VisualShaderNodeGroupBase,
 };
 use godot::global::Key;
 use godot::prelude::*;
@@ -786,6 +786,15 @@ impl Player {
             }
         }
     }
+    async fn throw_landing_damage_routine(mut this: Gd<Self>) {
+        while !this.bind().base().is_on_floor() {
+            let timer = this.bind().base().get_tree().create_timer(0.02);
+            Signal::from_object_signal(&timer, "timeout")
+                .to_future::<()>()
+                .await;
+        }
+        this.bind_mut().damage(2);
+    }
     async fn knockback_routine(mut this: Gd<Self>, knock_dir: Direction, from_throw: bool) {
         let timer;
         {
@@ -1091,7 +1100,7 @@ impl Player {
         let this = self.to_gd();
         let _guard = self.base_mut();
         godot::task::spawn(Self::knockback_routine(
-            this,
+            this.clone(),
             {
                 match dir {
                     Direction::Left => Direction::Right,
@@ -1100,6 +1109,7 @@ impl Player {
             },
             true,
         ));
+        godot::task::spawn(Self::throw_landing_damage_routine(this));
     }
     fn handle_grab(&mut self, area: Gd<Area3D>) {
         if !self.knock_back {

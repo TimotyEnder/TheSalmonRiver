@@ -1,6 +1,7 @@
 use godot::classes::{
     AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, Engine, GpuParticles3D,
-    ICharacterBody3D, Input, Label3D, Sprite3D, Time, VisualShaderNodeGroupBase,
+    ICharacterBody3D, Input, Label3D, SceneTreeTimer, Sprite3D, Time, Timer,
+    VisualShaderNodeGroupBase,
 };
 use godot::global::Key;
 use godot::prelude::*;
@@ -794,6 +795,17 @@ impl Player {
                 .await;
         }
         this.bind_mut().damage(2);
+        let (health, facing_right) = {
+            let bind = this.bind();
+            (bind.health, bind.facing_right)
+        };
+        if health <= 0 {
+            let dir = match facing_right {
+                true => Direction::Left,
+                _ => Direction::Right,
+            };
+            godot::task::spawn(Self::death_routine(this.clone(), dir));
+        }
     }
     async fn knockback_routine(mut this: Gd<Self>, knock_dir: Direction, from_throw: bool) {
         let timer;
@@ -1159,14 +1171,50 @@ impl Player {
                         upp_anim.set("parameters/conditions/knock", &true.to_variant());
                     }
                     let drop_timer = self.base().get_tree().create_timer(2.0);
-                    godot::task::spawn(async move {
-                        Signal::from_object_signal(&drop_timer, "timeout")
-                            .to_future::<()>()
-                            .await;
-                        grabber.bind_mut().drop_throwable();
-                    });
+                    godot::task::spawn(Self::drop_grabber_after_drop_timer(
+                        grabber.clone(),
+                        drop_timer.clone(),
+                    ));
+                    godot::task::spawn(Self::scale_release_bar_with_drop_timer(
+                        drop_timer, grabber,
+                    ));
                 }
             }
+        }
+    }
+    async fn drop_grabber_after_drop_timer(
+        mut grabber: Gd<Player>,
+        drop_timer: Gd<SceneTreeTimer>,
+    ) {
+        Signal::from_object_signal(&drop_timer, "timeout")
+            .to_future::<()>()
+            .await;
+        grabber.bind_mut().drop_throwable();
+    }
+    async fn scale_release_bar_with_drop_timer(
+        drop_timer: Gd<SceneTreeTimer>,
+        grabber: Gd<Player>,
+    ) {
+        let grab_player_release_bar = grabber.find_child("PlayerLabel").and_then(|pl| {
+            pl.find_child("GrabPlayerReleaseBar")
+                .and_then(|gprb| gprb.try_cast::<Node3D>().ok())
+        });
+        if let Some(mut bar) = grab_player_release_bar {
+            let tree = grabber.get_tree();
+            bar.set_visible(true);
+            let initial_scale = bar.get_scale();
+            while drop_timer.get_time_left() > 0.0
+                && grabber.bind().player_throwable_in_hand.is_some()
+            {
+                let mut scale = bar.get_scale();
+                scale.x = initial_scale.x * (drop_timer.get_time_left() as f32 / 2.0);
+                bar.set_scale(scale);
+                Signal::from_object_signal(&tree, "process_frame")
+                    .to_future::<()>()
+                    .await;
+            }
+            bar.set_visible(false);
+            bar.set_scale(initial_scale);
         }
     }
     fn handle_punch(&mut self, area: Gd<Area3D>) {

@@ -9,8 +9,6 @@ use godot::signal::ConnectHandle;
 
 use crate::duck_meter_manager::DuckMeterManager;
 use crate::throwable::Throwable;
-use crate::throwables::throwability::Throwability;
-use crate::utils::Direction::Left;
 use crate::utils::*;
 
 #[derive(GodotClass)]
@@ -157,14 +155,15 @@ impl ICharacterBody3D for Player {
     }
     fn process(&mut self, delta: f64) {
         self.health_check();
+        self.sync_to_body_flip();
         self.negate_scale_changes_on_grab();
         if !self.grabbed_by_another_player {
             self.movement(delta);
         }
         if !self.hit_stun && !self.knock_back && !self.dead && !self.grabbed_by_another_player {
+            self.flip_based_on_facing_direction();
             self.lower_animations();
             self.upper_animations();
-            self.flip_based_on_facing_direction();
             self.action_process();
         }
         self.duck_bar_systems();
@@ -250,9 +249,6 @@ impl Player {
 
     fn health_check(&mut self) {
         self.scale_healthbar_with_health();
-        // if self.health <= 0 {
-        //     self.base_mut().queue_free();
-        // }
     }
     fn movement(&mut self, delta: f64) {
         let input = Input::singleton();
@@ -405,24 +401,37 @@ impl Player {
             self.flip();
         }
     }
-    fn flip(&mut self) {
-        let mut scale = self.base().get_scale();
-        scale.z *= -1.0;
+    fn set_grabbed_by_another_player_status(&mut self, status: bool) {
+        self.grabbed_by_another_player = status;
+        if let Some(ref mut label) = self.player_label {
+            if self.grabbed_by_another_player {
+                label.set_visible(false);
+            } else if !self.dead {
+                label.set_visible(true);
+            }
+        }
+    }
+    fn sync_to_body_flip(&mut self) {
+        let self_scale_sig = self.base().get_scale().z.signum();
         if let Some(ref mut collider) = self.body_collider {
             let mut collider_scale = collider.get_scale();
-            collider_scale.z *= -1.0;
+            collider_scale.z = collider_scale.x.abs() * self_scale_sig;
             collider.set_scale(collider_scale);
         }
         if let Some(ref mut label) = self.player_label {
             let mut label_scale = label.get_scale();
-            label_scale.x *= -1.0;
+            label_scale.x = self_scale_sig;
             label.set_scale(label_scale);
         }
         if let Some(ref mut duck_particles) = self.duck_pafrticles {
             let mut particles_scale = duck_particles.get_scale();
-            particles_scale.x *= -1.0;
+            particles_scale.x = self_scale_sig;
             duck_particles.set_scale(particles_scale);
         }
+    }
+    fn flip(&mut self) {
+        let mut scale = self.base().get_scale();
+        scale.z *= -1.0;
         self.base_mut().set_scale(scale);
     }
     fn action_process(&mut self) {
@@ -732,6 +741,9 @@ impl Player {
         let timer;
         {
             let mut bind = this.bind_mut();
+            if let Some(ref mut label) = bind.player_label {
+                label.set_visible(false);
+            }
             bind.dead = true;
             let mut velocity = bind.base().get_velocity();
             bind.drop_throwable();
@@ -1080,7 +1092,7 @@ impl Player {
             upp_anim.set("parameters/conditions/hit", &false.to_variant());
             upp_anim.set("parameters/conditions/knock", &false.to_variant());
         }
-        self.grabbed_by_another_player = false;
+        self.set_grabbed_by_another_player_status(false);
     }
     fn on_thrown_by_another_player(&mut self, dir: Direction) {
         self.disconnect_grabbed_connections();
@@ -1105,7 +1117,7 @@ impl Player {
             self.base_mut()
                 .call_deferred("reparent", &[scene_root.to_variant()]);
         }
-        self.grabbed_by_another_player = false;
+        self.set_grabbed_by_another_player_status(false);
         self.base_mut().set_velocity(Vector3::ZERO);
         self.base_mut().set_rotation(Vector3::ZERO);
         self.base_mut().set_scale(Vector3::ONE);
@@ -1153,7 +1165,7 @@ impl Player {
                         local_pos.y -= 1.5;
                         self.base_mut()
                             .call_deferred("set_position", &[local_pos.to_variant()]);
-                        self.grabbed_by_another_player = true;
+                        self.set_grabbed_by_another_player_status(true);
                     }
                     if let Some(ref mut low_anim) = self.lower_anim_tree {
                         low_anim.set("parameters/conditions/jump", &false.to_variant());
@@ -1254,9 +1266,14 @@ impl Player {
             }
             let knock_dir_opt = self.apply_hitstun_force(area);
             if let Some(knock_dir) = knock_dir_opt {
+                let health = self.health;
                 let this = self.to_gd();
                 let _guard = self.base_mut();
-                godot::task::spawn(Self::hitstun_routine(this, knock_dir));
+                if health <= 0 {
+                    godot::task::spawn(Self::death_routine(this, knock_dir));
+                } else {
+                    godot::task::spawn(Self::hitstun_routine(this, knock_dir));
+                }
             }
         }
     }

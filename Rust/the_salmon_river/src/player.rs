@@ -80,6 +80,7 @@ pub struct Player {
     on_thrown_by_another_conn: Option<ConnectHandle>,
     in_hand_ability_container: Option<Gd<Node3D>>,
     current_in_hand_ability_icon: Option<Gd<Node3D>>,
+    in_hand_ability_container_anim_tree: Option<Gd<AnimationTree>>,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -142,6 +143,7 @@ impl ICharacterBody3D for Player {
             player_throwable_in_hand: None,
             in_hand_ability_container: None,
             current_in_hand_ability_icon: None,
+            in_hand_ability_container_anim_tree: None,
         }
     }
     fn ready(&mut self) {
@@ -561,6 +563,9 @@ impl Player {
             if let Some(ref mut current) = bind.current_in_hand_ability_icon {
                 current.set_visible(false);
             }
+            if let Some(ref mut container_anim_tree) = bind.in_hand_ability_container_anim_tree {
+                container_anim_tree.set("parameters/conditions/ding", &true.to_variant());
+            }
             timer = bind.base().get_tree().create_timer(0.1);
         }
         Signal::from_object_signal(&timer, "timeout")
@@ -568,6 +573,9 @@ impl Player {
             .await;
         {
             let mut bind = this.bind_mut();
+            if let Some(ref mut container_anim_tree) = bind.in_hand_ability_container_anim_tree {
+                container_anim_tree.set("parameters/conditions/ding", &false.to_variant());
+            }
             bind.is_using_throwable_ability = false;
         }
     }
@@ -1018,6 +1026,13 @@ impl Player {
             pl.find_child("InHandAbilityContainer")
                 .and_then(|ihac| ihac.try_cast::<Node3D>().ok())
         });
+        self.in_hand_ability_container_anim_tree = self
+            .base()
+            .find_child("PlayerLabel")
+            .and_then(|pl| pl.find_child("InHandAbilityContainer"))
+            .and_then(|ihac| ihac.find_child("InHandAbilityContainerAnim"))
+            .and_then(|anim| anim.get_child(0))
+            .and_then(|tree| tree.try_cast::<AnimationTree>().ok());
     }
     fn scale_healthbar_with_health(&mut self) {
         if let Some(ref mut healthbar) = self.player_healthbar {

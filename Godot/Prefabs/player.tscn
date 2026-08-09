@@ -2749,6 +2749,155 @@ albedo_color = Color(0.35912356, 0.35912356, 0.35912356, 0.81900007)
 [sub_resource type="BoxMesh" id="BoxMesh_rai8w"]
 size = Vector3(1, 1, 0.15136719)
 
+[sub_resource type="Animation" id="Animation_4qbli"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InHandAbilityContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.77, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InHandAbilityContainer:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InHandAbilityContainer:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.812523, 0.812523, 0.5)]
+}
+
+[sub_resource type="Animation" id="Animation_kgmex"]
+resource_name = "ability_use"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InHandAbilityContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.77, 0), Vector3(0, 0.77, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InHandAbilityContainer:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InHandAbilityContainer:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1.2, 1.2, 1.2), Vector3(0.812523, 0.812523, 0.5)]
+}
+
+[sub_resource type="Animation" id="Animation_08u7w"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InHandAbilityContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.77, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InHandAbilityContainer:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("InHandAbilityContainer:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.812523, 0.812523, 0.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kgmex"]
+_data = {
+&"RESET": SubResource("Animation_4qbli"),
+&"ding": SubResource("Animation_kgmex"),
+&"idle": SubResource("Animation_08u7w")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_08u7w"]
+animation = &"ding"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kgmex"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lufy3"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p248x"]
+advance_mode = 2
+advance_condition = &"ding"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rlild"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_hck1p"]
+states/ding/node = SubResource("AnimationNodeAnimation_08u7w")
+states/ding/position = Vector2(510, 100)
+states/idle/node = SubResource("AnimationNodeAnimation_kgmex")
+states/idle/position = Vector2(409, 133)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_lufy3"), "idle", "ding", SubResource("AnimationNodeStateMachineTransition_p248x"), "ding", "idle", SubResource("AnimationNodeStateMachineTransition_rlild")]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y5hcb"]
 albedo_color = Color(0.26, 0.221, 0.14299999, 1)
 
@@ -2995,6 +3144,16 @@ texture = ExtResource("2_y5hcb")
 transform = Transform3D(0.812523, 0, 0, 0, 0.812523, 0, 0, 0, 0.5, 0, 0.77, 0)
 material_override = SubResource("StandardMaterial3D_2nftw")
 mesh = SubResource("BoxMesh_rai8w")
+
+[node name="InHandAbilityContainerAnim" type="AnimationPlayer" parent="PlayerLabel/InHandAbilityContainer" unique_id=2086165915]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_kgmex")
+
+[node name="AnimationTree" type="AnimationTree" parent="PlayerLabel/InHandAbilityContainer/InHandAbilityContainerAnim" unique_id=968137862]
+root_node = NodePath("../../..")
+tree_root = SubResource("AnimationNodeStateMachine_hck1p")
+anim_player = NodePath("..")
+parameters/conditions/ding = false
 
 [node name="IceChunkEffect" parent="PlayerLabel/InHandAbilityContainer" unique_id=549776319 instance=ExtResource("3_2nftw")]
 transform = Transform3D(-3.2783543e-09, 0, -0.075, 0, 0.075, 0, 0.075, 0, -3.2783543e-09, -0.09586177, -0.7279352, 0.060550448)

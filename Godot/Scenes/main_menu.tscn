@@ -1,27 +1,27 @@
-[gd_scene format=3 uid="uid://bd32uee4172cd"]
+[gd_scene format=3 uid="uid://bcmqo2sed3c6f"]
 
-[ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="1_jjgbg"]
-[ext_resource type="PackedScene" uid="uid://bgjwcisjbhwp1" path="res://Prefabs/player.tscn" id="2_bo1nx"]
-[ext_resource type="PackedScene" uid="uid://b4u8wkqpnfjns" path="res://VoxelAssets/Environment/GrassRiverBank.gltf" id="4_jjvhh"]
-[ext_resource type="PackedScene" uid="uid://c55fml4h84ry1" path="res://VoxelAssets/3DUI/ThrowableArrow.gltf" id="4_kry3j"]
+[ext_resource type="PackedScene" uid="uid://b4u8wkqpnfjns" path="res://VoxelAssets/Environment/GrassRiverBank.gltf" id="1_48xlc"]
+[ext_resource type="PackedScene" uid="uid://bhj4c5fpdm741" path="res://VoxelAssets/3DUI/GameTitle.gltf" id="1_ce3w2"]
+[ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="2_1ehe0"]
+[ext_resource type="PackedScene" uid="uid://c55fml4h84ry1" path="res://VoxelAssets/3DUI/ThrowableArrow.gltf" id="3_1ehe0"]
 
-[sub_resource type="Environment" id="Environment_bo1nx"]
-background_mode = 3
+[sub_resource type="BoxMesh" id="BoxMesh_ce3w2"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_rai8w"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7dm0k"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n45e2"]
 vertex_color_is_srgb = true
 albedo_color = Color(0.03529412, 0.4862745, 0.7921569, 1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_s6dll"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_opfnp"]
 size = Vector3(2.0368652, 0.98132324, 2.41333)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_rai8w"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_cp0ys"]
 size = Vector3(1, 4.526306, 3.1507492)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_yhxw7"]
 size = Vector3(6.6301575, 1.168457, 3.1865845)
+
+[sub_resource type="Environment" id="Environment_48xlc"]
+background_mode = 3
 
 [sub_resource type="Animation" id="Animation_jjvhh"]
 length = 0.001
@@ -224,7 +224,7 @@ tracks/2/keys = {
 "values": [Vector3(0.53, 0.53, 0.53), Vector3(0.53, 0.53, 0.53), Vector3(0.53, 0.53, 0.53)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_21xkr"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ce3w2"]
 _data = {
 &"RESET": SubResource("Animation_jjvhh"),
 &"idle": SubResource("Animation_kry3j"),
@@ -272,7 +272,7 @@ advance_condition = &"idle"
 advance_mode = 2
 advance_condition = &"idle"
 
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_s6dll"]
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_n45e2"]
 states/idle/node = SubResource("AnimationNodeAnimation_jjvhh")
 states/idle/position = Vector2(629, 178)
 states/left_point/node = SubResource("AnimationNodeAnimation_kry3j")
@@ -283,109 +283,117 @@ states/up_point/node = SubResource("AnimationNodeAnimation_6bp64")
 states/up_point/position = Vector2(629, 79)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_344ge"), "idle", "up_point", SubResource("AnimationNodeStateMachineTransition_ynf5e"), "idle", "left_point", SubResource("AnimationNodeStateMachineTransition_hptm8"), "idle", "right_point", SubResource("AnimationNodeStateMachineTransition_d1ilt"), "up_point", "idle", SubResource("AnimationNodeStateMachineTransition_6iyac"), "right_point", "idle", SubResource("AnimationNodeStateMachineTransition_fdnlq"), "left_point", "idle", SubResource("AnimationNodeStateMachineTransition_jkdf5")]
 
-[node name="Root" type="Node3D" unique_id=236819951]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_48xlc"]
 
-[node name="Player2" parent="." unique_id=786188032 instance=ExtResource("2_bo1nx")]
-jump_key = 85
-left_key = 72
-right_key = 75
-duck_key = 74
-punch_use_key = 76
-throw_grab_ky = 59
-facing_right = false
-player_num = 2
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.513, -3.465)
+[node name="MainMenu" type="Node3D" unique_id=1673199348]
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1831742261]
+[node name="GameTitle" parent="." unique_id=16143490 instance=ExtResource("1_ce3w2")]
+transform = Transform3D(0.225, 0, 0, 0, 0.225, 0, 0, 0, 0.225, 0, 1.9209647, 0)
+
+[node name="Environment" type="Node3D" parent="." unique_id=870956812]
+
+[node name="River" type="StaticBody3D" parent="Environment" unique_id=986619601]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+collision_mask = 3
+
+[node name="RiverMesh" type="MeshInstance3D" parent="Environment/River" unique_id=420536306]
+transform = Transform3D(2.0577488, 0, 0, 0, 1, 0, 0, 0, 2.4311264, 0, 0.30762458, 0)
+mesh = SubResource("BoxMesh_ce3w2")
+surface_material_override/0 = SubResource("StandardMaterial3D_n45e2")
+
+[node name="RiverCollider" type="CollisionShape3D" parent="Environment/River" unique_id=1001153008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.018920898, -0.009338379, -0.016967773)
+shape = SubResource("BoxShape3D_opfnp")
+
+[node name="RightWall" type="CollisionShape3D" parent="Environment/River" unique_id=1596429350]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.136755, 3.3724613, -0.40993524)
+shape = SubResource("BoxShape3D_cp0ys")
+
+[node name="LeftWall" type="CollisionShape3D" parent="Environment/River" unique_id=1966612842]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.146003, 3.4253054, -0.3481499)
+shape = SubResource("BoxShape3D_cp0ys")
+
+[node name="LeftBank" type="StaticBody3D" parent="Environment" unique_id=428223055]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.3750771, 0.73130685, 2.5910273)
+collision_mask = 3
+
+[node name="GrassRiverBankMesh" parent="Environment/LeftBank" unique_id=20327516 instance=ExtResource("1_48xlc")]
+transform = Transform3D(0.21281703, 0, 0, 0, 0.1, 0, -8.881784e-16, 0, 0.1, -1.6570005, -0.5272394, -5.9604645e-08)
+
+[node name="LeftBankCollider" type="CollisionShape3D" parent="Environment/LeftBank" unique_id=931168793]
+transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.05606082)
+shape = SubResource("BoxShape3D_yhxw7")
+debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="Environment/LeftBank" unique_id=978339309]
+transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.05606067)
+size = Vector3(7.5808105, 1.6069336, 2)
+
+[node name="RightBank" type="StaticBody3D" parent="Environment" unique_id=1693687719]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.375, 0.731, -2.591)
+collision_mask = 3
+
+[node name="GrassRiverBankMesh" parent="Environment/RightBank" unique_id=1864519406 instance=ExtResource("1_48xlc")]
+transform = Transform3D(0.21281703, 0, 0, 0, 0.1, 0, -8.881784e-16, 0, 0.1, -1.6570005, -0.5272394, -5.9604645e-08)
+
+[node name="LeftBankCollider" type="CollisionShape3D" parent="Environment/RightBank" unique_id=7124195]
+transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.05606082)
+shape = SubResource("BoxShape3D_yhxw7")
+debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="Environment/RightBank" unique_id=2134877222]
+transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.05606067)
+size = Vector3(7.5808105, 1.6069336, 2)
+
+[node name="BackgroundImage" type="Sprite3D" parent="Environment" unique_id=952531044]
+transform = Transform3D(-2.0615369e-08, 0, 0.2, 0, 0.4716246, 0, -0.4716246, 0, -8.742278e-09, -12.021184, 1.2831969, 5.2546267e-07)
+texture = ExtResource("2_1ehe0")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=127069508]
 transform = Transform3D(-0.01374388, -0.18587853, 0.9842664, -0.002595276, 0.98436236, 0.18586043, -1.0016608, 0, -0.013986767, 3.1130846, 4.910619, -0.015609028)
-environment = SubResource("Environment_bo1nx")
+environment = SubResource("Environment_48xlc")
 projection = 1
 fov = 74.1
 size = 8.2
 near = 0.001
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=512207062]
-transform = Transform3D(-0.00668736, -0.90484244, 0.42569408, -0.014212694, 0.42574656, 0.90473086, -0.9998766, 4.653394e-10, -0.015707368, -0.11735284, 3.0913627, 0)
-
-[node name="Player" parent="." unique_id=275605898 instance=ExtResource("2_bo1nx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5126703, 3.464838)
-
-[node name="Environment" type="Node3D" parent="." unique_id=1142828596]
-
-[node name="River" type="StaticBody3D" parent="Environment" unique_id=1051320871]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
-collision_mask = 3
-
-[node name="RiverMesh" type="MeshInstance3D" parent="Environment/River" unique_id=1357828212]
-transform = Transform3D(2.0577488, 0, 0, 0, 1, 0, 0, 0, 2.4311264, 0, 0.30762458, 0)
-mesh = SubResource("BoxMesh_rai8w")
-surface_material_override/0 = SubResource("StandardMaterial3D_7dm0k")
-
-[node name="RiverCollider" type="CollisionShape3D" parent="Environment/River" unique_id=432875716]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.018920898, -0.009338379, -0.016967773)
-shape = SubResource("BoxShape3D_s6dll")
-
-[node name="RightWall" type="CollisionShape3D" parent="Environment/River" unique_id=1695567295]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.136755, 3.3724613, -0.40993524)
-shape = SubResource("BoxShape3D_rai8w")
-
-[node name="LeftWall" type="CollisionShape3D" parent="Environment/River" unique_id=1798810544]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.146003, 3.4253054, -0.3481499)
-shape = SubResource("BoxShape3D_rai8w")
-
-[node name="LeftBank" type="StaticBody3D" parent="Environment" unique_id=722134106]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.3750771, 0.73130685, 2.5910273)
-collision_mask = 3
-
-[node name="GrassRiverBankMesh" parent="Environment/LeftBank" unique_id=499760013 instance=ExtResource("4_jjvhh")]
-transform = Transform3D(0.21281703, 0, 0, 0, 0.1, 0, -8.881784e-16, 0, 0.1, -1.6570005, -0.5272394, -5.9604645e-08)
-
-[node name="LeftBankCollider" type="CollisionShape3D" parent="Environment/LeftBank" unique_id=1908957823]
-transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.05606082)
-shape = SubResource("BoxShape3D_c4elv")
-debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
-
-[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="Environment/LeftBank" unique_id=1350785815]
-transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.05606067)
-size = Vector3(7.5808105, 1.6069336, 2)
-
-[node name="RightBank" type="StaticBody3D" parent="Environment" unique_id=1206110942]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.375, 0.731, -2.591)
-collision_mask = 3
-
-[node name="GrassRiverBankMesh" parent="Environment/RightBank" unique_id=660070864 instance=ExtResource("4_jjvhh")]
-transform = Transform3D(0.21281703, 0, 0, 0, 0.1, 0, -8.881784e-16, 0, 0.1, -1.6570005, -0.5272394, -5.9604645e-08)
-
-[node name="LeftBankCollider" type="CollisionShape3D" parent="Environment/RightBank" unique_id=1500111804]
-transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.05606082)
-shape = SubResource("BoxShape3D_c4elv")
-debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
-
-[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="Environment/RightBank" unique_id=1375707903]
-transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.05606067)
-size = Vector3(7.5808105, 1.6069336, 2)
-
-[node name="BackgroundImage" type="Sprite3D" parent="Environment" unique_id=721853890]
-transform = Transform3D(-2.0615369e-08, 0, 0.2, 0, 0.4716246, 0, -0.4716246, 0, -8.742278e-09, -12.021184, 1.2831969, 5.2546267e-07)
-texture = ExtResource("1_jjgbg")
-
-[node name="ThrowableSpawner" type="ThrowableSpawner" parent="." unique_id=453820178]
+[node name="ThrowableSpawner" type="ThrowableSpawner" parent="." unique_id=947679547]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7953838, 0)
 
-[node name="ThrowableArrow" type="Node3D" parent="ThrowableSpawner" unique_id=724866588]
+[node name="ThrowableArrow" type="Node3D" parent="ThrowableSpawner" unique_id=1007829771]
 transform = Transform3D(-2.3167035e-08, 0.53, -2.3167035e-08, 0, -2.3167035e-08, -0.53, -0.53, -2.3167035e-08, 1.0126633e-15, -2.2759695, -1.3219904, 9.9485796e-08)
+visible = false
 
-[node name="ThrowableArrow" parent="ThrowableSpawner/ThrowableArrow" unique_id=2087460456 instance=ExtResource("4_kry3j")]
+[node name="ThrowableArrow" parent="ThrowableSpawner/ThrowableArrow" unique_id=1546301178 instance=ExtResource("3_1ehe0")]
 transform = Transform3D(0.115, 0, 0, 0, 0.115, 0, 0, 0, 0.115, 0.17180872, -0.032214165, 0)
 
-[node name="ArrowAnim" type="AnimationPlayer" parent="ThrowableSpawner/ThrowableArrow" unique_id=82573927]
-libraries/ = SubResource("AnimationLibrary_21xkr")
+[node name="ArrowAnim" type="AnimationPlayer" parent="ThrowableSpawner/ThrowableArrow" unique_id=1946463198]
+libraries/ = SubResource("AnimationLibrary_ce3w2")
 
-[node name="AnimationTree" type="AnimationTree" parent="ThrowableSpawner/ThrowableArrow/ArrowAnim" unique_id=2032462919]
+[node name="AnimationTree" type="AnimationTree" parent="ThrowableSpawner/ThrowableArrow/ArrowAnim" unique_id=57754758]
 root_node = NodePath("../..")
-tree_root = SubResource("AnimationNodeStateMachine_s6dll")
+tree_root = SubResource("AnimationNodeStateMachine_n45e2")
 anim_player = NodePath("..")
 parameters/conditions/idle = false
 parameters/conditions/left = false
 parameters/conditions/right = false
 parameters/conditions/up = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=753406882]
+
+[node name="Button" type="MainMenuPlayButton" parent="CanvasLayer" unique_id=1462515572]
+material = SubResource("CanvasItemMaterial_48xlc")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 472.0
+offset_top = 330.0
+offset_right = -469.0
+offset_bottom = -245.0
+grow_horizontal = 2
+grow_vertical = 2
+action_mode = 0
+text = "PLAY"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=155541207]
+transform = Transform3D(-0.00668736, -0.90484244, 0.42569408, -0.014212694, 0.42574656, 0.90473086, -0.9998766, 4.653394e-10, -0.015707368, -0.11735284, 3.0913627, 0)

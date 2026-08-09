@@ -1,3 +1,4 @@
+pub mod UI;
 pub mod duck_meter_manager;
 pub mod player;
 pub mod throwable;

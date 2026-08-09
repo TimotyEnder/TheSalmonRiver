@@ -78,7 +78,8 @@ pub struct Player {
     grabbed_by_another_player: bool,
     thrown_by_another_player: bool,
     on_thrown_by_another_conn: Option<ConnectHandle>,
-    force_on_thrown: f32,
+    in_hand_ability_container: Option<Gd<Node3D>>,
+    current_in_hand_ability_icon: Option<Gd<Node3D>>,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -138,12 +139,13 @@ impl ICharacterBody3D for Player {
             grabbed_by_another_player: false,
             thrown_by_another_player: false,
             on_thrown_by_another_conn: None,
-            force_on_thrown: 8.0,
             player_throwable_in_hand: None,
+            in_hand_ability_container: None,
+            current_in_hand_ability_icon: None,
         }
     }
     fn ready(&mut self) {
-        self.ready_throwable_effect_particles();
+        self.ready_throwable_systems();
         self.ready_health_systems();
         self.ready_duck_meter_systems();
         self.ready_body();
@@ -190,6 +192,22 @@ impl Player {
             godot_print!("Touch!")
         }
     }
+    #[func]
+    pub fn hold_throwable(&mut self, throwable: Gd<Throwable>) {
+        self.throwable_in_hand = Some(throwable);
+        if let Some(ref mut inner) = self.throwable_in_hand
+            && let Some(ref mut inner) = inner.bind_mut().throwable_inner
+            && let Some(ref mut ability_container) = self.in_hand_ability_container
+        {
+            let find_name = format!("{}Effect", inner.visual_node_name());
+            self.current_in_hand_ability_icon = ability_container
+                .find_child(&find_name)
+                .and_then(|current| current.try_cast::<Node3D>().ok());
+            if let Some(ref mut current) = self.current_in_hand_ability_icon {
+                current.set_visible(true);
+            }
+        }
+    }
 }
 
 impl Player {
@@ -211,9 +229,7 @@ impl Player {
             upper_anim.set("parameters/conditions/drop", &false.to_variant());
         }
     }
-    pub fn hold_throwable(&mut self, throwable: Gd<Throwable>) {
-        self.throwable_in_hand = Some(throwable);
-    }
+
     pub fn drop_throwable(&mut self) {
         self.in_hand = false;
         if let Some(mut throwable) = self.throwable_in_hand.take() {
@@ -229,6 +245,9 @@ impl Player {
         if let Some(ref mut upper_anim) = self.upper_anim_tree {
             upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
             upper_anim.set("parameters/conditions/drop", &true.to_variant());
+        }
+        if let Some(ref mut current) = self.current_in_hand_ability_icon {
+            current.set_visible(false);
         }
     }
     pub fn can_pick_up_throwable(&self) -> bool {
@@ -539,6 +558,9 @@ impl Player {
         {
             let mut bind = this.bind_mut();
             bind.is_using_throwable_ability = true;
+            if let Some(ref mut current) = bind.current_in_hand_ability_icon {
+                current.set_visible(false);
+            }
             timer = bind.base().get_tree().create_timer(0.1);
         }
         Signal::from_object_signal(&timer, "timeout")
@@ -975,7 +997,7 @@ impl Player {
             ));
         }
     }
-    fn ready_throwable_effect_particles(&mut self) {
+    fn ready_throwable_systems(&mut self) {
         self.ice_chunk_dash_particles = self.base().find_child("PlayerHead").and_then(|head| {
             head.find_child("IceChunkDashParticles")
                 .and_then(|p| p.try_cast::<GpuParticles3D>().ok())
@@ -991,6 +1013,10 @@ impl Player {
                 mesh.find_child("BuffParticlesHand")
                     .and_then(|bph| bph.try_cast::<GpuParticles3D>().ok())
             })
+        });
+        self.in_hand_ability_container = self.base().find_child("PlayerLabel").and_then(|pl| {
+            pl.find_child("InHandAbilityContainer")
+                .and_then(|ihac| ihac.try_cast::<Node3D>().ok())
         });
     }
     fn scale_healthbar_with_health(&mut self) {

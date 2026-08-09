@@ -3,6 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://8kv0vvanmf1v" path="res://VoxelAssets/Bear/bear.gltf" id="1_y6xdh"]
 [ext_resource type="PackedScene" uid="uid://dpem28diunogk" path="res://VoxelAssets/Duck/duck0.gltf" id="2_5wxv7"]
 [ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="2_y5hcb"]
+[ext_resource type="PackedScene" uid="uid://bps7qinxrsfpy" path="res://VoxelAssets/3DUI/ThrowableEffectIcons/IceChunkEffect.gltf" id="3_2nftw"]
+[ext_resource type="PackedScene" uid="uid://ftcujcmjbrws" path="res://VoxelAssets/3DUI/ThrowableEffectIcons/LogEffect.gltf" id="4_knrd4"]
+[ext_resource type="PackedScene" uid="uid://bfh0mqb4wbyv6" path="res://VoxelAssets/3DUI/ThrowableEffectIcons/SalmonEffect.gltf" id="5_hck1p"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_s6dll"]
 
@@ -2992,6 +2995,18 @@ texture = ExtResource("2_y5hcb")
 transform = Transform3D(0.812523, 0, 0, 0, 0.812523, 0, 0, 0, 0.5, 0, 0.77, 0)
 material_override = SubResource("StandardMaterial3D_2nftw")
 mesh = SubResource("BoxMesh_rai8w")
+
+[node name="IceChunkEffect" parent="PlayerLabel/InHandAbilityContainer" unique_id=549776319 instance=ExtResource("3_2nftw")]
+transform = Transform3D(-3.2783543e-09, 0, -0.075, 0, 0.075, 0, 0.075, 0, -3.2783543e-09, -0.09586177, -0.7279352, 0.060550448)
+visible = false
+
+[node name="LogEffect" parent="PlayerLabel/InHandAbilityContainer" unique_id=1384168710 instance=ExtResource("4_knrd4")]
+transform = Transform3D(-3.2783543e-09, 0, -0.075, 0, 0.075, 0, 0.075, 0, -3.2783543e-09, 0.06894932, -0.77055913, 0.19817618)
+visible = false
+
+[node name="SalmonEffect" parent="PlayerLabel/InHandAbilityContainer" unique_id=2058274793 instance=ExtResource("5_hck1p")]
+transform = Transform3D(-2.4041265e-09, 0, -0.055, 0, 0.055, 0, 0.055, 0, -2.4041265e-09, -0.0039615836, -0.6318577, 0.1815789)
+visible = false
 
 [node name="Duck" type="Node3D" parent="." unique_id=1311941392]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4046476, 0)

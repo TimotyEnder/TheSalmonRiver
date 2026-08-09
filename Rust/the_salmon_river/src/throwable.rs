@@ -63,7 +63,8 @@ impl Throwable {
                         .signals()
                         .on_throwable_throw()
                         .connect_other(&this, Self::on_thrown);
-                    player.bind_mut().hold_throwable(this);
+                    //player.bind_mut().hold_throwable(this);
+                    player.call_deferred("hold_throwable", &[this.to_variant()]);
                     let player_num = {
                         let player_script = player.bind();
                         player_script.get_player_num()

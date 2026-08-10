@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
 use godot::{
-    classes::{AnimationTree, INode3D, Node3D},
+    classes::{AnimationTree, INode3D, Node3D, Time},
     prelude::*,
 };
 
@@ -17,6 +17,10 @@ pub struct RoundManager {
     starting_seq_started: bool,
     players_left: u32,
     players_alive: HashSet<u8>,
+    run_round_timer: bool,
+    timer_time: u64,
+    timer_flag: bool,
+    player_health_vec: Vec<i8>,
 }
 
 #[godot_api]
@@ -29,6 +33,10 @@ impl INode3D for RoundManager {
             starting_seq_started: false,
             players_left: 0,
             players_alive: HashSet::new(),
+            run_round_timer: false,
+            timer_flag: false,
+            timer_time: 0,
+            player_health_vec: Vec::new(),
         }
     }
 
@@ -62,6 +70,32 @@ impl INode3D for RoundManager {
             let _guard = self.base_mut();
             godot::task::spawn(Self::starting_seq_routine(this));
         }
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManager");
+        let time = Time::singleton();
+        if let Some(ref mut label) = self.output_text {
+            if self.run_round_timer {
+                if !self.timer_flag {
+                    self.timer_flag = true;
+
+                    if let Some(gm) = gm {
+                        self.timer_time = time.get_ticks_usec()
+                            + gm.bind().get_round_timer_secs() as u64 * 1_000_000;
+                    }
+                    label.set_visible(true);
+                }
+                let time_remaining: f32 = ((time.get_ticks_usec() as f32 - self.timer_time as f32)
+                    / 1_000_000.0)
+                    .round()
+                    .abs();
+                label.set("text", &format!("{}", time_remaining).to_variant());
+                if time_remaining <= 0.0 {
+                    self.run_round_timer = false;
+                    self.signals().round_timeout().emit();
+                }
+            }
+        }
     }
 }
 
@@ -69,6 +103,9 @@ impl INode3D for RoundManager {
 impl RoundManager {
     #[signal]
     pub fn round_start();
+
+    #[signal]
+    pub fn round_timeout();
 
     fn ready_label(&mut self) {
         self.output_text = self
@@ -105,6 +142,14 @@ impl RoundManager {
         {
             let mut bind = this.bind_mut();
             bind.signals().round_start().emit();
+            timer = bind.base().get_tree().create_timer(1.0);
+        }
+        Signal::from_object_signal(&timer, "timeout")
+            .to_future::<()>()
+            .await;
+        {
+            let mut bind = this.bind_mut();
+            bind.run_round_timer = true;
         }
     }
     fn ready_from_gamemanager(&mut self) {
@@ -116,40 +161,89 @@ impl RoundManager {
             (1..self.players_left as u8).for_each(|f| {
                 self.players_alive.insert(f);
             });
+            self.player_health_vec = vec![-1; self.players_left as usize];
         }
     }
     pub fn report_player_death(&mut self, player_num: u8) {
         self.players_alive.remove(&player_num);
         self.players_left = self.players_left.saturating_sub(1);
+        self.player_health_vec[player_num as usize] = 0;
         if self.players_left <= 1 {
-            let mut gm = self
-                .base()
-                .try_get_node_as::<GameManager>("/root/GameManager");
-            if let Some(ref mut gm) = gm
-                && let Some(winner) = self.players_alive.iter().next()
-                && let Some(ref mut label) = self.output_text
-            {
-                gm.bind_mut().player_won_round(*winner);
-                label.set_visible(true);
-                label.set(
-                    "text",
-                    &format!(
-                        "[color=#{}]PLAYER {} WINS![/color]",
-                        crate::game_scripts::game_utils::player_color_based_on_number(*winner)
-                            .to_html(),
-                        winner
-                    )
-                    .to_variant(),
-                );
-                let timer = self.base().get_tree().create_timer(5.0);
-                let mut tree = self.base().get_tree();
-                godot::task::spawn(async move {
-                    Signal::from_object_signal(&timer, "timeout")
-                        .to_future::<()>()
-                        .await;
-                    tree.change_scene_to_file("res://Scenes/main.tscn");
-                });
+            if let Some(winner) = self.players_alive.iter().next() {
+                self.make_player_win(*winner);
             }
+        }
+    }
+    pub fn player_health_report(&mut self, health: u8, player_num: u8) {
+        self.player_health_vec[player_num as usize - 1] = health as i8;
+        if !self.player_health_vec.contains(&-1i8) {
+            let max = self
+                .player_health_vec
+                .iter()
+                .fold(i8::MIN, |a, b| a.max(*b));
+            let winners = self
+                .player_health_vec
+                .iter()
+                .copied()
+                .enumerate()
+                .filter(|&(_, f)| f >= max)
+                .map(|(i, _)| i as u8)
+                .collect::<Vec<u8>>();
+            if winners.len() > 1 {
+                self.make_tie();
+            } else {
+                self.make_player_win(winners[0] as u8 + 1);
+            }
+        }
+    }
+    fn make_tie(&mut self) {
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManager");
+        if let Some(mut gm) = gm
+            && let Some(ref mut label) = self.output_text
+        {
+            gm.bind_mut().round_tie();
+            self.run_round_timer = false;
+            label.set_visible(true);
+            label.set("text", &format!("TIE!").to_variant());
+            let timer = self.base().get_tree().create_timer(5.0);
+            let mut tree = self.base().get_tree();
+            godot::task::spawn(async move {
+                Signal::from_object_signal(&timer, "timeout")
+                    .to_future::<()>()
+                    .await;
+                tree.change_scene_to_file("res://Scenes/main.tscn");
+            });
+        }
+    }
+    fn make_player_win(&mut self, winner: u8) {
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManager");
+        if let Some(mut gm) = gm
+            && let Some(ref mut label) = self.output_text
+        {
+            gm.bind_mut().player_won_round(winner);
+            self.run_round_timer = false;
+            label.set_visible(true);
+            label.set(
+                "text",
+                &format!(
+                    "[color=#{}]PLAYER {} WINS![/color]",
+                    crate::game_scripts::game_utils::player_color_based_on_number(winner).to_html(),
+                    winner
+                )
+                .to_variant(),
+            );
+            let timer = self.base().get_tree().create_timer(5.0);
+            let mut tree = self.base().get_tree();
+            godot::task::spawn(async move {
+                Signal::from_object_signal(&timer, "timeout")
+                    .to_future::<()>()
+                    .await;
+                tree.change_scene_to_file("res://Scenes/main.tscn");
+            });
         }
     }
 }

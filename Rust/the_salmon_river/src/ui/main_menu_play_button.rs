@@ -33,7 +33,7 @@ impl MainMenuPlayButton {
             .base()
             .try_get_node_as::<GameManager>("/root/GameManager");
         if let Some(ref mut gm) = gm {
-            gm.bind_mut().create_game(2, 3);
+            gm.bind_mut().create_game(2, 3, 99);
             tree.change_scene_to_file("res://Scenes/main.tscn");
         }
     }

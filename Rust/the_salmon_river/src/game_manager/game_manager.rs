@@ -27,13 +27,23 @@ impl INode for GameManager {
 #[godot_api]
 impl GameManager {
     #[func]
-    pub fn create_game(&mut self, num_players: u8, rounds_to_win: u32) {
-        self.current_game = Some(Game::new(num_players, rounds_to_win as usize));
+    pub fn create_game(&mut self, num_players: u8, rounds_to_win: u32, round_time: u32) {
+        self.current_game = Some(Game::new(
+            num_players,
+            rounds_to_win as usize,
+            round_time as usize,
+        ));
     }
     #[func]
     pub fn player_won_round(&mut self, player_num: u8) {
         if let Some(ref mut game) = self.current_game {
             game.log_player_win(player_num);
+        }
+    }
+    #[func]
+    pub fn round_tie(&mut self) {
+        if let Some(ref mut game) = self.current_game {
+            game.log_tie();
         }
     }
     #[func]
@@ -59,5 +69,12 @@ impl GameManager {
         } else {
             return 0;
         }
+    }
+    #[func]
+    pub fn get_round_timer_secs(&self) -> u32 {
+        if let Some(ref game) = self.current_game {
+            return game.get_round_time() as u32;
+        }
+        return 0;
     }
 }

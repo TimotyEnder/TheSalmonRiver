@@ -18,6 +18,7 @@ use crate::game_scripts::throwable::Throwable;
 #[class(base=CharacterBody3D)]
 pub struct Player {
     can_move: bool,
+    can_act: bool,
     base: Base<CharacterBody3D>,
     speed: f32,
     jump_force: f32,
@@ -93,6 +94,7 @@ impl ICharacterBody3D for Player {
         Self {
             base,
             can_move: false,
+            can_act: true,
             body_collider: None,
             body_mesh: None,
             upper_anim_tree: None,
@@ -163,7 +165,7 @@ impl ICharacterBody3D for Player {
         self.ready_label();
         self.ready_groups();
         self.ready_particle_system();
-        self.ready_round_start_signal();
+        self.ready_round_manager_signals();
     }
     fn process(&mut self, delta: f64) {
         self.health_check();
@@ -176,7 +178,9 @@ impl ICharacterBody3D for Player {
             self.flip_based_on_facing_direction();
             self.lower_animations();
             self.upper_animations();
-            self.action_process();
+            if self.can_act {
+                self.action_process();
+            }
         }
         self.duck_bar_systems();
     }
@@ -221,6 +225,16 @@ impl Player {
     #[func]
     pub fn on_round_start(&mut self) {
         self.can_move = true;
+    }
+    #[func]
+    pub fn on_round_timeout(&mut self) {
+        if let Some(ref mut round_manager) = self.round_manager {
+            round_manager
+                .bind_mut()
+                .player_health_report(self.health, self.player_num);
+            self.can_act = false;
+            self.can_move = false;
+        }
     }
 }
 
@@ -1052,7 +1066,7 @@ impl Player {
             .and_then(|anim| anim.get_child(0))
             .and_then(|tree| tree.try_cast::<AnimationTree>().ok());
     }
-    fn ready_round_start_signal(&mut self) {
+    fn ready_round_manager_signals(&mut self) {
         self.round_manager = self
             .base()
             .get_tree()
@@ -1067,6 +1081,9 @@ impl Player {
             rm.signals()
                 .round_start()
                 .connect_other(&this, Self::on_round_start);
+            rm.signals()
+                .round_timeout()
+                .connect_other(&this, Self::on_round_timeout);
         }
     }
     fn scale_healthbar_with_health(&mut self) {

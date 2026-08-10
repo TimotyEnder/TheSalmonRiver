@@ -605,6 +605,7 @@ states/start_anim/position = Vector2(403, 145)
 transitions = ["countdown", "go", SubResource("AnimationNodeStateMachineTransition_k12tt"), "Start", "start_anim", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "start_anim", "countdown", SubResource("AnimationNodeStateMachineTransition_b3802"), "go", "exit_anim", SubResource("AnimationNodeStateMachineTransition_h1bgf")]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_21xkr"]
+resource_local_to_scene = true
 transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0

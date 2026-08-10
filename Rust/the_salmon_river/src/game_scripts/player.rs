@@ -1277,7 +1277,9 @@ impl Player {
         Signal::from_object_signal(&drop_timer, "timeout")
             .to_future::<()>()
             .await;
-        grabber.bind_mut().drop_throwable();
+        if grabber.bind().player_throwable_in_hand.is_some() {
+            grabber.bind_mut().drop_throwable();
+        }
     }
     async fn scale_release_bar_with_drop_timer(
         drop_timer: Gd<SceneTreeTimer>,

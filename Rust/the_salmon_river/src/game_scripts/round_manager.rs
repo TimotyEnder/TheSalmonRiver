@@ -131,7 +131,16 @@ impl RoundManager {
             {
                 gm.bind_mut().player_won_round(*winner);
                 label.set_visible(true);
-                label.set("text", &format!("PLAYER {} WINS!", winner).to_variant());
+                label.set(
+                    "text",
+                    &format!(
+                        "[color=#{}]PLAYER {} WINS![/color]",
+                        crate::game_scripts::game_utils::player_color_based_on_number(*winner)
+                            .to_html(),
+                        winner
+                    )
+                    .to_variant(),
+                );
                 let timer = self.base().get_tree().create_timer(5.0);
                 let mut tree = self.base().get_tree();
                 godot::task::spawn(async move {

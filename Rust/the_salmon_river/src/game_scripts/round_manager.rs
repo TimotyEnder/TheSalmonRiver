@@ -6,6 +6,7 @@ use godot::{
 };
 
 use crate::game_manager::game_manager::GameManager;
+use crate::game_scripts::game_utils::player_color_based_on_number;
 
 #[derive(GodotClass)]
 #[class(base=Node3D)]
@@ -46,7 +47,14 @@ impl INode3D for RoundManager {
                 if let Some(ref mut gm) = gm {
                     let round = gm.bind().get_current_round_number_one_based();
                     if round > 0 {
-                        label.set("text", &format!("ROUND {}!\n", round).to_variant());
+                        let player_count = gm.bind_mut().get_player_count();
+                        let mut text = format!("ROUND {}!\n", round);
+                        for player_num in 1..=player_count as u8 {
+                            let score = gm.bind().get_player_score(player_num);
+                            let color = player_color_based_on_number(player_num).to_html();
+                            text.push_str(&format!("[color=#{}]{}[/color] ", color, score));
+                        }
+                        label.set("text", &text.to_variant());
                     }
                 }
             }

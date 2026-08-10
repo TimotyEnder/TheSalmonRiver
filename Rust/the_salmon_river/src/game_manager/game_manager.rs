@@ -52,4 +52,12 @@ impl GameManager {
             return 0;
         }
     }
+    #[func]
+    pub fn get_player_score(&self, player_num: u8) -> u32 {
+        if let Some(ref game) = self.current_game {
+            return game.get_score_for_player(player_num);
+        } else {
+            return 0;
+        }
+    }
 }

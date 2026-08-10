@@ -741,11 +741,14 @@ anim_player = NodePath("..")
 parameters/conditions/count = false
 
 [node name="RoundLabel" type="MeshInstance3D" parent="RoundManager" unique_id=1855228584]
-transform = Transform3D(-7.17814e-07, 0, 10.826355, 0, 16.421669, 0, -16.421669, 0, -4.7323502e-07, 0, 7.6350107, 0)
+transform = Transform3D(-7.17814e-07, 0, 10.826355, 0, 16.421669, 0, -16.421669, 0, -4.7323502e-07, 0, 4.8183417, 0)
 material_override = SubResource("StandardMaterial3D_21xkr")
 mesh = SubResource("PlaneMesh_6bp64")
 script = ExtResource("6_21xkr")
-text = "ROUND 0!"
+text = "ROUND 0!
+0000
+"
+vertical_alignment = 0
 font = ExtResource("5_kry3j")
 font_size = 400
 resolution = 2000.0

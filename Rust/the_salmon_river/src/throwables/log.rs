@@ -1,4 +1,4 @@
-use crate::throwables::throwability::Throwability;
+use crate::{game_scripts::player::Player, throwables::throwability::Throwability};
 
 pub struct Log {}
 impl Throwability for Log {
@@ -10,7 +10,7 @@ impl Throwability for Log {
         "Log"
     }
 
-    fn use_ability(&mut self, player: &mut crate::player::Player) {
+    fn use_ability(&mut self, player: &mut Player) {
         player.spawn_log_obsticle();
     }
 }

@@ -1,7 +1,6 @@
 use crate::{
-    throwable::Throwable,
+    game_scripts::{game_utils::ThrowableSpawnDirection, throwable::Throwable},
     throwables::{ice_chunk::IceChunk, log::Log, salmon::Salmon},
-    utils::ThrowableSpawnDirection::{self, Up},
 };
 use godot::{
     classes::{AnimationTree, RandomNumberGenerator, Time},

@@ -1,10 +1,7 @@
-pub mod UI;
-pub mod duck_meter_manager;
-pub mod player;
-pub mod throwable;
-pub mod throwable_spawner;
+pub mod game_manager;
+pub mod game_scripts;
 pub mod throwables;
-pub mod utils;
+pub mod ui;
 // /https://godot-rust.github.io/book/intro/hello-world.html
 // https://godot-rust.github.io/docs/gdext/master/godot/classes/index.html
 use godot::prelude::*;

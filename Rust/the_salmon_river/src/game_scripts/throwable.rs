@@ -1,12 +1,9 @@
-use std::fmt::format;
-
 use crate::{
-    player::Player,
-    throwables::{ice_chunk::IceChunk, log::Log, salmon::Salmon, throwability::Throwability},
-    utils::Direction,
+    game_scripts::{game_utils::Direction, player::Player},
+    throwables::throwability::Throwability,
 };
 use godot::{
-    classes::{Area3D, CollisionShape3D, GpuParticles3D, IRigidBody3D, RigidBody3D},
+    classes::{Area3D, GpuParticles3D, IRigidBody3D, RigidBody3D},
     prelude::*,
 };
 #[derive(GodotClass)]

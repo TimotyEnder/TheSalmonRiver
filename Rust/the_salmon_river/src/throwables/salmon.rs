@@ -1,4 +1,4 @@
-use crate::throwables::throwability::Throwability;
+use crate::{game_scripts::player::Player, throwables::throwability::Throwability};
 
 pub struct Salmon {}
 impl Throwability for Salmon {
@@ -10,7 +10,7 @@ impl Throwability for Salmon {
         "Salmon"
     }
 
-    fn use_ability(&mut self, player: &mut crate::player::Player) {
+    fn use_ability(&mut self, player: &mut Player) {
         player.heal(2);
         player.add_additional_punch_damage(1);
     }

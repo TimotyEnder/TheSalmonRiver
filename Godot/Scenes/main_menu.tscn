@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bhj4c5fpdm741" path="res://VoxelAssets/3DUI/GameTitle.gltf" id="1_ce3w2"]
 [ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="2_1ehe0"]
 [ext_resource type="PackedScene" uid="uid://c55fml4h84ry1" path="res://VoxelAssets/3DUI/ThrowableArrow.gltf" id="3_1ehe0"]
+[ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="5_n45e2"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ce3w2"]
 
@@ -285,6 +286,9 @@ transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_48xlc"]
 
+[sub_resource type="Theme" id="Theme_jjvhh"]
+default_font = ExtResource("5_n45e2")
+
 [node name="MainMenu" type="Node3D" unique_id=1673199348]
 
 [node name="GameTitle" parent="." unique_id=16143490 instance=ExtResource("1_ce3w2")]
@@ -392,6 +396,8 @@ offset_right = -469.0
 offset_bottom = -245.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_jjvhh")
+theme_override_font_sizes/font_size = 80
 action_mode = 0
 text = "PLAY"
 

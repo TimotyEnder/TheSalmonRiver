@@ -1,4 +1,4 @@
-use crate::player::Player;
+use crate::game_scripts::player::Player;
 
 pub trait Throwability {
     fn deal_dmg(&mut self) -> u8;

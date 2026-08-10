@@ -7,9 +7,11 @@ use godot::global::Key;
 use godot::prelude::*;
 use godot::signal::ConnectHandle;
 
-use crate::duck_meter_manager::DuckMeterManager;
-use crate::throwable::Throwable;
-use crate::utils::*;
+use crate::game_scripts::duck_meter_manager::DuckMeterManager;
+use crate::game_scripts::game_utils::{
+    Direction, complementary_color, player_color_based_on_number,
+};
+use crate::game_scripts::throwable::Throwable;
 
 #[derive(GodotClass)]
 #[class(base=CharacterBody3D)]
@@ -989,7 +991,7 @@ impl Player {
             .and_then(|hb| hb.try_cast::<Sprite3D>().ok());
         if let Some(ref mut healthbar) = self.player_healthbar {
             self.initial_heealthbar_scale = healthbar.get_scale().x;
-            healthbar.set_modulate(crate::utils::player_color_based_on_number(self.player_num));
+            healthbar.set_modulate(player_color_based_on_number(self.player_num));
         }
     }
     fn ready_duck_meter_systems(&mut self) {
@@ -1000,9 +1002,9 @@ impl Player {
             .and_then(|db| db.try_cast::<Sprite3D>().ok());
         if let Some(ref mut duckbar) = self.player_duck_bar {
             self.intitial_duck_bar_scale = duckbar.get_scale().x;
-            duckbar.set_modulate(crate::utils::complementary_color(
-                crate::utils::player_color_based_on_number(self.player_num),
-            ));
+            duckbar.set_modulate(complementary_color(player_color_based_on_number(
+                self.player_num,
+            )));
         }
     }
     fn ready_throwable_systems(&mut self) {

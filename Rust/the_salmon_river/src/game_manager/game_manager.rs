@@ -39,7 +39,7 @@ impl GameManager {
     #[func]
     pub fn get_current_round_number_one_based(&self) -> u32 {
         if let Some(ref game) = self.current_game {
-            return game.get_current_round() as u32;
+            return game.get_current_round() + 1 as u32;
         } else {
             return 0;
         }

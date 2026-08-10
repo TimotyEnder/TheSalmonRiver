@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://8kv0vvanmf1v" path="res://VoxelAssets/Bear/bear.gltf" id="1_y6xdh"]
 [ext_resource type="PackedScene" uid="uid://dpem28diunogk" path="res://VoxelAssets/Duck/duck0.gltf" id="2_5wxv7"]
+[ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="2_juxdh"]
 [ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="2_y5hcb"]
 [ext_resource type="PackedScene" uid="uid://bps7qinxrsfpy" path="res://VoxelAssets/3DUI/ThrowableEffectIcons/IceChunkEffect.gltf" id="3_2nftw"]
 [ext_resource type="PackedScene" uid="uid://ftcujcmjbrws" path="res://VoxelAssets/3DUI/ThrowableEffectIcons/LogEffect.gltf" id="4_knrd4"]
@@ -3082,6 +3083,7 @@ debug_color = Color(0.3264353, 0.6243242, 9.62615e-07, 1)
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 3.6388261, 0)
 modulate = Color(1, 1, 1, 0.49019608)
 text = "P0"
+font = ExtResource("2_juxdh")
 font_size = 185
 
 [node name="HealthBar" type="Sprite3D" parent="PlayerLabel" unique_id=754399058]

@@ -11,11 +11,13 @@ use crate::game_scripts::duck_meter_manager::DuckMeterManager;
 use crate::game_scripts::game_utils::{
     Direction, complementary_color, player_color_based_on_number,
 };
+use crate::game_scripts::round_manager::RoundManager;
 use crate::game_scripts::throwable::Throwable;
 
 #[derive(GodotClass)]
 #[class(base=CharacterBody3D)]
 pub struct Player {
+    can_move: bool,
     base: Base<CharacterBody3D>,
     speed: f32,
     jump_force: f32,
@@ -89,6 +91,7 @@ impl ICharacterBody3D for Player {
     fn init(base: Base<CharacterBody3D>) -> Self {
         Self {
             base,
+            can_move: false,
             body_collider: None,
             body_mesh: None,
             upper_anim_tree: None,
@@ -158,12 +161,13 @@ impl ICharacterBody3D for Player {
         self.ready_label();
         self.ready_groups();
         self.ready_particle_system();
+        self.ready_round_start_signal();
     }
     fn process(&mut self, delta: f64) {
         self.health_check();
         self.sync_to_body_flip();
         self.negate_scale_changes_on_grab();
-        if !self.grabbed_by_another_player {
+        if !self.grabbed_by_another_player && self.can_move {
             self.movement(delta);
         }
         if !self.hit_stun && !self.knock_back && !self.dead && !self.grabbed_by_another_player {
@@ -211,6 +215,10 @@ impl Player {
                 current.set_visible(true);
             }
         }
+    }
+    #[func]
+    pub fn on_round_start(&mut self) {
+        self.can_move = true;
     }
 }
 
@@ -1035,6 +1043,22 @@ impl Player {
             .and_then(|ihac| ihac.find_child("InHandAbilityContainerAnim"))
             .and_then(|anim| anim.get_child(0))
             .and_then(|tree| tree.try_cast::<AnimationTree>().ok());
+    }
+    fn ready_round_start_signal(&mut self) {
+        let mut round_manager = self
+            .base()
+            .get_tree()
+            .get_current_scene()
+            .and_then(|scene| {
+                scene
+                    .find_child("RoundManager")
+                    .and_then(|rm| rm.try_cast::<RoundManager>().ok())
+            });
+        if let Some(ref mut rm) = round_manager {
+            rm.signals()
+                .round_start()
+                .connect_other(&self.to_gd(), Self::on_round_start);
+        }
     }
     fn scale_healthbar_with_health(&mut self) {
         if let Some(ref mut healthbar) = self.player_healthbar {

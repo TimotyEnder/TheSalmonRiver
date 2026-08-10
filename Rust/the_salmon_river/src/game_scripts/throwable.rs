@@ -176,6 +176,9 @@ impl Throwable {
     }
     fn break_itself(&mut self) {
         if let Some(throwability) = self.throwable_inner.take() {
+            if let Some(ref mut hitbox) = self.hitbox_area {
+                hitbox.call_deferred("queue_free", &[]);
+            }
             let particles_to_explode = self
                 .base()
                 .find_child(throwability.visual_node_name())

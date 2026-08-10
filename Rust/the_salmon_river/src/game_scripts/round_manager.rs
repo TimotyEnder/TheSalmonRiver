@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
 use godot::{
-    classes::{AnimationTree, INode3D, Label3D},
+    classes::{AnimationTree, INode3D, Node3D},
     prelude::*,
 };
 
@@ -11,7 +11,7 @@ use crate::game_manager::game_manager::GameManager;
 #[class(base=Node3D)]
 pub struct RoundManager {
     base: Base<Node3D>,
-    output_text: Option<Gd<Label3D>>,
+    output_text: Option<Gd<Node3D>>,
     output_text_anim: Option<Gd<AnimationTree>>,
     starting_seq_started: bool,
     players_left: u32,
@@ -46,7 +46,7 @@ impl INode3D for RoundManager {
                 if let Some(ref mut gm) = gm {
                     let round = gm.bind().get_current_round_number_one_based();
                     if round > 0 {
-                        label.set_text(&format!("ROUND {}!", round));
+                        label.set("text", &format!("ROUND {}!\n", round).to_variant());
                     }
                 }
             }
@@ -66,7 +66,7 @@ impl RoundManager {
         self.output_text = self
             .base()
             .find_child("RoundLabel")
-            .and_then(|lt| lt.try_cast::<Label3D>().ok());
+            .and_then(|lt| lt.try_cast::<Node3D>().ok());
         self.output_text_anim = self.base().find_child("RoundAnim").and_then(|ra| {
             ra.get_child(0)
                 .and_then(|tree| tree.try_cast::<AnimationTree>().ok())
@@ -123,7 +123,7 @@ impl RoundManager {
             {
                 gm.bind_mut().player_won_round(*winner);
                 label.set_visible(true);
-                label.set_text(&format!("PLAYER {} WINS!", winner));
+                label.set("text", &format!("PLAYER {} WINS!", winner).to_variant());
                 let timer = self.base().get_tree().create_timer(5.0);
                 let mut tree = self.base().get_tree();
                 godot::task::spawn(async move {

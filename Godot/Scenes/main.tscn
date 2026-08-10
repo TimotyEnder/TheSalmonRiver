@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://b4u8wkqpnfjns" path="res://VoxelAssets/Environment/GrassRiverBank.gltf" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://c55fml4h84ry1" path="res://VoxelAssets/3DUI/ThrowableArrow.gltf" id="4_kry3j"]
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="5_kry3j"]
+[ext_resource type="Script" uid="uid://cofw7sywoopgu" path="res://rich-text-3d-godot-a81f50a2c49f0600c1188b0de8fba12a205e6c7f/addons/rich_text_3d/rich_text_3d.gd" id="6_21xkr"]
 
 [sub_resource type="Environment" id="Environment_bo1nx"]
 background_mode = 3
@@ -603,6 +604,16 @@ states/start_anim/node = SubResource("AnimationNodeAnimation_344ge")
 states/start_anim/position = Vector2(403, 145)
 transitions = ["countdown", "go", SubResource("AnimationNodeStateMachineTransition_k12tt"), "Start", "start_anim", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "start_anim", "countdown", SubResource("AnimationNodeStateMachineTransition_b3802"), "go", "exit_anim", SubResource("AnimationNodeStateMachineTransition_h1bgf")]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_21xkr"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6bp64"]
+size = Vector2(0.7, 0.5)
+orientation = 2
+
 [node name="Root" type="Node3D" unique_id=236819951]
 
 [node name="Player2" parent="." unique_id=786188032 instance=ExtResource("2_bo1nx")]
@@ -729,9 +740,14 @@ tree_root = SubResource("AnimationNodeStateMachine_rai8w")
 anim_player = NodePath("..")
 parameters/conditions/count = false
 
-[node name="RoundLabel" type="Label3D" parent="RoundManager" unique_id=1240505243]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 7.413319, 0)
+[node name="RoundLabel" type="MeshInstance3D" parent="RoundManager" unique_id=1855228584]
+transform = Transform3D(-7.17814e-07, 0, 10.826355, 0, 16.421669, 0, -16.421669, 0, -4.7323502e-07, 0, 7.6350107, 0)
+material_override = SubResource("StandardMaterial3D_21xkr")
+mesh = SubResource("PlaneMesh_6bp64")
+script = ExtResource("6_21xkr")
 text = "ROUND 0!"
 font = ExtResource("5_kry3j")
-font_size = 500
-uppercase = true
+font_size = 400
+resolution = 2000.0
+text_width = 2000.0
+metadata/_custom_type_script = "uid://cofw7sywoopgu"

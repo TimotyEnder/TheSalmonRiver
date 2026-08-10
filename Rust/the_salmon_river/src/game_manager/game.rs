@@ -10,7 +10,7 @@ impl Game {
         Self {
             winning_player_number: None,
             rounds_to_win,
-            rounds_by_player_number: Vec::with_capacity(number_of_players as usize),
+            rounds_by_player_number: vec![0; number_of_players as usize],
             current_round: 0,
         }
     }

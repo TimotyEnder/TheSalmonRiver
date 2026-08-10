@@ -44,4 +44,12 @@ impl GameManager {
             return 0;
         }
     }
+    #[func]
+    pub fn get_player_count(&mut self) -> u32 {
+        if let Some(ref game) = self.current_game {
+            return game.get_player_number() as u32;
+        } else {
+            return 0;
+        }
+    }
 }

@@ -11,7 +11,7 @@ use crate::game_scripts::duck_meter_manager::DuckMeterManager;
 use crate::game_scripts::game_utils::{
     Direction, complementary_color, player_color_based_on_number,
 };
-use crate::game_scripts::round_manager::RoundManager;
+use crate::game_scripts::round_manager::{self, RoundManager};
 use crate::game_scripts::throwable::Throwable;
 
 #[derive(GodotClass)]
@@ -85,6 +85,7 @@ pub struct Player {
     in_hand_ability_container: Option<Gd<Node3D>>,
     current_in_hand_ability_icon: Option<Gd<Node3D>>,
     in_hand_ability_container_anim_tree: Option<Gd<AnimationTree>>,
+    round_manager: Option<Gd<RoundManager>>,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -149,6 +150,7 @@ impl ICharacterBody3D for Player {
             in_hand_ability_container: None,
             current_in_hand_ability_icon: None,
             in_hand_ability_container_anim_tree: None,
+            round_manager: None,
         }
     }
     fn ready(&mut self) {
@@ -784,6 +786,12 @@ impl Player {
             if let Some(ref mut label) = bind.player_label {
                 label.set_visible(false);
             }
+            let player_num = bind.player_num;
+            if !bind.dead
+                && let Some(ref mut round_manager) = bind.round_manager
+            {
+                round_manager.bind_mut().report_player_death(player_num);
+            }
             bind.dead = true;
             let mut velocity = bind.base().get_velocity();
             bind.drop_throwable();
@@ -1045,7 +1053,7 @@ impl Player {
             .and_then(|tree| tree.try_cast::<AnimationTree>().ok());
     }
     fn ready_round_start_signal(&mut self) {
-        let mut round_manager = self
+        self.round_manager = self
             .base()
             .get_tree()
             .get_current_scene()
@@ -1054,10 +1062,11 @@ impl Player {
                     .find_child("RoundManager")
                     .and_then(|rm| rm.try_cast::<RoundManager>().ok())
             });
-        if let Some(ref mut rm) = round_manager {
+        let this = self.to_gd();
+        if let Some(ref mut rm) = self.round_manager {
             rm.signals()
                 .round_start()
-                .connect_other(&self.to_gd(), Self::on_round_start);
+                .connect_other(&this, Self::on_round_start);
         }
     }
     fn scale_healthbar_with_health(&mut self) {

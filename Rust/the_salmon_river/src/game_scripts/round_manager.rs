@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use godot::{
     classes::{AnimationTree, INode3D, Label3D},
     prelude::*,
@@ -12,6 +14,8 @@ pub struct RoundManager {
     output_text: Option<Gd<Label3D>>,
     output_text_anim: Option<Gd<AnimationTree>>,
     starting_seq_started: bool,
+    players_left: u32,
+    players_alive: HashSet<u8>,
 }
 
 #[godot_api]
@@ -22,11 +26,14 @@ impl INode3D for RoundManager {
             output_text: None,
             output_text_anim: None,
             starting_seq_started: false,
+            players_left: 0,
+            players_alive: HashSet::new(),
         }
     }
 
     fn ready(&mut self) {
         self.ready_label();
+        self.ready_from_gamemanager();
     }
     fn process(&mut self, _delta: f32) {
         if !self.starting_seq_started {
@@ -90,6 +97,42 @@ impl RoundManager {
         {
             let mut bind = this.bind_mut();
             bind.signals().round_start().emit();
+        }
+    }
+    fn ready_from_gamemanager(&mut self) {
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManager");
+        if let Some(mut gm) = gm {
+            self.players_left = gm.bind_mut().get_player_count();
+            (1..self.players_left as u8).for_each(|f| {
+                self.players_alive.insert(f);
+            });
+        }
+    }
+    pub fn report_player_death(&mut self, player_num: u8) {
+        self.players_alive.remove(&player_num);
+        self.players_left = self.players_left.saturating_sub(1);
+        if self.players_left <= 1 {
+            let mut gm = self
+                .base()
+                .try_get_node_as::<GameManager>("/root/GameManager");
+            if let Some(ref mut gm) = gm
+                && let Some(winner) = self.players_alive.iter().next()
+                && let Some(ref mut label) = self.output_text
+            {
+                gm.bind_mut().player_won_round(*winner);
+                label.set_visible(true);
+                label.set_text(&format!("PLAYER {} WINS!", winner));
+                let timer = self.base().get_tree().create_timer(5.0);
+                let mut tree = self.base().get_tree();
+                godot::task::spawn(async move {
+                    Signal::from_object_signal(&timer, "timeout")
+                        .to_future::<()>()
+                        .await;
+                    tree.change_scene_to_file("res://Scenes/main.tscn");
+                });
+            }
         }
     }
 }

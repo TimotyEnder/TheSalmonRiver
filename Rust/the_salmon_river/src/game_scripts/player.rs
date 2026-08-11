@@ -741,6 +741,17 @@ impl Player {
         }
     }
     async fn hitstun_routine(mut this: Gd<Self>, knock_dir: Direction) {
+        let reset_anim_timer;
+        {
+            let mut bind = this.bind_mut();
+            if let Some(ref mut anim) = bind.lower_anim_tree {
+                anim.set("parameters/conditions/un_hit", &true.to_variant());
+            }
+            reset_anim_timer = bind.base().get_tree().create_timer(0.01);
+        }
+        Signal::from_object_signal(&reset_anim_timer, "timeout")
+            .to_future::<()>()
+            .await;
         let should_knockback;
         {
             let mut bind = this.bind_mut();
@@ -762,6 +773,7 @@ impl Player {
         {
             let mut bind = this.bind_mut();
             if let Some(ref mut anim) = bind.lower_anim_tree {
+                anim.set("parameters/conditions/un_hit", &false.to_variant());
                 anim.set("parameters/conditions/hit", &true.to_variant());
             }
             if let Some(ref mut anim) = bind.upper_anim_tree {
@@ -781,6 +793,7 @@ impl Player {
                 bind.hit_stun_hits = 0;
             }
             if let Some(ref mut anim) = bind.lower_anim_tree {
+                anim.set("parameters/conditions/un_hit", &true.to_variant());
                 anim.set("parameters/conditions/hit", &false.to_variant());
             }
             if let Some(ref mut anim) = bind.upper_anim_tree {

@@ -809,7 +809,7 @@ tracks/8/keys = {
 "times": PackedFloat32Array(0, 0.10000001),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0.9999998, 1, 0.9999998), Vector3(0.99999976, 1, 0.99999976)]
+"values": [Vector3(1.2, 1.2, 1.2), Vector3(0.99999976, 1, 0.99999976)]
 }
 
 [sub_resource type="Animation" id="Animation_8gbba"]
@@ -1372,20 +1372,20 @@ advance_mode = 2
 advance_condition = &"hit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hck1p"]
-switch_mode = 2
 advance_mode = 2
+advance_condition = &"un_hit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_juxdh"]
-switch_mode = 2
 advance_mode = 2
+advance_condition = &"un_hit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4qbli"]
-switch_mode = 2
 advance_mode = 2
+advance_condition = &"un_hit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_08u7w"]
-switch_mode = 2
 advance_mode = 2
+advance_condition = &"un_hit"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vjsh3"]
 advance_mode = 2
@@ -1485,7 +1485,7 @@ states/duck/position = Vector2(235, 258)
 states/duck_jump/node = SubResource("AnimationNodeAnimation_knrd4")
 states/duck_jump/position = Vector2(911.3959, 392)
 states/hit/node = SubResource("AnimationNodeAnimation_y6xdh")
-states/hit/position = Vector2(663.3959, -12)
+states/hit/position = Vector2(671.3959, -17)
 states/idle/node = SubResource("AnimationNodeAnimation_8gbba")
 states/idle/position = Vector2(335, 208)
 states/jump/node = SubResource("AnimationNodeAnimation_jjvhh")
@@ -1495,7 +1495,7 @@ states/knock_back/position = Vector2(610.3959, 340)
 states/run/node = SubResource("AnimationNodeAnimation_kry3j")
 states/run/position = Vector2(272, 4)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_21xkr"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_6bp64"), "idle", "duck", SubResource("AnimationNodeStateMachineTransition_344ge"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_ynf5e"), "duck", "idle", SubResource("AnimationNodeStateMachineTransition_hptm8"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_d1ilt"), "jump", "idle", SubResource("AnimationNodeStateMachineTransition_6iyac"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_fdnlq"), "jump", "run", SubResource("AnimationNodeStateMachineTransition_jkdf5"), "jump", "duck", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "duck", "jump", SubResource("AnimationNodeStateMachineTransition_k12tt"), "duck", "run", SubResource("AnimationNodeStateMachineTransition_h1bgf"), "run", "duck", SubResource("AnimationNodeStateMachineTransition_b3802"), "run", "hit", SubResource("AnimationNodeStateMachineTransition_5wxv7"), "jump", "hit", SubResource("AnimationNodeStateMachineTransition_y5hcb"), "idle", "hit", SubResource("AnimationNodeStateMachineTransition_2nftw"), "duck", "hit", SubResource("AnimationNodeStateMachineTransition_knrd4"), "hit", "run", SubResource("AnimationNodeStateMachineTransition_hck1p"), "hit", "idle", SubResource("AnimationNodeStateMachineTransition_juxdh"), "hit", "jump", SubResource("AnimationNodeStateMachineTransition_4qbli"), "hit", "duck", SubResource("AnimationNodeStateMachineTransition_08u7w"), "hit", "knock_back", SubResource("AnimationNodeStateMachineTransition_vjsh3"), "knock_back", "jump", SubResource("AnimationNodeStateMachineTransition_7c0pg"), "knock_back", "idle", SubResource("AnimationNodeStateMachineTransition_unxwf"), "knock_back", "duck", SubResource("AnimationNodeStateMachineTransition_0u5bp"), "knock_back", "run", SubResource("AnimationNodeStateMachineTransition_di5ps"), "knock_back", "hit", SubResource("AnimationNodeStateMachineTransition_qkk0s"), "idle", "knock_back", SubResource("AnimationNodeStateMachineTransition_y6xdh"), "duck", "knock_back", SubResource("AnimationNodeStateMachineTransition_ygfkb"), "jump", "knock_back", SubResource("AnimationNodeStateMachineTransition_l3blc"), "run", "knock_back", SubResource("AnimationNodeStateMachineTransition_1q4fu"), "jump", "duck_jump", SubResource("AnimationNodeStateMachineTransition_375py"), "duck_jump", "jump", SubResource("AnimationNodeStateMachineTransition_3rsih"), "duck_jump", "death", SubResource("AnimationNodeStateMachineTransition_6qop4"), "knock_back", "death", SubResource("AnimationNodeStateMachineTransition_km78l"), "jump", "death", SubResource("AnimationNodeStateMachineTransition_v447a"), "idle", "death", SubResource("AnimationNodeStateMachineTransition_3c3ic"), "hit", "death", SubResource("AnimationNodeStateMachineTransition_abtri"), "duck", "death", SubResource("AnimationNodeStateMachineTransition_nvkvw"), "run", "death", SubResource("AnimationNodeStateMachineTransition_wy7bf"), "death", "death 2", SubResource("AnimationNodeStateMachineTransition_of3e5"), "death 2", "death", SubResource("AnimationNodeStateMachineTransition_u81v3")]
-graph_offset = Vector2(46.395874, -7)
+graph_offset = Vector2(12.395874, 9)
 
 [sub_resource type="Animation" id="Animation_21xkr"]
 length = 0.001
@@ -3051,6 +3051,7 @@ parameters/conditions/idle = false
 parameters/conditions/jump = false
 parameters/conditions/knock = false
 parameters/conditions/run = false
+parameters/conditions/un_hit = false
 
 [node name="UpperAnim" type="AnimationPlayer" parent="." unique_id=1746328616]
 libraries/ = SubResource("AnimationLibrary_ynf5e")

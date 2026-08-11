@@ -412,137 +412,15 @@ offset_bottom = -44.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/PlayerControlsPanel" unique_id=630464859]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 36.0
-offset_top = 79.0
-offset_right = -38.0
-offset_bottom = -34.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PlayerControl" type="Panel" parent="CanvasLayer/PlayerControlsPanel" unique_id=907391862]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 340.0
-offset_top = 80.0
-offset_right = -356.0
-offset_bottom = -1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PlayerNumber" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/PlayerControl" unique_id=723792135]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 0.17300001
-offset_right = -1.0
-offset_bottom = 2.845993
-theme_override_font_sizes/normal_font_size = 70
-text = "PLAYER 0"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/PlayerControlsPanel/PlayerControl" unique_id=1938106491]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 6.999995
-offset_top = 71.0
-offset_right = -111.48108
-offset_bottom = -86.0
-scale = Vector2(0.99682665, 0.99688303)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/PlayerControl/GridContainer" unique_id=1285456174]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_fonts/normal_font = ExtResource("5_n45e2")
-theme_override_font_sizes/normal_font_size = 40
-text = "JUMP:"
-scroll_active = false
-vertical_alignment = 1
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/PlayerControl/GridContainer" unique_id=1026142858]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_fonts/normal_font = ExtResource("5_n45e2")
-theme_override_font_sizes/normal_font_size = 40
-text = "LEFT:
-"
-scroll_active = false
-vertical_alignment = 1
-
-[node name="RichTextLabel3" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/PlayerControl/GridContainer" unique_id=1944115966]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_fonts/normal_font = ExtResource("5_n45e2")
-theme_override_font_sizes/normal_font_size = 40
-text = "RIGHT:
-"
-scroll_active = false
-vertical_alignment = 1
-
-[node name="RichTextLabel4" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/PlayerControl/GridContainer" unique_id=1366894946]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_fonts/normal_font = ExtResource("5_n45e2")
-theme_override_font_sizes/normal_font_size = 40
-text = "DUCK:
-"
-scroll_active = false
-vertical_alignment = 1
-
-[node name="RichTextLabel5" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/PlayerControl/GridContainer" unique_id=1703378883]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_fonts/normal_font = ExtResource("5_n45e2")
-theme_override_font_sizes/normal_font_size = 40
-text = "PUNCH/USE:
-"
-scroll_active = false
-vertical_alignment = 1
-
-[node name="RichTextLabel6" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/PlayerControl/GridContainer" unique_id=1328445328]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_fonts/normal_font = ExtResource("5_n45e2")
-theme_override_font_sizes/normal_font_size = 40
-text = "GRAB/THROW:
-"
-scroll_active = false
-vertical_alignment = 1
-
-[node name="PlayButton" type="MainMenuStartMatchButton" parent="CanvasLayer/PlayerControlsPanel" unique_id=1351313102]
-material = SubResource("CanvasItemMaterial_48xlc")
-layout_mode = 0
-offset_left = 351.0
-offset_top = 467.0
-offset_right = 618.0
-offset_bottom = 556.0
-theme = SubResource("Theme_jjvhh")
-theme_override_font_sizes/font_size = 80
-action_mode = 0
-text = "PLAY"
-
 [node name="MatchSettingsPanel" type="Panel" parent="CanvasLayer/PlayerControlsPanel" unique_id=1947177051]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 0.135
-offset_bottom = 5.074997
+offset_left = 7.0
+offset_top = -5.0
+offset_right = 7.0
+offset_bottom = 0.07499695
 
 [node name="PanelEnablingButton" type="PanelEnablingButton" parent="CanvasLayer/PlayerControlsPanel" unique_id=2135366461 node_paths=PackedStringArray("panel_to_enable")]
 panel_to_enable = NodePath("..")
@@ -558,6 +436,178 @@ theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 69
 text = "X"
 icon_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PlayerControlsPanel" unique_id=430862607]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -489.0
+offset_top = -202.5
+offset_right = 483.0
+offset_bottom = 275.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="PlayerControl" type="Panel" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer" unique_id=907391862]
+custom_minimum_size = Vector2(242, 477.74)
+custom_maximum_size = Vector2(360, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PlayerNumber" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl" unique_id=723792135]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.17300001
+offset_right = -1.0
+offset_bottom = 2.845993
+theme_override_font_sizes/normal_font_size = 47
+text = "PLAYER 0"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl" unique_id=1938106491]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.999995
+offset_top = 71.0
+offset_right = -111.48108
+offset_bottom = -86.0
+scale = Vector2(0.99682665, 0.99688303)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl/GridContainer" unique_id=1285456174]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("5_n45e2")
+theme_override_font_sizes/normal_font_size = 40
+text = "JUMP:"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl/GridContainer" unique_id=1026142858]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("5_n45e2")
+theme_override_font_sizes/normal_font_size = 40
+text = "LEFT:
+"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl/GridContainer" unique_id=1944115966]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("5_n45e2")
+theme_override_font_sizes/normal_font_size = 40
+text = "RIGHT:
+"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl/GridContainer" unique_id=1366894946]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("5_n45e2")
+theme_override_font_sizes/normal_font_size = 40
+text = "DUCK:
+"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl/GridContainer" unique_id=1703378883]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("5_n45e2")
+theme_override_font_sizes/normal_font_size = 40
+text = "PUNCH/USE:
+"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl/GridContainer" unique_id=1328445328]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("5_n45e2")
+theme_override_font_sizes/normal_font_size = 40
+text = "GRAB/THROW:
+"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="GridContainer2" type="GridContainer" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl" unique_id=1789698251]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 221.0
+offset_top = 71.0
+offset_right = 102.51892
+offset_bottom = -86.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.99682665, 0.99688303)
+
+[node name="KeyMappingButtonJump" type="KeyMappingButton" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl/GridContainer2" unique_id=2032677670]
+custom_minimum_size = Vector2(125, 50)
+custom_maximum_size = Vector2(125, 50)
+layout_mode = 2
+
+[node name="KeyMappingButtonLeft" type="KeyMappingButton" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl/GridContainer2" unique_id=1284402955]
+custom_minimum_size = Vector2(125, 50)
+custom_maximum_size = Vector2(125, 50)
+layout_mode = 2
+
+[node name="KeyMappingButtonRight" type="KeyMappingButton" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl/GridContainer2" unique_id=149453107]
+custom_minimum_size = Vector2(125, 50)
+custom_maximum_size = Vector2(125, 50)
+layout_mode = 2
+
+[node name="KeyMappingButtonDuck" type="KeyMappingButton" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl/GridContainer2" unique_id=395720326]
+custom_minimum_size = Vector2(125, 50)
+custom_maximum_size = Vector2(125, 50)
+layout_mode = 2
+
+[node name="KeyMappingButtonPunchUse" type="KeyMappingButton" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl/GridContainer2" unique_id=1068655929]
+custom_minimum_size = Vector2(125, 50)
+custom_maximum_size = Vector2(125, 50)
+layout_mode = 2
+
+[node name="KeyMappingButtonGrabThrow" type="KeyMappingButton" parent="CanvasLayer/PlayerControlsPanel/HBoxContainer/PlayerControl/GridContainer2" unique_id=5526713]
+custom_minimum_size = Vector2(125, 50)
+custom_maximum_size = Vector2(125, 50)
+layout_mode = 2
+
+[node name="PlayButton" type="MainMenuStartMatchButton" parent="CanvasLayer/PlayerControlsPanel" unique_id=1351313102]
+material = SubResource("CanvasItemMaterial_48xlc")
+layout_mode = 0
+offset_left = 351.0
+offset_top = 467.0
+offset_right = 618.0
+offset_bottom = 556.0
+theme = SubResource("Theme_jjvhh")
+theme_override_font_sizes/font_size = 80
+action_mode = 0
+text = "PLAY"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=155541207]
 transform = Transform3D(-0.00668736, -0.90484244, 0.42569408, -0.014212694, 0.42574656, 0.90473086, -0.9998766, 4.653394e-10, -0.015707368, -0.11735284, 3.0913627, 0)

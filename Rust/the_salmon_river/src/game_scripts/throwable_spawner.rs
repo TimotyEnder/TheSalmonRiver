@@ -31,7 +31,8 @@ impl INode3D for ThrowableSpawner {
         }
     }
     fn ready(&mut self) {
-        self.next_spawn_time_ms = self.spawn_rate_ms;
+        let time = Time::singleton();
+        self.next_spawn_time_ms = time.get_ticks_msec() + self.spawn_rate_ms;
         self.arrow_anim = self.base().find_child("ThrowableArrow").and_then(|ta| {
             ta.find_child("ArrowAnim").and_then(|aa| {
                 aa.get_child(0)

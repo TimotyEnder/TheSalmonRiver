@@ -121,7 +121,7 @@ impl RoundManager {
         let mut timer;
         {
             let bind = this.bind_mut();
-            timer = bind.base().get_tree().create_timer(1.0);
+            timer = bind.base().get_tree().create_timer(1.5);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
@@ -158,7 +158,7 @@ impl RoundManager {
             .try_get_node_as::<GameManager>("/root/GameManager");
         if let Some(mut gm) = gm {
             self.players_left = gm.bind_mut().get_player_count();
-            (1..self.players_left as u8).for_each(|f| {
+            (1..=self.players_left as u8).for_each(|f| {
                 self.players_alive.insert(f);
             });
             self.player_health_vec = vec![-1; self.players_left as usize];
@@ -167,7 +167,7 @@ impl RoundManager {
     pub fn report_player_death(&mut self, player_num: u8) {
         self.players_alive.remove(&player_num);
         self.players_left = self.players_left.saturating_sub(1);
-        self.player_health_vec[player_num as usize] = 0;
+        self.player_health_vec[player_num as usize - 1] = 0;
         if self.players_left <= 1 {
             if let Some(winner) = self.players_alive.iter().next() {
                 self.make_player_win(*winner);

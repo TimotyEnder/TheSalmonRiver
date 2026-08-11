@@ -23,8 +23,8 @@ impl Game {
         self.winning_player_number
     }
     pub fn log_player_win(&mut self, player_num: u8) {
-        self.rounds_by_player_number[player_num as usize] += 1;
-        if self.rounds_by_player_number[player_num as usize] >= self.rounds_to_win {
+        self.rounds_by_player_number[player_num as usize - 1] += 1;
+        if self.rounds_by_player_number[player_num as usize - 1] >= self.rounds_to_win {
             self.winning_player_number = Some(player_num);
         }
         self.current_round += 1;

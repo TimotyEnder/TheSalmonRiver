@@ -36,7 +36,7 @@ impl Game {
     }
     pub fn get_score_for_player(&self, player_num: u8) -> u32 {
         self.rounds_by_player_number
-            .get(player_num as usize)
+            .get(player_num as usize - 1)
             .copied()
             .unwrap_or(0) as u32
     }

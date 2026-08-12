@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bd32uee4172cd"]
 
 [ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="1_jjgbg"]
-[ext_resource type="PackedScene" uid="uid://bgjwcisjbhwp1" path="res://Prefabs/player.tscn" id="2_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://b4u8wkqpnfjns" path="res://VoxelAssets/Environment/GrassRiverBank.gltf" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://c55fml4h84ry1" path="res://VoxelAssets/3DUI/ThrowableArrow.gltf" id="4_kry3j"]
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="5_kry3j"]
@@ -617,17 +616,6 @@ orientation = 2
 
 [node name="Root" type="Node3D" unique_id=236819951]
 
-[node name="Player2" parent="." unique_id=786188032 instance=ExtResource("2_bo1nx")]
-jump_key = 85
-left_key = 72
-right_key = 75
-duck_key = 74
-punch_use_key = 76
-throw_grab_ky = 59
-facing_right = false
-player_num = 2
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.513, -3.465)
-
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1831742261]
 transform = Transform3D(-0.01374388, -0.18587853, 0.9842664, -0.002595276, 0.98436236, 0.18586043, -1.0016608, 0, -0.013986767, 3.1130846, 4.910619, -0.015609028)
 environment = SubResource("Environment_bo1nx")
@@ -638,9 +626,6 @@ near = 0.001
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=512207062]
 transform = Transform3D(-0.00668736, -0.90484244, 0.42569408, -0.014212694, 0.42574656, 0.90473086, -0.9998766, 4.653394e-10, -0.015707368, -0.11735284, 3.0913627, 0)
-
-[node name="Player" parent="." unique_id=275605898 instance=ExtResource("2_bo1nx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5126703, 3.464838)
 
 [node name="Environment" type="Node3D" parent="." unique_id=1142828596]
 
@@ -755,3 +740,15 @@ font_size = 400
 resolution = 2000.0
 text_width = 2000.0
 metadata/_custom_type_script = "uid://cofw7sywoopgu"
+
+[node name="PlayerPosition1" type="Node3D" parent="." unique_id=382646695]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5126703, 3.464838)
+
+[node name="PlayerPosition2" type="Node3D" parent="." unique_id=1313434472]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.513, -3.465)
+
+[node name="PlayerPosition3" type="Node3D" parent="." unique_id=929980696]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.432837, 6.2910438)
+
+[node name="PlayerPosition4" type="Node3D" parent="." unique_id=2050486479]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3939853, -6.7523866)

@@ -45,7 +45,6 @@ impl KeyMappingButton {
     pub fn on_key_changed();
     pub fn save_key(&mut self, key_code: Key) {
         self.key_saved = Some(key_code);
-        godot_print!("Key recorded as saved: {:?}", key_code);
         self.is_listening = false;
         self.base_mut().set_text(&format!("{:?}", key_code));
         self.signals().on_key_changed().emit();

@@ -194,7 +194,6 @@ impl Player {
         let area_name = area.get_name();
         let area_groups = area.get_groups();
         if !area_groups.contains(&format!("p{}", self.player_num)) {
-            godot_print!("{}", area_name);
             if area_name.contains("Grab") {
                 self.handle_grab(area);
             } else if area_name.contains("Hand") {
@@ -203,7 +202,6 @@ impl Player {
                 self.handle_throwable_hit(area);
             }
         } else {
-            godot_print!("Touch!")
         }
     }
     #[func]
@@ -1117,7 +1115,6 @@ impl Player {
         }
     }
     fn apply_hitstun_force(&mut self, area: Gd<Area3D>) -> Option<Direction> {
-        godot_print!("Hit!");
         let knockback_direction = {
             let other_player_opt = area
                 .get_parent()

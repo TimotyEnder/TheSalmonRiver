@@ -7,6 +7,7 @@ use godot::global::Key;
 use godot::prelude::*;
 use godot::signal::ConnectHandle;
 
+use crate::game_manager::player_control_scheme::PlayerControlScheme;
 use crate::game_scripts::duck_meter_manager::DuckMeterManager;
 use crate::game_scripts::game_utils::{
     Direction, complementary_color, player_color_based_on_number,
@@ -45,7 +46,7 @@ pub struct Player {
     #[export]
     punch_use_key: Key,
     #[export]
-    throw_grab_ky: Key,
+    grab_throw_key: Key,
     body_mesh: Option<Gd<Node3D>>,
     body_collider: Option<Gd<CollisionShape3D>>,
     hitbox: Option<Gd<Area3D>>,
@@ -121,7 +122,7 @@ impl ICharacterBody3D for Player {
             right_key: Key::D,
             duck_key: Key::S,
             punch_use_key: Key::F,
-            throw_grab_ky: Key::G,
+            grab_throw_key: Key::G,
             is_grab: false,
             is_punching: false,
             right_punch: false,
@@ -237,6 +238,14 @@ impl Player {
 }
 
 impl Player {
+    pub fn load_control_scheeme(&mut self, control: Gd<PlayerControlScheme>) {
+        self.jump_key = control.bind().jump_key;
+        self.duck_key = control.bind().duck_key;
+        self.left_key = control.bind().left_key;
+        self.right_key = control.bind().right_key;
+        self.grab_throw_key = control.bind().grab_throw_key;
+        self.punch_use_key = control.bind().punch_use_key;
+    }
     pub fn is_dead(&self) -> bool {
         self.dead
     }
@@ -503,7 +512,7 @@ impl Player {
                 let _guard = self.base_mut();
                 godot::task::spawn(Self::use_routine(this));
             }
-        } else if input.is_key_pressed(self.throw_grab_ky)
+        } else if input.is_key_pressed(self.grab_throw_key)
             && !self.ducked
             && !self.is_throwing
             && !self.is_grab

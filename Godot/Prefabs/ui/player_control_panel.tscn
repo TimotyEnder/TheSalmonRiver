@@ -1,0 +1,148 @@
+[gd_scene format=3 uid="uid://b7ev6e6uqnor3"]
+
+[ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="1_h8mub"]
+
+[node name="PlayerControl" type="PlayerControlsPanel" unique_id=1837124694]
+custom_minimum_size = Vector2(242, 477.74)
+custom_maximum_size = Vector2(360, -1)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PlayerLabel" type="RichTextLabel" parent="." unique_id=968254108]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.17300001
+offset_right = -1.0
+offset_bottom = 2.845993
+theme_override_fonts/normal_font = ExtResource("1_h8mub")
+theme_override_font_sizes/normal_font_size = 80
+text = "PLAYER 0"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BindLabels" type="GridContainer" parent="." unique_id=418473861]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.999995
+offset_top = 71.0
+offset_right = -111.48108
+offset_bottom = -86.0
+scale = Vector2(0.99682665, 0.99688303)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="BindLabels" unique_id=361310232]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("1_h8mub")
+theme_override_font_sizes/normal_font_size = 40
+text = "JUMP:"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="BindLabels" unique_id=740729962]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("1_h8mub")
+theme_override_font_sizes/normal_font_size = 40
+text = "LEFT:
+"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="BindLabels" unique_id=1376283244]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("1_h8mub")
+theme_override_font_sizes/normal_font_size = 40
+text = "RIGHT:
+"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="BindLabels" unique_id=1176909500]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("1_h8mub")
+theme_override_font_sizes/normal_font_size = 40
+text = "DUCK:
+"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="BindLabels" unique_id=2106676848]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("1_h8mub")
+theme_override_font_sizes/normal_font_size = 40
+text = "PUNCH/USE:
+"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="BindLabels" unique_id=1460131798]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("1_h8mub")
+theme_override_font_sizes/normal_font_size = 40
+text = "GRAB/THROW:
+"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="BindKeyMapping" type="GridContainer" parent="." unique_id=1478222436]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 221.0
+offset_top = 71.0
+offset_right = 0.44250488
+offset_bottom = -86.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.99682665, 0.99688303)
+
+[node name="KeyMappingButtonJump" type="KeyMappingButton" parent="BindKeyMapping" unique_id=1584517554]
+custom_minimum_size = Vector2(125, 50)
+custom_maximum_size = Vector2(125, 50)
+layout_mode = 2
+
+[node name="KeyMappingButtonLeft" type="KeyMappingButton" parent="BindKeyMapping" unique_id=814355852]
+custom_minimum_size = Vector2(125, 50)
+custom_maximum_size = Vector2(125, 50)
+layout_mode = 2
+
+[node name="KeyMappingButtonRight" type="KeyMappingButton" parent="BindKeyMapping" unique_id=1556355667]
+custom_minimum_size = Vector2(125, 50)
+custom_maximum_size = Vector2(125, 50)
+layout_mode = 2
+
+[node name="KeyMappingButtonDuck" type="KeyMappingButton" parent="BindKeyMapping" unique_id=2031186137]
+custom_minimum_size = Vector2(125, 50)
+custom_maximum_size = Vector2(125, 50)
+layout_mode = 2
+
+[node name="KeyMappingButtonPunchUse" type="KeyMappingButton" parent="BindKeyMapping" unique_id=295785401]
+custom_minimum_size = Vector2(125, 50)
+custom_maximum_size = Vector2(125, 50)
+layout_mode = 2
+
+[node name="KeyMappingButtonGrabThrow" type="KeyMappingButton" parent="BindKeyMapping" unique_id=863975001]
+custom_minimum_size = Vector2(125, 50)
+custom_maximum_size = Vector2(125, 50)
+layout_mode = 2

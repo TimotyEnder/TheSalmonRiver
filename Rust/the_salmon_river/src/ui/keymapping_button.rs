@@ -34,16 +34,19 @@ impl IButton for KeyMappingButton {
             && self.is_listening
         {
             let key_code = key_event.get_keycode();
-            self.key_saved = Some(key_code);
-            godot_print!("Key recorded as saved: {:?}", key_code);
-            self.is_listening = false;
-            self.base_mut().set_text(&format!("{:?}", key_code));
+            self.save_key(key_code);
         }
     }
 }
 
 #[godot_api]
 impl KeyMappingButton {
+    pub fn save_key(&mut self, key_code: Key) {
+        self.key_saved = Some(key_code);
+        godot_print!("Key recorded as saved: {:?}", key_code);
+        self.is_listening = false;
+        self.base_mut().set_text(&format!("{:?}", key_code));
+    }
     fn on_click(&mut self) {
         self.is_listening = true;
         self.base_mut().set_text("PRESS");

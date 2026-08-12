@@ -1,13 +1,16 @@
 use godot::classes::{INode, Node};
+use godot::global::Key;
 use godot::prelude::*;
 
 use crate::game_manager::game::Game;
+use crate::game_manager::player_control_scheme::PlayerControlScheme;
 
 #[derive(GodotClass)]
 #[class(base=Node)]
 pub struct GameManager {
     base: Base<Node>,
     current_game: Option<Game>,
+    control_schemes: Vec<Gd<PlayerControlScheme>>,
 }
 
 #[godot_api]
@@ -16,6 +19,7 @@ impl INode for GameManager {
         Self {
             base,
             current_game: None,
+            control_schemes: Vec::new(),
         }
     }
 
@@ -76,5 +80,35 @@ impl GameManager {
             return game.get_round_time() as u32;
         }
         return 0;
+    }
+    #[func]
+    pub fn request_player_controls(&mut self, player_num: u8) -> Gd<PlayerControlScheme> {
+        while self.control_schemes.len() < player_num as usize {
+            self.control_schemes
+                .push(Gd::from_object(PlayerControlScheme {
+                    jump_key: Key::NONE,
+                    left_key: Key::NONE,
+                    right_key: Key::NONE,
+                    duck_key: Key::NONE,
+                    punch_use_key: Key::NONE,
+                    grab_throw_key: Key::NONE,
+                }));
+        }
+        return self.control_schemes[player_num as usize - 1].clone();
+    }
+    #[func]
+    pub fn save_player_controls(&mut self, player_num: u8, control: Gd<PlayerControlScheme>) {
+        while self.control_schemes.len() < player_num as usize {
+            self.control_schemes
+                .push(Gd::from_object(PlayerControlScheme {
+                    jump_key: Key::NONE,
+                    left_key: Key::NONE,
+                    right_key: Key::NONE,
+                    duck_key: Key::NONE,
+                    punch_use_key: Key::NONE,
+                    grab_throw_key: Key::NONE,
+                }));
+        }
+        self.control_schemes[player_num as usize - 1] = control;
     }
 }

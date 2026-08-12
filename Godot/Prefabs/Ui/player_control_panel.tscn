@@ -17,6 +17,7 @@ offset_right = -1.0
 offset_bottom = 2.845993
 theme_override_fonts/normal_font = ExtResource("1_h8mub")
 theme_override_font_sizes/normal_font_size = 80
+bbcode_enabled = true
 text = "PLAYER 0"
 scroll_active = false
 horizontal_alignment = 1
@@ -107,42 +108,43 @@ vertical_alignment = 1
 [node name="BindKeyMapping" type="GridContainer" parent="." unique_id=1478222436]
 layout_mode = 1
 anchors_preset = -1
+anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 221.0
+offset_left = -80.999985
 offset_top = 71.0
-offset_right = 0.44250488
+offset_right = 1.0000153
 offset_bottom = -86.0
-grow_horizontal = 2
+grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.99682665, 0.99688303)
 
 [node name="KeyMappingButtonJump" type="KeyMappingButton" parent="BindKeyMapping" unique_id=1584517554]
-custom_minimum_size = Vector2(125, 50)
+custom_minimum_size = Vector2(82.555, 50)
 custom_maximum_size = Vector2(125, 50)
 layout_mode = 2
 
 [node name="KeyMappingButtonLeft" type="KeyMappingButton" parent="BindKeyMapping" unique_id=814355852]
-custom_minimum_size = Vector2(125, 50)
+custom_minimum_size = Vector2(82.555, 50)
 custom_maximum_size = Vector2(125, 50)
 layout_mode = 2
 
 [node name="KeyMappingButtonRight" type="KeyMappingButton" parent="BindKeyMapping" unique_id=1556355667]
-custom_minimum_size = Vector2(125, 50)
+custom_minimum_size = Vector2(82.555, 50)
 custom_maximum_size = Vector2(125, 50)
 layout_mode = 2
 
 [node name="KeyMappingButtonDuck" type="KeyMappingButton" parent="BindKeyMapping" unique_id=2031186137]
-custom_minimum_size = Vector2(125, 50)
+custom_minimum_size = Vector2(82.555, 50)
 custom_maximum_size = Vector2(125, 50)
 layout_mode = 2
 
 [node name="KeyMappingButtonPunchUse" type="KeyMappingButton" parent="BindKeyMapping" unique_id=295785401]
-custom_minimum_size = Vector2(125, 50)
+custom_minimum_size = Vector2(82.555, 50)
 custom_maximum_size = Vector2(125, 50)
 layout_mode = 2
 
 [node name="KeyMappingButtonGrabThrow" type="KeyMappingButton" parent="BindKeyMapping" unique_id=863975001]
-custom_minimum_size = Vector2(125, 50)
+custom_minimum_size = Vector2(82.555, 50)
 custom_maximum_size = Vector2(125, 50)
 layout_mode = 2

@@ -6,6 +6,7 @@ use godot::{
 
 use crate::{
     game_manager::{game_manager::GameManager, player_control_scheme::PlayerControlScheme},
+    game_scripts::game_utils::player_color_based_on_number,
     ui::keymapping_button::KeyMappingButton,
 };
 
@@ -69,25 +70,50 @@ impl IPanel for PlayerControlsPanel {
             .base()
             .find_child("PlayerLabel")
             .and_then(|pl| pl.try_cast::<RichTextLabel>().ok());
-        if self.key_mapping_button_duck.is_some()
-            && self.key_mapping_button_jump.is_some()
-            && self.key_mapping_button_grab_throw.is_some()
-            && self.key_mapping_button_left.is_some()
-            && self.key_mapping_button_right.is_some()
-            && self.key_mapping_button_punch_use.is_some()
-            && self.player_label.is_some()
+        let this = self.to_gd();
+        if let Some(ref button_jump) = self.key_mapping_button_jump
+            && let Some(ref button_duck) = self.key_mapping_button_duck
+            && let Some(ref button_grab_throw) = self.key_mapping_button_grab_throw
+            && let Some(ref button_left) = self.key_mapping_button_left
+            && let Some(ref button_right) = self.key_mapping_button_right
+            && let Some(ref button_punch_use) = self.key_mapping_button_punch_use
         {
-            godot_print!("player_controls_loaded_correctly");
+            [
+                button_duck,
+                button_grab_throw,
+                button_jump,
+                button_left,
+                button_punch_use,
+                button_right,
+            ]
+            .iter()
+            .for_each(|button| {
+                button
+                    .signals()
+                    .on_key_changed()
+                    .connect_other(&this, Self::asign_controls_to_game_manager);
+            });
         }
     }
 }
 
 #[godot_api]
 impl PlayerControlsPanel {
-    pub fn assing_player(&mut self, player_num: u8) {
+    pub fn assign_player(&mut self, player_num: u8) {
         self.player_num_assigned = Some(player_num);
         if let Some(ref mut label) = self.player_label {
-            label.set_text(&format!("PLAYER {}", player_num.to_string()));
+            label.set_text(&format!(
+                "[color=#{}]PLAYER {}[/color]",
+                player_color_based_on_number(player_num).to_html(),
+                player_num.to_string()
+            ));
+        }
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManager");
+
+        if let Some(mut gm) = gm {
+            self.load_control_scheme(gm.bind_mut().request_player_controls(player_num));
         }
     }
     pub fn all_controls_assigned(&self) -> bool {
@@ -132,7 +158,7 @@ impl PlayerControlsPanel {
                 .save_key(control.bind().grab_throw_key);
         }
     }
-    pub fn asign_controls_to_game_manager(&self) {
+    pub fn asign_controls_to_game_manager(&mut self) {
         if self.all_controls_assigned()
         //just in case lol
         {
@@ -140,35 +166,36 @@ impl PlayerControlsPanel {
                 .base()
                 .try_get_node_as::<GameManager>("/root/GameManager");
             if let Some(mut gm) = gm {
-                let mut control_scheme = Gd::from_object(PlayerControlScheme {
-                    jump_key: Key::NONE,
-                    left_key: Key::NONE,
-                    right_key: Key::NONE,
-                    duck_key: Key::NONE,
-                    punch_use_key: Key::NONE,
-                    grab_throw_key: Key::NONE,
-                });
-                if let Some(ref button_jump) = self.key_mapping_button_jump
-                    && let Some(ref button_duck) = self.key_mapping_button_duck
-                    && let Some(ref button_grab_throw) = self.key_mapping_button_grab_throw
-                    && let Some(ref button_left) = self.key_mapping_button_left
-                    && let Some(ref button_right) = self.key_mapping_button_right
-                    && let Some(ref button_punch_use) = self.key_mapping_button_punch_use
-                {
-                    control_scheme.bind_mut().jump_key = button_jump.bind().get_key_saved();
-                    control_scheme.bind_mut().left_key = button_left.bind().get_key_saved();
-                    control_scheme.bind_mut().right_key = button_right.bind().get_key_saved();
-                    control_scheme.bind_mut().duck_key = button_duck.bind().get_key_saved();
-                    control_scheme.bind_mut().punch_use_key =
-                        button_punch_use.bind().get_key_saved();
-                    control_scheme.bind_mut().grab_throw_key =
-                        button_grab_throw.bind().get_key_saved();
-                }
                 if let Some(player_num) = self.player_num_assigned {
                     gm.bind_mut()
-                        .save_player_controls(player_num, control_scheme);
+                        .save_player_controls(player_num, self.generate_control_scheme());
                 }
             }
         }
+    }
+    fn generate_control_scheme(&mut self) -> Gd<PlayerControlScheme> {
+        let mut control_scheme = Gd::from_object(PlayerControlScheme {
+            jump_key: Key::NONE,
+            left_key: Key::NONE,
+            right_key: Key::NONE,
+            duck_key: Key::NONE,
+            punch_use_key: Key::NONE,
+            grab_throw_key: Key::NONE,
+        });
+        if let Some(ref button_jump) = self.key_mapping_button_jump
+            && let Some(ref button_duck) = self.key_mapping_button_duck
+            && let Some(ref button_grab_throw) = self.key_mapping_button_grab_throw
+            && let Some(ref button_left) = self.key_mapping_button_left
+            && let Some(ref button_right) = self.key_mapping_button_right
+            && let Some(ref button_punch_use) = self.key_mapping_button_punch_use
+        {
+            control_scheme.bind_mut().jump_key = button_jump.bind().get_key_saved();
+            control_scheme.bind_mut().left_key = button_left.bind().get_key_saved();
+            control_scheme.bind_mut().right_key = button_right.bind().get_key_saved();
+            control_scheme.bind_mut().duck_key = button_duck.bind().get_key_saved();
+            control_scheme.bind_mut().punch_use_key = button_punch_use.bind().get_key_saved();
+            control_scheme.bind_mut().grab_throw_key = button_grab_throw.bind().get_key_saved();
+        }
+        control_scheme
     }
 }

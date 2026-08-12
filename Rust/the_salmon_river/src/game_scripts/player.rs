@@ -188,6 +188,9 @@ impl ICharacterBody3D for Player {
 }
 #[godot_api]
 impl Player {
+    pub fn assign_player_num(&mut self, player_num: u8) {
+        self.player_num = player_num;
+    }
     #[signal]
     pub fn on_throwable_throw(dir: Direction);
     #[func]

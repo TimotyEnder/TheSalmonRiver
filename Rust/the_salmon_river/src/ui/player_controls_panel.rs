@@ -1,5 +1,5 @@
 use godot::{
-    classes::{Button, IPanel, Panel, RichTextLabel},
+    classes::{Button, IPanel, Panel, RichTextLabel, object::ConnectFlags},
     global::Key,
     prelude::*,
 };
@@ -91,7 +91,9 @@ impl IPanel for PlayerControlsPanel {
                 button
                     .signals()
                     .on_key_changed()
-                    .connect_other(&this, Self::asign_controls_to_game_manager);
+                    .builder()
+                    .flags(ConnectFlags::DEFERRED)
+                    .connect_other_mut(&this, Self::asign_controls_to_game_manager);
             });
         }
     }
@@ -117,7 +119,6 @@ impl PlayerControlsPanel {
         }
     }
     pub fn all_controls_assigned(&self) -> bool {
-        let mut result = true;
         if let Some(ref button_jump) = self.key_mapping_button_jump
             && let Some(ref button_duck) = self.key_mapping_button_duck
             && let Some(ref button_grab_throw) = self.key_mapping_button_grab_throw
@@ -125,7 +126,7 @@ impl PlayerControlsPanel {
             && let Some(ref button_right) = self.key_mapping_button_right
             && let Some(ref button_punch_use) = self.key_mapping_button_punch_use
         {
-            [
+            let result = [
                 button_duck,
                 button_grab_throw,
                 button_jump,
@@ -134,9 +135,11 @@ impl PlayerControlsPanel {
                 button_right,
             ]
             .iter()
-            .for_each(|button| result = result && button.bind().has_key_saved());
+            .all(|button| button.bind().has_key_saved());
+            return result;
+        } else {
+            return false;
         }
-        return result;
     }
     pub fn load_control_scheme(&mut self, control: Gd<PlayerControlScheme>) {
         if let Some(ref mut button_jump) = self.key_mapping_button_jump

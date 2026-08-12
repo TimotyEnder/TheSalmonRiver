@@ -59,6 +59,8 @@ impl IControl for LabelCounter {
 
 #[godot_api]
 impl LabelCounter {
+    #[signal]
+    pub fn value_changed();
     fn update_label(&mut self) {
         if let Some(ref mut label) = self.label {
             label.set_text(&format!(

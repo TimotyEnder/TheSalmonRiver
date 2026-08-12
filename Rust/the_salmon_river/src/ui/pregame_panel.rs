@@ -3,7 +3,10 @@ use godot::{
     prelude::*,
 };
 
-use crate::ui::{label_counter::LabelCounter, player_controls_panel::PlayerControlsPanel};
+use crate::{
+    game_manager::game_manager::GameManager,
+    ui::{label_counter::LabelCounter, player_controls_panel::PlayerControlsPanel},
+};
 
 #[derive(GodotClass)]
 #[class(base=Panel)]
@@ -65,4 +68,27 @@ impl IPanel for PregamePanel {
 }
 
 #[godot_api]
-impl PregamePanel {}
+impl PregamePanel {
+    pub fn start_game(&mut self) -> bool {
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManager");
+        if self
+            .player_controls_stack
+            .iter()
+            .all(|f| f.bind().all_controls_assigned())
+            && let Some(ref mut match_time) = self.match_time_counter_label
+            && let Some(ref mut player_num) = self.player_num_counter_label
+            && let Some(mut gm) = gm
+        {
+            gm.bind_mut().create_game(
+                player_num.bind().get_value() as u8,
+                3,
+                match_time.bind().get_value() as u32,
+            );
+            return true;
+        } else {
+            return false;
+        }
+    }
+}

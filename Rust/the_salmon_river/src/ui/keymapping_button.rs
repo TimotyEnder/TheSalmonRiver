@@ -61,6 +61,10 @@ impl KeyMappingButton {
         }
     }
     pub fn has_key_saved(&self) -> bool {
-        return self.key_saved.is_some();
+        if let Some(key) = self.key_saved {
+            return key != Key::NONE;
+        } else {
+            return false;
+        }
     }
 }

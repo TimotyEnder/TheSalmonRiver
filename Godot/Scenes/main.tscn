@@ -603,14 +603,14 @@ states/start_anim/node = SubResource("AnimationNodeAnimation_344ge")
 states/start_anim/position = Vector2(403, 145)
 transitions = ["countdown", "go", SubResource("AnimationNodeStateMachineTransition_k12tt"), "Start", "start_anim", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "start_anim", "countdown", SubResource("AnimationNodeStateMachineTransition_b3802"), "go", "exit_anim", SubResource("AnimationNodeStateMachineTransition_h1bgf")]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_21xkr"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kry3j"]
 resource_local_to_scene = true
 transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 shading_mode = 0
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_6bp64"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_21xkr"]
 size = Vector2(0.7, 0.5)
 orientation = 2
 
@@ -728,8 +728,8 @@ parameters/conditions/count = false
 
 [node name="RoundLabel" type="MeshInstance3D" parent="RoundManager" unique_id=1855228584]
 transform = Transform3D(-7.17814e-07, 0, 10.826355, 0, 16.421669, 0, -16.421669, 0, -4.7323502e-07, 0, 4.8183417, 0)
-material_override = SubResource("StandardMaterial3D_21xkr")
-mesh = SubResource("PlaneMesh_6bp64")
+material_override = SubResource("StandardMaterial3D_kry3j")
+mesh = SubResource("PlaneMesh_21xkr")
 script = ExtResource("6_21xkr")
 text = "ROUND 0!
 0000
@@ -752,3 +752,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.432837, 6.2910438)
 
 [node name="PlayerPosition4" type="Node3D" parent="." unique_id=2050486479]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3939853, -6.7523866)
+
+[node name="MatchManager" type="MatchManager" parent="." unique_id=191466617 node_paths=PackedStringArray("player_position1", "player_position2", "player_position3", "player_position4")]
+player_position1 = NodePath("../PlayerPosition1")
+player_position2 = NodePath("../PlayerPosition2")
+player_position3 = NodePath("../PlayerPosition3")
+player_position4 = NodePath("../PlayerPosition4")

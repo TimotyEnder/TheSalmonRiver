@@ -81,4 +81,7 @@ impl LabelCounter {
             self.update_label();
         }
     }
+    pub fn get_value(&self) -> f32 {
+        self.possible_values[self.current_selection_pos]
+    }
 }

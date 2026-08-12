@@ -410,7 +410,10 @@ theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 100
 text = "PLAY"
 
-[node name="PlayerControlsPanel" type="Panel" parent="CanvasLayer" unique_id=761299917]
+[node name="PlayerControlsPanel" type="PregamePanel" parent="CanvasLayer" unique_id=979058209 node_paths=PackedStringArray("player_controls_panel_grid", "player_num_counter_label", "match_time_counter_label")]
+player_controls_panel_grid = NodePath("PlayerControlsPanel")
+player_num_counter_label = NodePath("MatchSettingsPanel/LabelCounterNumPlayers")
+match_time_counter_label = NodePath("MatchSettingsPanel/LabelCounterMatchTime")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -535,7 +538,7 @@ text = "MATCH TIME"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LabelCounterNumPlayers2" type="LabelCounter" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=1725057183]
+[node name="LabelCounterMatchTime" type="LabelCounter" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=1725057183]
 possible_values = PackedFloat32Array(60, 99)
 layout_mode = 1
 anchors_preset = -1
@@ -545,7 +548,7 @@ offset_left = 633.0
 offset_right = -181.0
 offset_bottom = -2.0
 
-[node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers2" unique_id=661006712]
+[node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchTime" unique_id=661006712]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -562,7 +565,7 @@ text = "00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DecButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers2" unique_id=1202334642]
+[node name="DecButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchTime" unique_id=1202334642]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -587,7 +590,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_sn4fo")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_k62eu")
 text = "-"
 
-[node name="IncButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers2" unique_id=485457458]
+[node name="IncButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchTime" unique_id=485457458]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -612,7 +615,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_sn4fo")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_k62eu")
 text = "+"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers2" unique_id=857647277]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchTime" unique_id=857647277]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

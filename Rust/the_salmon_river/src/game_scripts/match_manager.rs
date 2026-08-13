@@ -56,6 +56,10 @@ impl INode for MatchManager {
                         .bind_mut()
                         .load_control_scheeme(control_scheme);
                     player_spawned.bind_mut().assign_player_num(i as u8 + 1);
+                    let facing_right: bool = (i + 1) % 2 != 0;
+                    player_spawned
+                        .bind_mut()
+                        .set_facing_right_status(facing_right);
                     if let Some(spawn_position) = player_positions[i as usize] {
                         player_spawned.set_position(spawn_position.get_position());
                     }

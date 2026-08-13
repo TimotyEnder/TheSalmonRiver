@@ -249,6 +249,9 @@ impl Player {
         self.grab_throw_key = control.bind().grab_throw_key;
         self.punch_use_key = control.bind().punch_use_key;
     }
+    pub fn set_facing_right_status(&mut self, status: bool) {
+        self.facing_right = status;
+    }
     pub fn is_dead(&self) -> bool {
         self.dead
     }

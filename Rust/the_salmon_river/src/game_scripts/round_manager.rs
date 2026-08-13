@@ -237,13 +237,26 @@ impl RoundManager {
                 .to_variant(),
             );
             let timer = self.base().get_tree().create_timer(5.0);
-            let mut tree = self.base().get_tree();
+            let mut this = self.to_gd();
             godot::task::spawn(async move {
                 Signal::from_object_signal(&timer, "timeout")
                     .to_future::<()>()
                     .await;
-                tree.change_scene_to_file("res://Scenes/main.tscn");
+                this.bind_mut().decide_what_scene_to_show();
             });
+        }
+    }
+    fn decide_what_scene_to_show(&mut self) {
+        let mut tree = self.base().get_tree();
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManager");
+        if let Some(gm) = gm {
+            if gm.bind().is_game_finished() {
+                tree.change_scene_to_file("res://Scenes/victory_screen.tscn");
+            } else {
+                tree.change_scene_to_file("res://Scenes/main.tscn");
+            }
         }
     }
 }

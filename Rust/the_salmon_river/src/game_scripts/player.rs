@@ -1110,6 +1110,10 @@ impl Player {
             rm.signals()
                 .round_timeout()
                 .connect_other(&this, Self::on_round_timeout);
+        } else {
+            //means player is in a scene with no round manager
+            self.can_move = true;
+            self.can_act = true;
         }
     }
     fn scale_healthbar_with_health(&mut self) {

@@ -121,4 +121,11 @@ impl GameManager {
         }
         self.control_schemes[player_num as usize - 1] = control;
     }
+    #[func]
+    pub fn is_game_finished(&self) -> bool {
+        if let Some(ref game) = self.current_game {
+            return game.get_winner().is_some();
+        }
+        return false;
+    }
 }

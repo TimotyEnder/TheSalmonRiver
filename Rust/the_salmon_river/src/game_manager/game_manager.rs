@@ -128,4 +128,12 @@ impl GameManager {
         }
         return false;
     }
+    #[func]
+    pub fn get_winner(&self) -> u8 {
+        if let Some(ref game) = self.current_game {
+            return game.get_winner().unwrap_or(0);
+        } else {
+            return 0;
+        }
+    }
 }

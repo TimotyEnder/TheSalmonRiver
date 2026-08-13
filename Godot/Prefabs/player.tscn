@@ -68,11 +68,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_08u7w"]
-albedo_texture = ExtResource("1_juxdh")
-emission_enabled = true
-emission = Color(0.74558026, 0.7455802, 0.7455802, 1)
-
 [sub_resource type="ArrayMesh" id="ArrayMesh_1gf7r"]
 resource_name = "bear_mesh2"
 _surfaces = [{
@@ -818,6 +813,11 @@ tracks/11/keys = {
 "update": 1,
 "values": [false]
 }
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_08u7w"]
+albedo_texture = ExtResource("1_juxdh")
+emission_enabled = true
+emission = Color(0.74558026, 0.7455802, 0.7455802, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4qbli"]
 albedo_texture = ExtResource("1_juxdh")
@@ -3108,12 +3108,10 @@ transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -16, 0)
 gi_mode = 0
 mesh = SubResource("ArrayMesh_vccxa")
-surface_material_override/0 = SubResource("StandardMaterial3D_08u7w")
 
 [node name="Mesh2" type="MeshInstance3D" parent="PlayerHead/PlayerHeadMesh/Node/Node2" unique_id=1972677018]
 gi_mode = 0
 mesh = SubResource("ArrayMesh_1gf7r")
-surface_material_override/0 = SubResource("StandardMaterial3D_08u7w")
 
 [node name="LeftHand" type="Node3D" parent="." unique_id=1679546711]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.44968557, 1.755, -0.27574423)

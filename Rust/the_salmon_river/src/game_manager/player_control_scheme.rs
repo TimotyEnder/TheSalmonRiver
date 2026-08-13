@@ -42,3 +42,50 @@ impl Default for PlayerControlScheme {
         }
     }
 }
+impl PlayerControlScheme {
+    pub fn to_dict(&self) -> Dictionary<StringName, Variant> {
+        let mut dict: Dictionary<StringName, Variant> = Dictionary::new();
+        dict.set("jump_key", self.jump_key);
+        dict.set("left_key", self.left_key);
+        dict.set("right_key", self.right_key);
+        dict.set("duck_key", self.duck_key);
+        dict.set("punch_use_key", self.punch_use_key);
+        dict.set("grab_throw_key", self.grab_throw_key);
+        dict
+    }
+    pub fn from_dict(dict: &Dictionary<Variant, Variant>) -> Self {
+        Self {
+            jump_key: dict
+                .get(&GString::from("jump_key"))
+                .map(Self::key_from_variant)
+                .unwrap_or(Key::NONE),
+            left_key: dict
+                .get(&GString::from("left_key"))
+                .map(Self::key_from_variant)
+                .unwrap_or(Key::NONE),
+            right_key: dict
+                .get(&GString::from("right_key"))
+                .map(Self::key_from_variant)
+                .unwrap_or(Key::NONE),
+            duck_key: dict
+                .get(&GString::from("duck_key"))
+                .map(Self::key_from_variant)
+                .unwrap_or(Key::NONE),
+            punch_use_key: dict
+                .get(&GString::from("punch_use_key"))
+                .map(Self::key_from_variant)
+                .unwrap_or(Key::NONE),
+            grab_throw_key: dict
+                .get(&GString::from("grab_throw_key"))
+                .map(Self::key_from_variant)
+                .unwrap_or(Key::NONE),
+        }
+    }
+    fn key_from_variant(value: Variant) -> Key {
+        let ord = value
+            .try_to::<i64>()
+            .or_else(|_| value.try_to::<f64>().map(|f| f as i64))
+            .unwrap_or(0);
+        Key::try_from_ord(ord as i32).unwrap_or(Key::NONE)
+    }
+}

@@ -71,29 +71,29 @@ impl IPanel for PlayerControlsPanel {
             .find_child("PlayerLabel")
             .and_then(|pl| pl.try_cast::<RichTextLabel>().ok());
         let this = self.to_gd();
-        if let Some(ref button_jump) = self.key_mapping_button_jump
-            && let Some(ref button_duck) = self.key_mapping_button_duck
-            && let Some(ref button_grab_throw) = self.key_mapping_button_grab_throw
-            && let Some(ref button_left) = self.key_mapping_button_left
-            && let Some(ref button_right) = self.key_mapping_button_right
-            && let Some(ref button_punch_use) = self.key_mapping_button_punch_use
+        if let Some(ref mut button_jump) = self.key_mapping_button_jump
+            && let Some(ref mut button_duck) = self.key_mapping_button_duck
+            && let Some(ref mut button_grab_throw) = self.key_mapping_button_grab_throw
+            && let Some(ref mut button_left) = self.key_mapping_button_left
+            && let Some(ref mut button_right) = self.key_mapping_button_right
+            && let Some(ref mut button_punch_use) = self.key_mapping_button_punch_use
         {
-            [
+            let mut buttons = [
                 button_duck,
                 button_grab_throw,
                 button_jump,
                 button_left,
                 button_punch_use,
                 button_right,
-            ]
-            .iter()
-            .for_each(|button| {
+            ];
+            buttons.iter_mut().for_each(|button| {
                 button
                     .signals()
                     .on_key_changed()
                     .builder()
                     .flags(ConnectFlags::DEFERRED)
                     .connect_other_mut(&this, Self::asign_controls_to_game_manager);
+                button.bind_mut().set_parent_control_panel(this.clone());
             });
         }
     }
@@ -200,5 +200,28 @@ impl PlayerControlsPanel {
             control_scheme.bind_mut().grab_throw_key = button_grab_throw.bind().get_key_saved();
         }
         control_scheme
+    }
+    pub fn exclusivety_reset(&mut self, button_id: InstanceId) {
+        if let Some(ref mut button_jump) = self.key_mapping_button_jump
+            && let Some(ref mut button_duck) = self.key_mapping_button_duck
+            && let Some(ref mut button_grab_throw) = self.key_mapping_button_grab_throw
+            && let Some(ref mut button_left) = self.key_mapping_button_left
+            && let Some(ref mut button_right) = self.key_mapping_button_right
+            && let Some(ref mut button_punch_use) = self.key_mapping_button_punch_use
+        {
+            let mut buttons = [
+                button_duck,
+                button_grab_throw,
+                button_jump,
+                button_left,
+                button_punch_use,
+                button_right,
+            ];
+            buttons.iter_mut().for_each(|button| {
+                if button.instance_id() != button_id {
+                    button.bind_mut().exclusivity_reset();
+                }
+            });
+        }
     }
 }

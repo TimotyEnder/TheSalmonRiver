@@ -4,6 +4,7 @@ use godot::prelude::*;
 
 use crate::game_manager::game::Game;
 use crate::game_manager::player_control_scheme::PlayerControlScheme;
+use crate::game_manager::save_manager::SaveManager;
 
 #[derive(GodotClass)]
 #[class(base=Node)]
@@ -11,6 +12,7 @@ pub struct GameManager {
     base: Base<Node>,
     current_game: Option<Game>,
     control_schemes: Vec<Gd<PlayerControlScheme>>,
+    save_manager: Gd<SaveManager>,
 }
 
 #[godot_api]
@@ -20,11 +22,16 @@ impl INode for GameManager {
             base,
             current_game: None,
             control_schemes: Vec::new(),
+            save_manager: Gd::from_object(SaveManager {}),
         }
     }
 
     fn ready(&mut self) {
         godot_print!("GameManager ready!");
+        self.control_schemes = self
+            .save_manager
+            .bind_mut()
+            .load_control_schemes_from_file();
     }
 }
 
@@ -37,6 +44,9 @@ impl GameManager {
             rounds_to_win as usize,
             round_time as usize,
         ));
+        self.save_manager
+            .bind_mut()
+            .save_control_schemes(self.control_schemes.clone());
     }
     #[func]
     pub fn player_won_round(&mut self, player_num: u8) {

@@ -758,3 +758,64 @@ player_position1 = NodePath("../PlayerPosition1")
 player_position2 = NodePath("../PlayerPosition2")
 player_position3 = NodePath("../PlayerPosition3")
 player_position4 = NodePath("../PlayerPosition4")
+
+[node name="PauseMenuCanvas" type="CanvasLayer" parent="." unique_id=617814847]
+
+[node name="PauseMenuPanel" type="PauseMenuPanel" parent="PauseMenuCanvas" unique_id=1663908868]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="PauseMenuCanvas/PauseMenuPanel" unique_id=1474057125]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -177.5
+offset_top = -39.0
+offset_right = 177.5
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResumeButton" type="PanelEnablingButton" parent="PauseMenuCanvas/PauseMenuPanel/GridContainer" unique_id=1774054889 node_paths=PackedStringArray("panel_to_enable")]
+panel_to_enable = NodePath("../..")
+disable_panel = true
+custom_minimum_size = Vector2(355.97, 78.385)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_kry3j")
+theme_override_font_sizes/font_size = 70
+text = "RESUME"
+icon_alignment = 1
+
+[node name="SettingsButton" type="Button" parent="PauseMenuCanvas/PauseMenuPanel/GridContainer" unique_id=1336161272]
+custom_minimum_size = Vector2(355.97, 78.385)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_kry3j")
+theme_override_font_sizes/font_size = 70
+text = "SETTINGS"
+icon_alignment = 1
+
+[node name="MainMenuButton" type="SceneChangingButton" parent="PauseMenuCanvas/PauseMenuPanel/GridContainer" unique_id=1182249494]
+scene_name_to_change_to = &"main_menu"
+custom_minimum_size = Vector2(355.97, 78.385)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_kry3j")
+theme_override_font_sizes/font_size = 70
+text = "MAIN MENU"
+icon_alignment = 1
+
+[node name="QuitButton" type="ApplicationExitButton" parent="PauseMenuCanvas/PauseMenuPanel/GridContainer" unique_id=849373444]
+custom_minimum_size = Vector2(355.97, 78.385)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_kry3j")
+theme_override_font_sizes/font_size = 70
+text = "QUIT"
+icon_alignment = 1

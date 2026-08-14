@@ -1,7 +1,6 @@
 use godot::classes::{
-    AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, Engine, GpuParticles3D,
-    ICharacterBody3D, Input, Label3D, SceneTreeTimer, Sprite3D, Time, Timer,
-    VisualShaderNodeGroupBase,
+    AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, GpuParticles3D, ICharacterBody3D,
+    Input, Label3D, SceneTreeTimer, Sprite3D, Time,
 };
 use godot::global::Key;
 use godot::prelude::*;
@@ -12,7 +11,7 @@ use crate::game_scripts::duck_meter_manager::DuckMeterManager;
 use crate::game_scripts::game_utils::{
     Direction, complementary_color, player_color_based_on_number,
 };
-use crate::game_scripts::round_manager::{self, RoundManager};
+use crate::game_scripts::round_manager::RoundManager;
 use crate::game_scripts::throwable::Throwable;
 
 #[derive(GodotClass)]
@@ -90,6 +89,8 @@ pub struct Player {
     current_in_hand_ability_icon: Option<Gd<Node3D>>,
     in_hand_ability_container_anim_tree: Option<Gd<AnimationTree>>,
     round_manager: Option<Gd<RoundManager>>,
+    throw_tech_time: bool,
+    throw_tech_force: f32,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -111,6 +112,7 @@ impl ICharacterBody3D for Player {
             punch_force: 1.0,
             ice_chunk_dash_force: 10.0,
             hitstun_force: 0.6,
+            throw_tech_force: 4.0,
             knock_back_force: 7.0,
             jumped: false,
             duck_jumped: false,
@@ -158,6 +160,7 @@ impl ICharacterBody3D for Player {
             current_in_hand_ability_icon: None,
             in_hand_ability_container_anim_tree: None,
             round_manager: None,
+            throw_tech_time: false,
         }
     }
     fn ready(&mut self) {
@@ -802,7 +805,20 @@ impl Player {
             let Some(mut tree) = bind.base().get_tree_or_null() else {
                 return;
             };
-            timer = tree.create_timer(0.4);
+            timer = tree.create_timer(0.25);
+        }
+
+        Signal::from_object_signal(&timer, "timeout")
+            .to_future::<()>()
+            .await;
+        let timer;
+        {
+            let mut bind = this.bind_mut();
+            bind.throw_tech_time = true;
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(0.15);
         }
 
         Signal::from_object_signal(&timer, "timeout")
@@ -815,6 +831,7 @@ impl Player {
         {
             let mut bind = this.bind_mut();
             bind.is_grab = false;
+            bind.throw_tech_time = false;
 
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 upper_anim.set("parameters/conditions/grab", &false.to_variant());
@@ -888,6 +905,50 @@ impl Player {
                 bind.hit_stun = false;
                 bind.hit_stun_hits = 0;
             }
+            if let Some(ref mut anim) = bind.lower_anim_tree {
+                anim.set("parameters/conditions/un_hit", &true.to_variant());
+                anim.set("parameters/conditions/hit", &false.to_variant());
+            }
+            if let Some(ref mut anim) = bind.upper_anim_tree {
+                anim.set("parameters/conditions/hit", &false.to_variant());
+            }
+            let mut velocity = bind.base().get_velocity();
+            if !bind.knock_back {
+                velocity.z = 0.0;
+                bind.base_mut().set_velocity(velocity);
+            }
+        }
+    }
+    async fn throw_tech_routine(mut this: Gd<Self>, _knock_dir: Direction) {
+        if !this.is_instance_valid() {
+            return;
+        }
+        let timer;
+        {
+            let mut bind = this.bind_mut();
+            if let Some(ref mut anim) = bind.lower_anim_tree {
+                anim.set("parameters/conditions/un_hit", &false.to_variant());
+                anim.set("parameters/conditions/hit", &true.to_variant());
+            }
+            if let Some(ref mut anim) = bind.upper_anim_tree {
+                anim.set("parameters/conditions/hit", &true.to_variant());
+            }
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(0.5);
+        }
+        Signal::from_object_signal(&timer, "timeout")
+            .to_future::<()>()
+            .await;
+        if !this.is_instance_valid() {
+            return;
+        }
+        {
+            let mut bind = this.bind_mut();
+            bind.hit_stun = false;
+            bind.hit_stun_hits = 0;
+            bind.hit_stun_routine_entries = 0;
             if let Some(ref mut anim) = bind.lower_anim_tree {
                 anim.set("parameters/conditions/un_hit", &true.to_variant());
                 anim.set("parameters/conditions/hit", &false.to_variant());
@@ -1252,7 +1313,11 @@ impl Player {
             duckbar.set_scale(hb_scale);
         }
     }
-    fn apply_hitstun_force(&mut self, area: Gd<Area3D>) -> Option<Direction> {
+    fn apply_force_in_opposite_direction_of_area(
+        &mut self,
+        area: Gd<Node3D>,
+        force: f32,
+    ) -> Option<Direction> {
         let knockback_direction = {
             let other_player_opt = area
                 .get_parent()
@@ -1264,16 +1329,16 @@ impl Player {
             }
         };
         let mut velocity = self.base().get_velocity();
-        let mut to_ret = None;
+        let to_ret;
         if knockback_direction > 0.0 {
-            velocity.z = self.hitstun_force;
+            velocity.z = force;
             to_ret = Some(Direction::Right);
             if !self.facing_right {
                 self.flip();
                 self.facing_right = true;
             }
         } else {
-            velocity.z = -1.0 * self.hitstun_force;
+            velocity.z = -1.0 * force;
             to_ret = Some(Direction::Left);
             if self.facing_right {
                 self.flip();
@@ -1379,6 +1444,9 @@ impl Player {
         ));
         godot::task::spawn(Self::throw_landing_damage_routine(this));
     }
+    pub fn is_trying_to_grab_now(&mut self) -> bool {
+        return self.throw_tech_time;
+    }
     fn handle_grab(&mut self, area: Gd<Area3D>) {
         if !self.knock_back {
             let other_player_opt = area.get_parent().and_then(|left_hand| {
@@ -1387,7 +1455,12 @@ impl Player {
                     .and_then(|player| player.try_cast::<Player>().ok())
             });
             if let Some(mut grabber) = other_player_opt {
-                if grabber.bind().can_pick_up_throwable() {
+                //throw tech if both players grabbing rn
+                if grabber.bind_mut().is_trying_to_grab_now() && self.is_trying_to_grab_now() {
+                    let self_node = self.to_gd().upcast::<Node3D>();
+                    grabber.bind_mut().handle_throw_tech(self_node);
+                    self.handle_throw_tech(grabber.upcast::<Node3D>());
+                } else if grabber.bind().can_pick_up_throwable() {
                     grabber.bind_mut().pick_up_throwable();
                     self.disconnect_grabbed_connections();
                     let this = self.to_gd();
@@ -1488,12 +1561,15 @@ impl Player {
         }
     }
     fn handle_punch(&mut self, area: Gd<Area3D>) {
-        if !self.ducked && !self.duck_jumping {
+        if !self.ducked && !self.duck_jumping && !self.is_grab && !self.grabbed_by_another_player {
             let player_opt = area
                 .get_parent()
                 .and_then(|hand| hand.get_parent())
                 .and_then(|player| player.try_cast::<Player>().ok());
-            let knock_dir_opt = self.apply_hitstun_force(area);
+            let knock_dir_opt = self.apply_force_in_opposite_direction_of_area(
+                area.upcast::<Node3D>(),
+                self.hitstun_force,
+            );
             if let Some(mut player) = player_opt {
                 self.damage(player.bind_mut().calculate_punch_damage());
             }
@@ -1509,6 +1585,20 @@ impl Player {
             }
         }
     }
+    fn handle_throw_tech(&mut self, player: Gd<Node3D>) {
+        let knock_dir_opt = self.apply_force_in_opposite_direction_of_area(
+            player.upcast::<Node3D>(),
+            self.throw_tech_force,
+        );
+        if let Some(knock_dir) = knock_dir_opt {
+            self.hit_stun = true;
+            self.hit_stun_hits = 0;
+            self.hit_stun_routine_entries = 0;
+            let this = self.to_gd();
+            let _guard = self.base_mut();
+            godot::task::spawn(Self::throw_tech_routine(this, knock_dir));
+        }
+    }
     fn handle_throwable_hit(&mut self, area: Gd<Area3D>) {
         let throwable_opt = area
             .get_parent()
@@ -1522,7 +1612,10 @@ impl Player {
             if let Some(ref mut inner) = throwable.bind_mut().throwable_inner {
                 self.damage(inner.deal_dmg());
             }
-            let knock_dir_opt = self.apply_hitstun_force(area);
+            let knock_dir_opt = self.apply_force_in_opposite_direction_of_area(
+                area.upcast::<Node3D>(),
+                self.hitstun_force,
+            );
             if let Some(knock_dir) = knock_dir_opt {
                 let health = self.health;
                 let this = self.to_gd();

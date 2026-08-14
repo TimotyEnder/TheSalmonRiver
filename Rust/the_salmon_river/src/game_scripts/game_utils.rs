@@ -1,5 +1,3 @@
-use std::default;
-
 use godot::prelude::*;
 pub fn player_color_based_on_number(player_num: u8) -> Color {
     // Golden ratio conjugate for optimal hue spacing

@@ -36,7 +36,7 @@ impl IRigidBody3D for Throwable {
         self.ready_area();
         self.ready_collider();
     }
-    fn process(&mut self, delta: f64) {
+    fn process(&mut self, _delta: f64) {
         if self.in_hand {
             self.base_mut().set_scale(Vector3::ONE);
             self.base_mut().set_rotation(Vector3::ZERO);

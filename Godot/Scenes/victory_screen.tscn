@@ -15,7 +15,7 @@ size = Vector3(3.973877, 1.5585938, 19.750961)
 [sub_resource type="BoxShape3D" id="BoxShape3D_rai8w"]
 size = Vector3(3.9746094, 8.553101, 1)
 
-[sub_resource type="Image" id="Image_vrh3u"]
+[sub_resource type="Image" id="Image_dbb0g"]
 data = {
 "data": PackedByteArray("AAAAZjkx////IiA0ZjkxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
 "format": "RGB8",
@@ -26,7 +26,7 @@ data = {
 
 [sub_resource type="ImageTexture" id="ImageTexture_aquyk"]
 resource_name = "0"
-image = SubResource("Image_vrh3u")
+image = SubResource("Image_dbb0g")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_guokh"]
 resource_name = "Material.1"
@@ -171,43 +171,55 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dbb0g"]
-resource_local_to_scene = true
-transparency = 2
-alpha_scissor_threshold = 0.5
-alpha_antialiasing_mode = 0
-shading_mode = 0
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_m5bpc"]
-size = Vector2(10.89, 12.065)
-orientation = 2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ha7rp"]
-resource_local_to_scene = true
-transparency = 2
-alpha_scissor_threshold = 0.5
-alpha_antialiasing_mode = 0
-shading_mode = 0
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_hca03"]
-size = Vector2(10.89, 12.065)
-orientation = 2
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
-size = Vector3(2.6799316, 4.077118, 2.4595337)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m5bpc"]
+resource_local_to_scene = true
 transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 shading_mode = 0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ha7rp"]
+size = Vector2(10.89, 12.065)
+orientation = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hca03"]
+resource_local_to_scene = true
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_x64rj"]
+size = Vector2(10.89, 12.065)
+orientation = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
+size = Vector3(2.6799316, 4.077118, 2.4595337)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8vase"]
+resource_local_to_scene = true
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_12bqr"]
 size = Vector2(2.02, 1.235)
 orientation = 2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ba2sc"]
 size = Vector3(2.6694946, 0.6915283, 2.4515991)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i2gve"]
+resource_local_to_scene = true
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_trbyh"]
+size = Vector2(2.02, 1.235)
+orientation = 2
 
 [node name="VictoryScreen" type="Node3D" unique_id=1408743497]
 
@@ -308,8 +320,8 @@ mesh = SubResource("ArrayMesh_mlpag")
 
 [node name="PointsText" type="MeshInstance3D" parent="Environment/Leaderboard" unique_id=714363536]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.10241018, 15.978907, 5.5928335)
-material_override = SubResource("StandardMaterial3D_dbb0g")
-mesh = SubResource("PlaneMesh_m5bpc")
+material_override = SubResource("StandardMaterial3D_m5bpc")
+mesh = SubResource("PlaneMesh_ha7rp")
 script = ExtResource("4_dbb0g")
 text = "Player1:0
 Player2:0
@@ -325,8 +337,8 @@ metadata/_custom_type_script = "uid://cofw7sywoopgu"
 
 [node name="WinnerText" type="MeshInstance3D" parent="Environment/Leaderboard" unique_id=206161697]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.102409765, 15.978907, -4.1285863)
-material_override = SubResource("StandardMaterial3D_ha7rp")
-mesh = SubResource("PlaneMesh_hca03")
+material_override = SubResource("StandardMaterial3D_hca03")
+mesh = SubResource("PlaneMesh_x64rj")
 script = ExtResource("4_dbb0g")
 text = "PLAYER
 0
@@ -368,8 +380,8 @@ shape = SubResource("BoxShape3D_c4elv")
 
 [node name="SignLabel" type="MeshInstance3D" parent="VotingPressurePlateRematch" unique_id=504992277]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.0739098, 2.5619848, 0.021229267)
-material_override = SubResource("StandardMaterial3D_m5bpc")
-mesh = SubResource("PlaneMesh_ha7rp")
+material_override = SubResource("StandardMaterial3D_8vase")
+mesh = SubResource("PlaneMesh_12bqr")
 script = ExtResource("4_dbb0g")
 text = "CONDITION 00S
 P1|P2|P3|P4"
@@ -398,8 +410,8 @@ shape = SubResource("BoxShape3D_c4elv")
 
 [node name="SignLabel" type="MeshInstance3D" parent="VotingPressurePlateMainMenu" unique_id=1515225422]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.0739098, 2.5619848, 0.021229267)
-material_override = SubResource("StandardMaterial3D_m5bpc")
-mesh = SubResource("PlaneMesh_ha7rp")
+material_override = SubResource("StandardMaterial3D_i2gve")
+mesh = SubResource("PlaneMesh_trbyh")
 script = ExtResource("4_dbb0g")
 text = "CONDITION 00S
 P1|P2|P3|P4"

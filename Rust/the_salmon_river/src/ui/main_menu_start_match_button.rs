@@ -3,10 +3,7 @@ use godot::{
     prelude::*,
 };
 
-use crate::{
-    game_manager::game_manager::GameManager,
-    ui::{label_counter::LabelCounter, pregame_panel::PregamePanel},
-};
+use crate::ui::pregame_panel::PregamePanel;
 #[derive(GodotClass)]
 #[class(base=Button)]
 

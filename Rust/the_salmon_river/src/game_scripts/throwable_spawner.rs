@@ -40,7 +40,7 @@ impl INode3D for ThrowableSpawner {
             })
         });
     }
-    fn process(&mut self, delta: f64) {
+    fn process(&mut self, _delta: f64) {
         let time = Time::singleton();
         let current_time_ms = time.get_ticks_msec();
         let time_diff = self.next_spawn_time_ms.saturating_sub(current_time_ms);

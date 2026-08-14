@@ -1,5 +1,5 @@
 use godot::{
-    classes::{Button, Control, IControl, Label, RichTextLabel},
+    classes::{Button, Control, IControl, RichTextLabel},
     prelude::*,
 };
 

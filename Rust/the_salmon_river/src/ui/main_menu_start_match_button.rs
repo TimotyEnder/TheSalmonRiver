@@ -39,6 +39,7 @@ impl MainMenuStartMatchButton {
         let mut tree = self.base().get_tree();
         if let Some(ref mut pregame) = self.pregame_panel {
             if pregame.bind_mut().start_game() {
+                //tree.change_scene_to_file("res://Scenes/victory_screen.tscn"); //debug
                 tree.change_scene_to_file("res://Scenes/main.tscn");
             }
         }

@@ -20,6 +20,8 @@ use crate::game_scripts::throwable::Throwable;
 pub struct Player {
     can_move: bool,
     can_act: bool,
+    can_dmg: bool,
+    infinite_duck: bool,
     base: Base<CharacterBody3D>,
     speed: f32,
     jump_force: f32,
@@ -96,6 +98,8 @@ impl ICharacterBody3D for Player {
             base,
             can_move: false,
             can_act: true,
+            can_dmg: true,
+            infinite_duck: false,
             body_collider: None,
             body_mesh: None,
             upper_anim_tree: None,
@@ -256,11 +260,13 @@ impl Player {
         self.dead
     }
     pub fn duck_bar_systems(&mut self) {
-        self.duck_meter_manager.duck_meter_update(
-            self.duck_jumped,
-            self.ducked,
-            Time::singleton().get_ticks_msec(),
-        );
+        if !self.infinite_duck {
+            self.duck_meter_manager.duck_meter_update(
+                self.duck_jumped,
+                self.ducked,
+                Time::singleton().get_ticks_msec(),
+            );
+        }
         self.scale_duckbar();
     }
     pub fn pick_up_throwable(&mut self) {
@@ -894,7 +900,9 @@ impl Player {
                 .to_future::<()>()
                 .await;
         }
-        this.bind_mut().damage(2);
+        if this.bind().can_dmg {
+            this.bind_mut().damage(2);
+        }
         let (health, facing_right) = {
             let bind = this.bind();
             (bind.health, bind.facing_right)
@@ -1114,6 +1122,16 @@ impl Player {
             //means player is in a scene with no round manager
             self.can_move = true;
             self.can_act = true;
+            self.can_dmg = false;
+            self.infinite_duck = true;
+            if let Some(ref mut label) = self.player_label {
+                for child in label.get_children().iter_shared() {
+                    child
+                        .try_cast::<Node3D>()
+                        .ok()
+                        .map(|mut n| n.set_visible(false));
+                }
+            };
         }
     }
     fn scale_healthbar_with_health(&mut self) {
@@ -1166,13 +1184,16 @@ impl Player {
         return to_ret;
     }
     fn calculate_punch_damage(&mut self) -> u8 {
-        let to_ret = self.punch_damage + self.additional_next_punch_damage;
+        let mut to_ret = self.punch_damage + self.additional_next_punch_damage;
         self.additional_next_punch_damage = 0;
         if let Some(ref mut right_particles) = self.right_hand_fire_particles {
             right_particles.set_emitting(false);
         }
         if let Some(ref mut left_particles) = self.left_hand_fire_particles {
             left_particles.set_emitting(false);
+        }
+        if !self.can_dmg {
+            to_ret = 0;
         }
         to_ret
     }

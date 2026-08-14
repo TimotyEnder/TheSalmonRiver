@@ -6,3 +6,5 @@ pub mod player;
 pub mod round_manager;
 pub mod throwable;
 pub mod throwable_spawner;
+pub mod victory_screen_manager;
+pub mod voting_pressure_plate;

@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dkm3n0bbo1kvj" path="res://VoxelAssets/Environment/grass_plain.gltf" id="1_mubwb"]
 [ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="2_fmvqe"]
 [ext_resource type="Script" uid="uid://cofw7sywoopgu" path="res://rich-text-3d-godot-a81f50a2c49f0600c1188b0de8fba12a205e6c7f/addons/rich_text_3d/rich_text_3d.gd" id="4_dbb0g"]
+[ext_resource type="PackedScene" uid="uid://dn54lgufkn8en" path="res://VoxelAssets/Environment/VotingPressurePlate.gltf" id="5_dbb0g"]
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="5_m5bpc"]
 
 [sub_resource type="Environment" id="Environment_vrh3u"]
@@ -192,6 +193,22 @@ shading_mode = 0
 size = Vector2(10.89, 12.065)
 orientation = 2
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
+size = Vector3(2.6799316, 1.8790283, 2.4595337)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m5bpc"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ha7rp"]
+size = Vector2(2.02, 1.235)
+orientation = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ba2sc"]
+size = Vector3(2.6694946, 0.6915283, 2.4515991)
+
 [node name="VictoryScreen" type="Node3D" unique_id=1408743497]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=62926198]
@@ -337,3 +354,67 @@ player_position1 = NodePath("../PlayerPosition1")
 player_position2 = NodePath("../PlayerPosition2")
 player_position3 = NodePath("../PlayerPosition3")
 player_position4 = NodePath("../PlayerPosition4")
+
+[node name="VotingPressurePlateRematch" type="VotingPressurePlate" parent="." unique_id=1076966333]
+plate_success_condition_label = &"Rematch"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2881367, 0.6998527, 5.4168663)
+
+[node name="VotingPressurePlateMesh" parent="VotingPressurePlateRematch" unique_id=401436805 instance=ExtResource("5_dbb0g")]
+transform = Transform3D(0.205, 0, 0, 0, 0.205, 0, 0, 0, 0.205, 0, -0.01652515, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VotingPressurePlateRematch" unique_id=994925029]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11291504, 0.43951416, -0.008880615)
+shape = SubResource("BoxShape3D_c4elv")
+
+[node name="SignLabel" type="MeshInstance3D" parent="VotingPressurePlateRematch" unique_id=504992277]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.0739098, 2.5619848, 0.021229267)
+material_override = SubResource("StandardMaterial3D_m5bpc")
+mesh = SubResource("PlaneMesh_ha7rp")
+script = ExtResource("4_dbb0g")
+text = "CONDITION 00S
+P1|P2|P3|P4"
+font = ExtResource("5_m5bpc")
+font_size = 80
+size = Vector2(2.02, 1.235)
+metadata/_custom_type_script = "uid://cofw7sywoopgu"
+
+[node name="PressurePlateCollider" type="StaticBody3D" parent="VotingPressurePlateRematch" unique_id=598718043]
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VotingPressurePlateRematch/PressurePlateCollider" unique_id=1814061665]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.104156494, -0.15423584, 0.00045776367)
+shape = SubResource("BoxShape3D_ba2sc")
+
+[node name="VotingPressurePlateMainMenu" type="VotingPressurePlate" parent="." unique_id=2049619056]
+plate_success_condition_label = &"Main Menu"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.288, 0.7, -5.417)
+
+[node name="VotingPressurePlateMesh" parent="VotingPressurePlateMainMenu" unique_id=1379385160 instance=ExtResource("5_dbb0g")]
+transform = Transform3D(0.205, 0, 0, 0, 0.205, 0, 0, 0, 0.205, 0, -0.01652515, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VotingPressurePlateMainMenu" unique_id=805678825]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11291504, 0.43951416, -0.008880615)
+shape = SubResource("BoxShape3D_c4elv")
+
+[node name="SignLabel" type="MeshInstance3D" parent="VotingPressurePlateMainMenu" unique_id=1515225422]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.0739098, 2.5619848, 0.021229267)
+material_override = SubResource("StandardMaterial3D_m5bpc")
+mesh = SubResource("PlaneMesh_ha7rp")
+script = ExtResource("4_dbb0g")
+text = "CONDITION 00S
+P1|P2|P3|P4"
+font = ExtResource("5_m5bpc")
+font_size = 80
+size = Vector2(2.02, 1.235)
+metadata/_custom_type_script = "uid://cofw7sywoopgu"
+
+[node name="PressurePlateCollider" type="StaticBody3D" parent="VotingPressurePlateMainMenu" unique_id=214526670]
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VotingPressurePlateMainMenu/PressurePlateCollider" unique_id=484647217]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.104156494, -0.15423584, 0.00045776367)
+shape = SubResource("BoxShape3D_ba2sc")
+
+[node name="VictoryScreenManager" type="VictoryScreenManager" parent="." unique_id=477053103 node_paths=PackedStringArray("vp_rematch", "vp_menu")]
+vp_rematch = NodePath("../VotingPressurePlateRematch")
+vp_menu = NodePath("../VotingPressurePlateMainMenu")

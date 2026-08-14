@@ -2864,7 +2864,7 @@ advance_mode = 2
 advance_condition = &"death"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_rai8w"]
-states/End/position = Vector2(1087, 62)
+states/End/position = Vector2(1088, 64)
 states/death/node = SubResource("AnimationNodeAnimation_of3e5")
 states/death/position = Vector2(1036.8374, 256)
 "states/death 2/node" = SubResource("AnimationNodeAnimation_4qbli")

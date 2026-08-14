@@ -194,7 +194,7 @@ size = Vector2(10.89, 12.065)
 orientation = 2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
-size = Vector3(2.6799316, 1.8790283, 2.4595337)
+size = Vector3(2.6799316, 4.077118, 2.4595337)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m5bpc"]
 transparency = 2
@@ -363,7 +363,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2881367, 0.6998527, 5.4168
 transform = Transform3D(0.205, 0, 0, 0, 0.205, 0, 0, 0, 0.205, 0, -0.01652515, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VotingPressurePlateRematch" unique_id=994925029]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11291504, 0.43951416, -0.008880615)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11291504, 1.538559, -0.008880615)
 shape = SubResource("BoxShape3D_c4elv")
 
 [node name="SignLabel" type="MeshInstance3D" parent="VotingPressurePlateRematch" unique_id=504992277]
@@ -393,7 +393,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.288, 0.7, -5.417)
 transform = Transform3D(0.205, 0, 0, 0, 0.205, 0, 0, 0, 0.205, 0, -0.01652515, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VotingPressurePlateMainMenu" unique_id=805678825]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11291504, 0.43951416, -0.008880615)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11291504, 1.538559, -0.008880615)
 shape = SubResource("BoxShape3D_c4elv")
 
 [node name="SignLabel" type="MeshInstance3D" parent="VotingPressurePlateMainMenu" unique_id=1515225422]

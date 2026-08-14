@@ -103,7 +103,9 @@ impl Throwable {
                     Signal::from_object_signal(&timer, "timeout")
                         .to_future::<()>()
                         .await;
-                    log_root_node.call_deferred("queue_free", &[]);
+                    if log_root_node.is_instance_valid() {
+                        log_root_node.call_deferred("queue_free", &[]);
+                    }
                 });
             }
             self.base_mut().call_deferred("queue_free", &[]);
@@ -205,7 +207,9 @@ impl Throwable {
                     Signal::from_object_signal(&timer, "timeout")
                         .to_future::<()>()
                         .await;
-                    this.call_deferred("queue_free", &[]);
+                    if this.is_instance_valid() {
+                        this.call_deferred("queue_free", &[]);
+                    }
                 });
             }
         }

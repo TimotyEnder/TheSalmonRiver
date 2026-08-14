@@ -3,7 +3,7 @@ Game Doc For the Salmon River:
 
 
 todo:
-victory screen walk around punch eachother step on new game or exit to menu buttons. big leader board shows the winners and points(should be physical).
+add grab teching,if both players grab at the same time displace them back and dont give grab to anybody.
 pause menu
 polish all the animations and the hitstun and knockdown systems.
 maybe additionally go crazy with the maps and make a map select screen? or just cycle them randomly?(completely optional)

@@ -541,6 +541,9 @@ impl Player {
         }
     }
     async fn duck_jump_routine(mut this: Gd<Self>) {
+        if !this.is_instance_valid() {
+            return;
+        }
         let timer;
         {
             let mut bind = this.bind_mut();
@@ -551,11 +554,17 @@ impl Player {
             if let Some(ref mut lower_anim) = bind.lower_anim_tree {
                 lower_anim.set("parameters/conditions/duck_jump", &true.to_variant());
             }
-            timer = bind.base().get_tree().create_timer(0.5);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(0.5);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             bind.duck_jumping = false;
@@ -568,6 +577,9 @@ impl Player {
         }
     }
     async fn throw_routine(mut this: Gd<Self>) {
+        if !this.is_instance_valid() {
+            return;
+        }
         let timer;
         {
             let mut bind = this.bind_mut();
@@ -576,11 +588,17 @@ impl Player {
                 upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
                 upper_anim.set("parameters/conditions/throw", &true.to_variant());
             }
-            timer = bind.base().get_tree().create_timer(0.25);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(0.25);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             let facing_right = bind.facing_right;
@@ -601,6 +619,9 @@ impl Player {
         }
     }
     async fn use_routine(mut this: Gd<Self>) {
+        if !this.is_instance_valid() {
+            return;
+        }
         let timer;
         {
             let mut bind = this.bind_mut();
@@ -611,11 +632,17 @@ impl Player {
             if let Some(ref mut container_anim_tree) = bind.in_hand_ability_container_anim_tree {
                 container_anim_tree.set("parameters/conditions/ding", &true.to_variant());
             }
-            timer = bind.base().get_tree().create_timer(0.1);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(0.1);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             if let Some(ref mut container_anim_tree) = bind.in_hand_ability_container_anim_tree {
@@ -625,6 +652,9 @@ impl Player {
         }
     }
     async fn punch_routine(mut this: Gd<Self>) {
+        if !this.is_instance_valid() {
+            return;
+        }
         let original_speed;
         let speed_timer;
         {
@@ -633,7 +663,10 @@ impl Player {
             let direction = if bind.facing_right { -1.0 } else { 1.0 };
             velocity.z = direction * bind.punch_force;
             bind.base_mut().set_velocity(velocity);
-            speed_timer = bind.base().get_tree().create_timer(0.1);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            speed_timer = tree.create_timer(0.1);
         }
         let timer;
         {
@@ -656,11 +689,17 @@ impl Player {
                 }
             }
             bind.right_punch = right_punch;
-            timer = bind.base().get_tree().create_timer(0.25);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(0.25);
         }
         Signal::from_object_signal(&speed_timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             bind.speed = original_speed;
@@ -672,6 +711,9 @@ impl Player {
             .to_future::<()>()
             .await;
 
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             bind.is_punching = false;
@@ -702,11 +744,16 @@ impl Player {
                 Signal::from_object_signal(&timer, "timeout")
                     .to_future::<()>()
                     .await;
-                log_obsticle.call_deferred("queue_free", &[]);
+                if log_obsticle.is_instance_valid() {
+                    log_obsticle.call_deferred("queue_free", &[]);
+                }
             });
         }
     }
     pub async fn ice_chunk_dash_routine(mut this: Gd<Self>) {
+        if !this.is_instance_valid() {
+            return;
+        }
         let dash_timer;
         {
             let mut bind = this.bind_mut();
@@ -718,11 +765,17 @@ impl Player {
             let direction = if bind.facing_right { -1.0 } else { 1.0 };
             velocity.z = direction * bind.ice_chunk_dash_force;
             bind.base_mut().set_velocity(velocity);
-            dash_timer = bind.base().get_tree().create_timer(0.2);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            dash_timer = tree.create_timer(0.2);
         }
         Signal::from_object_signal(&dash_timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             if let Some(ref mut particles) = bind.ice_chunk_dash_particles {
@@ -732,6 +785,9 @@ impl Player {
         }
     }
     async fn grab_routine(mut this: Gd<Self>) {
+        if !this.is_instance_valid() {
+            return;
+        }
         let timer;
         {
             let mut bind = this.bind_mut();
@@ -743,13 +799,19 @@ impl Player {
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 upper_anim.set("parameters/conditions/grab", &true.to_variant());
             }
-            timer = bind.base().get_tree().create_timer(0.4);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(0.4);
         }
 
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
 
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             bind.is_grab = false;
@@ -760,17 +822,26 @@ impl Player {
         }
     }
     async fn hitstun_routine(mut this: Gd<Self>, knock_dir: Direction) {
+        if !this.is_instance_valid() {
+            return;
+        }
         let reset_anim_timer;
         {
             let mut bind = this.bind_mut();
             if let Some(ref mut anim) = bind.lower_anim_tree {
                 anim.set("parameters/conditions/un_hit", &true.to_variant());
             }
-            reset_anim_timer = bind.base().get_tree().create_timer(0.01);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            reset_anim_timer = tree.create_timer(0.01);
         }
         Signal::from_object_signal(&reset_anim_timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         let should_knockback;
         {
             let mut bind = this.bind_mut();
@@ -798,11 +869,17 @@ impl Player {
             if let Some(ref mut anim) = bind.upper_anim_tree {
                 anim.set("parameters/conditions/hit", &true.to_variant());
             }
-            timer = bind.base().get_tree().create_timer(0.5);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(0.5);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             if bind.hit_stun_routine_entries > 0 {
@@ -826,6 +903,9 @@ impl Player {
         }
     }
     async fn death_routine(mut this: Gd<Self>, knock_dir: Direction) {
+        if !this.is_instance_valid() {
+            return;
+        }
         let timer;
         {
             let mut bind = this.bind_mut();
@@ -864,11 +944,17 @@ impl Player {
                 upp_anim.set("parameters/conditions/knock", &false.to_variant());
                 upp_anim.set("parameters/conditions/death", &true.to_variant());
             }
-            timer = bind.base().get_tree().create_timer(1.0);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(1.0);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             let mut velocity = bind.base().get_velocity();
@@ -894,11 +980,17 @@ impl Player {
         }
     }
     async fn throw_landing_damage_routine(mut this: Gd<Self>) {
-        while !this.bind().base().is_on_floor() {
-            let timer = this.bind().base().get_tree().create_timer(0.02);
+        while this.is_instance_valid() && !this.bind().base().is_on_floor() {
+            let Some(mut tree) = this.bind().base().get_tree_or_null() else {
+                return;
+            };
+            let timer = tree.create_timer(0.02);
             Signal::from_object_signal(&timer, "timeout")
                 .to_future::<()>()
                 .await;
+        }
+        if !this.is_instance_valid() {
+            return;
         }
         if this.bind().can_dmg {
             this.bind_mut().damage(2);
@@ -916,6 +1008,9 @@ impl Player {
         }
     }
     async fn knockback_routine(mut this: Gd<Self>, knock_dir: Direction, from_throw: bool) {
+        if !this.is_instance_valid() {
+            return;
+        }
         let timer;
         {
             let mut bind = this.bind_mut();
@@ -947,11 +1042,17 @@ impl Player {
                 upp_anim.set("parameters/conditions/hit", &false.to_variant());
                 upp_anim.set("parameters/conditions/knock", &true.to_variant());
             }
-            timer = bind.base().get_tree().create_timer(1.3);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(1.3);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             let mut velocity = bind.base().get_velocity();
@@ -1344,6 +1445,9 @@ impl Player {
         Signal::from_object_signal(&drop_timer, "timeout")
             .to_future::<()>()
             .await;
+        if !grabber.is_instance_valid() {
+            return;
+        }
         if grabber.bind().player_throwable_in_hand.is_some() {
             grabber.bind_mut().drop_throwable();
         }
@@ -1352,15 +1456,21 @@ impl Player {
         drop_timer: Gd<SceneTreeTimer>,
         grabber: Gd<Player>,
     ) {
+        if !grabber.is_instance_valid() {
+            return;
+        }
         let grab_player_release_bar = grabber.find_child("PlayerLabel").and_then(|pl| {
             pl.find_child("GrabPlayerReleaseBar")
                 .and_then(|gprb| gprb.try_cast::<Node3D>().ok())
         });
         if let Some(mut bar) = grab_player_release_bar {
-            let tree = grabber.get_tree();
+            let Some(tree) = grabber.get_tree_or_null() else {
+                return;
+            };
             bar.set_visible(true);
             let initial_scale = bar.get_scale();
             while drop_timer.get_time_left() > 0.0
+                && grabber.is_instance_valid()
                 && grabber.bind().player_throwable_in_hand.is_some()
             {
                 let mut scale = bar.get_scale();
@@ -1369,6 +1479,9 @@ impl Player {
                 Signal::from_object_signal(&tree, "process_frame")
                     .to_future::<()>()
                     .await;
+            }
+            if !bar.is_instance_valid() {
+                return;
             }
             bar.set_visible(false);
             bar.set_scale(initial_scale);

@@ -118,14 +118,23 @@ impl RoundManager {
         });
     }
     async fn starting_seq_routine(mut this: Gd<Self>) {
+        if !this.is_instance_valid() {
+            return;
+        }
         let mut timer;
         {
             let bind = this.bind_mut();
-            timer = bind.base().get_tree().create_timer(1.5);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(1.5);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             if let Some(ref mut label) = bind.output_text {
@@ -134,19 +143,31 @@ impl RoundManager {
             if let Some(ref mut anim) = bind.output_text_anim {
                 anim.set("parameters/conditions/count", &true.to_variant());
             }
-            timer = bind.base().get_tree().create_timer(3.0);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(3.0);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             bind.signals().round_start().emit();
-            timer = bind.base().get_tree().create_timer(1.0);
+            let Some(mut tree) = bind.base().get_tree_or_null() else {
+                return;
+            };
+            timer = tree.create_timer(1.0);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         {
             let mut bind = this.bind_mut();
             bind.run_round_timer = true;
@@ -242,7 +263,9 @@ impl RoundManager {
                 Signal::from_object_signal(&timer, "timeout")
                     .to_future::<()>()
                     .await;
-                this.bind_mut().decide_what_scene_to_show();
+                if this.is_instance_valid() {
+                    this.bind_mut().decide_what_scene_to_show();
+                }
             });
         }
     }

@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://cofw7sywoopgu" path="res://rich-text-3d-godot-a81f50a2c49f0600c1188b0de8fba12a205e6c7f/addons/rich_text_3d/rich_text_3d.gd" id="4_dbb0g"]
 [ext_resource type="PackedScene" uid="uid://dn54lgufkn8en" path="res://VoxelAssets/Environment/VotingPressurePlate.gltf" id="5_dbb0g"]
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="5_m5bpc"]
+[ext_resource type="PackedScene" uid="uid://ba0h40da8dnny" path="res://Prefabs/Ui/pause_menu.tscn" id="6_m5bpc"]
 
 [sub_resource type="Environment" id="Environment_vrh3u"]
 background_mode = 3
@@ -430,3 +431,5 @@ shape = SubResource("BoxShape3D_ba2sc")
 [node name="VictoryScreenManager" type="VictoryScreenManager" parent="." unique_id=477053103 node_paths=PackedStringArray("vp_rematch", "vp_menu")]
 vp_rematch = NodePath("../VotingPressurePlateRematch")
 vp_menu = NodePath("../VotingPressurePlateMainMenu")
+
+[node name="PauseMenuCanvas" parent="." unique_id=171649780 instance=ExtResource("6_m5bpc")]

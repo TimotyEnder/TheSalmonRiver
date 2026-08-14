@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://ba0h40da8dnny"]
+
+[ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="1_wql2f"]
+
+[node name="PauseMenuCanvas" type="CanvasLayer" unique_id=171649780]
+
+[node name="PauseMenuPanel" type="PauseMenuPanel" parent="." unique_id=1933688464]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="PauseMenuPanel" unique_id=894881226]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -177.5
+offset_top = -39.0
+offset_right = 177.5
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResumeButton" type="PanelEnablingButton" parent="PauseMenuPanel/GridContainer" unique_id=1781112076 node_paths=PackedStringArray("panel_to_enable")]
+panel_to_enable = NodePath("../..")
+disable_panel = true
+custom_minimum_size = Vector2(355.97, 78.385)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_wql2f")
+theme_override_font_sizes/font_size = 70
+text = "RESUME"
+icon_alignment = 1
+
+[node name="SettingsButton" type="Button" parent="PauseMenuPanel/GridContainer" unique_id=613840685]
+custom_minimum_size = Vector2(355.97, 78.385)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_wql2f")
+theme_override_font_sizes/font_size = 70
+text = "SETTINGS"
+icon_alignment = 1
+
+[node name="MainMenuButton" type="SceneChangingButton" parent="PauseMenuPanel/GridContainer" unique_id=453957232]
+scene_name_to_change_to = &"main_menu"
+custom_minimum_size = Vector2(355.97, 78.385)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_wql2f")
+theme_override_font_sizes/font_size = 70
+text = "MAIN MENU"
+icon_alignment = 1
+
+[node name="QuitButton" type="ApplicationExitButton" parent="PauseMenuPanel/GridContainer" unique_id=723947104]
+custom_minimum_size = Vector2(355.97, 78.385)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_wql2f")
+theme_override_font_sizes/font_size = 70
+text = "QUIT"
+icon_alignment = 1

@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b4u8wkqpnfjns" path="res://VoxelAssets/Environment/GrassRiverBank.gltf" id="4_jjvhh"]
 [ext_resource type="PackedScene" uid="uid://c55fml4h84ry1" path="res://VoxelAssets/3DUI/ThrowableArrow.gltf" id="4_kry3j"]
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="5_kry3j"]
+[ext_resource type="PackedScene" uid="uid://ba0h40da8dnny" path="res://Prefabs/Ui/pause_menu.tscn" id="6_6bp64"]
 [ext_resource type="Script" uid="uid://cofw7sywoopgu" path="res://rich-text-3d-godot-a81f50a2c49f0600c1188b0de8fba12a205e6c7f/addons/rich_text_3d/rich_text_3d.gd" id="6_21xkr"]
 
 [sub_resource type="Environment" id="Environment_bo1nx"]
@@ -759,63 +760,4 @@ player_position2 = NodePath("../PlayerPosition2")
 player_position3 = NodePath("../PlayerPosition3")
 player_position4 = NodePath("../PlayerPosition4")
 
-[node name="PauseMenuCanvas" type="CanvasLayer" parent="." unique_id=617814847]
-
-[node name="PauseMenuPanel" type="PauseMenuPanel" parent="PauseMenuCanvas" unique_id=1663908868]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="GridContainer" type="GridContainer" parent="PauseMenuCanvas/PauseMenuPanel" unique_id=1474057125]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -177.5
-offset_top = -39.0
-offset_right = 177.5
-offset_bottom = 39.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ResumeButton" type="PanelEnablingButton" parent="PauseMenuCanvas/PauseMenuPanel/GridContainer" unique_id=1774054889 node_paths=PackedStringArray("panel_to_enable")]
-panel_to_enable = NodePath("../..")
-disable_panel = true
-custom_minimum_size = Vector2(355.97, 78.385)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("5_kry3j")
-theme_override_font_sizes/font_size = 70
-text = "RESUME"
-icon_alignment = 1
-
-[node name="SettingsButton" type="Button" parent="PauseMenuCanvas/PauseMenuPanel/GridContainer" unique_id=1336161272]
-custom_minimum_size = Vector2(355.97, 78.385)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("5_kry3j")
-theme_override_font_sizes/font_size = 70
-text = "SETTINGS"
-icon_alignment = 1
-
-[node name="MainMenuButton" type="SceneChangingButton" parent="PauseMenuCanvas/PauseMenuPanel/GridContainer" unique_id=1182249494]
-scene_name_to_change_to = &"main_menu"
-custom_minimum_size = Vector2(355.97, 78.385)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("5_kry3j")
-theme_override_font_sizes/font_size = 70
-text = "MAIN MENU"
-icon_alignment = 1
-
-[node name="QuitButton" type="ApplicationExitButton" parent="PauseMenuCanvas/PauseMenuPanel/GridContainer" unique_id=849373444]
-custom_minimum_size = Vector2(355.97, 78.385)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("5_kry3j")
-theme_override_font_sizes/font_size = 70
-text = "QUIT"
-icon_alignment = 1
+[node name="PauseMenuCanvas" parent="." unique_id=171649780 instance=ExtResource("6_6bp64")]

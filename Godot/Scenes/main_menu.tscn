@@ -397,18 +397,49 @@ parameters/conditions/up = false
 
 [node name="PlayPanelEnablingButton" type="PanelEnablingButton" parent="CanvasLayer" unique_id=375831765 node_paths=PackedStringArray("panel_to_enable")]
 panel_to_enable = NodePath("../PlayerControlsPanel")
+custom_maximum_size = Vector2(184.135, 75.91)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 448.0
-offset_top = 320.0
-offset_right = -440.72644
-offset_bottom = -199.0
+offset_left = 486.0
+offset_top = 367.0
+offset_right = -481.865
+offset_bottom = -205.09
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 100
 text = "PLAY"
+
+[node name="SettingsButton" type="Button" parent="CanvasLayer" unique_id=255632589]
+custom_maximum_size = Vector2(184.135, 75.91)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 486.43073
+offset_top = 445.45502
+offset_right = -481.43427
+offset_bottom = -126.63501
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_n45e2")
+theme_override_font_sizes/font_size = 59
+text = "SETTINGS"
+
+[node name="QuitButton" type="ApplicationExitButton" parent="CanvasLayer" unique_id=1025351734]
+custom_maximum_size = Vector2(184.135, 75.91)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 486.43073
+offset_top = 523.455
+offset_right = -481.43427
+offset_bottom = -48.63501
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_n45e2")
+theme_override_font_sizes/font_size = 100
+text = "QUIT"
 
 [node name="PlayerControlsPanel" type="PregamePanel" parent="CanvasLayer" unique_id=979058209 node_paths=PackedStringArray("player_controls_panel_grid", "player_num_counter_label", "match_time_counter_label")]
 player_controls_panel_grid = NodePath("PlayerControlsPanel")

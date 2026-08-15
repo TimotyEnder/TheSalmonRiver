@@ -404,15 +404,15 @@ theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 100
 text = "PLAY"
 
-[node name="SettingsButton" type="Button" parent="CanvasLayer" unique_id=255632589]
+[node name="SettingsButton" type="SettingsButton" parent="CanvasLayer" unique_id=1429399425]
 custom_maximum_size = Vector2(184.135, 75.91)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 486.43073
-offset_top = 445.45502
-offset_right = -481.43427
-offset_bottom = -126.63501
+offset_left = 870.43066
+offset_top = 661.455
+offset_right = -865.4343
+offset_bottom = -342.635
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_n45e2")
@@ -605,10 +605,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 734.0
-offset_top = 829.0
-offset_right = -745.0
-offset_bottom = -69.0
+offset_left = 695.0
+offset_top = 831.0
+offset_right = -655.0
+offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_jjvhh")

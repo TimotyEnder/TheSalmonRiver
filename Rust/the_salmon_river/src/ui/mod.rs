@@ -7,3 +7,7 @@ pub mod pause_menu_panel;
 pub mod player_controls_panel;
 pub mod pregame_panel;
 pub mod scene_changing_button;
+pub mod settings_button;
+pub mod settings_panel;
+pub mod string_label_selector;
+pub mod ui_utils;

@@ -42,7 +42,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_n45e2")
 text = "RESUME"
 icon_alignment = 1
 
-[node name="SettingsButton" type="Button" parent="PauseMenuPanel/GridContainer" unique_id=613840685]
+[node name="SettingsButton" type="SettingsButton" parent="PauseMenuPanel/GridContainer" unique_id=1806173879]
 custom_minimum_size = Vector2(355.97, 78.385)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_wql2f")

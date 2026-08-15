@@ -1,0 +1,98 @@
+use godot::{
+    classes::{Button, Control, IControl, RichTextLabel},
+    prelude::*,
+};
+
+#[derive(GodotClass)]
+#[class(base=Control)]
+pub struct StringLabelSelector {
+    base: Base<Control>,
+    right_button: Option<Gd<Button>>,
+    left_button: Option<Gd<Button>>,
+    label: Option<Gd<RichTextLabel>>,
+    #[export]
+    possible_values: PackedArray<GString>,
+    current_selection_pos: usize,
+}
+
+#[godot_api]
+impl IControl for StringLabelSelector {
+    fn init(base: Base<Control>) -> Self {
+        Self {
+            base,
+            right_button: None,
+            left_button: None,
+            label: None,
+            possible_values: PackedArray::new(),
+            current_selection_pos: 0,
+        }
+    }
+    fn ready(&mut self) {
+        self.left_button = self
+            .base()
+            .find_child("LeftButton")
+            .and_then(|button| button.try_cast::<Button>().ok());
+        self.right_button = self
+            .base()
+            .find_child("RightButton")
+            .and_then(|button| button.try_cast::<Button>().ok());
+        self.label = self
+            .base()
+            .find_child("Label")
+            .and_then(|button| button.try_cast::<RichTextLabel>().ok());
+        let this = self.to_gd();
+        if let Some(ref mut label) = self.label {
+            label.set_text(&format!(
+                "{}",
+                self.possible_values.get(0).unwrap_or(GString::new())
+            ));
+        }
+        if let Some(ref mut inc) = self.right_button
+            && let Some(ref mut dec) = self.left_button
+        {
+            inc.signals()
+                .button_down()
+                .connect_other(&this, Self::on_inc);
+            dec.signals()
+                .button_down()
+                .connect_other(&this, Self::on_dec);
+        }
+    }
+}
+
+#[godot_api]
+impl StringLabelSelector {
+    #[signal]
+    pub fn value_changed();
+    fn update_label(&mut self) {
+        if let Some(ref mut label) = self.label {
+            label.set_text(&format!(
+                "{}",
+                self.possible_values
+                    .get(self.current_selection_pos)
+                    .unwrap_or(GString::new())
+            ));
+        }
+    }
+    fn on_inc(&mut self) {
+        let len = self.possible_values.len();
+        if len == 0 {
+            return;
+        }
+        self.current_selection_pos = (self.current_selection_pos + 1) % len;
+        self.update_label();
+    }
+    fn on_dec(&mut self) {
+        let len = self.possible_values.len();
+        if len == 0 {
+            return;
+        }
+        self.current_selection_pos = (self.current_selection_pos + len - 1) % len;
+        self.update_label();
+    }
+    pub fn get_value(&self) -> GString {
+        self.possible_values
+            .get(self.current_selection_pos)
+            .unwrap_or(GString::new())
+    }
+}

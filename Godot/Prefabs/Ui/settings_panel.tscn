@@ -1,0 +1,170 @@
+[gd_scene format=3 uid="uid://cbtssbhec4a6s"]
+
+[ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="1_lmfad"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lmfad"]
+bg_color = Color(0.16206557, 0.1620656, 0.16206548, 1)
+
+[node name="SettingsCanvas" type="CanvasLayer" unique_id=1298181767]
+
+[node name="SettingsPanel" type="SettingsPanel" parent="." unique_id=2113342017]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 473.0
+offset_top = 71.0
+offset_right = -471.0
+offset_bottom = -42.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lmfad")
+
+[node name="TopBar" type="Panel" parent="SettingsPanel" unique_id=324450087]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 106.0
+grow_horizontal = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="SettingsPanel/TopBar" unique_id=39769472]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("1_lmfad")
+theme_override_font_sizes/normal_font_size = 80
+text = "SETTINGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="SettingsPanel" unique_id=1975679185]
+layout_mode = 1
+offset_left = 20.000008
+offset_top = 145.0
+offset_right = 448.0
+offset_bottom = 248.0
+theme_override_fonts/normal_font = ExtResource("1_lmfad")
+theme_override_font_sizes/normal_font_size = 80
+text = "TYPE OF WINDOW:"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="SettingsPanel" unique_id=27755802]
+layout_mode = 0
+offset_left = 20.000008
+offset_top = 276.0
+offset_right = 448.0
+offset_bottom = 379.0
+theme_override_fonts/normal_font = ExtResource("1_lmfad")
+theme_override_font_sizes/normal_font_size = 80
+text = "RESOLUTION:"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="StringSelectorWindowType" type="StringLabelSelector" parent="SettingsPanel" unique_id=1183014325]
+possible_values = PackedStringArray("WINDOWED", "MAXIMIZED", "FULLSCREEN")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.56600004
+anchor_right = 0.56600004
+offset_left = -106.416016
+offset_top = 133.0
+offset_right = 88.583984
+offset_bottom = 267.0
+
+[node name="Label" type="RichTextLabel" parent="SettingsPanel/StringSelectorWindowType" unique_id=217610322]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 1.0
+offset_right = 317.0
+offset_bottom = 134.0
+theme_override_fonts/normal_font = ExtResource("1_lmfad")
+theme_override_font_sizes/normal_font_size = 60
+text = "LONGEST WINDOW TYPE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RightButton" type="Button" parent="SettingsPanel/StringSelectorWindowType" unique_id=1582594410]
+layout_mode = 0
+offset_left = 312.0
+offset_top = 34.0
+offset_right = 348.0
+offset_bottom = 103.0
+theme_override_fonts/font = ExtResource("1_lmfad")
+theme_override_font_sizes/font_size = 60
+text = ">"
+alignment = 2
+
+[node name="LeftButton" type="Button" parent="SettingsPanel/StringSelectorWindowType" unique_id=788992749]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 33.0
+offset_right = 51.0
+offset_bottom = 102.0
+theme_override_fonts/font = ExtResource("1_lmfad")
+theme_override_font_sizes/font_size = 60
+text = "<"
+alignment = 2
+
+[node name="StringSelectorResolution" type="StringLabelSelector" parent="SettingsPanel" unique_id=1339105457]
+possible_values = PackedStringArray("1280x720", "1600x900", "1920x1080", "2560x1440", "3840x2160")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.56600004
+anchor_right = 0.56600004
+offset_left = -106.416016
+offset_top = 268.0
+offset_right = 88.583984
+offset_bottom = 402.0
+
+[node name="Label" type="RichTextLabel" parent="SettingsPanel/StringSelectorResolution" unique_id=762872536]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 1.0
+offset_right = 317.0
+offset_bottom = 134.0
+theme_override_fonts/normal_font = ExtResource("1_lmfad")
+theme_override_font_sizes/normal_font_size = 60
+text = "0000x0000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RightButton" type="Button" parent="SettingsPanel/StringSelectorResolution" unique_id=132457863]
+layout_mode = 0
+offset_left = 312.0
+offset_top = 34.0
+offset_right = 348.0
+offset_bottom = 103.0
+theme_override_fonts/font = ExtResource("1_lmfad")
+theme_override_font_sizes/font_size = 60
+text = ">"
+alignment = 2
+
+[node name="LeftButton" type="Button" parent="SettingsPanel/StringSelectorResolution" unique_id=435351257]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 33.0
+offset_right = 51.0
+offset_bottom = 102.0
+theme_override_fonts/font = ExtResource("1_lmfad")
+theme_override_font_sizes/font_size = 60
+text = "<"
+alignment = 2
+
+[node name="CloseButton" type="PanelEnablingButton" parent="SettingsPanel" unique_id=1840017135 node_paths=PackedStringArray("panel_to_enable")]
+panel_to_enable = NodePath("..")
+disable_panel = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -118.0
+offset_top = -3.0
+offset_bottom = 106.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("1_lmfad")
+theme_override_font_sizes/font_size = 65
+text = "X"
+icon_alignment = 1

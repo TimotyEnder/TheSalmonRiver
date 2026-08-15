@@ -41,7 +41,7 @@ impl PanelEnablingButton {
             .base()
             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
 
-        let position = self.base().get_position();
+        let position = self.base().get_global_position();
         if let Some(ref mut controls_panel) = self.panel_to_enable
             && let Some(mut audio) = audio_manager
         {

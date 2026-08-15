@@ -22,6 +22,9 @@ size = Vector3(2.0368652, 0.98132324, 2.41333)
 [sub_resource type="BoxShape3D" id="BoxShape3D_rai8w"]
 size = Vector3(1, 19.77166, 3.1507492)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_344ge"]
+size = Vector3(1.8640137, 1.2788086, 2.2324219)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
 size = Vector3(6.6301575, 1.168457, 3.1865845)
 
@@ -650,6 +653,12 @@ shape = SubResource("BoxShape3D_rai8w")
 [node name="LeftWall" type="CollisionShape3D" parent="Environment/River" unique_id=1798810544]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.146003, 6.8353205, -0.3481499)
 shape = SubResource("BoxShape3D_rai8w")
+
+[node name="RiverWaterSoundArea" type="Area3D" parent="Environment/River" unique_id=995051669]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/River/RiverWaterSoundArea" unique_id=909464583]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.075317375, 0.1394043, -0.12011719)
+shape = SubResource("BoxShape3D_344ge")
 
 [node name="LeftBank" type="StaticBody3D" parent="Environment" unique_id=722134106]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.3750771, 0.73130685, 2.5910273)

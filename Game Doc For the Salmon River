@@ -3,7 +3,8 @@ Game Doc For the Salmon River:
 
 
 todo:
-pause menu with settings and shit
+fix player grab bug, rn drop happens anyways even is player grabs another player.
+making sound system
 polish all the animations and the hitstun and knockdown systems.
 maybe additionally go crazy with the maps and make a map select screen? or just cycle them randomly?(completely optional)
 

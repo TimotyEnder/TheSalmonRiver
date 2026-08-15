@@ -88,7 +88,7 @@ impl StringLabelSelector {
             self.current_selection_pos = (self.current_selection_pos + 1) % len;
             audio
                 .bind_mut()
-                .play_sound(SoundEffect::UIIncrement, self.base().get_position());
+                .play_sound(SoundEffect::UIIncrement, self.base().get_global_position());
             self.update_label();
         }
     }
@@ -104,7 +104,7 @@ impl StringLabelSelector {
             self.current_selection_pos = (self.current_selection_pos + len - 1) % len;
             audio
                 .bind_mut()
-                .play_sound(SoundEffect::UIDecrement, self.base().get_position());
+                .play_sound(SoundEffect::UIDecrement, self.base().get_global_position());
             self.update_label();
         }
     }

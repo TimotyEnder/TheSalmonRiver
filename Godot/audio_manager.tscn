@@ -1,3 +1,6 @@
 [gd_scene format=3 uid="uid://b3qdhg88iejq6"]
 
 [node name="AudioManager" type="AudioManager" unique_id=436862057]
+
+[node name="AudioListener2D" type="AudioListener2D" parent="." unique_id=1935058726]
+position = Vector2(576, 320)

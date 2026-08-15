@@ -149,16 +149,24 @@ impl PlayerControlsPanel {
             && let Some(ref mut button_right) = self.key_mapping_button_right
             && let Some(ref mut button_punch_use) = self.key_mapping_button_punch_use
         {
-            button_jump.bind_mut().save_key(control.bind().jump_key);
-            button_duck.bind_mut().save_key(control.bind().duck_key);
-            button_left.bind_mut().save_key(control.bind().left_key);
-            button_right.bind_mut().save_key(control.bind().right_key);
+            button_jump
+                .bind_mut()
+                .save_key(control.bind().jump_key, true);
+            button_duck
+                .bind_mut()
+                .save_key(control.bind().duck_key, true);
+            button_left
+                .bind_mut()
+                .save_key(control.bind().left_key, true);
+            button_right
+                .bind_mut()
+                .save_key(control.bind().right_key, true);
             button_punch_use
                 .bind_mut()
-                .save_key(control.bind().punch_use_key);
+                .save_key(control.bind().punch_use_key, true);
             button_grab_throw
                 .bind_mut()
-                .save_key(control.bind().grab_throw_key);
+                .save_key(control.bind().grab_throw_key, true);
         }
     }
     pub fn asign_controls_to_game_manager(&mut self) {

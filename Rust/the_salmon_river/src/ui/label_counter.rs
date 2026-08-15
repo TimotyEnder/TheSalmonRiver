@@ -83,11 +83,11 @@ impl LabelCounter {
                 self.update_label();
                 audio
                     .bind_mut()
-                    .play_sound(SoundEffect::UIIncrement, self.base().get_position());
+                    .play_sound(SoundEffect::UIIncrement, self.base().get_global_position());
             } else {
                 audio
                     .bind_mut()
-                    .play_sound(SoundEffect::UICancel, self.base().get_position());
+                    .play_sound(SoundEffect::UICancel, self.base().get_global_position());
             }
         }
     }
@@ -101,11 +101,11 @@ impl LabelCounter {
                 self.update_label();
                 audio
                     .bind_mut()
-                    .play_sound(SoundEffect::UIDecrement, self.base().get_position());
+                    .play_sound(SoundEffect::UIDecrement, self.base().get_global_position());
             } else {
                 audio
                     .bind_mut()
-                    .play_sound(SoundEffect::UICancel, self.base().get_position());
+                    .play_sound(SoundEffect::UICancel, self.base().get_global_position());
             }
         }
     }

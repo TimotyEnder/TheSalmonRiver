@@ -34,8 +34,8 @@ impl ApplicationExitButton {
         if let Some(mut audio) = audio_manager {
             audio
                 .bind_mut()
-                .play_sound(SoundEffect::UICancel, self.base().get_position());
+                .play_sound(SoundEffect::UICancel, self.base().get_global_position());
         }
-        self.base_mut().get_tree().quit();
+        self.base_mut().get_tree().call_deferred("quit", &[]);
     }
 }

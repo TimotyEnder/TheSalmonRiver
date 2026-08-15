@@ -10,6 +10,10 @@ pub enum SoundEffect {
     UICancel = 4,
     UIDecrement = 5,
     UIIncrement = 6,
+    PlayerPunchSwoosh = 7,
+    PlayerPunchSwoosh1 = 8,
+    PlayerFootStep = 9,
+    SplashFootStep = 10,
 }
 impl SoundEffect {
     pub fn to_sound_effect_path(&self) -> &'static str {
@@ -21,6 +25,10 @@ impl SoundEffect {
             SoundEffect::UICancel => "res://SoundAssets/ui_cancel.ogg",
             SoundEffect::UIDecrement => "res://SoundAssets/ui_decrement.ogg",
             SoundEffect::UIIncrement => "res://SoundAssets/ui_increment.ogg",
+            SoundEffect::PlayerPunchSwoosh => "res://SoundAssets/swoosh.ogg",
+            SoundEffect::PlayerPunchSwoosh1 => "res://SoundAssets/swoosh1.ogg",
+            SoundEffect::PlayerFootStep => "res://SoundAssets/footstep.ogg",
+            SoundEffect::SplashFootStep => "res://SoundAssets/splash_footstep.ogg",
         }
     }
 }

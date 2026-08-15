@@ -41,12 +41,9 @@ impl MainMenuStartMatchButton {
             if pregame.bind_mut().start_game()
                 && let Some(mut audio) = audio
             {
-                audio.call_deferred(
-                    "play_sound",
-                    &[
-                        crate::sound_utils::SoundEffect::UIAccept.to_variant(),
-                        self.base().get_position().to_variant(),
-                    ],
+                audio.bind_mut().play_sound(
+                    crate::sound_utils::SoundEffect::UIAccept,
+                    self.base().get_global_position(),
                 );
                 //tree.change_scene_to_file("res://Scenes/victory_screen.tscn"); //debug
                 tree.change_scene_to_file("res://Scenes/main.tscn");

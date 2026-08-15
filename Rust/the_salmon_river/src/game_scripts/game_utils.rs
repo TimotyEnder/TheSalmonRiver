@@ -60,3 +60,9 @@ pub enum ThrowableSpawnDirection {
     Left,
     Right,
 }
+pub fn vec3_to_vec2(input: Vector3) -> Vector2 {
+    Vector2 {
+        x: input.x,
+        y: input.y,
+    }
+}

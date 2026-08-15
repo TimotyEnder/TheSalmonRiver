@@ -42,7 +42,7 @@ impl IButton for KeyMappingButton {
         {
             let key_code = key_event.get_keycode();
 
-            self.save_key(key_code);
+            self.save_key(key_code, false);
         }
     }
 }
@@ -51,7 +51,7 @@ impl IButton for KeyMappingButton {
 impl KeyMappingButton {
     #[signal]
     pub fn on_key_changed();
-    pub fn save_key(&mut self, key_code: Key) {
+    pub fn save_key(&mut self, key_code: Key, from_load: bool) {
         let audio_manager = self
             .base()
             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
@@ -60,13 +60,15 @@ impl KeyMappingButton {
         };
         if key_code != Key::ESCAPE {
             self.key_saved = Some(key_code);
+            if !from_load {
+                audio
+                    .bind_mut()
+                    .play_sound(SoundEffect::UIDecrement, self.base().get_global_position());
+            }
+        } else if !from_load {
             audio
                 .bind_mut()
-                .play_sound(SoundEffect::UIDecrement, self.base().get_position());
-        } else {
-            audio
-                .bind_mut()
-                .play_sound(SoundEffect::UICancel, self.base().get_position());
+                .play_sound(SoundEffect::UICancel, self.base().get_global_position());
         }
         self.is_listening = false;
         self.set_label_to_keycode();
@@ -86,7 +88,7 @@ impl KeyMappingButton {
         if let Some(mut audio) = audio {
             audio
                 .bind_mut()
-                .play_sound(SoundEffect::UIIncrement, self.base().get_position());
+                .play_sound(SoundEffect::UIIncrement, self.base().get_global_position());
         }
         self.is_listening = true;
         self.base_mut().set_text("PRESS");

@@ -43,4 +43,7 @@ impl Game {
     pub fn get_round_time(&self) -> u32 {
         self.round_time_in_sec as u32
     }
+    pub fn get_rounds_to_win(&self) -> u32 {
+        self.rounds_to_win as u32
+    }
 }

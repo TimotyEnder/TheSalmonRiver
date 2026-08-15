@@ -49,7 +49,9 @@ impl VictoryScreenManager {
         if let Some(mut gm) = gm {
             let player_count = gm.bind_mut().get_player_count();
             let match_time = gm.bind().get_round_timer_secs();
-            gm.bind_mut().create_game(player_count as u8, 3, match_time);
+            let best_of = gm.bind().get_rounds_to_win();
+            gm.bind_mut()
+                .create_game(player_count as u8, best_of, match_time);
             self.base()
                 .get_tree()
                 .change_scene_to_file("res://Scenes/main.tscn");

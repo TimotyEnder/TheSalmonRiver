@@ -19,6 +19,8 @@ pub struct PregamePanel {
     player_num_counter_label: Option<Gd<LabelCounter>>,
     #[export]
     match_time_counter_label: Option<Gd<LabelCounter>>,
+    #[export]
+    rounds_to_win_counter_label: Option<Gd<LabelCounter>>,
 
     current_amount_of_player_controls: usize,
 }
@@ -33,6 +35,7 @@ impl IPanel for PregamePanel {
             current_amount_of_player_controls: 0,
             player_num_counter_label: None,
             match_time_counter_label: None,
+            rounds_to_win_counter_label: None,
         }
     }
     fn ready(&mut self) {}
@@ -79,11 +82,12 @@ impl PregamePanel {
             .all(|f| f.bind().all_controls_assigned())
             && let Some(ref mut match_time) = self.match_time_counter_label
             && let Some(ref mut player_num) = self.player_num_counter_label
+            && let Some(ref mut rounds) = self.rounds_to_win_counter_label
             && let Some(mut gm) = gm
         {
             gm.bind_mut().create_game(
                 player_num.bind().get_value() as u8,
-                3,
+                rounds.bind().get_value() as u32,
                 match_time.bind().get_value() as u32,
             );
             return true;

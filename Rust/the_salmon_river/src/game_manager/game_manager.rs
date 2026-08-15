@@ -92,6 +92,13 @@ impl GameManager {
         return 0;
     }
     #[func]
+    pub fn get_rounds_to_win(&self) -> u32 {
+        if let Some(ref game) = self.current_game {
+            return game.get_rounds_to_win() as u32;
+        }
+        return 0;
+    }
+    #[func]
     pub fn request_player_controls(&mut self, player_num: u8) -> Gd<PlayerControlScheme> {
         while self.control_schemes.len() < player_num as usize {
             self.control_schemes

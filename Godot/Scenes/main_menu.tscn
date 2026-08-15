@@ -434,10 +434,11 @@ theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 100
 text = "QUIT"
 
-[node name="PlayerControlsPanel" type="PregamePanel" parent="CanvasLayer" unique_id=979058209 node_paths=PackedStringArray("player_controls_panel_grid", "player_num_counter_label", "match_time_counter_label")]
+[node name="PlayerControlsPanel" type="PregamePanel" parent="CanvasLayer" unique_id=979058209 node_paths=PackedStringArray("player_controls_panel_grid", "player_num_counter_label", "match_time_counter_label", "rounds_to_win_counter_label")]
 player_controls_panel_grid = NodePath("PlayerControlsPanel")
 player_num_counter_label = NodePath("MatchSettingsPanel/LabelCounterNumPlayers")
 match_time_counter_label = NodePath("MatchSettingsPanel/LabelCounterMatchLength")
+rounds_to_win_counter_label = NodePath("MatchSettingsPanel/LabelCounterRoundsToWin")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -480,7 +481,23 @@ offset_bottom = 131.0
 grow_horizontal = 2
 theme_override_fonts/normal_font = ExtResource("5_n45e2")
 theme_override_font_sizes/normal_font_size = 49
-text = "MATCH TIME"
+text = "MATCH TIME:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=856466693]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -2.0
+offset_top = 7.0
+offset_right = 325.5
+offset_bottom = 136.0
+grow_horizontal = 2
+theme_override_fonts/normal_font = ExtResource("5_n45e2")
+theme_override_font_sizes/normal_font_size = 49
+text = "ROUNDS TO WIN:"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -558,6 +575,50 @@ text = "+"
 alignment = 2
 
 [node name="DecButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchLength" unique_id=332983417]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 33.0
+offset_right = 51.0
+offset_bottom = 102.0
+theme_override_fonts/font = ExtResource("5_n45e2")
+theme_override_font_sizes/font_size = 60
+text = "-
+"
+alignment = 2
+
+[node name="LabelCounterRoundsToWin" type="LabelCounter" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=172175754]
+possible_values = PackedFloat32Array(3, 5, 10)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.56600004
+anchor_right = 0.56600004
+offset_left = 154.76392
+offset_right = 349.76392
+offset_bottom = 134.0
+
+[node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterRoundsToWin" unique_id=1452310554]
+layout_mode = 0
+offset_top = 1.0
+offset_right = 160.0
+offset_bottom = 134.0
+theme_override_fonts/normal_font = ExtResource("5_n45e2")
+theme_override_font_sizes/normal_font_size = 60
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IncButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterRoundsToWin" unique_id=272359203]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 34.0
+offset_right = 141.0
+offset_bottom = 103.0
+theme_override_fonts/font = ExtResource("5_n45e2")
+theme_override_font_sizes/font_size = 60
+text = "+"
+alignment = 2
+
+[node name="DecButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterRoundsToWin" unique_id=1912366453]
 layout_mode = 0
 offset_left = 15.0
 offset_top = 33.0

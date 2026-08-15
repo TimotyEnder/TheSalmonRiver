@@ -48,7 +48,9 @@ impl KeyMappingButton {
     #[signal]
     pub fn on_key_changed();
     pub fn save_key(&mut self, key_code: Key) {
-        self.key_saved = Some(key_code);
+        if key_code != Key::ESCAPE {
+            self.key_saved = Some(key_code);
+        }
         self.is_listening = false;
         self.set_label_to_keycode();
     }

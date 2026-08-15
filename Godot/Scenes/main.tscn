@@ -20,7 +20,7 @@ albedo_color = Color(0.03529412, 0.4862745, 0.7921569, 1)
 size = Vector3(2.0368652, 0.98132324, 2.41333)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rai8w"]
-size = Vector3(1, 4.526306, 3.1507492)
+size = Vector3(1, 19.77166, 3.1507492)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
 size = Vector3(6.6301575, 1.168457, 3.1865845)
@@ -604,14 +604,14 @@ states/start_anim/node = SubResource("AnimationNodeAnimation_344ge")
 states/start_anim/position = Vector2(403, 145)
 transitions = ["countdown", "go", SubResource("AnimationNodeStateMachineTransition_k12tt"), "Start", "start_anim", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "start_anim", "countdown", SubResource("AnimationNodeStateMachineTransition_b3802"), "go", "exit_anim", SubResource("AnimationNodeStateMachineTransition_h1bgf")]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kry3j"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_21xkr"]
 resource_local_to_scene = true
 transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 shading_mode = 0
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_21xkr"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_6bp64"]
 size = Vector2(0.7, 0.5)
 orientation = 2
 
@@ -644,11 +644,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.018920898, -0.009338379, -0
 shape = SubResource("BoxShape3D_s6dll")
 
 [node name="RightWall" type="CollisionShape3D" parent="Environment/River" unique_id=1695567295]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.136755, 3.3724613, -0.40993524)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.136755, 7.585123, -0.40993524)
 shape = SubResource("BoxShape3D_rai8w")
 
 [node name="LeftWall" type="CollisionShape3D" parent="Environment/River" unique_id=1798810544]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.146003, 3.4253054, -0.3481499)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.146003, 6.8353205, -0.3481499)
 shape = SubResource("BoxShape3D_rai8w")
 
 [node name="LeftBank" type="StaticBody3D" parent="Environment" unique_id=722134106]
@@ -729,8 +729,8 @@ parameters/conditions/count = false
 
 [node name="RoundLabel" type="MeshInstance3D" parent="RoundManager" unique_id=1855228584]
 transform = Transform3D(-7.17814e-07, 0, 10.826355, 0, 16.421669, 0, -16.421669, 0, -4.7323502e-07, 0, 4.8183417, 0)
-material_override = SubResource("StandardMaterial3D_kry3j")
-mesh = SubResource("PlaneMesh_21xkr")
+material_override = SubResource("StandardMaterial3D_21xkr")
+mesh = SubResource("PlaneMesh_6bp64")
 script = ExtResource("6_21xkr")
 text = "ROUND 0!
 0000

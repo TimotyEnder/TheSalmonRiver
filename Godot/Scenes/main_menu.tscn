@@ -284,15 +284,8 @@ states/up_point/node = SubResource("AnimationNodeAnimation_6bp64")
 states/up_point/position = Vector2(629, 79)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_344ge"), "idle", "up_point", SubResource("AnimationNodeStateMachineTransition_ynf5e"), "idle", "left_point", SubResource("AnimationNodeStateMachineTransition_hptm8"), "idle", "right_point", SubResource("AnimationNodeStateMachineTransition_d1ilt"), "up_point", "idle", SubResource("AnimationNodeStateMachineTransition_6iyac"), "right_point", "idle", SubResource("AnimationNodeStateMachineTransition_fdnlq"), "left_point", "idle", SubResource("AnimationNodeStateMachineTransition_jkdf5")]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s6dll"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ba2sc"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aw78q"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sn4fo"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k62eu"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c8p17"]
+bg_color = Color(0.18359044, 0.18359047, 0.18359032, 1)
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_48xlc"]
 
@@ -444,8 +437,7 @@ text = "QUIT"
 [node name="PlayerControlsPanel" type="PregamePanel" parent="CanvasLayer" unique_id=979058209 node_paths=PackedStringArray("player_controls_panel_grid", "player_num_counter_label", "match_time_counter_label")]
 player_controls_panel_grid = NodePath("PlayerControlsPanel")
 player_num_counter_label = NodePath("MatchSettingsPanel/LabelCounterNumPlayers")
-match_time_counter_label = NodePath("MatchSettingsPanel/LabelCounterMatchTime")
-visible = false
+match_time_counter_label = NodePath("MatchSettingsPanel/LabelCounterMatchLength")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -455,6 +447,7 @@ offset_right = -77.0
 offset_bottom = -44.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_c8p17")
 
 [node name="MatchSettingsPanel" type="Panel" parent="CanvasLayer/PlayerControlsPanel" unique_id=1947177051]
 layout_mode = 1
@@ -465,187 +458,116 @@ offset_bottom = 0.07499695
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=246270155]
 layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 3.0
-offset_top = 5.0
-offset_right = -742.0
-offset_bottom = -3.0
+offset_left = -1.0
+offset_top = 1.0
+offset_right = 294.0
+offset_bottom = 138.0
 theme_override_fonts/normal_font = ExtResource("5_n45e2")
 theme_override_font_sizes/normal_font_size = 49
 text = "# OF PLAYERS:"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LabelCounterNumPlayers" type="LabelCounter" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=91336135]
-possible_values = PackedFloat32Array(2, 3, 4)
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 239.0
-offset_right = -575.0
-offset_bottom = -2.0
-
-[node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers" unique_id=1102249830]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 50.0
-offset_top = 9.0
-offset_right = -56.0
-offset_bottom = -6.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_fonts/normal_font = ExtResource("5_n45e2")
-theme_override_font_sizes/normal_font_size = 50
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="DecButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers" unique_id=309506275]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = 11.0
-offset_right = -99.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.875, 0.875, 0.875, 1)
-theme_override_colors/font_focus_color = Color(0.6872148, 0.68721485, 0.68721586, 1)
-theme_override_colors/font_pressed_color = Color(0.45840502, 0.45840508, 0.45840502, 1)
-theme_override_colors/font_hover_color = Color(0.6296745, 0.6296747, 0.6296756, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.41215247, 0.41215247, 0.41215247, 1)
-theme_override_fonts/font = ExtResource("5_n45e2")
-theme_override_font_sizes/font_size = 39
-theme_override_styles/normal = SubResource("StyleBoxEmpty_s6dll")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_ba2sc")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_aw78q")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_sn4fo")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_k62eu")
-text = "-"
-
-[node name="IncButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers" unique_id=51799318]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 103.0
-offset_top = 10.0
-offset_right = -47.0
-offset_bottom = -9.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.875, 0.875, 0.875, 1)
-theme_override_colors/font_focus_color = Color(0.6872148, 0.68721485, 0.68721586, 1)
-theme_override_colors/font_pressed_color = Color(0.45840502, 0.45840508, 0.45840502, 1)
-theme_override_colors/font_hover_color = Color(0.6296745, 0.6296747, 0.6296756, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.41215247, 0.41215247, 0.41215247, 1)
-theme_override_fonts/font = ExtResource("5_n45e2")
-theme_override_font_sizes/font_size = 39
-theme_override_styles/normal = SubResource("StyleBoxEmpty_s6dll")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_ba2sc")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_aw78q")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_sn4fo")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_k62eu")
-text = "+"
-
 [node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=1678547104]
 layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 411.0
-offset_top = 5.0
-offset_right = -334.0
-offset_bottom = -3.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -444.0
+offset_top = 2.0
+offset_right = -116.5
+offset_bottom = 131.0
+grow_horizontal = 2
 theme_override_fonts/normal_font = ExtResource("5_n45e2")
 theme_override_font_sizes/normal_font_size = 49
 text = "MATCH TIME"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LabelCounterMatchTime" type="LabelCounter" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=1725057183]
-possible_values = PackedFloat32Array(60, 99)
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 633.0
-offset_right = -181.0
-offset_bottom = -2.0
+[node name="LabelCounterNumPlayers" type="LabelCounter" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=10791052]
+possible_values = PackedFloat32Array(2, 3, 4)
+layout_mode = 0
+offset_left = 268.0
+offset_right = 463.0
+offset_bottom = 134.0
 
-[node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchTime" unique_id=661006712]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 58.0
-offset_top = 9.0
-offset_right = -48.0
-offset_bottom = -6.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers" unique_id=669725494]
+layout_mode = 0
+offset_top = 1.0
+offset_right = 160.0
+offset_bottom = 134.0
 theme_override_fonts/normal_font = ExtResource("5_n45e2")
-theme_override_font_sizes/normal_font_size = 50
-text = "0"
+theme_override_font_sizes/normal_font_size = 60
+text = "00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DecButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchTime" unique_id=1202334642]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 11.0
-offset_right = -104.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.875, 0.875, 0.875, 1)
-theme_override_colors/font_focus_color = Color(0.6872148, 0.68721485, 0.68721586, 1)
-theme_override_colors/font_pressed_color = Color(0.45840502, 0.45840508, 0.45840502, 1)
-theme_override_colors/font_hover_color = Color(0.6296745, 0.6296747, 0.6296756, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.41215247, 0.41215247, 0.41215247, 1)
+[node name="IncButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers" unique_id=1342944254]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 34.0
+offset_right = 141.0
+offset_bottom = 103.0
 theme_override_fonts/font = ExtResource("5_n45e2")
-theme_override_font_sizes/font_size = 39
-theme_override_styles/normal = SubResource("StyleBoxEmpty_s6dll")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_ba2sc")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_aw78q")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_sn4fo")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_k62eu")
-text = "-"
-
-[node name="IncButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchTime" unique_id=485457458]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 107.0
-offset_top = 10.0
-offset_right = -22.0
-offset_bottom = -9.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.875, 0.875, 0.875, 1)
-theme_override_colors/font_focus_color = Color(0.6872148, 0.68721485, 0.68721586, 1)
-theme_override_colors/font_pressed_color = Color(0.45840502, 0.45840508, 0.45840502, 1)
-theme_override_colors/font_hover_color = Color(0.6296745, 0.6296747, 0.6296756, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.41215247, 0.41215247, 0.41215247, 1)
-theme_override_fonts/font = ExtResource("5_n45e2")
-theme_override_font_sizes/font_size = 39
-theme_override_styles/normal = SubResource("StyleBoxEmpty_s6dll")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_ba2sc")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_aw78q")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_sn4fo")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_k62eu")
+theme_override_font_sizes/font_size = 60
 text = "+"
+alignment = 2
+
+[node name="DecButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers" unique_id=1618439962]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 33.0
+offset_right = 51.0
+offset_bottom = 102.0
+theme_override_fonts/font = ExtResource("5_n45e2")
+theme_override_font_sizes/font_size = 60
+text = "-
+"
+alignment = 2
+
+[node name="LabelCounterMatchLength" type="LabelCounter" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=1472002184]
+possible_values = PackedFloat32Array(60, 99)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.56600004
+anchor_right = 0.56600004
+offset_left = -293.23608
+offset_right = -98.236084
+offset_bottom = 134.0
+
+[node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchLength" unique_id=2009862976]
+layout_mode = 0
+offset_top = 1.0
+offset_right = 160.0
+offset_bottom = 134.0
+theme_override_fonts/normal_font = ExtResource("5_n45e2")
+theme_override_font_sizes/normal_font_size = 60
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IncButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchLength" unique_id=959538219]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 34.0
+offset_right = 141.0
+offset_bottom = 103.0
+theme_override_fonts/font = ExtResource("5_n45e2")
+theme_override_font_sizes/font_size = 60
+text = "+"
+alignment = 2
+
+[node name="DecButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchLength" unique_id=332983417]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 33.0
+offset_right = 51.0
+offset_bottom = 102.0
+theme_override_fonts/font = ExtResource("5_n45e2")
+theme_override_font_sizes/font_size = 60
+text = "-
+"
+alignment = 2
 
 [node name="CloseButton" type="PanelEnablingButton" parent="CanvasLayer/PlayerControlsPanel" unique_id=2135366461 node_paths=PackedStringArray("panel_to_enable")]
 panel_to_enable = NodePath("..")
@@ -654,8 +576,8 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 0.142
-offset_left = 902.0
-offset_bottom = -4.810005
+offset_left = 1579.0
+offset_bottom = -4.810013
 theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 65
 text = "X"
@@ -668,10 +590,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -489.0
-offset_top = -202.5
-offset_right = 489.0
-offset_bottom = 275.5
+offset_left = -873.0
+offset_top = -352.5
+offset_right = 870.0
+offset_bottom = 329.5
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
@@ -679,11 +601,16 @@ alignment = 1
 [node name="PlayButton" type="MainMenuStartMatchButton" parent="CanvasLayer/PlayerControlsPanel" unique_id=1351313102 node_paths=PackedStringArray("pregame_panel")]
 pregame_panel = NodePath("..")
 material = SubResource("CanvasItemMaterial_48xlc")
-layout_mode = 0
-offset_left = 351.0
-offset_top = 467.0
-offset_right = 618.0
-offset_bottom = 556.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 734.0
+offset_top = 829.0
+offset_right = -745.0
+offset_bottom = -69.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = SubResource("Theme_jjvhh")
 theme_override_font_sizes/font_size = 80
 action_mode = 0

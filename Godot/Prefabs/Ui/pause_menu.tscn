@@ -2,6 +2,9 @@
 
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="1_wql2f"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n45e2"]
+bg_color = Color(0.2159017, 0.21590173, 0.21590161, 1)
+
 [node name="PauseMenuCanvas" type="CanvasLayer" unique_id=171649780]
 
 [node name="PauseMenuPanel" type="PauseMenuPanel" parent="." unique_id=1933688464]
@@ -35,6 +38,7 @@ custom_minimum_size = Vector2(355.97, 78.385)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_wql2f")
 theme_override_font_sizes/font_size = 70
+theme_override_styles/normal = SubResource("StyleBoxFlat_n45e2")
 text = "RESUME"
 icon_alignment = 1
 
@@ -43,6 +47,7 @@ custom_minimum_size = Vector2(355.97, 78.385)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_wql2f")
 theme_override_font_sizes/font_size = 70
+theme_override_styles/normal = SubResource("StyleBoxFlat_n45e2")
 text = "SETTINGS"
 icon_alignment = 1
 
@@ -52,6 +57,7 @@ custom_minimum_size = Vector2(355.97, 78.385)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_wql2f")
 theme_override_font_sizes/font_size = 70
+theme_override_styles/normal = SubResource("StyleBoxFlat_n45e2")
 text = "MAIN MENU"
 icon_alignment = 1
 
@@ -60,5 +66,6 @@ custom_minimum_size = Vector2(355.97, 78.385)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_wql2f")
 theme_override_font_sizes/font_size = 70
+theme_override_styles/normal = SubResource("StyleBoxFlat_n45e2")
 text = "QUIT"
 icon_alignment = 1

@@ -1,7 +1,7 @@
 use godot::{classes::INode3D, prelude::*};
 
 use crate::{
-    game_manager::game_manager::GameManager,
+    game_managers::game_manager::GameManager,
     game_scripts::voting_pressure_plate::VotingPressurePlate,
 };
 
@@ -45,7 +45,7 @@ impl VictoryScreenManager {
     fn rematch(&mut self) {
         let gm = self
             .base()
-            .try_get_node_as::<GameManager>("/root/GameManager");
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if let Some(mut gm) = gm {
             let player_count = gm.bind_mut().get_player_count();
             let match_time = gm.bind().get_round_timer_secs();

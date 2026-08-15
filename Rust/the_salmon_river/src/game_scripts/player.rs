@@ -6,7 +6,7 @@ use godot::global::Key;
 use godot::prelude::*;
 use godot::signal::ConnectHandle;
 
-use crate::game_manager::player_control_scheme::PlayerControlScheme;
+use crate::game_managers::player_control_scheme::PlayerControlScheme;
 use crate::game_scripts::duck_meter_manager::DuckMeterManager;
 use crate::game_scripts::game_utils::{
     Direction, complementary_color, player_color_based_on_number,

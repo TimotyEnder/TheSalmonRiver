@@ -2,9 +2,9 @@ use godot::classes::{INode, Node};
 use godot::global::Key;
 use godot::prelude::*;
 
-use crate::game_manager::game::Game;
-use crate::game_manager::player_control_scheme::PlayerControlScheme;
-use crate::game_manager::save_manager::SaveManager;
+use crate::game_managers::game::Game;
+use crate::game_managers::player_control_scheme::PlayerControlScheme;
+use crate::game_managers::save_manager::SaveManager;
 
 #[derive(GodotClass)]
 #[class(base=Node)]

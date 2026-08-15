@@ -4,7 +4,10 @@ use godot::{
     prelude::*,
 };
 
-use crate::ui::player_controls_panel::PlayerControlsPanel;
+use crate::{
+    game_managers::audio_manager::AudioManager, sound_utils::SoundEffect,
+    ui::player_controls_panel::PlayerControlsPanel,
+};
 
 #[derive(GodotClass)]
 #[class(base=Button)]
@@ -38,6 +41,7 @@ impl IButton for KeyMappingButton {
             && self.is_listening
         {
             let key_code = key_event.get_keycode();
+
             self.save_key(key_code);
         }
     }
@@ -48,8 +52,21 @@ impl KeyMappingButton {
     #[signal]
     pub fn on_key_changed();
     pub fn save_key(&mut self, key_code: Key) {
+        let audio_manager = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        let Some(mut audio) = audio_manager else {
+            return;
+        };
         if key_code != Key::ESCAPE {
             self.key_saved = Some(key_code);
+            audio
+                .bind_mut()
+                .play_sound(SoundEffect::UIDecrement, self.base().get_position());
+        } else {
+            audio
+                .bind_mut()
+                .play_sound(SoundEffect::UICancel, self.base().get_position());
         }
         self.is_listening = false;
         self.set_label_to_keycode();
@@ -63,6 +80,14 @@ impl KeyMappingButton {
 
     fn on_click(&mut self) {
         let id = self.base().instance_id();
+        let audio = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        if let Some(mut audio) = audio {
+            audio
+                .bind_mut()
+                .play_sound(SoundEffect::UIIncrement, self.base().get_position());
+        }
         self.is_listening = true;
         self.base_mut().set_text("PRESS");
         if let Some(ref mut parent) = self.parent_panel {

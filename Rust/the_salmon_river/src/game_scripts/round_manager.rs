@@ -5,7 +5,7 @@ use godot::{
     prelude::*,
 };
 
-use crate::game_manager::game_manager::GameManager;
+use crate::game_managers::game_manager::GameManager;
 use crate::game_scripts::game_utils::player_color_based_on_number;
 
 #[derive(GodotClass)]
@@ -49,7 +49,7 @@ impl INode3D for RoundManager {
             self.starting_seq_started = true;
             let mut gm = self
                 .base()
-                .try_get_node_as::<GameManager>("/root/GameManager");
+                .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
             if let Some(ref mut label) = self.output_text {
                 label.set_visible(true);
                 if let Some(ref mut gm) = gm {
@@ -72,7 +72,7 @@ impl INode3D for RoundManager {
         }
         let gm = self
             .base()
-            .try_get_node_as::<GameManager>("/root/GameManager");
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         let time = Time::singleton();
         if let Some(ref mut label) = self.output_text {
             if self.run_round_timer {
@@ -176,7 +176,7 @@ impl RoundManager {
     fn ready_from_gamemanager(&mut self) {
         let gm = self
             .base()
-            .try_get_node_as::<GameManager>("/root/GameManager");
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if let Some(mut gm) = gm {
             self.players_left = gm.bind_mut().get_player_count();
             (1..=self.players_left as u8).for_each(|f| {
@@ -220,7 +220,7 @@ impl RoundManager {
     fn make_tie(&mut self) {
         let gm = self
             .base()
-            .try_get_node_as::<GameManager>("/root/GameManager");
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if let Some(mut gm) = gm
             && let Some(ref mut label) = self.output_text
         {
@@ -241,7 +241,7 @@ impl RoundManager {
     fn make_player_win(&mut self, winner: u8) {
         let gm = self
             .base()
-            .try_get_node_as::<GameManager>("/root/GameManager");
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if let Some(mut gm) = gm
             && let Some(ref mut label) = self.output_text
         {
@@ -273,7 +273,7 @@ impl RoundManager {
         let mut tree = self.base().get_tree();
         let gm = self
             .base()
-            .try_get_node_as::<GameManager>("/root/GameManager");
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if let Some(gm) = gm {
             if gm.bind().is_game_finished() {
                 tree.change_scene_to_file("res://Scenes/victory_screen.tscn");

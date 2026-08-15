@@ -3,6 +3,8 @@ use godot::{
     prelude::*,
 };
 
+use crate::{game_managers::audio_manager::AudioManager, sound_utils::SoundEffect};
+
 #[derive(GodotClass)]
 #[class(base=Button)]
 pub struct ApplicationExitButton {
@@ -26,6 +28,14 @@ impl IButton for ApplicationExitButton {
 #[godot_api]
 impl ApplicationExitButton {
     fn application_exit(&mut self) {
+        let audio_manager = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        if let Some(mut audio) = audio_manager {
+            audio
+                .bind_mut()
+                .play_sound(SoundEffect::UICancel, self.base().get_position());
+        }
         self.base_mut().get_tree().quit();
     }
 }

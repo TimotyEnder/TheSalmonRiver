@@ -5,7 +5,7 @@ use godot::{
 };
 
 use crate::{
-    game_manager::{game_manager::GameManager, player_control_scheme::PlayerControlScheme},
+    game_managers::{game_manager::GameManager, player_control_scheme::PlayerControlScheme},
     game_scripts::game_utils::player_color_based_on_number,
     ui::keymapping_button::KeyMappingButton,
 };
@@ -112,7 +112,7 @@ impl PlayerControlsPanel {
         }
         let gm = self
             .base()
-            .try_get_node_as::<GameManager>("/root/GameManager");
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
 
         if let Some(mut gm) = gm {
             self.load_control_scheme(gm.bind_mut().request_player_controls(player_num));
@@ -167,7 +167,7 @@ impl PlayerControlsPanel {
         {
             let gm = self
                 .base()
-                .try_get_node_as::<GameManager>("/root/GameManager");
+                .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
             if let Some(mut gm) = gm {
                 if let Some(player_num) = self.player_num_assigned {
                     gm.bind_mut()

@@ -3,6 +3,8 @@ use godot::{
     prelude::*,
 };
 
+use crate::{game_managers::audio_manager::AudioManager, sound_utils::SoundEffect};
+
 #[derive(GodotClass)]
 #[class(base=Control)]
 pub struct StringLabelSelector {
@@ -52,10 +54,10 @@ impl IControl for StringLabelSelector {
         {
             inc.signals()
                 .button_down()
-                .connect_other(&this, Self::on_inc);
+                .connect_other(&this, Self::on_right);
             dec.signals()
                 .button_down()
-                .connect_other(&this, Self::on_dec);
+                .connect_other(&this, Self::on_left);
         }
     }
 }
@@ -74,21 +76,37 @@ impl StringLabelSelector {
             ));
         }
     }
-    fn on_inc(&mut self) {
-        let len = self.possible_values.len();
-        if len == 0 {
-            return;
+    fn on_right(&mut self) {
+        let audio = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        if let Some(mut audio) = audio {
+            let len = self.possible_values.len();
+            if len == 0 {
+                return;
+            }
+            self.current_selection_pos = (self.current_selection_pos + 1) % len;
+            audio
+                .bind_mut()
+                .play_sound(SoundEffect::UIIncrement, self.base().get_position());
+            self.update_label();
         }
-        self.current_selection_pos = (self.current_selection_pos + 1) % len;
-        self.update_label();
     }
-    fn on_dec(&mut self) {
-        let len = self.possible_values.len();
-        if len == 0 {
-            return;
+    fn on_left(&mut self) {
+        let audio = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        if let Some(mut audio) = audio {
+            let len = self.possible_values.len();
+            if len == 0 {
+                return;
+            }
+            self.current_selection_pos = (self.current_selection_pos + len - 1) % len;
+            audio
+                .bind_mut()
+                .play_sound(SoundEffect::UIDecrement, self.base().get_position());
+            self.update_label();
         }
-        self.current_selection_pos = (self.current_selection_pos + len - 1) % len;
-        self.update_label();
     }
     pub fn get_value(&self) -> GString {
         self.possible_values

@@ -4,7 +4,7 @@ use godot::{
 };
 
 use crate::{
-    game_manager::game_manager::GameManager,
+    game_managers::game_manager::GameManager,
     ui::{label_counter::LabelCounter, player_controls_panel::PlayerControlsPanel},
 };
 
@@ -75,7 +75,7 @@ impl PregamePanel {
     pub fn start_game(&mut self) -> bool {
         let gm = self
             .base()
-            .try_get_node_as::<GameManager>("/root/GameManager");
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if self
             .player_controls_stack
             .iter()

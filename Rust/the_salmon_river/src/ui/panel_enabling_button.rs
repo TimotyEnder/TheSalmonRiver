@@ -3,6 +3,8 @@ use godot::{
     prelude::*,
 };
 
+use crate::{game_managers::audio_manager::AudioManager, sound_utils::SoundEffect};
+
 #[derive(GodotClass)]
 #[class(base=Button)]
 pub struct PanelEnablingButton {
@@ -35,10 +37,19 @@ impl IButton for PanelEnablingButton {
 impl PanelEnablingButton {
     #[func]
     fn on_press(&mut self) {
-        if let Some(ref mut controls_panel) = self.panel_to_enable {
+        let audio_manager = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+
+        let position = self.base().get_position();
+        if let Some(ref mut controls_panel) = self.panel_to_enable
+            && let Some(mut audio) = audio_manager
+        {
             if self.disable_panel {
+                audio.bind_mut().play_sound(SoundEffect::UICancel, position);
                 controls_panel.set_visible(false);
             } else {
+                audio.bind_mut().play_sound(SoundEffect::UIAccept, position);
                 controls_panel.set_visible(true);
             }
         }

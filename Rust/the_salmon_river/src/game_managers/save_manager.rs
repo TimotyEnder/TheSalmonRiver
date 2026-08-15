@@ -3,7 +3,7 @@ use godot::{
     prelude::*,
 };
 
-use crate::game_manager::player_control_scheme::PlayerControlScheme;
+use crate::game_managers::player_control_scheme::PlayerControlScheme;
 
 const SAVE_PATH: &str = "user://control_schemes.json";
 #[derive(GodotClass)]

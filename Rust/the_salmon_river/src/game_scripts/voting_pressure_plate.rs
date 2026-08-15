@@ -4,7 +4,7 @@ use godot::{
 };
 
 use crate::{
-    game_manager::game_manager::GameManager,
+    game_managers::game_manager::GameManager,
     game_scripts::{game_utils::player_color_based_on_number, player::Player},
 };
 
@@ -43,7 +43,7 @@ impl IArea3D for VotingPressurePlate {
         let this = self.to_gd();
         let gm = self
             .base()
-            .try_get_node_as::<GameManager>("/root/GameManager");
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if let Some(mut gm) = gm {
             let player_count = gm.bind_mut().get_player_count();
             self.players_entered = vec![false; player_count as usize];

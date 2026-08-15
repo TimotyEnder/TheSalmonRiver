@@ -1,7 +1,8 @@
 use godot::prelude::*;
 
 use crate::{
-    game_manager::game_manager::GameManager, game_scripts::game_utils::player_color_based_on_number,
+    game_managers::game_manager::GameManager,
+    game_scripts::game_utils::player_color_based_on_number,
 };
 
 #[derive(GodotClass)]
@@ -32,7 +33,7 @@ impl INode3D for LeaderBoard {
             .and_then(|pt| pt.try_cast::<Node3D>().ok());
         let gm = self
             .base()
-            .try_get_node_as::<GameManager>("/root/GameManager");
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if let Some(mut gm) = gm
             && let Some(ref mut points_text) = self.points_text
             && let Some(ref mut winner_text) = self.winner_text

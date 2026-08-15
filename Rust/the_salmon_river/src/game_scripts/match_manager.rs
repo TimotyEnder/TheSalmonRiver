@@ -1,6 +1,6 @@
 use godot::{classes::INode, prelude::*};
 
-use crate::{game_manager::game_manager::GameManager, game_scripts::player::Player};
+use crate::{game_managers::game_manager::GameManager, game_scripts::player::Player};
 
 #[derive(GodotClass)]
 #[class(base=Node)]
@@ -30,7 +30,7 @@ impl INode for MatchManager {
     fn ready(&mut self) {
         let gm = self
             .base()
-            .try_get_node_as::<GameManager>("/root/GameManager");
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if let Some(mut gm) = gm {
             let player_count = gm.bind_mut().get_player_count();
             let player_positions = [

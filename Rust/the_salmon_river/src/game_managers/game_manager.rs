@@ -5,6 +5,7 @@ use godot::prelude::*;
 use crate::game_managers::game::Game;
 use crate::game_managers::player_control_scheme::PlayerControlScheme;
 use crate::game_managers::save_manager::SaveManager;
+use crate::settings_state::SettingsState;
 
 #[derive(GodotClass)]
 #[class(base=Node)]
@@ -12,6 +13,7 @@ pub struct GameManager {
     base: Base<Node>,
     current_game: Option<Game>,
     control_schemes: Vec<Gd<PlayerControlScheme>>,
+    settings_state: Gd<SettingsState>,
     save_manager: Gd<SaveManager>,
 }
 
@@ -23,6 +25,7 @@ impl INode for GameManager {
             current_game: None,
             control_schemes: Vec::new(),
             save_manager: Gd::from_object(SaveManager {}),
+            settings_state: Gd::from_object(SettingsState::default()),
         }
     }
 
@@ -97,6 +100,14 @@ impl GameManager {
             return game.get_rounds_to_win() as u32;
         }
         return 0;
+    }
+    #[func]
+    pub fn request_settings_state(&mut self) -> Gd<SettingsState> {
+        self.settings_state.clone()
+    }
+    #[func]
+    pub fn save_settings_state(&mut self, state: Gd<SettingsState>) {
+        self.settings_state = state;
     }
     #[func]
     pub fn request_player_controls(&mut self, player_num: u8) -> Gd<PlayerControlScheme> {

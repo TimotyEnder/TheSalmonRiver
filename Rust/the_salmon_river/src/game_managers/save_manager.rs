@@ -3,9 +3,12 @@ use godot::{
     prelude::*,
 };
 
-use crate::game_managers::player_control_scheme::PlayerControlScheme;
+use crate::{
+    game_managers::player_control_scheme::PlayerControlScheme, settings_state::SettingsState,
+};
 
-const SAVE_PATH: &str = "user://control_schemes.json";
+const SAVE_PATH_CONTROLLSCHEMES: &str = "user://control_schemes.json";
+const SAVE_PATH_SETTINGS: &str = "user://settings.json";
 #[derive(GodotClass)]
 #[class(base=RefCounted)]
 pub struct SaveManager {}
@@ -24,14 +27,20 @@ impl SaveManager {
         for (i, scheme) in control_schemes.iter().enumerate() {
             all.set(i as u8 + 1, &scheme.bind().to_dict().to_variant());
         }
-        if let Some(mut file) = FileAccess::open(SAVE_PATH, ModeFlags::WRITE) {
+        if let Some(mut file) = FileAccess::open(SAVE_PATH_CONTROLLSCHEMES, ModeFlags::WRITE) {
             file.store_string(&Json::stringify(&all.to_variant()));
         }
-        godot_print!("saved controlschemes to {SAVE_PATH}");
+        godot_print!("saved controlschemes to {SAVE_PATH_CONTROLLSCHEMES}");
+    }
+    pub fn save_settings_state(&mut self, settings_state: Gd<SettingsState>) {
+        if let Some(mut file) = FileAccess::open(SAVE_PATH_SETTINGS, ModeFlags::WRITE) {
+            file.store_string(&Json::stringify(&settings_state.to_variant()));
+        }
+        godot_print!("saved settings to {SAVE_PATH_SETTINGS}");
     }
     pub fn load_control_schemes_from_file(&mut self) -> Vec<Gd<PlayerControlScheme>> {
         let mut to_ret = Vec::new();
-        let Some(file) = FileAccess::open(SAVE_PATH, ModeFlags::READ) else {
+        let Some(file) = FileAccess::open(SAVE_PATH_CONTROLLSCHEMES, ModeFlags::READ) else {
             return to_ret;
         };
         let text = file.get_as_text();
@@ -48,7 +57,18 @@ impl SaveManager {
                 )));
             }
         }
-        godot_print!("controlschemes loaded from {SAVE_PATH}");
+        godot_print!("controlschemes loaded from {SAVE_PATH_CONTROLLSCHEMES}");
         return to_ret;
+    }
+    pub fn load_settings_state(&mut self) -> Gd<SettingsState> {
+        let mut to_ret = Gd::from_object(SettingsState::default());
+        let Some(file) = FileAccess::open(SAVE_PATH_SETTINGS, ModeFlags::READ) else {
+            return to_ret;
+        };
+        let text = file.get_as_text();
+        let all = Json::parse_string(&text)
+            .try_to::<Gd<SettingsState>>()
+            .unwrap_or_default();
+        to_ret
     }
 }

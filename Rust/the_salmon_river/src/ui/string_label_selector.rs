@@ -64,6 +64,15 @@ impl IControl for StringLabelSelector {
 
 #[godot_api]
 impl StringLabelSelector {
+    pub fn load_value(&mut self, value: GString) -> bool {
+        let index_found_opt = self.possible_values.find(&value, None);
+        if let Some(index_found) = index_found_opt {
+            self.current_selection_pos = index_found;
+            self.update_label();
+            return true;
+        }
+        return false;
+    }
     #[signal]
     pub fn value_changed();
     fn update_label(&mut self) {
@@ -90,6 +99,7 @@ impl StringLabelSelector {
                 .bind_mut()
                 .play_sound(SoundEffect::UIIncrement, self.base().get_global_position());
             self.update_label();
+            self.signals().value_changed().emit();
         }
     }
     fn on_left(&mut self) {
@@ -106,6 +116,7 @@ impl StringLabelSelector {
                 .bind_mut()
                 .play_sound(SoundEffect::UIDecrement, self.base().get_global_position());
             self.update_label();
+            self.signals().value_changed().emit();
         }
     }
     pub fn get_value(&self) -> GString {

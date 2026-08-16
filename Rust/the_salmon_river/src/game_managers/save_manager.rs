@@ -22,7 +22,7 @@ impl IRefCounted for SaveManager {
 
 #[godot_api]
 impl SaveManager {
-    pub fn save_control_schemes(&mut self, control_schemes: Vec<Gd<PlayerControlScheme>>) {
+    pub fn save_control_schemes(&self, control_schemes: Vec<Gd<PlayerControlScheme>>) {
         let mut all = Dictionary::<u8, Variant>::new();
         for (i, scheme) in control_schemes.iter().enumerate() {
             all.set(i as u8 + 1, &scheme.bind().to_dict().to_variant());
@@ -34,11 +34,13 @@ impl SaveManager {
     }
     pub fn save_settings_state(&mut self, settings_state: Gd<SettingsState>) {
         if let Some(mut file) = FileAccess::open(SAVE_PATH_SETTINGS, ModeFlags::WRITE) {
-            file.store_string(&Json::stringify(&settings_state.to_variant()));
+            file.store_string(&Json::stringify(
+                &settings_state.bind().to_dict().to_variant(),
+            ));
         }
         godot_print!("saved settings to {SAVE_PATH_SETTINGS}");
     }
-    pub fn load_control_schemes_from_file(&mut self) -> Vec<Gd<PlayerControlScheme>> {
+    pub fn load_control_schemes_from_file(&self) -> Vec<Gd<PlayerControlScheme>> {
         let mut to_ret = Vec::new();
         let Some(file) = FileAccess::open(SAVE_PATH_CONTROLLSCHEMES, ModeFlags::READ) else {
             return to_ret;
@@ -60,15 +62,17 @@ impl SaveManager {
         godot_print!("controlschemes loaded from {SAVE_PATH_CONTROLLSCHEMES}");
         return to_ret;
     }
-    pub fn load_settings_state(&mut self) -> Gd<SettingsState> {
+    pub fn load_settings_state(&self) -> Gd<SettingsState> {
         let mut to_ret = Gd::from_object(SettingsState::default());
         let Some(file) = FileAccess::open(SAVE_PATH_SETTINGS, ModeFlags::READ) else {
             return to_ret;
         };
         let text = file.get_as_text();
         let all = Json::parse_string(&text)
-            .try_to::<Gd<SettingsState>>()
+            .try_to::<Dictionary<Variant, Variant>>()
             .unwrap_or_default();
+        to_ret = Gd::from_object(SettingsState::from_dict(all));
+        godot_print!("settings loaded from {SAVE_PATH_SETTINGS}");
         to_ret
     }
 }

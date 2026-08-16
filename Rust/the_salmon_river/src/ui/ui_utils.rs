@@ -74,3 +74,11 @@ impl FromGodot for Resolution {
 }
 impl Element for Resolution {}
 impl SimpleVar for Resolution {}
+impl Default for Resolution {
+    fn default() -> Self {
+        Self {
+            width: 1920,
+            height: 1080,
+        }
+    }
+}

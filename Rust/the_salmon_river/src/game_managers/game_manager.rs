@@ -35,6 +35,7 @@ impl INode for GameManager {
             .save_manager
             .bind_mut()
             .load_control_schemes_from_file();
+        self.settings_state = self.save_manager.bind().load_settings_state();
     }
 }
 
@@ -108,6 +109,9 @@ impl GameManager {
     #[func]
     pub fn save_settings_state(&mut self, state: Gd<SettingsState>) {
         self.settings_state = state;
+        self.save_manager
+            .bind_mut()
+            .save_settings_state(self.settings_state.clone());
     }
     #[func]
     pub fn request_player_controls(&mut self, player_num: u8) -> Gd<PlayerControlScheme> {

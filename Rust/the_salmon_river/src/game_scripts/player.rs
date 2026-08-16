@@ -352,6 +352,10 @@ impl Player {
         self.scale_healthbar_with_health();
     }
     fn movement(&mut self, delta: f64) {
+        let mut audio = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        let sound_effect_position = vec3_to_vec2(self.base().get_global_position());
         let input = Input::singleton();
         let mut velocity = self.base().get_velocity();
         // Apply gravity
@@ -388,14 +392,20 @@ impl Player {
                 self.facing_right = true;
             }
         }
+
         if input.is_key_pressed(self.jump_key)
             && self.base().is_on_floor()
             && !self.jumped
             && !self.hit_stun
             && !self.dead
             && !self.knock_back
+            && let Some(ref mut audio) = audio
         {
             self.jumped = true;
+            audio.bind_mut().play_sound(
+                crate::sound_utils::SoundEffect::PlayerJump,
+                sound_effect_position,
+            );
             velocity.y = self.jump_force;
         }
         if !input.is_key_pressed(self.jump_key) {
@@ -426,9 +436,14 @@ impl Player {
             && !self.dead
             && !self.knock_back
             && self.duck_meter_manager.can_duck()
+            && let Some(ref mut audio) = audio
         {
             if !self.ducked {
                 self.ducked = true;
+                audio.bind_mut().play_sound_randomized_pitch(
+                    crate::sound_utils::SoundEffect::PlayerDuckQuack,
+                    sound_effect_position,
+                );
                 if let Some(ref mut particles) = self.duck_pafrticles {
                     particles.restart();
                 }
@@ -583,6 +598,15 @@ impl Player {
         {
             let mut bind = this.bind_mut();
             bind.duck_jumping = true;
+            let audio = bind
+                .base()
+                .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+            if let Some(mut audio) = audio {
+                audio.bind_mut().play_sound(
+                    crate::sound_utils::SoundEffect::WingFlapDuck,
+                    vec3_to_vec2(bind.base().get_global_position()),
+                );
+            }
             if let Some(ref mut duck_particles) = bind.duck_pafrticles {
                 duck_particles.restart();
             }
@@ -618,6 +642,15 @@ impl Player {
         let timer;
         {
             let mut bind = this.bind_mut();
+            let audio = bind
+                .base()
+                .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+            if let Some(mut audio) = audio {
+                audio.bind_mut().play_sound(
+                    crate::sound_utils::SoundEffect::PlayerPunchSwoosh1,
+                    vec3_to_vec2(bind.base().get_global_position()),
+                );
+            }
             bind.is_throwing = true;
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
@@ -1134,6 +1167,16 @@ impl Player {
         }
         if !this.is_instance_valid() {
             return;
+        }
+        let audio = this
+            .bind()
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        if let Some(mut audio) = audio {
+            audio.bind_mut().play_sound(
+                crate::sound_utils::SoundEffect::ThrowLandPlayer,
+                vec3_to_vec2(this.bind().base().get_global_position()),
+            );
         }
         if this.bind().can_dmg {
             this.bind_mut().damage(2);

@@ -3,6 +3,8 @@ use godot::{
     prelude::*,
 };
 
+use crate::{game_managers::audio_manager::AudioManager, game_scripts::game_utils::vec3_to_vec2};
+
 #[derive(GodotClass)]
 #[class(base=Button)]
 pub struct SceneChangingButton {
@@ -31,6 +33,15 @@ impl IButton for SceneChangingButton {
 impl SceneChangingButton {
     fn scene_change(&mut self) {
         let scene_name = format!("res://Scenes/{}.tscn", self.scene_name_to_change_to);
+        let audio = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        if let Some(mut audio) = audio {
+            audio.bind_mut().play_sound(
+                crate::sound_utils::SoundEffect::UIAccept,
+                self.base().get_global_position(),
+            );
+        }
         self.base().get_tree().change_scene_to_file(&scene_name);
     }
 }

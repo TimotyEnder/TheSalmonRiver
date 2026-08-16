@@ -14,6 +14,11 @@ pub enum SoundEffect {
     PlayerPunchSwoosh1 = 8,
     PlayerFootStep = 9,
     SplashFootStep = 10,
+    PlayerJump = 11,
+    WingFlapDuck = 12,
+    PlayerDuckQuack = 13,
+    MatchStartSound = 14,
+    ThrowLandPlayer = 15,
 }
 impl SoundEffect {
     pub fn to_sound_effect_path(&self) -> &'static str {
@@ -29,6 +34,11 @@ impl SoundEffect {
             SoundEffect::PlayerPunchSwoosh1 => "res://SoundAssets/swoosh1.ogg",
             SoundEffect::PlayerFootStep => "res://SoundAssets/footstep.ogg",
             SoundEffect::SplashFootStep => "res://SoundAssets/splash_footstep.ogg",
+            SoundEffect::PlayerJump => "res://SoundAssets/jump.ogg",
+            SoundEffect::WingFlapDuck => "res://SoundAssets/wing_flap.ogg",
+            SoundEffect::PlayerDuckQuack => "res://SoundAssets/quack.ogg",
+            SoundEffect::MatchStartSound => "res://SoundAssets/match_start.ogg",
+            SoundEffect::ThrowLandPlayer => "res://SoundAssets/throw_land.ogg",
         }
     }
 }

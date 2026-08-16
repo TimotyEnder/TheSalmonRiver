@@ -42,7 +42,7 @@ impl MainMenuStartMatchButton {
                 && let Some(mut audio) = audio
             {
                 audio.bind_mut().play_sound(
-                    crate::sound_utils::SoundEffect::UIAccept,
+                    crate::sound_utils::SoundEffect::MatchStartSound,
                     self.base().get_global_position(),
                 );
                 //tree.change_scene_to_file("res://Scenes/victory_screen.tscn"); //debug

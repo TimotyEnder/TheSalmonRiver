@@ -3,7 +3,7 @@ use godot::{
     prelude::*,
 };
 
-use crate::{game_managers::audio_manager::AudioManager, game_scripts::game_utils::vec3_to_vec2};
+use crate::game_managers::audio_manager::AudioManager;
 
 #[derive(GodotClass)]
 #[class(base=Button)]

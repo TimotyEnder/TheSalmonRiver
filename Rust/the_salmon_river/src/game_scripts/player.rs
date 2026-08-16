@@ -18,6 +18,7 @@ use crate::game_scripts::throwable::Throwable;
 #[derive(GodotClass)]
 #[class(base=CharacterBody3D)]
 pub struct Player {
+    player_drop_timer_timed_in_hand_num: u8,
     walking_on_water: bool,
     walking_on_rock: bool,
     can_move: bool,
@@ -166,6 +167,7 @@ impl ICharacterBody3D for Player {
             throw_tech_time: false,
             walking_on_rock: false,
             walking_on_water: false,
+            player_drop_timer_timed_in_hand_num: 0,
         }
     }
     fn ready(&mut self) {
@@ -1650,9 +1652,13 @@ impl Player {
                         upp_anim.set("parameters/conditions/knock", &true.to_variant());
                     }
                     let drop_timer = self.base().get_tree().create_timer(2.0);
+                    grabber
+                        .bind_mut()
+                        .set_player_drop_timer_timed_in_hand_num(self.player_num);
                     godot::task::spawn(Self::drop_grabber_after_drop_timer(
                         grabber.clone(),
                         drop_timer.clone(),
+                        self.player_num,
                     ));
                     godot::task::spawn(Self::scale_release_bar_with_drop_timer(
                         drop_timer, grabber,
@@ -1661,9 +1667,16 @@ impl Player {
             }
         }
     }
+    pub fn set_player_drop_timer_timed_in_hand_num(&mut self, value: u8) {
+        self.player_drop_timer_timed_in_hand_num = value;
+    }
+    pub fn get_player_drop_timer_timed_in_hand(&self) -> u8 {
+        self.player_drop_timer_timed_in_hand_num
+    }
     async fn drop_grabber_after_drop_timer(
         mut grabber: Gd<Player>,
         drop_timer: Gd<SceneTreeTimer>,
+        player_num: u8,
     ) {
         Signal::from_object_signal(&drop_timer, "timeout")
             .to_future::<()>()
@@ -1671,7 +1684,7 @@ impl Player {
         if !grabber.is_instance_valid() {
             return;
         }
-        if grabber.bind().player_throwable_in_hand.is_some() {
+        if grabber.bind().get_player_drop_timer_timed_in_hand() == player_num {
             grabber.bind_mut().drop_throwable();
         }
     }

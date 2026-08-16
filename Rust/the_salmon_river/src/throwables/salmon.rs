@@ -1,4 +1,8 @@
-use crate::{game_scripts::player::Player, throwables::throwability::Throwability};
+use crate::{
+    game_scripts::player::Player,
+    sound_utils::SoundEffect,
+    throwables::throwability::Throwability,
+};
 
 pub struct Salmon {}
 impl Throwability for Salmon {
@@ -8,6 +12,10 @@ impl Throwability for Salmon {
 
     fn visual_node_name(&self) -> &'static str {
         "Salmon"
+    }
+
+    fn sound_effect(&self) -> SoundEffect {
+        SoundEffect::FishBreak
     }
 
     fn use_ability(&mut self, player: &mut Player) {

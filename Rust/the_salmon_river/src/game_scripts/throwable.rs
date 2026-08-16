@@ -225,6 +225,15 @@ impl Throwable {
                     }
                 });
             }
+            let audio = self
+                .base()
+                .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+            let sound_pos = vec3_to_vec2(self.base().get_global_position());
+            if let Some(mut audio) = audio {
+                audio
+                    .bind_mut()
+                    .play_sound(throwability.sound_effect(), sound_pos);
+            }
         }
     }
     pub fn does_player_hitstun(&self, player_num: u8) -> bool {

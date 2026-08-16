@@ -1,4 +1,6 @@
-use crate::{game_scripts::player::Player, throwables::throwability::Throwability};
+use crate::{
+    game_scripts::player::Player, sound_utils::SoundEffect, throwables::throwability::Throwability,
+};
 
 pub struct Log {}
 impl Throwability for Log {
@@ -8,6 +10,10 @@ impl Throwability for Log {
 
     fn visual_node_name(&self) -> &'static str {
         "Log"
+    }
+
+    fn sound_effect(&self) -> SoundEffect {
+        SoundEffect::LogBreak
     }
 
     fn use_ability(&mut self, player: &mut Player) {

@@ -1,6 +1,10 @@
 use godot::obj::WithBaseField;
 
-use crate::{game_scripts::player::Player, throwables::throwability::Throwability};
+use crate::{
+    game_scripts::player::Player,
+    sound_utils::SoundEffect,
+    throwables::throwability::Throwability,
+};
 
 pub struct IceChunk {}
 impl Throwability for IceChunk {
@@ -10,6 +14,10 @@ impl Throwability for IceChunk {
 
     fn visual_node_name(&self) -> &'static str {
         "IceChunk"
+    }
+
+    fn sound_effect(&self) -> SoundEffect {
+        SoundEffect::IceChunkBreak
     }
 
     fn use_ability(&mut self, player: &mut Player) {

@@ -26,6 +26,9 @@ pub enum SoundEffect {
     MatchStartJingle = 20,
     MatchWinnerJingle = 21,
     MatchTieJingle = 22,
+    IceChunkBreak = 23,
+    LogBreak = 24,
+    FishBreak = 25,
 }
 impl SoundEffect {
     pub fn to_sound_effect_path(&self) -> &'static str {
@@ -53,6 +56,9 @@ impl SoundEffect {
             SoundEffect::MatchStartJingle => "res://SoundAssets/match_start_jingle.wav",
             SoundEffect::MatchWinnerJingle => "res://SoundAssets/winner_jingle.wav",
             SoundEffect::MatchTieJingle => "res://SoundAssets/tie_jingle.wav",
+            SoundEffect::IceChunkBreak => "res://SoundAssets/ice_break.ogg",
+            SoundEffect::LogBreak => "res://SoundAssets/log_break.ogg",
+            SoundEffect::FishBreak => "res://SoundAssets/fish_break.ogg",
         }
     }
 }

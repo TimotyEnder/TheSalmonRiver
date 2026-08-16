@@ -127,6 +127,19 @@ impl Throwable {
     }
 }
 impl Throwable {
+    pub fn play_ability_sound(&self) {
+        let audio = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        let sound_position = vec3_to_vec2(self.base().get_global_position());
+        if let Some(ref inner) = self.throwable_inner
+            && let Some(mut audio) = audio
+        {
+            audio
+                .bind_mut()
+                .play_sound(inner.sound_effect_on_ability(), sound_position);
+        }
+    }
     pub fn drop_itself(&mut self) {
         let scene_root_opt = self.base().get_tree().get_current_scene();
         if let Some(scene_root) = scene_root_opt {
@@ -233,7 +246,7 @@ impl Throwable {
             if let Some(mut audio) = audio {
                 audio
                     .bind_mut()
-                    .play_sound(throwability.sound_effect(), sound_pos);
+                    .play_sound(throwability.sound_effect_on_break(), sound_pos);
             }
         }
     }
@@ -248,6 +261,7 @@ impl Throwable {
         if let Some(ti) = self.throwable_inner.as_mut() {
             ti.use_ability(player);
         }
+        self.play_ability_sound();
         self.base_mut().queue_free();
     }
 }

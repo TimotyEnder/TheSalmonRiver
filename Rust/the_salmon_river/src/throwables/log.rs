@@ -12,11 +12,15 @@ impl Throwability for Log {
         "Log"
     }
 
-    fn sound_effect(&self) -> SoundEffect {
+    fn sound_effect_on_break(&self) -> SoundEffect {
         SoundEffect::LogBreak
     }
 
     fn use_ability(&mut self, player: &mut Player) {
         player.spawn_log_obsticle();
+    }
+
+    fn sound_effect_on_ability(&self) -> SoundEffect {
+        SoundEffect::LogAbility
     }
 }

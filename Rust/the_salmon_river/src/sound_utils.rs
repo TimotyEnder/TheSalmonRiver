@@ -29,6 +29,9 @@ pub enum SoundEffect {
     IceChunkBreak = 23,
     LogBreak = 24,
     FishBreak = 25,
+    LogAbility = 26,
+    IceChunkAbility = 27,
+    SalmonAbility = 28,
 }
 impl SoundEffect {
     pub fn to_sound_effect_path(&self) -> &'static str {
@@ -59,6 +62,9 @@ impl SoundEffect {
             SoundEffect::IceChunkBreak => "res://SoundAssets/ice_break.ogg",
             SoundEffect::LogBreak => "res://SoundAssets/log_break.ogg",
             SoundEffect::FishBreak => "res://SoundAssets/fish_break.ogg",
+            SoundEffect::SalmonAbility => "res://SoundAssets/fish_use.ogg",
+            SoundEffect::LogAbility => "res://SoundAssets/log_use.ogg",
+            SoundEffect::IceChunkAbility => "res://SoundAssets/ice_chunk_use.ogg",
         }
     }
 }

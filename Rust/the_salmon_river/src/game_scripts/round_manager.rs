@@ -5,8 +5,11 @@ use godot::{
     prelude::*,
 };
 
-use crate::game_managers::game_manager::GameManager;
 use crate::game_scripts::game_utils::player_color_based_on_number;
+use crate::{
+    game_managers::{audio_manager::AudioManager, game_manager::GameManager},
+    game_scripts::game_utils::vec3_to_vec2,
+};
 
 #[derive(GodotClass)]
 #[class(base=Node3D)]
@@ -45,6 +48,9 @@ impl INode3D for RoundManager {
         self.ready_from_gamemanager();
     }
     fn process(&mut self, _delta: f32) {
+        let audio = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
         if !self.starting_seq_started {
             self.starting_seq_started = true;
             let mut gm = self
@@ -52,7 +58,10 @@ impl INode3D for RoundManager {
                 .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
             if let Some(ref mut label) = self.output_text {
                 label.set_visible(true);
-                if let Some(ref mut gm) = gm {
+
+                if let Some(ref mut gm) = gm
+                    && let Some(mut audio) = audio
+                {
                     let round = gm.bind().get_current_round_number_one_based();
                     if round > 0 {
                         let player_count = gm.bind_mut().get_player_count();
@@ -63,6 +72,10 @@ impl INode3D for RoundManager {
                             text.push_str(&format!("[color=#{}]{}[/color] ", color, score));
                         }
                         label.set("text", &text.to_variant());
+                        audio.bind_mut().play_sound(
+                            crate::sound_utils::SoundEffect::MatchStartJingle,
+                            vec3_to_vec2(self.base().get_global_position()),
+                        );
                     }
                 }
             }
@@ -107,6 +120,18 @@ impl RoundManager {
     #[signal]
     pub fn round_timeout();
 
+    #[func]
+    pub fn play_coundown_tick(&mut self) {
+        let audio = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        if let Some(mut audio) = audio {
+            audio.bind_mut().play_sound(
+                crate::sound_utils::SoundEffect::CountdownTick,
+                vec3_to_vec2(self.base().get_global_position()),
+            );
+        }
+    }
     fn ready_label(&mut self) {
         self.output_text = self
             .base()
@@ -218,13 +243,22 @@ impl RoundManager {
         }
     }
     fn make_tie(&mut self) {
+        let audio = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        let sound_pos = self.base().get_global_position();
         let gm = self
             .base()
             .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if let Some(mut gm) = gm
             && let Some(ref mut label) = self.output_text
+            && let Some(mut audio) = audio
         {
             gm.bind_mut().round_tie();
+            audio.bind_mut().play_sound(
+                crate::sound_utils::SoundEffect::MatchTieJingle,
+                vec3_to_vec2(sound_pos),
+            );
             self.run_round_timer = false;
             label.set_visible(true);
             label.set("text", &format!("TIE!").to_variant());
@@ -239,6 +273,10 @@ impl RoundManager {
         }
     }
     fn make_player_win(&mut self, winner: u8) {
+        let audio = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        let sound_pos = self.base().get_global_position();
         let gm = self
             .base()
             .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
@@ -246,6 +284,12 @@ impl RoundManager {
             && let Some(ref mut label) = self.output_text
         {
             gm.bind_mut().player_won_round(winner);
+            if let Some(mut audio) = audio {
+                audio.bind_mut().play_sound(
+                    crate::sound_utils::SoundEffect::MatchWinnerJingle,
+                    vec3_to_vec2(sound_pos),
+                );
+            }
             self.run_round_timer = false;
             label.set_visible(true);
             label.set(

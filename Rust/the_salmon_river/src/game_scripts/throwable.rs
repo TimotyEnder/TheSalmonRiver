@@ -1,5 +1,9 @@
 use crate::{
-    game_scripts::{game_utils::Direction, player::Player},
+    game_managers::audio_manager::AudioManager,
+    game_scripts::{
+        game_utils::{Direction, vec3_to_vec2},
+        player::Player,
+    },
     throwables::throwability::Throwability,
 };
 use godot::{
@@ -78,6 +82,15 @@ impl Throwable {
                             self.base_mut()
                                 .call_deferred("set_position", &[Vector3::ZERO.to_variant()]);
                             self.in_hand = true;
+                        }
+                        let audio = self
+                            .base()
+                            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+                        if let Some(mut audio) = audio {
+                            audio.bind_mut().play_sound(
+                                crate::sound_utils::SoundEffect::ThrowableGrabbed,
+                                vec3_to_vec2(self.base().get_global_position()),
+                            );
                         }
                     }
                 }

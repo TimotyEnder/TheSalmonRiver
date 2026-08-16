@@ -19,6 +19,13 @@ pub enum SoundEffect {
     PlayerDuckQuack = 13,
     MatchStartSound = 14,
     ThrowLandPlayer = 15,
+    PlayerGrab = 16,
+    PlayerGotGrabbed = 17,
+    ThrowableGrabbed = 18,
+    CountdownTick = 19,
+    MatchStartJingle = 20,
+    MatchWinnerJingle = 21,
+    MatchTieJingle = 22,
 }
 impl SoundEffect {
     pub fn to_sound_effect_path(&self) -> &'static str {
@@ -39,6 +46,13 @@ impl SoundEffect {
             SoundEffect::PlayerDuckQuack => "res://SoundAssets/quack.ogg",
             SoundEffect::MatchStartSound => "res://SoundAssets/match_start.ogg",
             SoundEffect::ThrowLandPlayer => "res://SoundAssets/throw_land.ogg",
+            SoundEffect::PlayerGrab => "res://SoundAssets/player_grab.ogg",
+            SoundEffect::PlayerGotGrabbed => "res://SoundAssets/player_got_grabbed.ogg",
+            SoundEffect::ThrowableGrabbed => "res://SoundAssets/throwable_grabbed.ogg",
+            SoundEffect::CountdownTick => "res://SoundAssets/countdown_tick.ogg",
+            SoundEffect::MatchStartJingle => "res://SoundAssets/match_start_jingle.wav",
+            SoundEffect::MatchWinnerJingle => "res://SoundAssets/winner_jingle.wav",
+            SoundEffect::MatchTieJingle => "res://SoundAssets/tie_jingle.wav",
         }
     }
 }

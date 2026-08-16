@@ -201,6 +201,18 @@ impl ICharacterBody3D for Player {
 #[godot_api]
 impl Player {
     #[func]
+    fn play_grab_sound(&mut self) {
+        let audio = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        if let Some(mut audio) = audio {
+            audio.bind_mut().play_sound(
+                crate::sound_utils::SoundEffect::PlayerGrab,
+                vec3_to_vec2(self.base().get_global_position()),
+            );
+        }
+    }
+    #[func]
     fn play_foot_step_sound(&mut self) {
         let audio = self
             .base()
@@ -1612,6 +1624,15 @@ impl Player {
                         self.base_mut()
                             .call_deferred("set_position", &[local_pos.to_variant()]);
                         self.set_grabbed_by_another_player_status(true);
+                    }
+                    let audio = self
+                        .base()
+                        .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+                    if let Some(mut audio) = audio {
+                        audio.bind_mut().play_sound(
+                            crate::sound_utils::SoundEffect::PlayerGotGrabbed,
+                            vec3_to_vec2(self.base().get_global_position()),
+                        );
                     }
                     if let Some(ref mut low_anim) = self.lower_anim_tree {
                         low_anim.set("parameters/conditions/jump", &false.to_variant());

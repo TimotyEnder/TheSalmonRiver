@@ -1959,6 +1959,20 @@ tracks/8/keys = {
 "update": 1,
 "values": [true, true]
 }
+tracks/9/type = "method"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath(".")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0.20000002),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_grab_sound"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_5wxv7"]
 resource_name = "hit"

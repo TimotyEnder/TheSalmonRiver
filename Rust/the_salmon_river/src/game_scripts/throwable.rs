@@ -70,6 +70,7 @@ impl Throwable {
                         let player_script = player.bind();
                         player_script.get_player_num()
                     };
+                    player.bind_mut().set_player_drop_timer_timed_in_hand_num(0);
                     self.thrower_id = Some(player_num);
                     if !self.thrown {
                         let pickup_area_opt = player.find_child("RightHand").and_then(|rh| {

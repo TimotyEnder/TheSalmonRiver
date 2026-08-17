@@ -10,7 +10,7 @@ vertex_color_use_as_albedo = true
 
 [sub_resource type="Gradient" id="Gradient_ac8vi"]
 offsets = PackedFloat32Array(0, 0.5051546, 1)
-colors = PackedColorArray(0.11738215, 0.39706248, 0.88650954, 1, 0.11764706, 0.39607844, 0.8862745, 1, 1, 1, 1, 1)
+colors = PackedColorArray(0.023529412, 0.14509805, 0.9843137, 1, 0.023529412, 0.14509805, 0.9843137, 1, 0.12156863, 0.3372549, 0.99215686, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_w76bn"]
 gradient = SubResource("Gradient_ac8vi")

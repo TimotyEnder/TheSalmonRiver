@@ -30,11 +30,11 @@ constant = Vector2(3, 3)
 texture = ExtResource("1_7js7j")
 
 [sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_famow"]
-constant = Color(0.039674178, 0.35755143, 0.7533998, 1)
+constant = Color(0.022614136, 0.12946627, 0.9826352, 1)
 
 [sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_0bu5e"]
 expanded_output_ports = [0]
-constant = Color(1, 1, 1, 0.39800003)
+constant = Color(0.12292039, 0.33824158, 0.9941042, 1)
 
 [sub_resource type="VisualShaderNodeStep" id="VisualShaderNodeStep_f2nf8"]
 output_port_for_preview = 0
@@ -61,7 +61,7 @@ nodes/fragment/2/position = Vector2(920, 60)
 nodes/fragment/3/node = SubResource("VisualShaderNodeColorConstant_famow")
 nodes/fragment/3/position = Vector2(880, -40)
 nodes/fragment/4/node = SubResource("VisualShaderNodeColorConstant_0bu5e")
-nodes/fragment/4/position = Vector2(900, -300)
+nodes/fragment/4/position = Vector2(820, -300)
 nodes/fragment/5/node = SubResource("VisualShaderNodeStep_f2nf8")
 nodes/fragment/5/position = Vector2(1140, 200)
 nodes/fragment/6/node = SubResource("VisualShaderNodeVectorOp_7js7j")

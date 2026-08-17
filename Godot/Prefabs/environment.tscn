@@ -10,7 +10,7 @@ render_priority = 0
 shader = ExtResource("1_np18x")
 
 [sub_resource type="BoxMesh" id="BoxMesh_rai8w"]
-size = Vector3(1, 1, 1.9257813)
+size = Vector3(1, 1, 2.0637207)
 
 [sub_resource type="BoxMesh" id="BoxMesh_np18x"]
 size = Vector3(1, 0.9824219, 0.3843689)
@@ -36,7 +36,7 @@ collision_layer = 4
 collision_mask = 3
 
 [node name="RiverMesh" type="MeshInstance3D" parent="River" unique_id=704651408]
-transform = Transform3D(2.057666, 0.008978856, -0.00014456687, -0.018413384, 0.9968434, 0.35181484, 0.0015240383, -0.07888383, 4.4458165, 0.0008626476, 0.1468278, -3.1074471)
+transform = Transform3D(2.057666, 0.008978856, -0.00014456687, -0.018413384, 0.9968434, 0.35181484, 0.0015240383, -0.07888383, 4.4458165, 0.00087261834, 0.12256323, -3.4140737)
 material_override = SubResource("ShaderMaterial_hptm8")
 mesh = SubResource("BoxMesh_rai8w")
 

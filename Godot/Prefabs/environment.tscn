@@ -1,0 +1,221 @@
+[gd_scene format=3 uid="uid://cpb3wnp3nrxib"]
+
+[ext_resource type="Shader" uid="uid://1itpqfydojfg" path="res://Shaders/water.tres" id="1_np18x"]
+[ext_resource type="PackedScene" uid="uid://b4u8wkqpnfjns" path="res://VoxelAssets/Environment/GrassRiverBank.gltf" id="2_hl628"]
+[ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="3_8gg2v"]
+[ext_resource type="PackedScene" uid="uid://cs0ld3jk8cnuw" path="res://VoxelAssets/Environment/tree.gltf" id="4_akyan"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hptm8"]
+render_priority = 0
+shader = ExtResource("1_np18x")
+
+[sub_resource type="BoxMesh" id="BoxMesh_rai8w"]
+size = Vector3(1, 1, 1.9257813)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s6dll"]
+size = Vector3(2.0368652, 0.98132324, 2.41333)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rai8w"]
+size = Vector3(1, 19.77166, 3.1507492)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_344ge"]
+size = Vector3(1.8640137, 1.2788086, 2.2324219)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c4elv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ba2sc"]
+render_priority = 0
+shader = ExtResource("1_np18x")
+
+[sub_resource type="BoxMesh" id="BoxMesh_s6dll"]
+size = Vector3(2.0580444, 1.4012451, 1.7560425)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
+size = Vector3(6.6301575, 1.168457, 6.9260597)
+
+[node name="Environment" type="Node3D" unique_id=1750905010]
+
+[node name="River" type="StaticBody3D" parent="." unique_id=1092694855]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.31563914, 0)
+collision_layer = 4
+collision_mask = 3
+
+[node name="RiverMesh" type="MeshInstance3D" parent="River" unique_id=704651408]
+transform = Transform3D(2.057666, 0.008978856, -0.00014456687, -0.018413384, 0.9968434, 0.35181484, 0.0015240383, -0.07888383, 4.4458165, 0.0008626476, 0.1468278, -3.1074471)
+material_override = SubResource("ShaderMaterial_hptm8")
+mesh = SubResource("BoxMesh_rai8w")
+
+[node name="RiverCollider" type="CollisionShape3D" parent="River" unique_id=199291139]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.018920898, -0.009338379, -0.016967773)
+shape = SubResource("BoxShape3D_s6dll")
+
+[node name="RightWall" type="CollisionShape3D" parent="River" unique_id=2002826651]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.136755, 7.585123, -0.40993524)
+shape = SubResource("BoxShape3D_rai8w")
+
+[node name="LeftWall" type="CollisionShape3D" parent="River" unique_id=1084922773]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.146003, 6.8353205, -0.3481499)
+shape = SubResource("BoxShape3D_rai8w")
+
+[node name="RiverWaterSoundArea" type="Area3D" parent="River" unique_id=1131202905]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="River/RiverWaterSoundArea" unique_id=1335383536]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.075317375, 0.1394043, -0.12011719)
+shape = SubResource("BoxShape3D_344ge")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="River" unique_id=1339750146]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.706298e-08, -0.9958844, 0.09063258, 7.923352e-09, 0.09063258, 0.9958844, -0.011566148, 0.20298424, 0.35971418)
+material_override = SubResource("StandardMaterial3D_c4elv")
+material_overlay = SubResource("ShaderMaterial_ba2sc")
+mesh = SubResource("BoxMesh_s6dll")
+
+[node name="LeftBank" type="StaticBody3D" parent="." unique_id=186653510]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.1734822, 0.73130685, 2.5910273)
+collision_mask = 3
+
+[node name="GrassRiverBankMesh" parent="LeftBank" unique_id=20327516 instance=ExtResource("2_hl628")]
+transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -1.6570005, -0.5272394, -5.9604645e-08)
+
+[node name="LeftBankCollider" type="CollisionShape3D" parent="LeftBank" unique_id=1581825779]
+transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.03365323)
+shape = SubResource("BoxShape3D_c4elv")
+debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="LeftBank" unique_id=656144355]
+transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.09201032)
+size = Vector3(7.5808105, 1.6069336, 6.4954834)
+
+[node name="RightBank" type="StaticBody3D" parent="." unique_id=1428263413]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -2.2744017, 0.731, -2.591)
+collision_mask = 3
+
+[node name="GrassRiverBankMesh" parent="RightBank" unique_id=925822037 instance=ExtResource("2_hl628")]
+transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -1.6570005, -0.5272394, -5.9604645e-08)
+
+[node name="LeftBankCollider" type="CollisionShape3D" parent="RightBank" unique_id=2035701986]
+transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.24402e-09, 1, -1.7403331, -0.15133691, -0.013109356)
+shape = SubResource("BoxShape3D_c4elv")
+debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="RightBank" unique_id=1072390461]
+transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440202e-09, 1, -1.8341331, -0.33965254, -0.00015255809)
+size = Vector3(7.5808105, 1.6069336, 6.960449)
+
+[node name="BackgroundImage" type="Sprite3D" parent="." unique_id=1359637799]
+transform = Transform3D(-2.0615369e-08, 0, 0.2, 0, 0.4716246, 0, -0.4716246, 0, -8.742278e-09, -12.021184, 1.2831969, 5.2546267e-07)
+texture = ExtResource("3_8gg2v")
+
+[node name="BackBank" type="StaticBody3D" parent="." unique_id=2134317239]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.308563, 0.48890555, 0.028642654)
+collision_mask = 3
+
+[node name="GrassRiverBankMesh" parent="BackBank" unique_id=141046389 instance=ExtResource("2_hl628")]
+transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -2.976632, -0.5272394, -5.9604638e-08)
+
+[node name="LeftBankCollider" type="CollisionShape3D" parent="BackBank" unique_id=721452294]
+transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.03365323)
+shape = SubResource("BoxShape3D_c4elv")
+debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="BackBank" unique_id=980402]
+transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.09201032)
+size = Vector3(7.5808105, 1.6069336, 6.4954834)
+
+[node name="BackBank2" type="StaticBody3D" parent="." unique_id=648645195]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.308563, 0.48890555, -6.79315)
+collision_mask = 3
+
+[node name="GrassRiverBankMesh" parent="BackBank2" unique_id=7491024 instance=ExtResource("2_hl628")]
+transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -2.976632, -0.5272394, -5.9604638e-08)
+
+[node name="LeftBankCollider" type="CollisionShape3D" parent="BackBank2" unique_id=1891525737]
+transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.03365323)
+shape = SubResource("BoxShape3D_c4elv")
+debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="BackBank2" unique_id=1369686743]
+transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.09201032)
+size = Vector3(7.5808105, 1.6069336, 6.4954834)
+
+[node name="BackBank3" type="StaticBody3D" parent="." unique_id=1070463785]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.308563, 0.48890555, 6.7565117)
+collision_mask = 3
+
+[node name="GrassRiverBankMesh" parent="BackBank3" unique_id=1356473860 instance=ExtResource("2_hl628")]
+transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -2.976632, -0.5272394, -5.9604638e-08)
+
+[node name="LeftBankCollider" type="CollisionShape3D" parent="BackBank3" unique_id=952714300]
+transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.03365323)
+shape = SubResource("BoxShape3D_c4elv")
+debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="BackBank3" unique_id=2107927450]
+transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.09201032)
+size = Vector3(7.5808105, 1.6069336, 6.4954834)
+
+[node name="TreesForeground" type="Node3D" parent="." unique_id=2125719518]
+
+[node name="tree" parent="TreesForeground" unique_id=405094748 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.14503187, -0.007576648, -0.078315735, 0.010324551, 0.16464575, 0.003191257, 0.07800105, -0.007705505, 0.14519455, -5.6300097, 0.56246966, 1.4885092)
+
+[node name="tree2" parent="TreesForeground" unique_id=786542545 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.16435805, -0.014341456, -0.0023983242, 0.014540603, 0.16208199, 0.027258161, -1.3313051e-05, -0.027363466, 0.16271523, -5.2063265, 0.8574538, 3.1817806)
+
+[node name="tree3" parent="TreesForeground" unique_id=2126851931 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.14391772, -0.022908678, 0.07738139, 0.020891594, 0.16339505, 0.0095177125, -0.07795014, 0.0014960791, 0.14541852, -4.8718934, 0.9136697, 4.8374815)
+
+[node name="tree4" parent="TreesForeground" unique_id=1143211575 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.020949634, 0.001341526, 0.16365917, 0.004435214, 0.16492918, -0.0019196856, -0.16360451, 0.0046429173, 0.020904599, -5.236726, 0.8462944, 6.6094294)
+
+[node name="TreesForeground1" type="Node3D" parent="." unique_id=998294309]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+
+[node name="tree" parent="TreesForeground1" unique_id=1161854455 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.14636981, -0.016649107, 0.07432145, 0.010155158, 0.16383801, 0.016702408, -0.07548339, -0.010242328, 0.14636378, -5.438206, 0.57946754, 1.2566074)
+
+[node name="tree2" parent="TreesForeground1" unique_id=691794271 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.16435805, -0.014341456, -0.0023983242, 0.014540603, 0.16208199, 0.027258161, -1.3313051e-05, -0.027363466, 0.16271523, -5.2063265, 0.8574538, 3.1817806)
+
+[node name="tree3" parent="TreesForeground1" unique_id=1048583056 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.14391772, -0.022908678, 0.07738139, 0.020891594, 0.16339505, 0.0095177125, -0.07795014, 0.0014960791, 0.14541852, -4.8718934, 0.9136697, 4.8374815)
+
+[node name="tree4" parent="TreesForeground1" unique_id=91156032 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.020949634, 0.001341526, 0.16365917, 0.004435214, 0.16492918, -0.0019196856, -0.16360451, 0.0046429173, 0.020904599, -5.236726, 0.8462944, 6.6094294)
+
+[node name="BackTrees" type="Node3D" parent="." unique_id=1944794983]
+
+[node name="tree4" parent="BackTrees" unique_id=602609978 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, 8.147066)
+
+[node name="tree5" parent="BackTrees" unique_id=1018181551 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, 6.588315)
+
+[node name="tree6" parent="BackTrees" unique_id=652334546 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, 5.2102003)
+
+[node name="tree7" parent="BackTrees" unique_id=1352434520 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, 3.74477)
+
+[node name="tree8" parent="BackTrees" unique_id=296986576 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, 2.3431091)
+
+[node name="tree9" parent="BackTrees" unique_id=1299247916 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, 0.80261517)
+
+[node name="tree10" parent="BackTrees" unique_id=1322513286 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.163142, 0.92313755, 0.06150806)
+
+[node name="tree15" parent="BackTrees" unique_id=529204881 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, -1.3380442)
+
+[node name="tree11" parent="BackTrees" unique_id=1853784548 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, -2.6230135)
+
+[node name="tree12" parent="BackTrees" unique_id=1153550276 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.9588585, 0.9231378, -4.252138)
+
+[node name="tree13" parent="BackTrees" unique_id=654039616 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, -6.2433834)
+
+[node name="tree14" parent="BackTrees" unique_id=1233103070 instance=ExtResource("4_akyan")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, -7.795829)

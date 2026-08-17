@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bdr8wmogy0l4x" path="res://Shaders/ShaderTexture/water.jpg" id="1_7js7j"]
 
 [sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_7js7j"]
-constant = 2.0
+constant = 0.5
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_qmysv"]
 input_name = "uv"
@@ -24,7 +24,7 @@ op_type = 0
 operator = 2
 
 [sub_resource type="VisualShaderNodeVec2Constant" id="VisualShaderNodeVec2Constant_f2nf8"]
-constant = Vector2(3, 1)
+constant = Vector2(3, 3)
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_qmysv"]
 texture = ExtResource("1_7js7j")

@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://dn54lgufkn8en" path="res://VoxelAssets/Environment/VotingPressurePlate.gltf" id="5_dbb0g"]
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="5_m5bpc"]
 [ext_resource type="PackedScene" uid="uid://ba0h40da8dnny" path="res://Prefabs/Ui/pause_menu.tscn" id="6_m5bpc"]
+[ext_resource type="PackedScene" uid="uid://b4u8wkqpnfjns" path="res://VoxelAssets/Environment/GrassRiverBank.gltf" id="7_hca03"]
+[ext_resource type="PackedScene" uid="uid://cs0ld3jk8cnuw" path="res://VoxelAssets/Environment/tree.gltf" id="8_x64rj"]
 
 [sub_resource type="Environment" id="Environment_vrh3u"]
 background_mode = 3
@@ -16,7 +18,7 @@ size = Vector3(3.973877, 1.5585938, 19.750961)
 [sub_resource type="BoxShape3D" id="BoxShape3D_rai8w"]
 size = Vector3(3.9746094, 8.553101, 1)
 
-[sub_resource type="Image" id="Image_m5bpc"]
+[sub_resource type="Image" id="Image_8vase"]
 data = {
 "data": PackedByteArray("AAAAZjkx////IiA0ZjkxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
 "format": "RGB8",
@@ -27,7 +29,7 @@ data = {
 
 [sub_resource type="ImageTexture" id="ImageTexture_aquyk"]
 resource_name = "0"
-image = SubResource("Image_m5bpc")
+image = SubResource("Image_8vase")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_guokh"]
 resource_name = "Material.1"
@@ -172,31 +174,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ha7rp"]
-resource_local_to_scene = true
-transparency = 2
-alpha_scissor_threshold = 0.5
-alpha_antialiasing_mode = 0
-shading_mode = 0
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_hca03"]
-size = Vector2(10.89, 12.065)
-orientation = 2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x64rj"]
-resource_local_to_scene = true
-transparency = 2
-alpha_scissor_threshold = 0.5
-alpha_antialiasing_mode = 0
-shading_mode = 0
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_8vase"]
-size = Vector2(10.89, 12.065)
-orientation = 2
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
-size = Vector3(2.6799316, 4.077118, 2.4595337)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_12bqr"]
 resource_local_to_scene = true
 transparency = 2
@@ -205,11 +182,8 @@ alpha_antialiasing_mode = 0
 shading_mode = 0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_i2gve"]
-size = Vector2(2.02, 1.235)
+size = Vector2(10.89, 12.065)
 orientation = 2
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ba2sc"]
-size = Vector3(2.6694946, 0.6915283, 2.4515991)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trbyh"]
 resource_local_to_scene = true
@@ -219,8 +193,39 @@ alpha_antialiasing_mode = 0
 shading_mode = 0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_48jos"]
+size = Vector2(10.89, 12.065)
+orientation = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
+size = Vector3(2.6799316, 4.077118, 2.4595337)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5tp7e"]
+resource_local_to_scene = true
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_rdbu8"]
 size = Vector2(2.02, 1.235)
 orientation = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ba2sc"]
+size = Vector3(2.6694946, 0.6915283, 2.4515991)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c2gce"]
+resource_local_to_scene = true
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_5x8ri"]
+size = Vector2(2.02, 1.235)
+orientation = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4msx0"]
+size = Vector3(6.6301575, 1.168457, 6.9260597)
 
 [node name="VictoryScreen" type="Node3D" unique_id=1408743497]
 
@@ -321,8 +326,8 @@ mesh = SubResource("ArrayMesh_mlpag")
 
 [node name="PointsText" type="MeshInstance3D" parent="Environment/Leaderboard" unique_id=714363536]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.10241018, 15.978907, 5.5928335)
-material_override = SubResource("StandardMaterial3D_ha7rp")
-mesh = SubResource("PlaneMesh_hca03")
+material_override = SubResource("StandardMaterial3D_12bqr")
+mesh = SubResource("PlaneMesh_i2gve")
 script = ExtResource("4_dbb0g")
 text = "Player1:0
 Player2:0
@@ -338,8 +343,8 @@ metadata/_custom_type_script = "uid://cofw7sywoopgu"
 
 [node name="WinnerText" type="MeshInstance3D" parent="Environment/Leaderboard" unique_id=206161697]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.102409765, 15.978907, -4.1285863)
-material_override = SubResource("StandardMaterial3D_x64rj")
-mesh = SubResource("PlaneMesh_8vase")
+material_override = SubResource("StandardMaterial3D_trbyh")
+mesh = SubResource("PlaneMesh_48jos")
 script = ExtResource("4_dbb0g")
 text = "PLAYER
 0
@@ -381,8 +386,8 @@ shape = SubResource("BoxShape3D_c4elv")
 
 [node name="SignLabel" type="MeshInstance3D" parent="VotingPressurePlateRematch" unique_id=504992277]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.0739098, 2.5619848, 0.021229267)
-material_override = SubResource("StandardMaterial3D_12bqr")
-mesh = SubResource("PlaneMesh_i2gve")
+material_override = SubResource("StandardMaterial3D_5tp7e")
+mesh = SubResource("PlaneMesh_rdbu8")
 script = ExtResource("4_dbb0g")
 text = "CONDITION 00S
 P1|P2|P3|P4"
@@ -411,8 +416,8 @@ shape = SubResource("BoxShape3D_c4elv")
 
 [node name="SignLabel" type="MeshInstance3D" parent="VotingPressurePlateMainMenu" unique_id=1515225422]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.0739098, 2.5619848, 0.021229267)
-material_override = SubResource("StandardMaterial3D_trbyh")
-mesh = SubResource("PlaneMesh_48jos")
+material_override = SubResource("StandardMaterial3D_c2gce")
+mesh = SubResource("PlaneMesh_5x8ri")
 script = ExtResource("4_dbb0g")
 text = "CONDITION 00S
 P1|P2|P3|P4"
@@ -433,3 +438,120 @@ vp_rematch = NodePath("../VotingPressurePlateRematch")
 vp_menu = NodePath("../VotingPressurePlateMainMenu")
 
 [node name="PauseMenuCanvas" parent="." unique_id=171649780 instance=ExtResource("6_m5bpc")]
+
+[node name="BackBank" type="StaticBody3D" parent="." unique_id=1164538515]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.65359, 0.48890555, 0.028642654)
+collision_mask = 3
+
+[node name="GrassRiverBankMesh" parent="BackBank" unique_id=20327516 instance=ExtResource("7_hca03")]
+transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -2.976632, -0.5272394, -5.9604638e-08)
+
+[node name="LeftBankCollider" type="CollisionShape3D" parent="BackBank" unique_id=751810824]
+transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.03365323)
+shape = SubResource("BoxShape3D_4msx0")
+debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="BackBank" unique_id=1690927356]
+transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.09201032)
+size = Vector3(7.5808105, 1.6069336, 6.4954834)
+
+[node name="BackBank2" type="StaticBody3D" parent="." unique_id=525442152]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.65359, 0.48890555, -6.79315)
+collision_mask = 3
+
+[node name="GrassRiverBankMesh" parent="BackBank2" unique_id=1923897959 instance=ExtResource("7_hca03")]
+transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -2.976632, -0.5272394, -5.9604638e-08)
+
+[node name="LeftBankCollider" type="CollisionShape3D" parent="BackBank2" unique_id=1271596978]
+transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.03365323)
+shape = SubResource("BoxShape3D_4msx0")
+debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="BackBank2" unique_id=950846678]
+transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.09201032)
+size = Vector3(7.5808105, 1.6069336, 6.4954834)
+
+[node name="BackBank3" type="StaticBody3D" parent="." unique_id=189851970]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.65359, 0.48890555, 6.7565117)
+collision_mask = 3
+
+[node name="GrassRiverBankMesh" parent="BackBank3" unique_id=1579299396 instance=ExtResource("7_hca03")]
+transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -2.976632, -0.5272394, -5.9604638e-08)
+
+[node name="LeftBankCollider" type="CollisionShape3D" parent="BackBank3" unique_id=1289232814]
+transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.03365323)
+shape = SubResource("BoxShape3D_4msx0")
+debug_color = Color(1.973361e-06, 0.62798357, 0.46329188, 1)
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="BackBank3" unique_id=1638372480]
+transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.9952754, -4.2440207e-09, -2.065157e-10, 4.2440207e-09, 1, -1.8341331, -0.33965254, -0.09201032)
+size = Vector3(7.5808105, 1.6069336, 6.4954834)
+
+[node name="TreesForeground" type="Node3D" parent="." unique_id=91350739]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6549729, 0, 0)
+
+[node name="tree" parent="TreesForeground" unique_id=405094748 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.14503187, -0.007576648, -0.078315735, 0.010324551, 0.16464575, 0.003191257, 0.07800105, -0.007705505, 0.14519455, -5.6300097, 0.56246966, 1.4885092)
+
+[node name="tree2" parent="TreesForeground" unique_id=1831328620 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.16435805, -0.014341456, -0.0023983242, 0.014540603, 0.16208199, 0.027258161, -1.3313051e-05, -0.027363466, 0.16271523, -5.2063265, 0.8574538, 3.1817806)
+
+[node name="tree3" parent="TreesForeground" unique_id=810363027 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.14391772, -0.022908678, 0.07738139, 0.020891594, 0.16339505, 0.0095177125, -0.07795014, 0.0014960791, 0.14541852, -4.8718934, 0.9136697, 4.8374815)
+
+[node name="tree4" parent="TreesForeground" unique_id=674708030 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.020949634, 0.001341526, 0.16365917, 0.004435214, 0.16492918, -0.0019196856, -0.16360451, 0.0046429173, 0.020904599, -5.236726, 0.8462944, 6.6094294)
+
+[node name="TreesForeground1" type="Node3D" parent="." unique_id=1968658647]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -1, 0.6549729, 0, 0)
+
+[node name="tree" parent="TreesForeground1" unique_id=1120185944 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.14636981, -0.016649107, 0.07432145, 0.010155158, 0.16383801, 0.016702408, -0.07548339, -0.010242328, 0.14636378, -5.438206, 0.57946754, 1.2566074)
+
+[node name="tree2" parent="TreesForeground1" unique_id=62121674 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.16435805, -0.014341456, -0.0023983242, 0.014540603, 0.16208199, 0.027258161, -1.3313051e-05, -0.027363466, 0.16271523, -5.2063265, 0.8574538, 3.1817806)
+
+[node name="tree3" parent="TreesForeground1" unique_id=1829739111 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.14391772, -0.022908678, 0.07738139, 0.020891594, 0.16339505, 0.0095177125, -0.07795014, 0.0014960791, 0.14541852, -4.8718934, 0.9136697, 4.8374815)
+
+[node name="tree4" parent="TreesForeground1" unique_id=887793698 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.020949634, 0.001341526, 0.16365917, 0.004435214, 0.16492918, -0.0019196856, -0.16360451, 0.0046429173, 0.020904599, -5.236726, 0.8462944, 6.6094294)
+
+[node name="BackTrees" type="Node3D" parent="." unique_id=1054706266]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6549729, 0, 0)
+
+[node name="tree4" parent="BackTrees" unique_id=1936902269 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, 8.147066)
+
+[node name="tree5" parent="BackTrees" unique_id=1387914646 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, 6.588315)
+
+[node name="tree6" parent="BackTrees" unique_id=1779727875 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, 5.2102003)
+
+[node name="tree7" parent="BackTrees" unique_id=1437371688 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, 3.74477)
+
+[node name="tree8" parent="BackTrees" unique_id=1056908205 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, 2.3431091)
+
+[node name="tree9" parent="BackTrees" unique_id=181513711 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, 0.80261517)
+
+[node name="tree10" parent="BackTrees" unique_id=696386456 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.163142, 0.92313755, 0.06150806)
+
+[node name="tree15" parent="BackTrees" unique_id=1052107352 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, -1.3380442)
+
+[node name="tree11" parent="BackTrees" unique_id=409580382 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, -2.6230135)
+
+[node name="tree12" parent="BackTrees" unique_id=2101243262 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.9588585, 0.9231378, -4.252138)
+
+[node name="tree13" parent="BackTrees" unique_id=1381115875 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, -6.2433834)
+
+[node name="tree14" parent="BackTrees" unique_id=1796565276 instance=ExtResource("8_x64rj")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, -7.795829)

@@ -33,6 +33,7 @@ pub enum SoundEffect {
     IceChunkAbility = 27,
     SalmonAbility = 28,
     StoneFootStep = 29,
+    WaterSplash = 30,
 }
 impl SoundEffect {
     pub fn to_sound_effect_path(&self) -> &'static str {
@@ -67,6 +68,7 @@ impl SoundEffect {
             SoundEffect::LogAbility => "res://SoundAssets/log_use.ogg",
             SoundEffect::IceChunkAbility => "res://SoundAssets/ice_chunk_use.ogg",
             SoundEffect::StoneFootStep => "res://SoundAssets/stone_footstep.ogg",
+            SoundEffect::WaterSplash => "res://SoundAssets/water_splash.ogg",
         }
     }
 }

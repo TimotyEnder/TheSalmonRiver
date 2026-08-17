@@ -12,6 +12,9 @@ shader = ExtResource("1_np18x")
 [sub_resource type="BoxMesh" id="BoxMesh_rai8w"]
 size = Vector3(1, 1, 1.9257813)
 
+[sub_resource type="BoxMesh" id="BoxMesh_np18x"]
+size = Vector3(1, 0.9824219, 0.3843689)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_s6dll"]
 size = Vector3(2.0368652, 0.98132324, 2.41333)
 
@@ -19,23 +22,15 @@ size = Vector3(2.0368652, 0.98132324, 2.41333)
 size = Vector3(1, 19.77166, 3.1507492)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_344ge"]
-size = Vector3(1.8640137, 1.2788086, 2.2324219)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c4elv"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ba2sc"]
-render_priority = 0
-shader = ExtResource("1_np18x")
-
-[sub_resource type="BoxMesh" id="BoxMesh_s6dll"]
-size = Vector3(2.0580444, 1.4012451, 1.7560425)
+size = Vector3(1.8640137, 1.5594711, 2.2324219)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
 size = Vector3(6.6301575, 1.168457, 6.9260597)
 
 [node name="Environment" type="Node3D" unique_id=1750905010]
 
-[node name="River" type="StaticBody3D" parent="." unique_id=1092694855]
+[node name="River" type="River" parent="." unique_id=1420182557 node_paths=PackedStringArray("splash_area")]
+splash_area = NodePath("RiverWaterArea")
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.31563914, 0)
 collision_layer = 4
 collision_mask = 3
@@ -44,6 +39,11 @@ collision_mask = 3
 transform = Transform3D(2.057666, 0.008978856, -0.00014456687, -0.018413384, 0.9968434, 0.35181484, 0.0015240383, -0.07888383, 4.4458165, 0.0008626476, 0.1468278, -3.1074471)
 material_override = SubResource("ShaderMaterial_hptm8")
 mesh = SubResource("BoxMesh_rai8w")
+
+[node name="RiverMeshBottom" type="MeshInstance3D" parent="River" unique_id=1876553002]
+transform = Transform3D(-2.057749, 8.742278e-08, 0, -1.7933958e-07, -0.9969173, 0.34990525, 1.4114335e-08, 0.0784591, 4.445967, 0.00075110846, 0.4098006, 0.327123)
+material_override = SubResource("ShaderMaterial_hptm8")
+mesh = SubResource("BoxMesh_np18x")
 
 [node name="RiverCollider" type="CollisionShape3D" parent="River" unique_id=199291139]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.018920898, -0.009338379, -0.016967773)
@@ -57,17 +57,11 @@ shape = SubResource("BoxShape3D_rai8w")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.146003, 6.8353205, -0.3481499)
 shape = SubResource("BoxShape3D_rai8w")
 
-[node name="RiverWaterSoundArea" type="Area3D" parent="River" unique_id=1131202905]
+[node name="RiverWaterArea" type="Area3D" parent="River" unique_id=1131202905]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="River/RiverWaterSoundArea" unique_id=1335383536]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.075317375, 0.1394043, -0.12011719)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="River/RiverWaterArea" unique_id=1335383536]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.075317375, 0.27973557, -0.12011719)
 shape = SubResource("BoxShape3D_344ge")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="River" unique_id=1339750146]
-transform = Transform3D(-1, 8.742278e-08, 0, -8.706298e-08, -0.9958844, 0.09063258, 7.923352e-09, 0.09063258, 0.9958844, -0.011566148, 0.20298424, 0.35971418)
-material_override = SubResource("StandardMaterial3D_c4elv")
-material_overlay = SubResource("ShaderMaterial_ba2sc")
-mesh = SubResource("BoxMesh_s6dll")
 
 [node name="LeftBank" type="StaticBody3D" parent="." unique_id=186653510]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.1734822, 0.73130685, 2.5910273)

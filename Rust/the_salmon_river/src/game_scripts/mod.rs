@@ -3,6 +3,7 @@ pub mod game_utils;
 pub mod leaderboard;
 pub mod match_manager;
 pub mod player;
+pub mod river;
 pub mod round_manager;
 pub mod throwable;
 pub mod throwable_spawner;

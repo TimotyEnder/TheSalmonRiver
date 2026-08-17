@@ -222,7 +222,12 @@ impl Player {
         if let Some(mut audio) = audio {
             if self.walking_on_water {
                 audio.bind_mut().play_sound_randomized_pitch(
-                    crate::sound_utils::SoundEffect::SplashFootStep,
+                    crate::sound_utils::SoundEffect::WaterFootStep,
+                    vec3_to_vec2(self.base().get_global_position()),
+                );
+            } else if self.walking_on_rock {
+                audio.bind_mut().play_sound(
+                    crate::sound_utils::SoundEffect::StoneFootStep,
                     vec3_to_vec2(self.base().get_global_position()),
                 );
             } else {
@@ -244,6 +249,8 @@ impl Player {
         let area_groups = area.get_groups();
         if area_name.contains("River") {
             self.walking_on_water = true;
+        } else if area_name.contains("Pressure") {
+            self.walking_on_rock = true;
         } else if !area_groups.contains(&format!("p{}", self.player_num)) {
             if area_name.contains("Grab") {
                 self.handle_grab(area);
@@ -259,6 +266,8 @@ impl Player {
     pub fn on_player_hitbox_exit(&mut self, area: Gd<Area3D>) {
         if area.get_name().contains("River") {
             self.walking_on_water = false;
+        } else if area.get_name().contains("Pressure") {
+            self.walking_on_rock = false;
         }
     }
     #[func]

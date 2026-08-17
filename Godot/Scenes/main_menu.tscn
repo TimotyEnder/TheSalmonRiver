@@ -4,22 +4,34 @@
 [ext_resource type="PackedScene" uid="uid://bhj4c5fpdm741" path="res://VoxelAssets/3DUI/GameTitle.gltf" id="1_ce3w2"]
 [ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="2_1ehe0"]
 [ext_resource type="PackedScene" uid="uid://c55fml4h84ry1" path="res://VoxelAssets/3DUI/ThrowableArrow.gltf" id="3_1ehe0"]
+[ext_resource type="Shader" uid="uid://1itpqfydojfg" path="res://Shaders/water.tres" id="4_opfnp"]
+[ext_resource type="Shader" uid="uid://chru22qofgji6" path="res://Shaders/water_bottom.tres" id="5_cp0ys"]
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="5_n45e2"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_ce3w2"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n45e2"]
-vertex_color_is_srgb = true
-albedo_color = Color(0.03529412, 0.4862745, 0.7921569, 1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_opfnp"]
-size = Vector3(2.0368652, 0.98132324, 2.41333)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_cp0ys"]
-size = Vector3(1, 4.526306, 3.1507492)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yhxw7"]
 size = Vector3(6.6301575, 1.168457, 3.1865845)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yhxw7"]
+size = Vector3(1, 1, 0.9785156)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_trj04"]
+render_priority = 0
+shader = ExtResource("4_opfnp")
+
+[sub_resource type="BoxMesh" id="BoxMesh_16hvj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vr1f0"]
+render_priority = 0
+shader = ExtResource("5_cp0ys")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t1dhk"]
+size = Vector3(2.0368652, 0.98132324, 2.41333)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5egv6"]
+size = Vector3(1, 19.77166, 3.1507492)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vtepg"]
+size = Vector3(1.8640137, 1.2788086, 2.2324219)
 
 [sub_resource type="Environment" id="Environment_48xlc"]
 background_mode = 3
@@ -299,27 +311,6 @@ transform = Transform3D(0.225, 0, 0, 0, 0.225, 0, 0, 0, 0.225, 0, 1.9209647, 0)
 
 [node name="Environment" type="Node3D" parent="." unique_id=870956812]
 
-[node name="River" type="StaticBody3D" parent="Environment" unique_id=986619601]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
-collision_mask = 3
-
-[node name="RiverMesh" type="MeshInstance3D" parent="Environment/River" unique_id=420536306]
-transform = Transform3D(2.0577488, 0, 0, 0, 1, 0, 0, 0, 2.4311264, 0, 0.30762458, 0)
-mesh = SubResource("BoxMesh_ce3w2")
-surface_material_override/0 = SubResource("StandardMaterial3D_n45e2")
-
-[node name="RiverCollider" type="CollisionShape3D" parent="Environment/River" unique_id=1001153008]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.018920898, -0.009338379, -0.016967773)
-shape = SubResource("BoxShape3D_opfnp")
-
-[node name="RightWall" type="CollisionShape3D" parent="Environment/River" unique_id=1596429350]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.136755, 3.3724613, -0.40993524)
-shape = SubResource("BoxShape3D_cp0ys")
-
-[node name="LeftWall" type="CollisionShape3D" parent="Environment/River" unique_id=1966612842]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.146003, 3.4253054, -0.3481499)
-shape = SubResource("BoxShape3D_cp0ys")
-
 [node name="LeftBank" type="StaticBody3D" parent="Environment" unique_id=428223055]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.3750771, 0.73130685, 2.5910273)
 collision_mask = 3
@@ -355,6 +346,44 @@ size = Vector3(7.5808105, 1.6069336, 2)
 [node name="BackgroundImage" type="Sprite3D" parent="Environment" unique_id=952531044]
 transform = Transform3D(-2.0615369e-08, 0, 0.2, 0, 0.4716246, 0, -0.4716246, 0, -8.742278e-09, -12.021184, 1.2831969, 5.2546267e-07)
 texture = ExtResource("2_1ehe0")
+
+[node name="River" type="StaticBody3D" parent="Environment" unique_id=979905569]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.31563914, 0)
+collision_layer = 4
+collision_mask = 3
+
+[node name="RiverMesh" type="MeshInstance3D" parent="Environment/River" unique_id=881293537]
+transform = Transform3D(2.0576658, 0.008947507, -0.0018241578, -0.018413384, 0.9999594, -0.0026281567, 0.0015240383, 0.0010877139, 2.4311242, 3.336894e-05, 0.31236273, 0.0121936705)
+mesh = SubResource("BoxMesh_yhxw7")
+surface_material_override/0 = SubResource("ShaderMaterial_trj04")
+
+[node name="RiverMesh2" type="MeshInstance3D" parent="Environment/River" unique_id=150613803]
+transform = Transform3D(2.0576658, 0.008947507, -0.0018241578, -0.018413384, 0.9999594, -0.0026281567, 0.0015240383, 0.0010877139, 2.4311242, 0, 0.30762458, 0)
+mesh = SubResource("BoxMesh_16hvj")
+surface_material_override/0 = SubResource("ShaderMaterial_vr1f0")
+
+[node name="RiverCollider" type="CollisionShape3D" parent="Environment/River" unique_id=1067725123]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.018920898, -0.009338379, -0.016967773)
+shape = SubResource("BoxShape3D_t1dhk")
+
+[node name="RightWall" type="CollisionShape3D" parent="Environment/River" unique_id=1764967206]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.136755, 7.585123, -0.40993524)
+shape = SubResource("BoxShape3D_5egv6")
+
+[node name="LeftWall" type="CollisionShape3D" parent="Environment/River" unique_id=1779830470]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.146003, 6.8353205, -0.3481499)
+shape = SubResource("BoxShape3D_5egv6")
+
+[node name="RiverWaterSoundArea" type="Area3D" parent="Environment/River" unique_id=1941260137]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/River/RiverWaterSoundArea" unique_id=1459550310]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.075317375, 0.1394043, -0.12011719)
+shape = SubResource("BoxShape3D_vtepg")
+
+[node name="RiverMeshBottom" type="MeshInstance3D" parent="Environment/River" unique_id=535168365]
+transform = Transform3D(2.0576658, 0.008947507, -0.0018241578, -0.018413384, 0.9999594, -0.0026281567, 0.0015240383, 0.0010877139, 2.4311242, 0, 0.30762458, 0)
+mesh = SubResource("BoxMesh_yhxw7")
+surface_material_override/0 = SubResource("ShaderMaterial_trj04")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=127069508]
 transform = Transform3D(-0.01374388, -0.18587853, 0.9842664, -0.002595276, 0.98436236, 0.18586043, -1.0016608, 0, -0.013986767, 3.1130846, 4.910619, -0.015609028)

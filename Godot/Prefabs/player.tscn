@@ -3103,6 +3103,7 @@ material = SubResource("StandardMaterial3D_mmv3y")
 
 [node name="Player" type="Player" unique_id=786188032]
 collision_layer = 2
+collision_mask = 5
 axis_lock_linear_x = true
 axis_lock_angular_x = true
 axis_lock_angular_y = true

@@ -13,7 +13,7 @@ pub enum SoundEffect {
     PlayerPunchSwoosh = 7,
     PlayerPunchSwoosh1 = 8,
     PlayerFootStep = 9,
-    SplashFootStep = 10,
+    WaterFootStep = 10,
     PlayerJump = 11,
     WingFlapDuck = 12,
     PlayerDuckQuack = 13,
@@ -32,6 +32,7 @@ pub enum SoundEffect {
     LogAbility = 26,
     IceChunkAbility = 27,
     SalmonAbility = 28,
+    StoneFootStep = 29,
 }
 impl SoundEffect {
     pub fn to_sound_effect_path(&self) -> &'static str {
@@ -46,7 +47,7 @@ impl SoundEffect {
             SoundEffect::PlayerPunchSwoosh => "res://SoundAssets/swoosh.ogg",
             SoundEffect::PlayerPunchSwoosh1 => "res://SoundAssets/swoosh1.ogg",
             SoundEffect::PlayerFootStep => "res://SoundAssets/footstep.ogg",
-            SoundEffect::SplashFootStep => "res://SoundAssets/splash_footstep.ogg",
+            SoundEffect::WaterFootStep => "res://SoundAssets/splash_footstep.ogg",
             SoundEffect::PlayerJump => "res://SoundAssets/jump.ogg",
             SoundEffect::WingFlapDuck => "res://SoundAssets/wing_flap.ogg",
             SoundEffect::PlayerDuckQuack => "res://SoundAssets/quack.ogg",
@@ -65,6 +66,7 @@ impl SoundEffect {
             SoundEffect::SalmonAbility => "res://SoundAssets/fish_use.ogg",
             SoundEffect::LogAbility => "res://SoundAssets/log_use.ogg",
             SoundEffect::IceChunkAbility => "res://SoundAssets/ice_chunk_use.ogg",
+            SoundEffect::StoneFootStep => "res://SoundAssets/stone_footstep.ogg",
         }
     }
 }

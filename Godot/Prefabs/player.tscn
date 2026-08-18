@@ -2533,6 +2533,58 @@ tracks/5/keys = {
 "values": [Vector3(1, 1, 0.99999994), Vector3(1, 1, 0.99999994), Vector3(1, 1, 0.99999994), Vector3(1, 1, 0.99999994), Vector3(1, 1, 0.99999994)]
 }
 
+[sub_resource type="Animation" id="Animation_2xbkd"]
+resource_name = "salmon_punch"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LeftHand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.10000001, 0.13333334, 0.20000002, 0.23333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.499, 1.708, -0.006000012), Vector3(-0.499, 1.5318339, 0.30380985), Vector3(-0.499, 1.5851548, -0.01957348), Vector3(-0.05672878, 1.7048507, -0.5729841), Vector3(0.45298648, 2.1926398, -0.50852996), Vector3(0.5151814, 2.244261, -0.05323291)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LeftHand:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.10000001, 0.13333334, 0.20000002, 0.23333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("LeftHand:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.10000001, 0.13333334, 0.20000002, 0.23333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 0.99999994), Vector3(1, 1, 0.99999994), Vector3(1, 1, 0.99999994), Vector3(2, 2, 2), Vector3(2, 2, 2), Vector3(1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("LeftHand/LeftHandArea/LeftHandHurtBox:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.13333334, 0.16666667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [true, false, true]
+}
+
 [sub_resource type="Animation" id="Animation_fdnlq"]
 resource_name = "throw"
 length = 0.5
@@ -2621,6 +2673,7 @@ _data = {
 &"left_punch": SubResource("Animation_d1ilt"),
 &"punch": SubResource("Animation_6iyac"),
 &"run": SubResource("Animation_344ge"),
+&"salmon_punch": SubResource("Animation_2xbkd"),
 &"throw": SubResource("Animation_fdnlq")
 }
 
@@ -2653,6 +2706,9 @@ animation = &"punch"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_d1ilt"]
 animation = &"run"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2xbkd"]
+animation = &"salmon_punch"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6iyac"]
 animation = &"throw"
@@ -2894,6 +2950,39 @@ advance_condition = &"in_hand"
 advance_mode = 2
 advance_condition = &"death"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cqtoq"]
+advance_mode = 2
+advance_condition = &"knock"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_35hf2"]
+advance_mode = 2
+advance_condition = &"hit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_i3a4b"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"salmon_punch"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_i5nxq"]
+advance_mode = 2
+advance_condition = &"salmon_punch"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_guy6h"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6crtv"]
+advance_mode = 2
+advance_condition = &"salmon_punch"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gojqb"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1x77x"]
+advance_mode = 2
+advance_condition = &"death"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_rai8w"]
 states/End/position = Vector2(1088, 64)
 states/death/node = SubResource("AnimationNodeAnimation_of3e5")
@@ -2911,15 +3000,17 @@ states/in_hand/position = Vector2(736, 235)
 states/knock_back/node = SubResource("AnimationNodeAnimation_y5hcb")
 states/knock_back/position = Vector2(93.83737, -122.984604)
 states/left_punch/node = SubResource("AnimationNodeAnimation_ynf5e")
-states/left_punch/position = Vector2(141, 256)
+states/left_punch/position = Vector2(-81, 309)
 states/punch/node = SubResource("AnimationNodeAnimation_hptm8")
-states/punch/position = Vector2(351, 337)
+states/punch/position = Vector2(351, 336)
 states/run/node = SubResource("AnimationNodeAnimation_d1ilt")
 states/run/position = Vector2(491, -29)
+states/salmon_punch/node = SubResource("AnimationNodeAnimation_2xbkd")
+states/salmon_punch/position = Vector2(-208.1626, 160.67705)
 states/throw/node = SubResource("AnimationNodeAnimation_6iyac")
 states/throw/position = Vector2(843, 36)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_fevyy"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_hibaj"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "in_hand", "throw", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "throw", "idle", SubResource("AnimationNodeStateMachineTransition_gt3je"), "idle", "punch", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "idle", "left_punch", SubResource("AnimationNodeStateMachineTransition_u50mg"), "left_punch", "idle", SubResource("AnimationNodeStateMachineTransition_cbgmd"), "punch", "idle", SubResource("AnimationNodeStateMachineTransition_1w6v2"), "idle", "grab", SubResource("AnimationNodeStateMachineTransition_ueoa1"), "grab", "idle", SubResource("AnimationNodeStateMachineTransition_6vcvc"), "idle", "in_hand", SubResource("AnimationNodeStateMachineTransition_7k868"), "run", "punch", SubResource("AnimationNodeStateMachineTransition_bo1nx"), "punch", "run", SubResource("AnimationNodeStateMachineTransition_8gbba"), "left_punch", "run", SubResource("AnimationNodeStateMachineTransition_jjvhh"), "run", "left_punch", SubResource("AnimationNodeStateMachineTransition_kry3j"), "left_punch", "punch", SubResource("AnimationNodeStateMachineTransition_hpc6h"), "punch", "left_punch", SubResource("AnimationNodeStateMachineTransition_kltya"), "run", "grab", SubResource("AnimationNodeStateMachineTransition_e08e2"), "grab", "run", SubResource("AnimationNodeStateMachineTransition_neg2b"), "left_punch", "hit", SubResource("AnimationNodeStateMachineTransition_kgmex"), "punch", "hit", SubResource("AnimationNodeStateMachineTransition_2xbkd"), "grab", "hit", SubResource("AnimationNodeStateMachineTransition_3vpsw"), "idle", "hit", SubResource("AnimationNodeStateMachineTransition_m62uw"), "run", "hit", SubResource("AnimationNodeStateMachineTransition_b30ri"), "hit", "run", SubResource("AnimationNodeStateMachineTransition_ms580"), "hit", "grab", SubResource("AnimationNodeStateMachineTransition_q7l0e"), "hit", "punch", SubResource("AnimationNodeStateMachineTransition_0fs2y"), "hit", "left_punch", SubResource("AnimationNodeStateMachineTransition_wphcr"), "hit", "idle", SubResource("AnimationNodeStateMachineTransition_and0b"), "hit", "knock_back", SubResource("AnimationNodeStateMachineTransition_405c5"), "knock_back", "run", SubResource("AnimationNodeStateMachineTransition_i3mxk"), "knock_back", "idle", SubResource("AnimationNodeStateMachineTransition_qvmbc"), "knock_back", "punch", SubResource("AnimationNodeStateMachineTransition_qjulh"), "knock_back", "hit", SubResource("AnimationNodeStateMachineTransition_evqxc"), "knock_back", "grab", SubResource("AnimationNodeStateMachineTransition_6gc6r"), "left_punch", "knock_back", SubResource("AnimationNodeStateMachineTransition_jxrwi"), "run", "knock_back", SubResource("AnimationNodeStateMachineTransition_s2pui"), "grab", "knock_back", SubResource("AnimationNodeStateMachineTransition_acf7d"), "punch", "knock_back", SubResource("AnimationNodeStateMachineTransition_0srn8"), "idle", "knock_back", SubResource("AnimationNodeStateMachineTransition_ba8jc"), "in_hand", "knock_back", SubResource("AnimationNodeStateMachineTransition_131b1"), "throw", "knock_back", SubResource("AnimationNodeStateMachineTransition_qelst"), "throw", "hit", SubResource("AnimationNodeStateMachineTransition_ob8dk"), "run", "in_hand", SubResource("AnimationNodeStateMachineTransition_faewp"), "in_hand", "idle", SubResource("AnimationNodeStateMachineTransition_da5es"), "hit", "death", SubResource("AnimationNodeStateMachineTransition_bskuj"), "run", "death", SubResource("AnimationNodeStateMachineTransition_is11r"), "throw", "death", SubResource("AnimationNodeStateMachineTransition_6oobh"), "in_hand", "death", SubResource("AnimationNodeStateMachineTransition_iw52j"), "grab", "death", SubResource("AnimationNodeStateMachineTransition_70pgm"), "punch", "death", SubResource("AnimationNodeStateMachineTransition_vde2o"), "left_punch", "death", SubResource("AnimationNodeStateMachineTransition_ntesv"), "death", "death 2", SubResource("AnimationNodeStateMachineTransition_7mgnq"), "death 2", "death", SubResource("AnimationNodeStateMachineTransition_pr31v"), "idle", "death", SubResource("AnimationNodeStateMachineTransition_nxvyj"), "grab", "in_hand", SubResource("AnimationNodeStateMachineTransition_nkjwp"), "knock_back", "death", SubResource("AnimationNodeStateMachineTransition_gymre")]
-graph_offset = Vector2(-238.1626, -163.32295)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_fevyy"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_hibaj"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "in_hand", "throw", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "throw", "idle", SubResource("AnimationNodeStateMachineTransition_gt3je"), "idle", "punch", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "idle", "left_punch", SubResource("AnimationNodeStateMachineTransition_u50mg"), "left_punch", "idle", SubResource("AnimationNodeStateMachineTransition_cbgmd"), "punch", "idle", SubResource("AnimationNodeStateMachineTransition_1w6v2"), "idle", "grab", SubResource("AnimationNodeStateMachineTransition_ueoa1"), "grab", "idle", SubResource("AnimationNodeStateMachineTransition_6vcvc"), "idle", "in_hand", SubResource("AnimationNodeStateMachineTransition_7k868"), "run", "punch", SubResource("AnimationNodeStateMachineTransition_bo1nx"), "punch", "run", SubResource("AnimationNodeStateMachineTransition_8gbba"), "left_punch", "run", SubResource("AnimationNodeStateMachineTransition_jjvhh"), "run", "left_punch", SubResource("AnimationNodeStateMachineTransition_kry3j"), "left_punch", "punch", SubResource("AnimationNodeStateMachineTransition_hpc6h"), "punch", "left_punch", SubResource("AnimationNodeStateMachineTransition_kltya"), "run", "grab", SubResource("AnimationNodeStateMachineTransition_e08e2"), "grab", "run", SubResource("AnimationNodeStateMachineTransition_neg2b"), "left_punch", "hit", SubResource("AnimationNodeStateMachineTransition_kgmex"), "punch", "hit", SubResource("AnimationNodeStateMachineTransition_2xbkd"), "grab", "hit", SubResource("AnimationNodeStateMachineTransition_3vpsw"), "idle", "hit", SubResource("AnimationNodeStateMachineTransition_m62uw"), "run", "hit", SubResource("AnimationNodeStateMachineTransition_b30ri"), "hit", "run", SubResource("AnimationNodeStateMachineTransition_ms580"), "hit", "grab", SubResource("AnimationNodeStateMachineTransition_q7l0e"), "hit", "punch", SubResource("AnimationNodeStateMachineTransition_0fs2y"), "hit", "left_punch", SubResource("AnimationNodeStateMachineTransition_wphcr"), "hit", "idle", SubResource("AnimationNodeStateMachineTransition_and0b"), "hit", "knock_back", SubResource("AnimationNodeStateMachineTransition_405c5"), "knock_back", "run", SubResource("AnimationNodeStateMachineTransition_i3mxk"), "knock_back", "idle", SubResource("AnimationNodeStateMachineTransition_qvmbc"), "knock_back", "punch", SubResource("AnimationNodeStateMachineTransition_qjulh"), "knock_back", "hit", SubResource("AnimationNodeStateMachineTransition_evqxc"), "knock_back", "grab", SubResource("AnimationNodeStateMachineTransition_6gc6r"), "left_punch", "knock_back", SubResource("AnimationNodeStateMachineTransition_jxrwi"), "run", "knock_back", SubResource("AnimationNodeStateMachineTransition_s2pui"), "grab", "knock_back", SubResource("AnimationNodeStateMachineTransition_acf7d"), "punch", "knock_back", SubResource("AnimationNodeStateMachineTransition_0srn8"), "idle", "knock_back", SubResource("AnimationNodeStateMachineTransition_ba8jc"), "in_hand", "knock_back", SubResource("AnimationNodeStateMachineTransition_131b1"), "throw", "knock_back", SubResource("AnimationNodeStateMachineTransition_qelst"), "throw", "hit", SubResource("AnimationNodeStateMachineTransition_ob8dk"), "run", "in_hand", SubResource("AnimationNodeStateMachineTransition_faewp"), "in_hand", "idle", SubResource("AnimationNodeStateMachineTransition_da5es"), "hit", "death", SubResource("AnimationNodeStateMachineTransition_bskuj"), "run", "death", SubResource("AnimationNodeStateMachineTransition_is11r"), "throw", "death", SubResource("AnimationNodeStateMachineTransition_6oobh"), "in_hand", "death", SubResource("AnimationNodeStateMachineTransition_iw52j"), "grab", "death", SubResource("AnimationNodeStateMachineTransition_70pgm"), "punch", "death", SubResource("AnimationNodeStateMachineTransition_vde2o"), "left_punch", "death", SubResource("AnimationNodeStateMachineTransition_ntesv"), "death", "death 2", SubResource("AnimationNodeStateMachineTransition_7mgnq"), "death 2", "death", SubResource("AnimationNodeStateMachineTransition_pr31v"), "idle", "death", SubResource("AnimationNodeStateMachineTransition_nxvyj"), "grab", "in_hand", SubResource("AnimationNodeStateMachineTransition_nkjwp"), "knock_back", "death", SubResource("AnimationNodeStateMachineTransition_gymre"), "salmon_punch", "knock_back", SubResource("AnimationNodeStateMachineTransition_cqtoq"), "salmon_punch", "hit", SubResource("AnimationNodeStateMachineTransition_35hf2"), "hit", "salmon_punch", SubResource("AnimationNodeStateMachineTransition_i3a4b"), "run", "salmon_punch", SubResource("AnimationNodeStateMachineTransition_i5nxq"), "salmon_punch", "run", SubResource("AnimationNodeStateMachineTransition_guy6h"), "idle", "salmon_punch", SubResource("AnimationNodeStateMachineTransition_6crtv"), "salmon_punch", "idle", SubResource("AnimationNodeStateMachineTransition_gojqb"), "salmon_punch", "death", SubResource("AnimationNodeStateMachineTransition_1x77x")]
+graph_offset = Vector2(-588.1626, -94.32295)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_juxdh"]
 height = 2.0480957
@@ -3267,6 +3358,7 @@ parameters/conditions/l_punch = false
 parameters/conditions/punch = false
 parameters/conditions/r_punch = false
 parameters/conditions/run = false
+parameters/conditions/salmon_punch = false
 parameters/conditions/throw = false
 
 [node name="PlayerHitBox" type="Area3D" parent="." unique_id=337895282]

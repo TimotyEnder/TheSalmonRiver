@@ -18,7 +18,7 @@ use crate::game_scripts::throwable::Throwable;
 #[derive(GodotClass)]
 #[class(base=CharacterBody3D)]
 pub struct Player {
-    salmong_ability_timer_entries: u8,
+    salmon_ability_timer_entries: u8,
     player_drop_timer_timed_in_hand_num: u8,
     walking_on_water: bool,
     walking_on_rock: bool,
@@ -102,7 +102,7 @@ impl ICharacterBody3D for Player {
     fn init(base: Base<CharacterBody3D>) -> Self {
         Self {
             base,
-            salmong_ability_timer_entries: 0,
+            salmon_ability_timer_entries: 0,
             can_move: false,
             can_act: true,
             can_dmg: true,
@@ -776,23 +776,32 @@ impl Player {
                 .base()
                 .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
             let this_pos = bind.base().get_global_position();
+            let salmon = bind.additional_next_punch_damage > 0;
             if let Some(ref mut upper_anim) = bind.upper_anim_tree
                 && let Some(mut audio) = audio
             {
-                if right_punch {
+                if salmon {
                     audio.bind_mut().play_sound_randomized_pitch(
                         crate::sound_utils::SoundEffect::PlayerPunchSwoosh,
                         vec3_to_vec2(this_pos),
                     );
-                    upper_anim.set("parameters/conditions/r_punch", &true.to_variant());
-                    right_punch = false;
-                } else if !right_punch {
-                    audio.bind_mut().play_sound_randomized_pitch(
-                        crate::sound_utils::SoundEffect::PlayerPunchSwoosh1,
-                        vec3_to_vec2(this_pos),
-                    );
-                    upper_anim.set("parameters/conditions/l_punch", &true.to_variant());
-                    right_punch = true;
+                    upper_anim.set("parameters/conditions/salmon_punch", &true.to_variant());
+                } else {
+                    if right_punch {
+                        audio.bind_mut().play_sound_randomized_pitch(
+                            crate::sound_utils::SoundEffect::PlayerPunchSwoosh,
+                            vec3_to_vec2(this_pos),
+                        );
+                        upper_anim.set("parameters/conditions/r_punch", &true.to_variant());
+                        right_punch = false;
+                    } else if !right_punch {
+                        audio.bind_mut().play_sound_randomized_pitch(
+                            crate::sound_utils::SoundEffect::PlayerPunchSwoosh1,
+                            vec3_to_vec2(this_pos),
+                        );
+                        upper_anim.set("parameters/conditions/l_punch", &true.to_variant());
+                        right_punch = true;
+                    }
                 }
             }
             bind.right_punch = right_punch;
@@ -827,6 +836,7 @@ impl Player {
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 upper_anim.set("parameters/conditions/l_punch", &false.to_variant());
                 upper_anim.set("parameters/conditions/r_punch", &false.to_variant());
+                upper_anim.set("parameters/conditions/salmon_punch", &false.to_variant());
             }
         }
     }
@@ -946,9 +956,12 @@ impl Player {
         if !this.is_instance_valid() {
             return;
         }
+        let og_speed;
         let reset_anim_timer;
         {
             let mut bind = this.bind_mut();
+            og_speed = bind.speed;
+            bind.speed = 0.0;
             if let Some(ref mut anim) = bind.lower_anim_tree {
                 anim.set("parameters/conditions/un_hit", &true.to_variant());
             }
@@ -977,6 +990,9 @@ impl Player {
             }
             bind.hit_stun_hits += additional_hitstun;
             should_knockback = bind.hit_stun_hits > 1;
+            if should_knockback {
+                bind.speed = og_speed;
+            }
             bind.hit_stun = true;
             audio_manager = bind
                 .base()
@@ -1002,6 +1018,7 @@ impl Player {
         let timer;
         {
             let mut bind = this.bind_mut();
+            bind.speed = og_speed;
             if let Some(ref mut anim) = bind.lower_anim_tree {
                 anim.set("parameters/conditions/un_hit", &false.to_variant());
                 anim.set("parameters/conditions/hit", &true.to_variant());
@@ -1532,9 +1549,9 @@ impl Player {
         }
         (to_ret, instant_knock_down)
     }
-    pub fn salmon_additional_punch_damage(&mut self, amount: u8) {
-        self.additional_next_punch_damage = amount;
-        self.salmong_ability_timer_entries += 1;
+    pub fn salmon_ability(&mut self) {
+        self.additional_next_punch_damage = 2;
+        self.salmon_ability_timer_entries += 1;
         if let Some(ref mut right_particles) = self.right_hand_fire_particles {
             right_particles.set_emitting(true);
         }
@@ -1576,8 +1593,8 @@ impl Player {
             }
             bar.set_visible(false);
             bar.set_scale(initial_scale);
-            this.bind_mut().salmong_ability_timer_entries -= 1;
-            if this.bind().salmong_ability_timer_entries == 0 {
+            this.bind_mut().salmon_ability_timer_entries -= 1;
+            if this.bind().salmon_ability_timer_entries == 0 {
                 this.bind_mut().additional_next_punch_damage = 0;
                 if let Some(ref mut right_particles) = this.bind_mut().right_hand_fire_particles {
                     right_particles.set_emitting(false);

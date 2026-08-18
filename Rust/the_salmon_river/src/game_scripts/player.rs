@@ -71,8 +71,8 @@ pub struct Player {
     #[var(pub)]
     player_num: u8,
     player_label: Option<Gd<Label3D>>,
-    player_healthbar: Option<Gd<Sprite3D>>,
-    player_duck_bar: Option<Gd<Sprite3D>>,
+    player_healthbar: Option<Gd<Node3D>>,
+    player_duck_bar: Option<Gd<Node3D>>,
     pub health: u8,
     punch_damage: u8,
     additional_next_punch_damage: u8,
@@ -253,6 +253,35 @@ impl Player {
             self.walking_on_water = true;
         } else if area_name.contains("Pressure") {
             self.walking_on_rock = true;
+        } else if area_name.contains("Log") {
+            godot_print!("LOG!");
+            if self.thrown_by_another_player {
+                self.damage(3);
+                let log_root_node_opt = area.get_parent().and_then(|f| f.try_cast::<Node3D>().ok());
+                if let Some(mut log_root_node) = log_root_node_opt {
+                    let log_particles = log_root_node
+                        .find_child("BreakParticles")
+                        .and_then(|bp| bp.try_cast::<GpuParticles3D>().ok());
+                    let log_mesh = log_root_node
+                        .find_child("LogMesh")
+                        .and_then(|bp| bp.try_cast::<Node3D>().ok());
+                    if let Some(mut logmesh) = log_mesh
+                        && let Some(mut log_p) = log_particles
+                    {
+                        logmesh.set_visible(false);
+                        log_p.set_emitting(true);
+                    }
+                    let timer = self.base().get_tree().create_timer(2.0);
+                    godot::task::spawn(async move {
+                        Signal::from_object_signal(&timer, "timeout")
+                            .to_future::<()>()
+                            .await;
+                        if log_root_node.is_instance_valid() {
+                            log_root_node.call_deferred("queue_free", &[]);
+                        }
+                    });
+                }
+            }
         } else if !area_groups.contains(&format!("p{}", self.player_num)) {
             if area_name.contains("Grab") {
                 self.handle_grab(area);
@@ -261,7 +290,6 @@ impl Player {
             } else if area_name.contains("ThrowableArea") {
                 self.handle_throwable_hit(area);
             }
-        } else {
         }
     }
     #[func]
@@ -1221,6 +1249,7 @@ impl Player {
                 vec3_to_vec2(this.bind().base().get_global_position()),
             );
         }
+        this.bind_mut().thrown_by_another_player = false;
         if this.bind().can_dmg {
             this.bind_mut().damage(1);
         }
@@ -1399,10 +1428,14 @@ impl Player {
             .base()
             .find_child("PlayerLabel")
             .and_then(|f| f.find_child("HealthBar"))
-            .and_then(|hb| hb.try_cast::<Sprite3D>().ok());
+            .and_then(|hb| hb.try_cast::<Node3D>().ok());
         if let Some(ref mut healthbar) = self.player_healthbar {
             self.initial_heealthbar_scale = healthbar.get_scale().x;
-            healthbar.set_modulate(player_color_based_on_number(self.player_num));
+            if let Some(node) = healthbar.get_child(0) {
+                if let Ok(mut sprite) = node.try_cast::<Sprite3D>() {
+                    sprite.set_modulate(player_color_based_on_number(self.player_num));
+                }
+            }
         }
     }
     fn ready_duck_meter_systems(&mut self) {
@@ -1410,12 +1443,16 @@ impl Player {
             .base()
             .find_child("PlayerLabel")
             .and_then(|f| f.find_child("DuckBar"))
-            .and_then(|db| db.try_cast::<Sprite3D>().ok());
+            .and_then(|db| db.try_cast::<Node3D>().ok());
         if let Some(ref mut duckbar) = self.player_duck_bar {
             self.intitial_duck_bar_scale = duckbar.get_scale().x;
-            duckbar.set_modulate(complementary_color(player_color_based_on_number(
-                self.player_num,
-            )));
+            if let Some(node) = duckbar.get_child(0) {
+                if let Ok(mut sprite) = node.try_cast::<Sprite3D>() {
+                    sprite.set_modulate(complementary_color(player_color_based_on_number(
+                        self.player_num,
+                    )));
+                }
+            }
         }
     }
     fn ready_throwable_systems(&mut self) {
@@ -1571,11 +1608,18 @@ impl Player {
             pl.find_child("SalmonAbilityBar")
                 .and_then(|sab| sab.try_cast::<Node3D>().ok())
         });
-        if let Some(mut bar) = salmon_bar {
+        let salmon_bar_bg = this.find_child("PlayerLabel").and_then(|pl| {
+            pl.find_child("SalmonAbilityBarBG")
+                .and_then(|sab| sab.try_cast::<Node3D>().ok())
+        });
+        if let Some(mut bar) = salmon_bar
+            && let Some(mut bg) = salmon_bar_bg
+        {
             let Some(tree) = this.get_tree_or_null() else {
                 return;
             };
             bar.set_visible(true);
+            bg.set_visible(true);
             let initial_scale = bar.get_scale();
             while timer.get_time_left() > 0.0
                 && this.is_instance_valid()
@@ -1592,6 +1636,7 @@ impl Player {
                 return;
             }
             bar.set_visible(false);
+            bg.set_visible(false);
             bar.set_scale(initial_scale);
             this.bind_mut().salmon_ability_timer_entries -= 1;
             if this.bind().salmon_ability_timer_entries == 0 {
@@ -1790,11 +1835,18 @@ impl Player {
             pl.find_child("GrabPlayerReleaseBar")
                 .and_then(|gprb| gprb.try_cast::<Node3D>().ok())
         });
-        if let Some(mut bar) = grab_player_release_bar {
+        let grab_player_release_bar_bg = grabber.find_child("PlayerLabel").and_then(|pl| {
+            pl.find_child("GrabPlayerReleaseBarBG")
+                .and_then(|gprb| gprb.try_cast::<Node3D>().ok())
+        });
+        if let Some(mut bar) = grab_player_release_bar
+            && let Some(mut bg) = grab_player_release_bar_bg
+        {
             let Some(tree) = grabber.get_tree_or_null() else {
                 return;
             };
             bar.set_visible(true);
+            bg.set_visible(true);
             let initial_scale = bar.get_scale();
             while drop_timer.get_time_left() > 0.0
                 && grabber.is_instance_valid()
@@ -1811,6 +1863,7 @@ impl Player {
                 return;
             }
             bar.set_visible(false);
+            bg.set_visible(false);
             bar.set_scale(initial_scale);
         }
     }

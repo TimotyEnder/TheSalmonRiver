@@ -632,21 +632,21 @@ states/start_anim/node = SubResource("AnimationNodeAnimation_344ge")
 states/start_anim/position = Vector2(403, 145)
 transitions = ["countdown", "go", SubResource("AnimationNodeStateMachineTransition_k12tt"), "Start", "start_anim", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "start_anim", "countdown", SubResource("AnimationNodeStateMachineTransition_b3802"), "go", "exit_anim", SubResource("AnimationNodeStateMachineTransition_h1bgf")]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_344ge"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_21xkr"]
 resource_local_to_scene = true
 transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 shading_mode = 0
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_ynf5e"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_6bp64"]
 size = Vector2(0.7, 0.5)
 orientation = 2
 
 [node name="Root" type="Node3D" unique_id=236819951]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1831742261]
-transform = Transform3D(-0.01374388, -0.18587853, 0.9842664, -0.002595276, 0.98436236, 0.18586043, -1.0016608, 0, -0.013986767, 3.1130846, 4.910619, -0.015609028)
+transform = Transform3D(0.00064919336, -0.18599199, 0.98434067, -0.0034359903, 0.9843348, 0.1859931, -1.0017524, -0.003496782, -4.3026898e-08, 3.113, 4.911, 0)
 environment = SubResource("Environment_bo1nx")
 projection = 1
 fov = 74.1
@@ -700,8 +700,8 @@ parameters/conditions/count = false
 
 [node name="RoundLabel" type="MeshInstance3D" parent="RoundManager" unique_id=1855228584]
 transform = Transform3D(-7.17814e-07, 0, 10.826355, 0, 16.421669, 0, -16.421669, 0, -4.7323502e-07, 0, 4.8183417, 0)
-material_override = SubResource("StandardMaterial3D_344ge")
-mesh = SubResource("PlaneMesh_ynf5e")
+material_override = SubResource("StandardMaterial3D_21xkr")
+mesh = SubResource("PlaneMesh_6bp64")
 script = ExtResource("6_21xkr")
 text = "ROUND 0!
 0000

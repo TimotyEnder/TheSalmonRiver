@@ -282,7 +282,7 @@ default_font = ExtResource("5_n45e2")
 transform = Transform3D(0.225, 0, 0, 0, 0.225, 0, 0, 0, 0.225, 0, 1.9209647, 0)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=127069508]
-transform = Transform3D(-0.01374388, -0.18587853, 0.9842664, -0.002595276, 0.98436236, 0.18586043, -1.0016608, 0, -0.013986767, 3.1130846, 4.910619, -0.015609028)
+transform = Transform3D(0.0006480537, -0.18566546, 0.9826128, -0.0034299584, 0.9826067, 0.1856666, -0.9999938, -0.0034906429, -4.2887773e-08, 3.113, 4.911, 0)
 environment = SubResource("Environment_48xlc")
 projection = 1
 fov = 74.1

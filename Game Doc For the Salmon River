@@ -3,8 +3,10 @@ Game Doc For the Salmon River:
 
 
 todo:
-fix player grab bug, rn drop happens anyways even is player grabs another player.
-making sound system
-polish all the animations and the hitstun and knockdown systems.
+polish running animation
+think about salmon ability in terms of polish
+add sound to throw tech
+rework the UI, give it more polish
 maybe additionally go crazy with the maps and make a map select screen? or just cycle them randomly?(completely optional)
-more characters cosmetically
+more characters cosmetically (optional)
+if you throw player into log 3 dmg.

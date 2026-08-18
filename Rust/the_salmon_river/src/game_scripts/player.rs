@@ -18,6 +18,7 @@ use crate::game_scripts::throwable::Throwable;
 #[derive(GodotClass)]
 #[class(base=CharacterBody3D)]
 pub struct Player {
+    salmong_ability_timer_entries: u8,
     player_drop_timer_timed_in_hand_num: u8,
     walking_on_water: bool,
     walking_on_rock: bool,
@@ -101,6 +102,7 @@ impl ICharacterBody3D for Player {
     fn init(base: Base<CharacterBody3D>) -> Self {
         Self {
             base,
+            salmong_ability_timer_entries: 0,
             can_move: false,
             can_act: true,
             can_dmg: true,
@@ -143,7 +145,7 @@ impl ICharacterBody3D for Player {
             hit_stun_hits: 0,
             health: 9,
             max_health: 9,
-            punch_damage: 1,
+            punch_damage: 0,
             additional_next_punch_damage: 0,
             player_healthbar: None,
             initial_heealthbar_scale: 0.0,
@@ -844,7 +846,7 @@ impl Player {
             if let Some(mut root) = self.base().get_tree().get_current_scene() {
                 root.add_child(&log_obsticle);
             }
-            let timer = self.base().get_tree().create_timer(4.0);
+            let timer = self.base().get_tree().create_timer(9.0);
             godot::task::spawn(async move {
                 Signal::from_object_signal(&timer, "timeout")
                     .to_future::<()>()
@@ -940,7 +942,7 @@ impl Player {
             }
         }
     }
-    async fn hitstun_routine(mut this: Gd<Self>, knock_dir: Direction) {
+    async fn hitstun_routine(mut this: Gd<Self>, knock_dir: Direction, additional_hitstun: u8) {
         if !this.is_instance_valid() {
             return;
         }
@@ -973,6 +975,7 @@ impl Player {
                 bind.hit_stun_routine_entries += 1;
                 bind.hit_stun_hits += 1;
             }
+            bind.hit_stun_hits += additional_hitstun;
             should_knockback = bind.hit_stun_hits > 1;
             bind.hit_stun = true;
             audio_manager = bind
@@ -1202,7 +1205,7 @@ impl Player {
             );
         }
         if this.bind().can_dmg {
-            this.bind_mut().damage(2);
+            this.bind_mut().damage(1);
         }
         let (health, facing_right) = {
             let bind = this.bind();
@@ -1220,9 +1223,16 @@ impl Player {
         if !this.is_instance_valid() {
             return;
         }
+        let mut should_be_dead = false;
         let timer;
         {
             let mut bind = this.bind_mut();
+            if !from_throw {
+                bind.damage(1);
+            }
+            if bind.health <= 0 {
+                should_be_dead = true;
+            }
             bind.knock_back = true;
             let mut velocity = bind.base().get_velocity();
             bind.drop_throwable();
@@ -1235,7 +1245,9 @@ impl Player {
                 Direction::Left => velocity.z -= knock_back_force_used * 0.4,
                 Direction::Right => velocity.z += knock_back_force_used * 0.4,
             }
-            bind.base_mut().set_velocity(velocity);
+            if !should_be_dead {
+                bind.base_mut().set_velocity(velocity);
+            }
             if let Some(ref mut low_anim) = bind.lower_anim_tree {
                 low_anim.set("parameters/conditions/jump", &false.to_variant());
                 low_anim.set("parameters/conditions/idle", &false.to_variant());
@@ -1255,6 +1267,10 @@ impl Player {
                 return;
             };
             timer = tree.create_timer(1.3);
+        }
+        if should_be_dead {
+            godot::task::spawn(Self::death_routine(this, knock_dir));
+            return;
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
@@ -1501,8 +1517,9 @@ impl Player {
         self.base_mut().move_and_slide();
         return to_ret;
     }
-    fn calculate_punch_damage(&mut self) -> u8 {
+    fn calculate_punch_damage(&mut self) -> (u8, bool) {
         let mut to_ret = self.punch_damage + self.additional_next_punch_damage;
+        let instant_knock_down = self.additional_next_punch_damage > 0;
         self.additional_next_punch_damage = 0;
         if let Some(ref mut right_particles) = self.right_hand_fire_particles {
             right_particles.set_emitting(false);
@@ -1513,15 +1530,62 @@ impl Player {
         if !self.can_dmg {
             to_ret = 0;
         }
-        to_ret
+        (to_ret, instant_knock_down)
     }
-    pub fn add_additional_punch_damage(&mut self, amount: u8) {
-        self.additional_next_punch_damage += amount;
+    pub fn salmon_additional_punch_damage(&mut self, amount: u8) {
+        self.additional_next_punch_damage = amount;
+        self.salmong_ability_timer_entries += 1;
         if let Some(ref mut right_particles) = self.right_hand_fire_particles {
             right_particles.set_emitting(true);
         }
         if let Some(ref mut left_particles) = self.left_hand_fire_particles {
             left_particles.set_emitting(true);
+        }
+        let ability_timer = self.base().get_tree().create_timer(4.0);
+        let this = self.to_gd();
+        let _guard = self.base_mut();
+        godot::task::spawn(Self::salmon_bar_timer(ability_timer.clone(), this));
+    }
+    async fn salmon_bar_timer(timer: Gd<SceneTreeTimer>, mut this: Gd<Self>) {
+        if !this.is_instance_valid() {
+            return;
+        }
+        let salmon_bar = this.find_child("PlayerLabel").and_then(|pl| {
+            pl.find_child("SalmonAbilityBar")
+                .and_then(|sab| sab.try_cast::<Node3D>().ok())
+        });
+        if let Some(mut bar) = salmon_bar {
+            let Some(tree) = this.get_tree_or_null() else {
+                return;
+            };
+            bar.set_visible(true);
+            let initial_scale = bar.get_scale();
+            while timer.get_time_left() > 0.0
+                && this.is_instance_valid()
+                && this.bind().additional_next_punch_damage > 0
+            {
+                let mut scale = bar.get_scale();
+                scale.x = initial_scale.x * (timer.get_time_left() as f32 / 4.0);
+                bar.set_scale(scale);
+                Signal::from_object_signal(&tree, "process_frame")
+                    .to_future::<()>()
+                    .await;
+            }
+            if !bar.is_instance_valid() {
+                return;
+            }
+            bar.set_visible(false);
+            bar.set_scale(initial_scale);
+            this.bind_mut().salmong_ability_timer_entries -= 1;
+            if this.bind().salmong_ability_timer_entries == 0 {
+                this.bind_mut().additional_next_punch_damage = 0;
+                if let Some(ref mut right_particles) = this.bind_mut().right_hand_fire_particles {
+                    right_particles.set_emitting(false);
+                }
+                if let Some(ref mut left_particles) = this.bind_mut().left_hand_fire_particles {
+                    left_particles.set_emitting(false);
+                }
+            }
         }
     }
     fn disconnect_grabbed_connections(&mut self) {
@@ -1697,6 +1761,7 @@ impl Player {
             grabber.bind_mut().drop_throwable();
         }
     }
+
     async fn scale_release_bar_with_drop_timer(
         drop_timer: Gd<SceneTreeTimer>,
         grabber: Gd<Player>,
@@ -1742,8 +1807,13 @@ impl Player {
                 area.upcast::<Node3D>(),
                 self.hitstun_force,
             );
+            let mut additional_stun_hits = 0;
             if let Some(mut player) = player_opt {
-                self.damage(player.bind_mut().calculate_punch_damage());
+                let (dmg, knock) = player.bind_mut().calculate_punch_damage();
+                self.damage(dmg);
+                if knock {
+                    additional_stun_hits = 2;
+                }
             }
             if let Some(knock_dir) = knock_dir_opt {
                 let health = self.health;
@@ -1752,7 +1822,11 @@ impl Player {
                 if health <= 0 {
                     godot::task::spawn(Self::death_routine(this, knock_dir));
                 } else {
-                    godot::task::spawn(Self::hitstun_routine(this, knock_dir));
+                    godot::task::spawn(Self::hitstun_routine(
+                        this,
+                        knock_dir,
+                        additional_stun_hits,
+                    ));
                 }
             }
         }
@@ -1792,10 +1866,10 @@ impl Player {
                 let health = self.health;
                 let this = self.to_gd();
                 let _guard = self.base_mut();
-                if health <= 0 {
-                    godot::task::spawn(Self::death_routine(this, knock_dir));
+                if health > 0 {
+                    godot::task::spawn(Self::hitstun_routine(this, knock_dir, 1));
                 } else {
-                    godot::task::spawn(Self::hitstun_routine(this, knock_dir));
+                    godot::task::spawn(Self::death_routine(this, knock_dir));
                 }
             }
         }

@@ -18,7 +18,7 @@ size = Vector3(3.973877, 1.5585938, 19.750961)
 [sub_resource type="BoxShape3D" id="BoxShape3D_rai8w"]
 size = Vector3(3.9746094, 8.553101, 1)
 
-[sub_resource type="Image" id="Image_8vase"]
+[sub_resource type="Image" id="Image_hca03"]
 data = {
 "data": PackedByteArray("AAAAZjkx////IiA0ZjkxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
 "format": "RGB8",
@@ -29,7 +29,7 @@ data = {
 
 [sub_resource type="ImageTexture" id="ImageTexture_aquyk"]
 resource_name = "0"
-image = SubResource("Image_8vase")
+image = SubResource("Image_hca03")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_guokh"]
 resource_name = "Material.1"
@@ -174,6 +174,17 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x64rj"]
+resource_local_to_scene = true
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8vase"]
+size = Vector2(10.89, 12.065)
+orientation = 2
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_12bqr"]
 resource_local_to_scene = true
 transparency = 2
@@ -185,6 +196,9 @@ shading_mode = 0
 size = Vector2(10.89, 12.065)
 orientation = 2
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
+size = Vector3(2.6799316, 4.077118, 2.4595337)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trbyh"]
 resource_local_to_scene = true
 transparency = 2
@@ -193,11 +207,11 @@ alpha_antialiasing_mode = 0
 shading_mode = 0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_48jos"]
-size = Vector2(10.89, 12.065)
+size = Vector2(2.02, 1.235)
 orientation = 2
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
-size = Vector3(2.6799316, 4.077118, 2.4595337)
+[sub_resource type="BoxShape3D" id="BoxShape3D_ba2sc"]
+size = Vector3(2.6694946, 0.6915283, 2.4515991)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5tp7e"]
 resource_local_to_scene = true
@@ -210,27 +224,13 @@ shading_mode = 0
 size = Vector2(2.02, 1.235)
 orientation = 2
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ba2sc"]
-size = Vector3(2.6694946, 0.6915283, 2.4515991)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c2gce"]
-resource_local_to_scene = true
-transparency = 2
-alpha_scissor_threshold = 0.5
-alpha_antialiasing_mode = 0
-shading_mode = 0
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_5x8ri"]
-size = Vector2(2.02, 1.235)
-orientation = 2
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_4msx0"]
 size = Vector3(6.6301575, 1.168457, 6.9260597)
 
 [node name="VictoryScreen" type="Node3D" unique_id=1408743497]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=62926198]
-transform = Transform3D(-0.01374388, -0.18587853, 0.9842664, -0.002595276, 0.98436236, 0.18586043, -1.0016608, 0, -0.013986767, 3.4846392, 4.98078, -0.020888949)
+transform = Transform3D(0.00064919336, -0.18599199, 0.98434067, -0.0034359903, 0.9843348, 0.1859931, -1.0017524, -0.003496782, -4.3026898e-08, 3.485, 4.981, 0)
 environment = SubResource("Environment_vrh3u")
 projection = 1
 fov = 74.1
@@ -326,8 +326,8 @@ mesh = SubResource("ArrayMesh_mlpag")
 
 [node name="PointsText" type="MeshInstance3D" parent="Environment/Leaderboard" unique_id=714363536]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.10241018, 15.978907, 5.5928335)
-material_override = SubResource("StandardMaterial3D_12bqr")
-mesh = SubResource("PlaneMesh_i2gve")
+material_override = SubResource("StandardMaterial3D_x64rj")
+mesh = SubResource("PlaneMesh_8vase")
 script = ExtResource("4_dbb0g")
 text = "Player1:0
 Player2:0
@@ -343,8 +343,8 @@ metadata/_custom_type_script = "uid://cofw7sywoopgu"
 
 [node name="WinnerText" type="MeshInstance3D" parent="Environment/Leaderboard" unique_id=206161697]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.102409765, 15.978907, -4.1285863)
-material_override = SubResource("StandardMaterial3D_trbyh")
-mesh = SubResource("PlaneMesh_48jos")
+material_override = SubResource("StandardMaterial3D_12bqr")
+mesh = SubResource("PlaneMesh_i2gve")
 script = ExtResource("4_dbb0g")
 text = "PLAYER
 0
@@ -386,8 +386,8 @@ shape = SubResource("BoxShape3D_c4elv")
 
 [node name="SignLabel" type="MeshInstance3D" parent="VotingPressurePlateRematch" unique_id=504992277]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.0739098, 2.5619848, 0.021229267)
-material_override = SubResource("StandardMaterial3D_5tp7e")
-mesh = SubResource("PlaneMesh_rdbu8")
+material_override = SubResource("StandardMaterial3D_trbyh")
+mesh = SubResource("PlaneMesh_48jos")
 script = ExtResource("4_dbb0g")
 text = "CONDITION 00S
 P1|P2|P3|P4"
@@ -416,8 +416,8 @@ shape = SubResource("BoxShape3D_c4elv")
 
 [node name="SignLabel" type="MeshInstance3D" parent="VotingPressurePlateMainMenu" unique_id=1515225422]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -1.0739098, 2.5619848, 0.021229267)
-material_override = SubResource("StandardMaterial3D_c2gce")
-mesh = SubResource("PlaneMesh_5x8ri")
+material_override = SubResource("StandardMaterial3D_5tp7e")
+mesh = SubResource("PlaneMesh_rdbu8")
 script = ExtResource("4_dbb0g")
 text = "CONDITION 00S
 P1|P2|P3|P4"

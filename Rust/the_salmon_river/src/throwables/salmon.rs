@@ -18,7 +18,7 @@ impl Throwability for Salmon {
 
     fn use_ability(&mut self, player: &mut Player) {
         player.heal(2);
-        player.add_additional_punch_damage(1);
+        player.salmon_additional_punch_damage(2);
     }
 
     fn sound_effect_on_ability(&self) -> SoundEffect {

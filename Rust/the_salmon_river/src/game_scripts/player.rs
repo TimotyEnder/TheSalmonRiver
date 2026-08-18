@@ -1068,10 +1068,10 @@ impl Player {
             let mut bind = this.bind_mut();
             let audio = bind
                 .base()
-                .try_get_node_as::<AudioManager>("/root/AudioManager");
+                .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
             if let Some(mut audio) = audio {
                 audio.bind_mut().play_sound_randomized_pitch(
-                    crate::sound_utils::SoundEffect::PlayerKnockDown,
+                    crate::sound_utils::SoundEffect::ThrowTechPlayer,
                     vec3_to_vec2(bind.base().get_global_position()),
                 );
             }

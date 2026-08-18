@@ -223,17 +223,17 @@ impl Player {
             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
         if let Some(mut audio) = audio {
             if self.walking_on_water {
-                audio.bind_mut().play_sound_randomized_pitch(
+                audio.bind_mut().play_sound_debounced_randomized_pitch(
                     crate::sound_utils::SoundEffect::WaterFootStep,
                     vec3_to_vec2(self.base().get_global_position()),
                 );
             } else if self.walking_on_rock {
-                audio.bind_mut().play_sound(
+                audio.bind_mut().play_sound_debounced_randomized_pitch(
                     crate::sound_utils::SoundEffect::StoneFootStep,
                     vec3_to_vec2(self.base().get_global_position()),
                 );
             } else {
-                audio.bind_mut().play_sound_randomized_pitch(
+                audio.bind_mut().play_sound_debounced_randomized_pitch(
                     crate::sound_utils::SoundEffect::PlayerFootStep,
                     vec3_to_vec2(self.base().get_global_position()),
                 );

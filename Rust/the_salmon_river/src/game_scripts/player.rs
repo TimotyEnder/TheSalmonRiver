@@ -1,6 +1,6 @@
 use godot::classes::{
     AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, GpuParticles3D, ICharacterBody3D,
-    Input, Label3D, SceneTreeTimer, Sprite3D, Time,
+    Input, Label3D, SceneTreeTimer, Time,
 };
 use godot::global::Key;
 use godot::prelude::*;
@@ -12,6 +12,7 @@ use crate::game_scripts::duck_meter_manager::DuckMeterManager;
 use crate::game_scripts::game_utils::{
     Direction, complementary_color, player_color_based_on_number, vec3_to_vec2,
 };
+use crate::game_scripts::progress_bar::ProgressBar3D;
 use crate::game_scripts::round_manager::RoundManager;
 use crate::game_scripts::throwable::Throwable;
 
@@ -71,13 +72,11 @@ pub struct Player {
     #[var(pub)]
     player_num: u8,
     player_label: Option<Gd<Label3D>>,
-    player_healthbar: Option<Gd<Node3D>>,
-    player_duck_bar: Option<Gd<Node3D>>,
+    player_healthbar: Option<Gd<ProgressBar3D>>,
+    player_duck_bar: Option<Gd<ProgressBar3D>>,
     pub health: u8,
     punch_damage: u8,
     additional_next_punch_damage: u8,
-    initial_heealthbar_scale: f32,
-    intitial_duck_bar_scale: f32,
     max_health: u8,
     throwable_in_hand: Option<Gd<Throwable>>,
     player_throwable_in_hand: Option<Gd<Player>>,
@@ -148,8 +147,6 @@ impl ICharacterBody3D for Player {
             punch_damage: 0,
             additional_next_punch_damage: 0,
             player_healthbar: None,
-            initial_heealthbar_scale: 0.0,
-            intitial_duck_bar_scale: 0.0,
             throwable_in_hand: None,
             player_duck_bar: None,
             duck_meter_manager: DuckMeterManager::new(100, 2, 5, 50),
@@ -1428,14 +1425,11 @@ impl Player {
             .base()
             .find_child("PlayerLabel")
             .and_then(|f| f.find_child("HealthBar"))
-            .and_then(|hb| hb.try_cast::<Node3D>().ok());
+            .and_then(|hb| hb.try_cast::<ProgressBar3D>().ok());
         if let Some(ref mut healthbar) = self.player_healthbar {
-            self.initial_heealthbar_scale = healthbar.get_scale().x;
-            if let Some(node) = healthbar.get_child(0) {
-                if let Ok(mut sprite) = node.try_cast::<Sprite3D>() {
-                    sprite.set_modulate(player_color_based_on_number(self.player_num));
-                }
-            }
+            healthbar
+                .bind_mut()
+                .set_color(player_color_based_on_number(self.player_num));
         }
     }
     fn ready_duck_meter_systems(&mut self) {
@@ -1443,16 +1437,13 @@ impl Player {
             .base()
             .find_child("PlayerLabel")
             .and_then(|f| f.find_child("DuckBar"))
-            .and_then(|db| db.try_cast::<Node3D>().ok());
+            .and_then(|db| db.try_cast::<ProgressBar3D>().ok());
         if let Some(ref mut duckbar) = self.player_duck_bar {
-            self.intitial_duck_bar_scale = duckbar.get_scale().x;
-            if let Some(node) = duckbar.get_child(0) {
-                if let Ok(mut sprite) = node.try_cast::<Sprite3D>() {
-                    sprite.set_modulate(complementary_color(player_color_based_on_number(
-                        self.player_num,
-                    )));
-                }
-            }
+            duckbar
+                .bind_mut()
+                .set_color(complementary_color(player_color_based_on_number(
+                    self.player_num,
+                )));
         }
     }
     fn ready_throwable_systems(&mut self) {
@@ -1521,18 +1512,14 @@ impl Player {
     fn scale_healthbar_with_health(&mut self) {
         if let Some(ref mut healthbar) = self.player_healthbar {
             let health_ratio = self.health as f32 / self.max_health as f32;
-            let mut hb_scale = healthbar.get_scale();
-            hb_scale.x = self.initial_heealthbar_scale * health_ratio;
-            healthbar.set_scale(hb_scale);
+            healthbar.bind_mut().set_value_f0to1(health_ratio);
         }
     }
     fn scale_duckbar(&mut self) {
         if let Some(ref mut duckbar) = self.player_duck_bar {
             let duck_bar_ratio = self.duck_meter_manager.get_duck_meter() as f32
                 / self.duck_meter_manager.get_max_duck_meter() as f32;
-            let mut hb_scale = duckbar.get_scale();
-            hb_scale.x = self.initial_heealthbar_scale * duck_bar_ratio;
-            duckbar.set_scale(hb_scale);
+            duckbar.bind_mut().set_value_f0to1(duck_bar_ratio);
         }
     }
     fn apply_force_in_opposite_direction_of_area(
@@ -1606,28 +1593,20 @@ impl Player {
         }
         let salmon_bar = this.find_child("PlayerLabel").and_then(|pl| {
             pl.find_child("SalmonAbilityBar")
-                .and_then(|sab| sab.try_cast::<Node3D>().ok())
+                .and_then(|sab| sab.try_cast::<ProgressBar3D>().ok())
         });
-        let salmon_bar_bg = this.find_child("PlayerLabel").and_then(|pl| {
-            pl.find_child("SalmonAbilityBarBG")
-                .and_then(|sab| sab.try_cast::<Node3D>().ok())
-        });
-        if let Some(mut bar) = salmon_bar
-            && let Some(mut bg) = salmon_bar_bg
-        {
+        if let Some(mut bar) = salmon_bar {
             let Some(tree) = this.get_tree_or_null() else {
                 return;
             };
             bar.set_visible(true);
-            bg.set_visible(true);
-            let initial_scale = bar.get_scale();
             while timer.get_time_left() > 0.0
                 && this.is_instance_valid()
                 && this.bind().additional_next_punch_damage > 0
             {
-                let mut scale = bar.get_scale();
-                scale.x = initial_scale.x * (timer.get_time_left() as f32 / 4.0);
-                bar.set_scale(scale);
+                let ratio = timer.get_time_left() as f32 / 4.0;
+                godot_print!("{ratio}");
+                bar.bind_mut().set_value_f0to1(ratio);
                 Signal::from_object_signal(&tree, "process_frame")
                     .to_future::<()>()
                     .await;
@@ -1636,8 +1615,7 @@ impl Player {
                 return;
             }
             bar.set_visible(false);
-            bg.set_visible(false);
-            bar.set_scale(initial_scale);
+            bar.bind_mut().reset();
             this.bind_mut().salmon_ability_timer_entries -= 1;
             if this.bind().salmon_ability_timer_entries == 0 {
                 this.bind_mut().additional_next_punch_damage = 0;
@@ -1833,28 +1811,20 @@ impl Player {
         }
         let grab_player_release_bar = grabber.find_child("PlayerLabel").and_then(|pl| {
             pl.find_child("GrabPlayerReleaseBar")
-                .and_then(|gprb| gprb.try_cast::<Node3D>().ok())
+                .and_then(|gprb| gprb.try_cast::<ProgressBar3D>().ok())
         });
-        let grab_player_release_bar_bg = grabber.find_child("PlayerLabel").and_then(|pl| {
-            pl.find_child("GrabPlayerReleaseBarBG")
-                .and_then(|gprb| gprb.try_cast::<Node3D>().ok())
-        });
-        if let Some(mut bar) = grab_player_release_bar
-            && let Some(mut bg) = grab_player_release_bar_bg
-        {
+        if let Some(mut bar) = grab_player_release_bar {
             let Some(tree) = grabber.get_tree_or_null() else {
                 return;
             };
             bar.set_visible(true);
-            bg.set_visible(true);
-            let initial_scale = bar.get_scale();
             while drop_timer.get_time_left() > 0.0
                 && grabber.is_instance_valid()
                 && grabber.bind().player_throwable_in_hand.is_some()
             {
-                let mut scale = bar.get_scale();
-                scale.x = initial_scale.x * (drop_timer.get_time_left() as f32 / 2.0);
-                bar.set_scale(scale);
+                let ratio = drop_timer.get_time_left() as f32 / 2.0;
+                godot_print!("{ratio}");
+                bar.bind_mut().set_value_f0to1(ratio);
                 Signal::from_object_signal(&tree, "process_frame")
                     .to_future::<()>()
                     .await;
@@ -1863,8 +1833,7 @@ impl Player {
                 return;
             }
             bar.set_visible(false);
-            bg.set_visible(false);
-            bar.set_scale(initial_scale);
+            bar.bind_mut().reset();
         }
     }
     fn handle_punch(&mut self, area: Gd<Area3D>) {

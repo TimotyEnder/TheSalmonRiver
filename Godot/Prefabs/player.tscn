@@ -3,9 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://bhuf3joptvchs" path="res://VoxelAssets/Bear/bear_0.png" id="1_juxdh"]
 [ext_resource type="PackedScene" uid="uid://dpem28diunogk" path="res://VoxelAssets/Duck/duck0.gltf" id="2_5wxv7"]
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="2_juxdh"]
-[ext_resource type="Texture2D" uid="uid://tklvai5yxi34" path="res://SpriteAssets/Background/bg.png" id="2_y5hcb"]
 [ext_resource type="PackedScene" uid="uid://bps7qinxrsfpy" path="res://VoxelAssets/3DUI/ThrowableEffectIcons/IceChunkEffect.gltf" id="3_2nftw"]
 [ext_resource type="PackedScene" uid="uid://bjujd6eys7lty" path="res://VoxelAssets/3DUI/ProgressBarBG.gltf" id="4_4qbli"]
+[ext_resource type="Texture2D" uid="uid://07xuh6ck618q" path="res://SpriteAssets/progress_bar.jpeg" id="4_08u7w"]
 [ext_resource type="PackedScene" uid="uid://ftcujcmjbrws" path="res://VoxelAssets/3DUI/ThrowableEffectIcons/LogEffect.gltf" id="4_knrd4"]
 [ext_resource type="PackedScene" uid="uid://bfh0mqb4wbyv6" path="res://VoxelAssets/3DUI/ThrowableEffectIcons/SalmonEffect.gltf" id="5_hck1p"]
 
@@ -32,7 +32,7 @@ color_ramp = SubResource("GradientTexture1D_2nftw")
 
 [sub_resource type="Skin" id="Skin_knrd4"]
 
-[sub_resource type="Image" id="Image_08u7w"]
+[sub_resource type="Image" id="Image_kgmex"]
 data = {
 "data": PackedByteArray("AAAAZjMAZjkxmWYA////ZjMA////ZjkxAAAA7u7uAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
 "format": "RGB8",
@@ -43,7 +43,7 @@ data = {
 
 [sub_resource type="ImageTexture" id="ImageTexture_a06x1"]
 resource_name = "0"
-image = SubResource("Image_08u7w")
+image = SubResource("Image_kgmex")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lysgr"]
 resource_name = "Material.1"
@@ -3072,10 +3072,10 @@ tracks/0/path = NodePath("InHandAbilityContainer:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
 "update": 0,
-"values": [Vector3(0, 0.77, 0), Vector3(0, 0.77, 0)]
+"values": []
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -3111,10 +3111,10 @@ tracks/0/path = NodePath("InHandAbilityContainer:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
 "update": 0,
-"values": [Vector3(0, 0.77, 0)]
+"values": []
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -3370,111 +3370,123 @@ shape = SubResource("CapsuleShape3D_juxdh")
 debug_color = Color(0.3264353, 0.6243242, 9.62615e-07, 1)
 
 [node name="PlayerLabel" type="Label3D" parent="." unique_id=2045841596]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 3.6388261, 0)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 3.6388261, -0.04098952)
 modulate = Color(1, 1, 1, 0.49019608)
 text = "P0"
 font = ExtResource("2_juxdh")
 font_size = 185
 
-[node name="HealthBar" type="Node3D" parent="PlayerLabel" unique_id=1088014172]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43368876, -0.40033007, -1.8957138e-08)
+[node name="HealthBar" type="ProgressBar3D" parent="PlayerLabel" unique_id=491961206]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.062897325, -0.3348763, -2.7493294e-09)
 
-[node name="HealthBarBar" type="Sprite3D" parent="PlayerLabel/HealthBar" unique_id=754399058]
-transform = Transform3D(2.3810105, 0, 0, 0, 0.40526935, 0, -7.1054274e-15, 0, 1, 0.45941582, -0.008031368, 0.033764977)
-gi_mode = 0
-gi_lightmap_texel_scale = 0.01
-modulate = Color(0.69879425, 0, 0.24260226, 1)
-pixel_size = 0.0001
-alpha_scissor_threshold = 0.53
-texture = ExtResource("2_y5hcb")
+[node name="3DBG" parent="PlayerLabel/HealthBar" unique_id=1132235263 instance=ExtResource("4_4qbli")]
+transform = Transform3D(-1.5298985e-09, 0, -0.035, 0, 0.034999996, 0, 0.034999996, 0, -1.5298985e-09, 0.016947335, -0.47874546, 0.5341458)
 
-[node name="HealthBarBG" type="Sprite3D" parent="PlayerLabel" unique_id=1686891630]
-transform = Transform3D(2.554763, 0, 0, 0, 0.718859, 0, -1.4210855e-14, 0, 1, 0.0329545, -0.4244728, -0.0007824884)
-gi_mode = 0
-gi_lightmap_texel_scale = 0.01
+[node name="MainBar" type="Node3D" parent="PlayerLabel/HealthBar" unique_id=1088014172]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4716984, 0.0021090508, -2.0618595e-08)
+
+[node name="Sprite3D" type="Sprite3D" parent="PlayerLabel/HealthBar/MainBar" unique_id=1206544488]
+transform = Transform3D(1.5208205, 0, 0, 0, 0.36839658, 0, 2.842171e-14, 0, 1, 0.4894332, 0, -0.004704129)
+modulate = Color(0.87640953, 0, 0.06524023, 1)
+texture = ExtResource("4_08u7w")
+
+[node name="DiffBar" type="Node3D" parent="PlayerLabel/HealthBar" unique_id=101265676]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4716984, 0.0021090508, -2.0618595e-08)
+
+[node name="Sprite3D" type="Sprite3D" parent="PlayerLabel/HealthBar/DiffBar" unique_id=733982713]
+transform = Transform3D(1.5208205, 0, 0, 0, 0.36839658, 0, 2.842171e-14, 0, 1, 0.4894332, 0, -0.007904064)
+modulate = Color(0.5942687, 0.44427982, 1.92523e-07, 1)
+texture = ExtResource("4_08u7w")
+
+[node name="BG" type="Sprite3D" parent="PlayerLabel/HealthBar" unique_id=825379508]
+transform = Transform3D(1.5377897, 0, 0, 0, 0.32685423, 0, 0, 0, 1, 0.018032432, -0.0062720776, -0.02038452)
 modulate = Color(0, 0, 0, 1)
-pixel_size = 0.0001
-alpha_scissor_threshold = 0.53
-texture = ExtResource("2_y5hcb")
+texture = ExtResource("4_08u7w")
 
-[node name="ProgressBarBG" parent="PlayerLabel/HealthBarBG" unique_id=1132235263 instance=ExtResource("4_4qbli")]
-transform = Transform3D(-5.9884164e-10, 0, -0.0136999, 0, 0.048688263, 0, 0.034999996, 0, -1.5298988e-09, 0.00063329935, -0.63532877, 0.53492826)
+[node name="DuckBar" type="ProgressBar3D" parent="PlayerLabel" unique_id=1252198231]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.062897325, -0.54819775, -2.7493294e-09)
 
-[node name="DuckBar" type="Node3D" parent="PlayerLabel" unique_id=558911723]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43368876, -0.60890675, -1.8957138e-08)
+[node name="3DBG" parent="PlayerLabel/DuckBar" unique_id=1482430489 instance=ExtResource("4_4qbli")]
+transform = Transform3D(-1.5298985e-09, 0, -0.035, 0, 0.034999996, 0, 0.034999996, 0, -1.5298985e-09, 0.016947335, -0.47874546, 0.5341458)
 
-[node name="HealthBarBar" type="Sprite3D" parent="PlayerLabel/DuckBar" unique_id=1503438792]
-transform = Transform3D(2.3810105, 0, 0, 0, 0.40526935, 0, -7.1054274e-15, 0, 1, 0.45941582, -0.008031368, 0.033764977)
-gi_mode = 0
-gi_lightmap_texel_scale = 0.01
-modulate = Color(1.2754649e-06, 0.44202963, 0.32956183, 1)
-pixel_size = 0.0001
-alpha_scissor_threshold = 0.53
-texture = ExtResource("2_y5hcb")
+[node name="MainBar" type="Node3D" parent="PlayerLabel/DuckBar" unique_id=1327309393]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4716984, 0.0021090508, -2.0618595e-08)
 
-[node name="DuckBarBG" type="Sprite3D" parent="PlayerLabel" unique_id=315638965]
-transform = Transform3D(2.554763, 0, 0, 0, 0.718859, 0, -1.4210855e-14, 0, 1, 0.0329545, -0.6330495, -0.0007824884)
-gi_mode = 0
-gi_lightmap_texel_scale = 0.01
+[node name="Sprite3D" type="Sprite3D" parent="PlayerLabel/DuckBar/MainBar" unique_id=1686689905]
+transform = Transform3D(1.5208205, 0, 0, 0, 0.36839658, 0, 2.842171e-14, 0, 1, 0.4894332, 0, -0.004704129)
+modulate = Color(0.87640953, 0, 0.06524023, 1)
+texture = ExtResource("4_08u7w")
+
+[node name="DiffBar" type="Node3D" parent="PlayerLabel/DuckBar" unique_id=2054467181]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4716984, 0.0021090508, -2.0618595e-08)
+
+[node name="Sprite3D" type="Sprite3D" parent="PlayerLabel/DuckBar/DiffBar" unique_id=206154043]
+transform = Transform3D(1.5208205, 0, 0, 0, 0.36839658, 0, 2.842171e-14, 0, 1, 0.4894332, 0, -0.007904064)
+modulate = Color(0.5942687, 0.44427982, 1.92523e-07, 1)
+texture = ExtResource("4_08u7w")
+
+[node name="BG" type="Sprite3D" parent="PlayerLabel/DuckBar" unique_id=1428311228]
+transform = Transform3D(1.5377897, 0, 0, 0, 0.32685423, 0, 0, 0, 1, 0.018032432, -0.0062720776, -0.02038452)
 modulate = Color(0, 0, 0, 1)
-pixel_size = 0.0001
-alpha_scissor_threshold = 0.53
-texture = ExtResource("2_y5hcb")
+texture = ExtResource("4_08u7w")
 
-[node name="ProgressBarBG" parent="PlayerLabel/DuckBarBG" unique_id=167428739 instance=ExtResource("4_4qbli")]
-transform = Transform3D(-5.9884164e-10, 0, -0.0136999, 0, 0.048688263, 0, 0.034999996, 0, -1.5298988e-09, 0.00063329935, -0.63532877, 0.53492826)
-
-[node name="GrabPlayerReleaseBarBG" type="Sprite3D" parent="PlayerLabel" unique_id=1243273173]
-transform = Transform3D(0.011147545, -0.7188, -0.012066751, 2.5547388, 0.0031369233, 6.072013e-11, 0.00013452467, -0.008674229, 0.9999272, 0.80092335, -1.3175478, -0.255927)
-visible = false
-gi_mode = 0
-gi_lightmap_texel_scale = 0.01
-modulate = Color(0, 0, 0, 1)
-pixel_size = 0.0001
-alpha_scissor_threshold = 0.53
-texture = ExtResource("2_y5hcb")
-
-[node name="ProgressBarBG" parent="PlayerLabel/GrabPlayerReleaseBarBG" unique_id=815009637 instance=ExtResource("4_4qbli")]
-transform = Transform3D(-1.5298984e-09, 0, -0.0136999, 0, 0.048688263, 0, 0.034999996, 0, -5.9884164e-10, 0.00063329935, -0.63532877, 0.53492826)
-
-[node name="GrabPlayerReleaseBar" type="Node3D" parent="PlayerLabel" unique_id=609727424]
-transform = Transform3D(0.0043634353, -0.9999177, -0.012066781, 0.9999907, 0.0043637534, 1.1841492e-10, 5.2656294e-05, -0.0120666465, 0.99992746, 0.77844167, -1.7451801, -0.13481715)
+[node name="GrabPlayerReleaseBar" type="ProgressBar3D" parent="PlayerLabel" unique_id=1750032484]
+diff_bar_enabled = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0866389, -0.45464468, 4.7498496e-08)
 visible = false
 
-[node name="HealthBarBar" type="Sprite3D" parent="PlayerLabel/GrabPlayerReleaseBar" unique_id=1676405212]
-transform = Transform3D(2.3810105, 0, 0, 0, 0.40526935, 0, -7.1054274e-15, 0, 1, 0.45941582, -0.008031368, 0.033764977)
-gi_mode = 0
-gi_lightmap_texel_scale = 0.01
-modulate = Color(0.014576591, 0.3626463, 0.7216128, 1)
-pixel_size = 0.0001
-alpha_scissor_threshold = 0.53
-texture = ExtResource("2_y5hcb")
+[node name="3DBG" parent="PlayerLabel/GrabPlayerReleaseBar" unique_id=176403503 instance=ExtResource("4_4qbli")]
+transform = Transform3D(-1.5298985e-09, 0, -0.035, 0, 0.034999996, 0, 0.034999996, 0, -1.5298985e-09, 0.016947335, -0.47874546, 0.5341458)
 
-[node name="SalmonAbilityBarBG" type="Sprite3D" parent="PlayerLabel" unique_id=29825210]
-transform = Transform3D(0.011147545, -0.7188, -0.012066751, 2.5547388, 0.0031369233, 6.072013e-11, 0.00013452467, -0.008674229, 0.9999272, -0.76708496, -1.2786465, -0.20060042)
-visible = false
-gi_mode = 0
-gi_lightmap_texel_scale = 0.01
+[node name="MainBar" type="Node3D" parent="PlayerLabel/GrabPlayerReleaseBar" unique_id=1474800655]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4716984, 0.0021090508, -2.0618595e-08)
+
+[node name="Sprite3D" type="Sprite3D" parent="PlayerLabel/GrabPlayerReleaseBar/MainBar" unique_id=1849737714]
+transform = Transform3D(1.5208205, 0, 0, 0, 0.36839658, 0, 2.842171e-14, 0, 1, 0.4894332, 0, -0.004704129)
+modulate = Color(0.06074828, 0.47479004, 0.8558395, 1)
+texture = ExtResource("4_08u7w")
+
+[node name="DiffBar" type="Node3D" parent="PlayerLabel/GrabPlayerReleaseBar" unique_id=1610171849]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4716984, 0.0021090508, -2.0618595e-08)
+
+[node name="Sprite3D" type="Sprite3D" parent="PlayerLabel/GrabPlayerReleaseBar/DiffBar" unique_id=1874329033]
+transform = Transform3D(1.5208205, 0, 0, 0, 0.36839658, 0, 2.842171e-14, 0, 1, 0.4894332, 0, -0.007904064)
+modulate = Color(0.30340254, 0.6287265, 0.9887056, 1)
+texture = ExtResource("4_08u7w")
+
+[node name="BG" type="Sprite3D" parent="PlayerLabel/GrabPlayerReleaseBar" unique_id=1482151180]
+transform = Transform3D(1.5377897, 0, 0, 0, 0.32685423, 0, 0, 0, 1, 0.018032432, -0.0062720776, -0.02038452)
 modulate = Color(0, 0, 0, 1)
-pixel_size = 0.0001
-alpha_scissor_threshold = 0.53
-texture = ExtResource("2_y5hcb")
+texture = ExtResource("4_08u7w")
 
-[node name="ProgressBarBG" parent="PlayerLabel/SalmonAbilityBarBG" unique_id=1926519597 instance=ExtResource("4_4qbli")]
-transform = Transform3D(-1.5298984e-09, 0, -0.0136999, 0, 0.048688263, 0, 0.034999996, 0, -5.9884164e-10, 0.00063329935, -0.63532877, 0.53492826)
-
-[node name="SalmonAbilityBar" type="Node3D" parent="PlayerLabel" unique_id=574963505]
-transform = Transform3D(0.004188888, -0.99980855, -0.012066781, 0.9599887, 0.004363277, 1.1841492e-10, 5.0549916e-05, -0.012065329, 0.99992746, -0.79327166, -1.7451801, -0.060193267)
+[node name="SalmonAbilityBar" type="ProgressBar3D" parent="PlayerLabel" unique_id=1488849827]
+diff_bar_enabled = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2317548, -0.45464468, -5.384171e-08)
 visible = false
 
-[node name="HealthBarBar" type="Sprite3D" parent="PlayerLabel/SalmonAbilityBar" unique_id=1943489844]
-transform = Transform3D(2.3810105, 0, 0, 0, 0.40526935, 0, -7.1054274e-15, 0, 1, 0.45941582, -0.008031368, 0.033764977)
-gi_mode = 0
-gi_lightmap_texel_scale = 0.01
-modulate = Color(0.57972074, 0.2747766, 0, 1)
-pixel_size = 0.0001
-alpha_scissor_threshold = 0.53
-texture = ExtResource("2_y5hcb")
+[node name="3DBG" parent="PlayerLabel/SalmonAbilityBar" unique_id=1790613527 instance=ExtResource("4_4qbli")]
+transform = Transform3D(-1.5298985e-09, 0, -0.035, 0, 0.034999996, 0, 0.034999996, 0, -1.5298985e-09, 0.016947335, -0.47874546, 0.5341458)
+
+[node name="MainBar" type="Node3D" parent="PlayerLabel/SalmonAbilityBar" unique_id=1441010144]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4716984, 0.0021090508, -2.0618595e-08)
+
+[node name="Sprite3D" type="Sprite3D" parent="PlayerLabel/SalmonAbilityBar/MainBar" unique_id=1004444741]
+transform = Transform3D(1.5208205, 0, 0, 0, 0.36839658, 0, 2.842171e-14, 0, 1, 0.4894332, 0, -0.004704129)
+modulate = Color(0.9041917, 0.2986941, 9.62615e-07, 1)
+texture = ExtResource("4_08u7w")
+
+[node name="DiffBar" type="Node3D" parent="PlayerLabel/SalmonAbilityBar" unique_id=1084412260]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4716984, 0.0021090508, -2.0618595e-08)
+
+[node name="Sprite3D" type="Sprite3D" parent="PlayerLabel/SalmonAbilityBar/DiffBar" unique_id=200842278]
+transform = Transform3D(1.5208205, 0, 0, 0, 0.36839658, 0, 2.842171e-14, 0, 1, 0.4894332, 0, -0.007904064)
+modulate = Color(1, 0.5183807, 0.367992, 1)
+texture = ExtResource("4_08u7w")
+
+[node name="BG" type="Sprite3D" parent="PlayerLabel/SalmonAbilityBar" unique_id=1975758198]
+transform = Transform3D(1.5377897, 0, 0, 0, 0.32685423, 0, 0, 0, 1, 0.018032432, -0.0062720776, -0.02038452)
+modulate = Color(0, 0, 0, 1)
+texture = ExtResource("4_08u7w")
 
 [node name="InHandAbilityContainer" type="MeshInstance3D" parent="PlayerLabel" unique_id=1198879728]
 transform = Transform3D(0.812523, 0, 0, 0, 0.812523, 0, 0, 0, 0.5, 0, 0.77, 0)

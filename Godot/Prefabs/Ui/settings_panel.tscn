@@ -1,9 +1,58 @@
 [gd_scene format=3 uid="uid://cbtssbhec4a6s"]
 
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="1_lmfad"]
+[ext_resource type="Texture2D" uid="uid://07xuh6ck618q" path="res://SpriteAssets/progress_bar.jpeg" id="1_ydf4m"]
+[ext_resource type="Texture2D" uid="uid://7162q2h0fafq" path="res://SpriteAssets/UI/buttonSquare_brown.png" id="3_wx3xd"]
+[ext_resource type="Texture2D" uid="uid://jkoi0wjhfttk" path="res://SpriteAssets/UI/buttonSquare_brown_pressed.png" id="4_cqqpn"]
+[ext_resource type="Texture2D" uid="uid://dx2ynseyn3ntg" path="res://SpriteAssets/UI/arrowBrown_right.png" id="5_a0iur"]
+[ext_resource type="Texture2D" uid="uid://csjqybxstqdpm" path="res://SpriteAssets/UI/arrowBrown_left.png" id="6_ydf4m"]
+[ext_resource type="Texture2D" uid="uid://dcvjuu38tdkom" path="res://SpriteAssets/UI/iconCross_brown.png" id="7_ydf4m"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lmfad"]
-bg_color = Color(0.16206557, 0.1620656, 0.16206548, 1)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pakvc"]
+texture = ExtResource("1_ydf4m")
+modulate_color = Color(0.1764706, 0.22352941, 0.2784314, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cqqpn"]
+texture = ExtResource("1_ydf4m")
+modulate_color = Color(0.13725491, 0.1764706, 0.22352941, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oiq4k"]
+texture = ExtResource("3_wx3xd")
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3850x"]
+content_margin_top = 4.0
+texture = ExtResource("4_cqqpn")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5t6oc"]
+texture = ExtResource("3_wx3xd")
+expand_margin_bottom = 4.0
+modulate_color = Color(0.86036915, 0.8603692, 0.8603692, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6myxc"]
+content_margin_top = 4.0
+texture = ExtResource("4_cqqpn")
+expand_margin_top = 4.0
+modulate_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1djcj"]
+texture = ExtResource("3_wx3xd")
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ag7vc"]
+content_margin_top = 4.0
+texture = ExtResource("4_cqqpn")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tq4mq"]
+texture = ExtResource("3_wx3xd")
+expand_margin_bottom = 4.0
+modulate_color = Color(0.86036915, 0.8603692, 0.8603692, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xp13l"]
+content_margin_top = 4.0
+texture = ExtResource("4_cqqpn")
+expand_margin_top = 4.0
+modulate_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
 
 [node name="SettingsCanvas" type="CanvasLayer" unique_id=1298181767]
 
@@ -15,7 +64,7 @@ offset_left = 473.0
 offset_top = 71.0
 offset_right = -471.0
 offset_bottom = -42.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_lmfad")
+theme_override_styles/panel = SubResource("StyleBoxTexture_pakvc")
 
 [node name="TopBar" type="Panel" parent="SettingsPanel" unique_id=324450087]
 layout_mode = 1
@@ -23,14 +72,16 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 106.0
 grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_cqqpn")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="SettingsPanel/TopBar" unique_id=39769472]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 1.0
 offset_right = -1.0
-offset_bottom = 2.0
+offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = ExtResource("1_lmfad")
@@ -41,9 +92,9 @@ vertical_alignment = 1
 
 [node name="RichTextLabel" type="RichTextLabel" parent="SettingsPanel" unique_id=1975679185]
 layout_mode = 1
-offset_left = 20.000008
+offset_left = 111.00001
 offset_top = 145.0
-offset_right = 448.0
+offset_right = 539.0
 offset_bottom = 248.0
 theme_override_fonts/normal_font = ExtResource("1_lmfad")
 theme_override_font_sizes/normal_font_size = 80
@@ -53,9 +104,9 @@ vertical_alignment = 1
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="SettingsPanel" unique_id=27755802]
 layout_mode = 0
-offset_left = 20.000008
+offset_left = 111.00001
 offset_top = 276.0
-offset_right = 448.0
+offset_right = 539.0
 offset_bottom = 379.0
 theme_override_fonts/normal_font = ExtResource("1_lmfad")
 theme_override_font_sizes/normal_font_size = 80
@@ -69,9 +120,9 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.56600004
 anchor_right = 0.56600004
-offset_left = -106.416016
+offset_left = -15.416016
 offset_top = 133.0
-offset_right = 88.583984
+offset_right = 179.58398
 offset_bottom = 267.0
 
 [node name="Label" type="RichTextLabel" parent="SettingsPanel/StringSelectorWindowType" unique_id=217610322]
@@ -86,18 +137,23 @@ text = "LONGEST WINDOW TYPE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RightButton" type="Button" parent="SettingsPanel/StringSelectorWindowType" unique_id=1582594410]
+[node name="RightButton" type="Button" parent="SettingsPanel/StringSelectorWindowType" unique_id=1848821414]
 layout_mode = 0
-offset_left = 312.0
+offset_left = 318.0
 offset_top = 34.0
-offset_right = 348.0
+offset_right = 354.0
 offset_bottom = 103.0
 theme_override_fonts/font = ExtResource("1_lmfad")
 theme_override_font_sizes/font_size = 60
-text = ">"
+theme_override_styles/normal = SubResource("StyleBoxTexture_oiq4k")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3850x")
+theme_override_styles/hover = SubResource("StyleBoxTexture_5t6oc")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6myxc")
+icon = ExtResource("5_a0iur")
 alignment = 2
+icon_alignment = 1
 
-[node name="LeftButton" type="Button" parent="SettingsPanel/StringSelectorWindowType" unique_id=788992749]
+[node name="LeftButton" type="Button" parent="SettingsPanel/StringSelectorWindowType" unique_id=378049543]
 layout_mode = 0
 offset_left = 15.0
 offset_top = 33.0
@@ -105,8 +161,13 @@ offset_right = 51.0
 offset_bottom = 102.0
 theme_override_fonts/font = ExtResource("1_lmfad")
 theme_override_font_sizes/font_size = 60
-text = "<"
+theme_override_styles/normal = SubResource("StyleBoxTexture_oiq4k")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3850x")
+theme_override_styles/hover = SubResource("StyleBoxTexture_5t6oc")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6myxc")
+icon = ExtResource("6_ydf4m")
 alignment = 2
+icon_alignment = 1
 
 [node name="StringSelectorResolution" type="StringLabelSelector" parent="SettingsPanel" unique_id=1339105457]
 possible_values = PackedStringArray("1280x720", "1600x900", "1920x1080", "2560x1440", "3840x2160")
@@ -114,9 +175,9 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.56600004
 anchor_right = 0.56600004
-offset_left = -106.416016
+offset_left = -15.416016
 offset_top = 268.0
-offset_right = 88.583984
+offset_right = 179.58398
 offset_bottom = 402.0
 
 [node name="Label" type="RichTextLabel" parent="SettingsPanel/StringSelectorResolution" unique_id=762872536]
@@ -131,40 +192,57 @@ text = "0000x0000"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RightButton" type="Button" parent="SettingsPanel/StringSelectorResolution" unique_id=132457863]
+[node name="RightButton" type="Button" parent="SettingsPanel/StringSelectorResolution" unique_id=1083037807]
 layout_mode = 0
-offset_left = 312.0
+offset_left = 291.0
 offset_top = 34.0
-offset_right = 348.0
+offset_right = 327.0
 offset_bottom = 103.0
 theme_override_fonts/font = ExtResource("1_lmfad")
 theme_override_font_sizes/font_size = 60
-text = ">"
+theme_override_styles/normal = SubResource("StyleBoxTexture_oiq4k")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3850x")
+theme_override_styles/hover = SubResource("StyleBoxTexture_5t6oc")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6myxc")
+icon = ExtResource("5_a0iur")
 alignment = 2
+icon_alignment = 1
 
-[node name="LeftButton" type="Button" parent="SettingsPanel/StringSelectorResolution" unique_id=435351257]
+[node name="LeftButton" type="Button" parent="SettingsPanel/StringSelectorResolution" unique_id=1147500601]
 layout_mode = 0
-offset_left = 15.0
+offset_left = 34.0
 offset_top = 33.0
-offset_right = 51.0
+offset_right = 70.0
 offset_bottom = 102.0
 theme_override_fonts/font = ExtResource("1_lmfad")
 theme_override_font_sizes/font_size = 60
-text = "<"
+theme_override_styles/normal = SubResource("StyleBoxTexture_oiq4k")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_3850x")
+theme_override_styles/hover = SubResource("StyleBoxTexture_5t6oc")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_6myxc")
+icon = ExtResource("6_ydf4m")
 alignment = 2
+icon_alignment = 1
 
-[node name="CloseButton" type="PanelEnablingButton" parent="SettingsPanel" unique_id=1840017135 node_paths=PackedStringArray("panel_to_enable")]
+[node name="CloseButton" type="PanelEnablingButton" parent="SettingsPanel" unique_id=1433878706 node_paths=PackedStringArray("panel_to_enable")]
 panel_to_enable = NodePath("..")
 disable_panel = true
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
+anchors_preset = -1
 anchor_right = 1.0
-offset_left = -118.0
-offset_top = -3.0
-offset_bottom = 106.0
-grow_horizontal = 0
+anchor_bottom = 0.142
+offset_left = 869.0
+offset_top = -6.0
+offset_right = -1.0
+offset_bottom = -30.950607
+theme_override_constants/icon_max_width = 59
 theme_override_fonts/font = ExtResource("1_lmfad")
 theme_override_font_sizes/font_size = 65
-text = "X"
+theme_override_icons/icon = ExtResource("7_ydf4m")
+theme_override_styles/normal = SubResource("StyleBoxTexture_1djcj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ag7vc")
+theme_override_styles/hover = SubResource("StyleBoxTexture_tq4mq")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_xp13l")
+icon = ExtResource("7_ydf4m")
 icon_alignment = 1
+expand_icon = true

@@ -106,7 +106,6 @@ impl ProgressBar3D {
             scale.x = self.initial_scale.x * val;
             main.set_scale(scale);
             let scale = main.get_scale();
-            godot_print!("{scale}");
         }
     }
     pub fn reset(&mut self) {

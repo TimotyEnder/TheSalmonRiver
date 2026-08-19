@@ -41,7 +41,7 @@ impl IButton for SettingsButton {
         }
         let this = self.to_gd();
         self.signals()
-            .button_down()
+            .button_up()
             .connect_other(&this, Self::on_click);
     }
 }

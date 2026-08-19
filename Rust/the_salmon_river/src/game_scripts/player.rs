@@ -251,7 +251,6 @@ impl Player {
         } else if area_name.contains("Pressure") {
             self.walking_on_rock = true;
         } else if area_name.contains("Log") {
-            godot_print!("LOG!");
             if self.thrown_by_another_player {
                 self.damage(3);
                 let log_root_node_opt = area.get_parent().and_then(|f| f.try_cast::<Node3D>().ok());
@@ -515,7 +514,7 @@ impl Player {
         let grounded = self.base().is_on_floor();
         let side_velocity = self.base().get_velocity().z;
         if let Some(ref mut anim_tree) = self.lower_anim_tree {
-            if !grounded {
+            if !grounded && self.can_move {
                 anim_tree.set("parameters/conditions/jump", &true.to_variant());
                 anim_tree.set("parameters/conditions/idle", &false.to_variant());
                 anim_tree.set("parameters/conditions/run", &false.to_variant());
@@ -526,12 +525,12 @@ impl Player {
                     anim_tree.set("parameters/conditions/idle", &false.to_variant());
                     anim_tree.set("parameters/conditions/run", &false.to_variant());
                     anim_tree.set("parameters/conditions/duck", &true.to_variant());
-                } else if side_velocity.abs() > 0.0 {
+                } else if side_velocity.abs() > 0.0 && self.can_move {
                     anim_tree.set("parameters/conditions/jump", &false.to_variant());
                     anim_tree.set("parameters/conditions/idle", &false.to_variant());
                     anim_tree.set("parameters/conditions/run", &true.to_variant());
                     anim_tree.set("parameters/conditions/duck", &false.to_variant());
-                } else {
+                } else if self.can_move {
                     anim_tree.set("parameters/conditions/jump", &false.to_variant());
                     anim_tree.set("parameters/conditions/idle", &true.to_variant());
                     anim_tree.set("parameters/conditions/run", &false.to_variant());
@@ -1605,7 +1604,6 @@ impl Player {
                 && this.bind().additional_next_punch_damage > 0
             {
                 let ratio = timer.get_time_left() as f32 / 4.0;
-                godot_print!("{ratio}");
                 bar.bind_mut().set_value_f0to1(ratio);
                 Signal::from_object_signal(&tree, "process_frame")
                     .to_future::<()>()
@@ -1823,7 +1821,6 @@ impl Player {
                 && grabber.bind().player_throwable_in_hand.is_some()
             {
                 let ratio = drop_timer.get_time_left() as f32 / 2.0;
-                godot_print!("{ratio}");
                 bar.bind_mut().set_value_f0to1(ratio);
                 Signal::from_object_signal(&tree, "process_frame")
                     .to_future::<()>()

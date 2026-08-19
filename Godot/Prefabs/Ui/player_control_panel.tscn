@@ -1,12 +1,38 @@
 [gd_scene format=3 uid="uid://b7ev6e6uqnor3"]
 
+[ext_resource type="Texture2D" uid="uid://c5quwm33vrxy1" path="res://SpriteAssets/UI/panel_brown.png" id="1_al7co"]
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="1_h8mub"]
+[ext_resource type="Texture2D" uid="uid://7162q2h0fafq" path="res://SpriteAssets/UI/buttonSquare_brown.png" id="3_al7co"]
+[ext_resource type="Texture2D" uid="uid://jkoi0wjhfttk" path="res://SpriteAssets/UI/buttonSquare_brown_pressed.png" id="4_y3j07"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cp0ys"]
+texture = ExtResource("1_al7co")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ce3w2"]
+texture = ExtResource("3_al7co")
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n45e2"]
+content_margin_top = 4.0
+texture = ExtResource("4_y3j07")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_opfnp"]
+texture = ExtResource("3_al7co")
+expand_margin_bottom = 4.0
+modulate_color = Color(0.86036915, 0.8603692, 0.8603692, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y3j07"]
+content_margin_top = 4.0
+texture = ExtResource("4_y3j07")
+expand_margin_top = 4.0
+modulate_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
 
 [node name="PlayerControl" type="PlayerControlsPanel" unique_id=1837124694]
 custom_minimum_size = Vector2(242, 477.74)
 custom_maximum_size = Vector2(600, -1)
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxTexture_cp0ys")
 
 [node name="PlayerLabel" type="RichTextLabel" parent="." unique_id=968254108]
 layout_mode = 1
@@ -30,10 +56,10 @@ custom_maximum_size = Vector2(300, -1)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = 5.0
+offset_left = 39.0
 offset_top = 64.0
-offset_right = 149.45842
-offset_bottom = -0.20010376
+offset_right = 199.0
+offset_bottom = -29.54245
 grow_vertical = 2
 scale = Vector2(0.99682665, 0.99688303)
 
@@ -116,10 +142,10 @@ anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -82.0
-offset_top = 75.0
-offset_right = -1.5258789e-05
-offset_bottom = -0.23449707
+offset_left = -178.0
+offset_top = 74.0
+offset_right = -39.07498
+offset_bottom = -31.579956
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.99682665, 0.99688303)
@@ -132,6 +158,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 3
 theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+text_overrun_behavior = 1
+autowrap_trim_flags = 192
+clip_text = true
 
 [node name="KeyMappingButtonLeft" type="KeyMappingButton" parent="BindKeyMapping" unique_id=814355852]
 clip_contents = true
@@ -140,6 +173,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 3
 theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+text_overrun_behavior = 1
+autowrap_trim_flags = 192
+clip_text = true
 
 [node name="KeyMappingButtonRight" type="KeyMappingButton" parent="BindKeyMapping" unique_id=1556355667]
 clip_contents = true
@@ -148,6 +188,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 3
 theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+text_overrun_behavior = 1
+autowrap_trim_flags = 192
+clip_text = true
 
 [node name="KeyMappingButtonDuck" type="KeyMappingButton" parent="BindKeyMapping" unique_id=2031186137]
 clip_contents = true
@@ -156,6 +203,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 3
 theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+text_overrun_behavior = 1
+autowrap_trim_flags = 192
+clip_text = true
 
 [node name="KeyMappingButtonPunchUse" type="KeyMappingButton" parent="BindKeyMapping" unique_id=295785401]
 clip_contents = true
@@ -164,6 +218,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 3
 theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+text_overrun_behavior = 1
+autowrap_trim_flags = 192
+clip_text = true
 
 [node name="KeyMappingButtonGrabThrow" type="KeyMappingButton" parent="BindKeyMapping" unique_id=863975001]
 clip_contents = true
@@ -172,3 +233,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 3
 theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+text_overrun_behavior = 1
+autowrap_trim_flags = 192
+clip_text = true

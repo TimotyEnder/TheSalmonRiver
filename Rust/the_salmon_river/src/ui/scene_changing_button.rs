@@ -24,7 +24,7 @@ impl IButton for SceneChangingButton {
     fn ready(&mut self) {
         let this = self.to_gd();
         self.signals()
-            .button_down()
+            .button_up()
             .connect_other(&this, Self::scene_change);
     }
 }

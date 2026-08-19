@@ -3,7 +3,15 @@
 [ext_resource type="PackedScene" uid="uid://bhj4c5fpdm741" path="res://VoxelAssets/3DUI/GameTitle.gltf" id="1_ce3w2"]
 [ext_resource type="PackedScene" uid="uid://c55fml4h84ry1" path="res://VoxelAssets/3DUI/ThrowableArrow.gltf" id="3_1ehe0"]
 [ext_resource type="PackedScene" uid="uid://cpb3wnp3nrxib" path="res://Prefabs/environment.tscn" id="4_ce3w2"]
+[ext_resource type="Texture2D" uid="uid://bi2cjmbwl40ft" path="res://SpriteAssets/UI/buttonLong_brown.png" id="4_opfnp"]
+[ext_resource type="Texture2D" uid="uid://7162q2h0fafq" path="res://SpriteAssets/UI/buttonSquare_brown.png" id="4_trj04"]
+[ext_resource type="Texture2D" uid="uid://jkoi0wjhfttk" path="res://SpriteAssets/UI/buttonSquare_brown_pressed.png" id="5_16hvj"]
+[ext_resource type="Texture2D" uid="uid://b6rnlowyno72d" path="res://SpriteAssets/UI/buttonLong_brown_pressed.png" id="5_cp0ys"]
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="5_n45e2"]
+[ext_resource type="Texture2D" uid="uid://07xuh6ck618q" path="res://SpriteAssets/progress_bar.jpeg" id="6_t1dhk"]
+[ext_resource type="Texture2D" uid="uid://dx2ynseyn3ntg" path="res://SpriteAssets/UI/arrowBrown_right.png" id="7_trj04"]
+[ext_resource type="Texture2D" uid="uid://csjqybxstqdpm" path="res://SpriteAssets/UI/arrowBrown_left.png" id="8_16hvj"]
+[ext_resource type="Texture2D" uid="uid://dcvjuu38tdkom" path="res://SpriteAssets/UI/iconCross_brown.png" id="9_16hvj"]
 
 [sub_resource type="Environment" id="Environment_48xlc"]
 background_mode = 3
@@ -268,8 +276,50 @@ states/up_point/node = SubResource("AnimationNodeAnimation_6bp64")
 states/up_point/position = Vector2(629, 79)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_344ge"), "idle", "up_point", SubResource("AnimationNodeStateMachineTransition_ynf5e"), "idle", "left_point", SubResource("AnimationNodeStateMachineTransition_hptm8"), "idle", "right_point", SubResource("AnimationNodeStateMachineTransition_d1ilt"), "up_point", "idle", SubResource("AnimationNodeStateMachineTransition_6iyac"), "right_point", "idle", SubResource("AnimationNodeStateMachineTransition_fdnlq"), "left_point", "idle", SubResource("AnimationNodeStateMachineTransition_jkdf5")]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c8p17"]
-bg_color = Color(0.18359044, 0.18359047, 0.18359032, 1)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_16hvj"]
+texture = ExtResource("4_opfnp")
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vr1f0"]
+content_margin_top = 4.0
+texture = ExtResource("5_cp0ys")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t1dhk"]
+texture = ExtResource("4_opfnp")
+expand_margin_bottom = 4.0
+modulate_color = Color(0.7162962, 0.71629626, 0.7162961, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5egv6"]
+content_margin_top = 4.0
+texture = ExtResource("5_cp0ys")
+modulate_color = Color(0.7121294, 0.7121294, 0.71212935, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yhxw7"]
+texture = ExtResource("6_t1dhk")
+modulate_color = Color(0.1764706, 0.22352941, 0.2784314, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_trj04"]
+texture = ExtResource("6_t1dhk")
+modulate_color = Color(0.13725491, 0.1764706, 0.22352941, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ce3w2"]
+texture = ExtResource("4_trj04")
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n45e2"]
+content_margin_top = 4.0
+texture = ExtResource("5_16hvj")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_opfnp"]
+texture = ExtResource("4_trj04")
+expand_margin_bottom = 4.0
+modulate_color = Color(0.86036915, 0.8603692, 0.8603692, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y3j07"]
+content_margin_top = 4.0
+texture = ExtResource("5_16hvj")
+expand_margin_top = 4.0
+modulate_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_48xlc"]
 
@@ -326,7 +376,11 @@ offset_bottom = -421.08997
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_n45e2")
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 90
+theme_override_styles/normal = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_vr1f0")
+theme_override_styles/hover = SubResource("StyleBoxTexture_t1dhk")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_5egv6")
 text = "PLAY"
 
 [node name="SettingsButton" type="SettingsButton" parent="CanvasLayer" unique_id=1429399425]
@@ -342,6 +396,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 59
+theme_override_styles/normal = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_vr1f0")
+theme_override_styles/hover = SubResource("StyleBoxTexture_t1dhk")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_5egv6")
 text = "SETTINGS"
 
 [node name="QuitButton" type="ApplicationExitButton" parent="CanvasLayer" unique_id=1025351734]
@@ -356,7 +414,11 @@ offset_bottom = -48.63501
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_n45e2")
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 90
+theme_override_styles/normal = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_vr1f0")
+theme_override_styles/hover = SubResource("StyleBoxTexture_t1dhk")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_5egv6")
 text = "QUIT"
 
 [node name="PlayerControlsPanel" type="PregamePanel" parent="CanvasLayer" unique_id=979058209 node_paths=PackedStringArray("player_controls_panel_grid", "player_num_counter_label", "match_time_counter_label", "rounds_to_win_counter_label")]
@@ -364,7 +426,6 @@ player_controls_panel_grid = NodePath("PlayerControlsPanel")
 player_num_counter_label = NodePath("MatchSettingsPanel/LabelCounterNumPlayers")
 match_time_counter_label = NodePath("MatchSettingsPanel/LabelCounterMatchLength")
 rounds_to_win_counter_label = NodePath("MatchSettingsPanel/LabelCounterRoundsToWin")
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -374,21 +435,24 @@ offset_right = -77.0
 offset_bottom = -44.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_c8p17")
+theme_override_styles/panel = SubResource("StyleBoxTexture_yhxw7")
 
 [node name="MatchSettingsPanel" type="Panel" parent="CanvasLayer/PlayerControlsPanel" unique_id=1947177051]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 0.135
-offset_bottom = 0.07499695
+offset_left = -1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = 1.074997
+theme_override_styles/panel = SubResource("StyleBoxTexture_trj04")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=246270155]
 layout_mode = 1
-offset_left = -1.0
-offset_top = 1.0
-offset_right = 294.0
-offset_bottom = 138.0
+offset_left = 159.0
+offset_right = 454.0
+offset_bottom = 137.0
 theme_override_fonts/normal_font = ExtResource("5_n45e2")
 theme_override_font_sizes/normal_font_size = 49
 text = "# OF PLAYERS:"
@@ -400,10 +464,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -444.0
-offset_top = 2.0
-offset_right = -116.5
-offset_bottom = 131.0
+offset_left = -284.0
+offset_top = 1.0
+offset_right = 43.5
+offset_bottom = 130.0
 grow_horizontal = 2
 theme_override_fonts/normal_font = ExtResource("5_n45e2")
 theme_override_font_sizes/normal_font_size = 49
@@ -416,10 +480,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -2.0
-offset_top = 7.0
-offset_right = 325.5
-offset_bottom = 136.0
+offset_left = 158.0
+offset_top = 6.0
+offset_right = 485.5
+offset_bottom = 135.0
 grow_horizontal = 2
 theme_override_fonts/normal_font = ExtResource("5_n45e2")
 theme_override_font_sizes/normal_font_size = 49
@@ -430,9 +494,10 @@ vertical_alignment = 1
 [node name="LabelCounterNumPlayers" type="LabelCounter" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=10791052]
 possible_values = PackedFloat32Array(2, 3, 4)
 layout_mode = 0
-offset_left = 268.0
-offset_right = 463.0
-offset_bottom = 134.0
+offset_left = 428.0
+offset_top = -1.0
+offset_right = 623.0
+offset_bottom = 133.0
 
 [node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers" unique_id=669725494]
 layout_mode = 0
@@ -453,8 +518,13 @@ offset_right = 141.0
 offset_bottom = 103.0
 theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 60
-text = "+"
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+icon = ExtResource("7_trj04")
 alignment = 2
+icon_alignment = 1
 
 [node name="DecButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers" unique_id=1618439962]
 layout_mode = 0
@@ -464,9 +534,13 @@ offset_right = 51.0
 offset_bottom = 102.0
 theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 60
-text = "-
-"
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+icon = ExtResource("8_16hvj")
 alignment = 2
+icon_alignment = 1
 
 [node name="LabelCounterMatchLength" type="LabelCounter" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=1472002184]
 possible_values = PackedFloat32Array(60, 99)
@@ -474,9 +548,10 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.56600004
 anchor_right = 0.56600004
-offset_left = -293.23608
-offset_right = -98.236084
-offset_bottom = 134.0
+offset_left = -133.23608
+offset_top = -1.0
+offset_right = 61.763916
+offset_bottom = 133.0
 
 [node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchLength" unique_id=2009862976]
 layout_mode = 0
@@ -497,8 +572,13 @@ offset_right = 141.0
 offset_bottom = 103.0
 theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 60
-text = "+"
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+icon = ExtResource("7_trj04")
 alignment = 2
+icon_alignment = 1
 
 [node name="DecButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchLength" unique_id=332983417]
 layout_mode = 0
@@ -508,9 +588,13 @@ offset_right = 51.0
 offset_bottom = 102.0
 theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 60
-text = "-
-"
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+icon = ExtResource("8_16hvj")
 alignment = 2
+icon_alignment = 1
 
 [node name="LabelCounterRoundsToWin" type="LabelCounter" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=172175754]
 possible_values = PackedFloat32Array(3, 5, 10)
@@ -518,9 +602,10 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.56600004
 anchor_right = 0.56600004
-offset_left = 154.76392
-offset_right = 349.76392
-offset_bottom = 134.0
+offset_left = 314.76392
+offset_top = -1.0
+offset_right = 509.76392
+offset_bottom = 133.0
 
 [node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterRoundsToWin" unique_id=1452310554]
 layout_mode = 0
@@ -541,20 +626,29 @@ offset_right = 141.0
 offset_bottom = 103.0
 theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 60
-text = "+"
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+icon = ExtResource("7_trj04")
 alignment = 2
+icon_alignment = 1
 
 [node name="DecButton" type="Button" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterRoundsToWin" unique_id=1912366453]
 layout_mode = 0
-offset_left = 15.0
+offset_left = 14.0
 offset_top = 33.0
 offset_right = 51.0
 offset_bottom = 102.0
 theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 60
-text = "-
-"
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+icon = ExtResource("8_16hvj")
 alignment = 2
+icon_alignment = 1
 
 [node name="CloseButton" type="PanelEnablingButton" parent="CanvasLayer/PlayerControlsPanel" unique_id=2135366461 node_paths=PackedStringArray("panel_to_enable")]
 panel_to_enable = NodePath("..")
@@ -563,12 +657,20 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 0.142
-offset_left = 1579.0
-offset_bottom = -4.810013
+offset_left = 1607.0
+offset_top = -3.0
+offset_bottom = -7.810013
+theme_override_constants/icon_max_width = 59
 theme_override_fonts/font = ExtResource("5_n45e2")
 theme_override_font_sizes/font_size = 65
-text = "X"
+theme_override_icons/icon = ExtResource("9_16hvj")
+theme_override_styles/normal = SubResource("StyleBoxTexture_ce3w2")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n45e2")
+theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_y3j07")
+icon = ExtResource("9_16hvj")
 icon_alignment = 1
+expand_icon = true
 
 [node name="PlayerControlsPanel" type="HBoxContainer" parent="CanvasLayer/PlayerControlsPanel" unique_id=430862607]
 layout_mode = 1
@@ -577,10 +679,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -873.0
-offset_top = -352.5
-offset_right = 870.0
-offset_bottom = 329.5
+offset_left = -795.0
+offset_top = -316.5
+offset_right = 804.0
+offset_bottom = 365.5
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
@@ -593,13 +695,17 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 695.0
-offset_top = 831.0
+offset_top = 841.0
 offset_right = -655.0
-offset_bottom = -12.0
+offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_jjvhh")
 theme_override_font_sizes/font_size = 80
+theme_override_styles/normal = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_vr1f0")
+theme_override_styles/hover = SubResource("StyleBoxTexture_t1dhk")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_5egv6")
 action_mode = 0
 text = "PLAY"
 

@@ -49,12 +49,8 @@ impl IControl for LabelCounter {
         if let Some(ref mut inc) = self.inc_button
             && let Some(ref mut dec) = self.dec_button
         {
-            inc.signals()
-                .button_down()
-                .connect_other(&this, Self::on_inc);
-            dec.signals()
-                .button_down()
-                .connect_other(&this, Self::on_dec);
+            inc.signals().button_up().connect_other(&this, Self::on_inc);
+            dec.signals().button_up().connect_other(&this, Self::on_dec);
         }
     }
 }

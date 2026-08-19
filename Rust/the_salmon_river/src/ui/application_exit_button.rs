@@ -20,7 +20,7 @@ impl IButton for ApplicationExitButton {
         let this = self.to_gd();
         self.base()
             .signals()
-            .button_down()
+            .button_up()
             .connect_other(&this, Self::application_exit);
     }
 }

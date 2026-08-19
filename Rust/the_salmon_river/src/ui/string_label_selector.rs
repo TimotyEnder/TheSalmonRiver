@@ -53,10 +53,10 @@ impl IControl for StringLabelSelector {
             && let Some(ref mut dec) = self.left_button
         {
             inc.signals()
-                .button_down()
+                .button_up()
                 .connect_other(&this, Self::on_right);
             dec.signals()
-                .button_down()
+                .button_up()
                 .connect_other(&this, Self::on_left);
         }
     }

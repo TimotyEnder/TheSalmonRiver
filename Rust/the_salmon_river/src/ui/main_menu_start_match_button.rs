@@ -24,7 +24,7 @@ impl IButton for MainMenuStartMatchButton {
         let this = self.to_gd();
         self.base()
             .signals()
-            .pressed()
+            .button_up()
             .connect_other(&this, Self::on_pressed);
     }
 }

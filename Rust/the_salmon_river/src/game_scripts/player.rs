@@ -291,6 +291,15 @@ impl Player {
                     });
                 }
             }
+        } else if area_name.contains("InstantDeath") {
+            self.health = 0;
+            let force = self.knock_back_force;
+            let dir = self
+                .apply_force_in_opposite_direction_of_area(area.upcast::<Node3D>(), force)
+                .unwrap_or(Direction::Left);
+            let this = self.to_gd();
+            let mut _guard = self.base_mut();
+            godot::task::spawn(Self::death_routine(this, dir));
         } else if !area_groups.contains(&format!("p{}", self.player_num)) {
             if area_name.contains("Grab") {
                 self.handle_grab(area);

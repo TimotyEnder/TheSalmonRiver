@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://b8x2trtr4fksf"]
+
+[ext_resource type="PackedScene" uid="uid://ch26fylyux8ac" path="res://Prefabs/flying_duck.tscn" id="1_n2sme"]
+[ext_resource type="PackedScene" uid="uid://bgjjticyhtkpe" path="res://VoxelAssets/Environment/saw_attachment.gltf" id="1_xmj15"]
+[ext_resource type="PackedScene" uid="uid://cyyagyg5srgy6" path="res://Prefabs/saw_blade.tscn" id="2_j4036"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e6bpr"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="Curve" id="Curve_jpewb"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.017964125), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_5kl8w"]
+curve = SubResource("Curve_jpewb")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jpewb"]
+emission_shape = 1
+emission_sphere_radius = 0.25
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(1, 1, 1)
+spread = 180.0
+initial_velocity_min = 4.0
+initial_velocity_max = 4.0
+scale_min = 0.5
+scale_max = 0.5
+scale_curve = SubResource("CurveTexture_5kl8w")
+color = Color(2.929, 2.929, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_e6bpr"]
+size = Vector3(0.145, 0.145, 0.145)
+
+[node name="SawPlatform" type="Node3D" unique_id=1289983603]
+
+[node name="saw_attachment" parent="." unique_id=888041055 instance=ExtResource("1_xmj15")]
+transform = Transform3D(0.295, 0, 0, 0, 0.20492423, -0.21220523, 0, 0.21220523, 0.20492423, -0.1674551, -6.5142035, -2.998742)
+
+[node name="SawBlade" parent="." unique_id=1304262265 instance=ExtResource("2_j4036")]
+transform = Transform3D(2.36, 0, 0, 0, 2.3600001, 0, 0, 0, 2.3600001, -0.90713304, -4.061, -0.035)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1723734872]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65294385, -4.054454, -0.020133495)
+material_override = SubResource("StandardMaterial3D_e6bpr")
+amount = 40
+process_material = SubResource("ParticleProcessMaterial_jpewb")
+draw_pass_1 = SubResource("BoxMesh_e6bpr")
+
+[node name="FlyingDuck" parent="." unique_id=830437567 instance=ExtResource("1_n2sme")]
+transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -1.0062884, -0.06270355, 0.0020713806)

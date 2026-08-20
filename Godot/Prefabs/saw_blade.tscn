@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://cyyagyg5srgy6"]
+
+[ext_resource type="PackedScene" uid="uid://nsgr63dvj8wl" path="res://VoxelAssets/Environment/saw.gltf" id="1_s3uvf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ba2sc"]
+size = Vector3(5.694824, 16.048218, 16.036865)
+
+[sub_resource type="Animation" id="Animation_s3uvf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_7upug"]
+resource_name = "spin"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1.5707964, 0, 0), Vector3(3.1415927, 0, 0), Vector3(4.712389, 0, 0), Vector3(6.2831855, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gl1ju"]
+_data = {
+&"RESET": SubResource("Animation_s3uvf"),
+&"spin": SubResource("Animation_7upug")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_s3uvf"]
+animation = &"spin"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7upug"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_s6dll"]
+states/spin/node = SubResource("AnimationNodeAnimation_s3uvf")
+states/spin/position = Vector2(383, 187)
+transitions = ["Start", "spin", SubResource("AnimationNodeStateMachineTransition_7upug")]
+
+[node name="SawBlade" type="Node3D" unique_id=1304262265]
+
+[node name="saw" parent="." unique_id=265036316 instance=ExtResource("1_s3uvf")]
+transform = Transform3D(0.09, 0, 0, 0, 0.09, 0, 0, 0, 0.09, 0.31580994, -1.436762, -0.0045769215)
+
+[node name="InstantDeathSawBlade" type="Area3D" parent="saw" unique_id=839030673]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="saw/InstantDeathSawBlade" unique_id=934238596]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4465332, 16.007586, 0.011023872)
+shape = SubResource("BoxShape3D_ba2sc")
+debug_color = Color(0.9862477, 0, 0.3282248, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1433890207]
+libraries/ = SubResource("AnimationLibrary_gl1ju")
+
+[node name="spinnnnn" type="AnimationTree" parent="AnimationPlayer" unique_id=151955885]
+root_node = NodePath("../..")
+tree_root = SubResource("AnimationNodeStateMachine_s6dll")
+anim_player = NodePath("..")

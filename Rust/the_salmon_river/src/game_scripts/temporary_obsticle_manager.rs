@@ -18,7 +18,11 @@ impl INode3D for TemporaryObsticleManager {
         Self {
             base,
             animation_tree: None,
-            animation_triggers: vec!["single_platform_center", "double_platform"],
+            animation_triggers: vec![
+                "single_platform_center",
+                "double_platform",
+                "triple_platform",
+            ],
             last_chosen_index: 1,
         }
     }

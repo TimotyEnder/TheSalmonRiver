@@ -33,6 +33,7 @@ pub struct Player {
     punch_force: f32,
     ice_chunk_dash_force: f32,
     jumped: bool,
+    jumping: bool,
     duck_jumped: bool,
     ducked: bool,
     hit_stun: bool,
@@ -122,6 +123,7 @@ impl ICharacterBody3D for Player {
             throw_tech_force: 4.0,
             knock_back_force: 7.0,
             jumped: false,
+            jumping: false,
             duck_jumped: false,
             ducked: false,
             hit_stun: false,
@@ -424,7 +426,7 @@ impl Player {
         // Apply gravity
         if !self.on_one_way_platform {
             velocity.y -= 20.0 * delta as f32;
-        } else if !self.jumped {
+        } else if !self.jumping {
             velocity.y = 0.0;
         }
         let mut speed_to_use = self.speed;
@@ -469,6 +471,15 @@ impl Player {
             && let Some(ref mut audio) = audio
         {
             self.jumped = true;
+            self.jumping = true;
+            let mut this = self.to_gd();
+            let timer = self.base().get_tree().create_timer(0.1);
+            godot::task::spawn(async move {
+                Signal::from_object_signal(&timer, "timeout")
+                    .to_future::<()>()
+                    .await;
+                this.bind_mut().jumping = false;
+            });
             audio.bind_mut().play_sound(
                 crate::sound_utils::SoundEffect::PlayerJump,
                 sound_effect_position,

@@ -5,7 +5,9 @@ use godot::{
     prelude::*,
 };
 
-use crate::game_scripts::game_utils::player_color_based_on_number;
+use crate::game_scripts::{
+    game_utils::player_color_based_on_number, temporary_obsticle_manager::TemporaryObsticleManager,
+};
 use crate::{
     game_managers::{audio_manager::AudioManager, game_manager::GameManager},
     game_scripts::game_utils::vec3_to_vec2,
@@ -23,7 +25,11 @@ pub struct RoundManager {
     run_round_timer: bool,
     timer_time: u64,
     timer_flag: bool,
+    next_temp_obsticle_spawn_ms: u64,
+    temp_obsticle_spawn_rate_ms: u64,
     player_health_vec: Vec<i8>,
+    #[export]
+    temp_obsticle_manager: Option<Gd<TemporaryObsticleManager>>,
 }
 
 #[godot_api]
@@ -40,6 +46,9 @@ impl INode3D for RoundManager {
             timer_flag: false,
             timer_time: 0,
             player_health_vec: Vec::new(),
+            temp_obsticle_manager: None,
+            next_temp_obsticle_spawn_ms: 0,
+            temp_obsticle_spawn_rate_ms: 20000,
         }
     }
 
@@ -103,6 +112,13 @@ impl INode3D for RoundManager {
                     .round()
                     .abs();
                 label.set("text", &format!("{}", time_remaining).to_variant());
+                if self.next_temp_obsticle_spawn_ms < time.get_ticks_msec()
+                    && let Some(ref mut temp_obs) = self.temp_obsticle_manager
+                {
+                    self.next_temp_obsticle_spawn_ms =
+                        time.get_ticks_msec() + self.temp_obsticle_spawn_rate_ms;
+                    temp_obs.bind_mut().spawn_temp_obsticle();
+                }
                 if time_remaining <= 0.0 {
                     self.run_round_timer = false;
                     self.signals().round_timeout().emit();

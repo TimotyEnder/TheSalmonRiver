@@ -95,12 +95,14 @@ pub struct Player {
     round_manager: Option<Gd<RoundManager>>,
     throw_tech_time: bool,
     throw_tech_force: f32,
+    on_one_way_platform: bool,
 }
 #[godot_api]
 impl ICharacterBody3D for Player {
     fn init(base: Base<CharacterBody3D>) -> Self {
         Self {
             base,
+            on_one_way_platform: false,
             salmon_ability_timer_entries: 0,
             can_move: false,
             can_act: true,
@@ -237,6 +239,12 @@ impl Player {
             }
         }
     }
+    pub fn place_on_one_way_platform(&mut self) {
+        self.on_one_way_platform = true;
+    }
+    pub fn displace_from_one_way_platform(&mut self) {
+        self.on_one_way_platform = false;
+    }
     pub fn assign_player_num(&mut self, player_num: u8) {
         self.player_num = player_num;
     }
@@ -329,6 +337,9 @@ impl Player {
 }
 
 impl Player {
+    pub fn is_on_floor_or_platform(&self) -> bool {
+        self.base().is_on_floor() || self.on_one_way_platform
+    }
     pub fn load_control_scheeme(&mut self, control: Gd<PlayerControlScheme>) {
         self.jump_key = control.bind().jump_key;
         self.duck_key = control.bind().duck_key;
@@ -408,7 +419,11 @@ impl Player {
         let input = Input::singleton();
         let mut velocity = self.base().get_velocity();
         // Apply gravity
-        velocity.y -= 20.0 * delta as f32;
+        if !self.on_one_way_platform {
+            velocity.y -= 20.0 * delta as f32;
+        } else if !self.jumped {
+            velocity.y = 0.0;
+        }
         let mut speed_to_use = self.speed;
         if self.player_throwable_in_hand.is_some() {
             speed_to_use *= 0.5;
@@ -443,7 +458,7 @@ impl Player {
         }
 
         if input.is_key_pressed(self.jump_key)
-            && self.base().is_on_floor()
+            && self.is_on_floor_or_platform()
             && !self.jumped
             && !self.hit_stun
             && !self.dead
@@ -489,7 +504,7 @@ impl Player {
             self.jumped = false;
         }
         if input.is_key_pressed(self.duck_key)
-            && !self.base().is_on_floor()
+            && !self.is_on_floor_or_platform()
             && !self.duck_jumped
             && !self.dead
             && !self.knock_back
@@ -501,11 +516,11 @@ impl Player {
             let _guard = self.base_mut();
             godot::task::spawn(Self::duck_jump_routine(this));
         }
-        if self.base().is_on_floor() {
+        if self.is_on_floor_or_platform() {
             self.duck_jumped = false;
         }
         if input.is_key_pressed(self.duck_key)
-            && self.base().is_on_floor()
+            && self.is_on_floor_or_platform()
             && !self.hit_stun
             && !self.is_grab
             && !self.is_punching
@@ -539,7 +554,7 @@ impl Player {
         self.base_mut().move_and_slide();
     }
     fn lower_animations(&mut self) {
-        let grounded = self.base().is_on_floor();
+        let grounded = self.is_on_floor_or_platform();
         let side_velocity = self.base().get_velocity().z;
         if let Some(ref mut anim_tree) = self.lower_anim_tree {
             if !grounded && self.can_move {
@@ -571,7 +586,7 @@ impl Player {
         if self.is_punching {
             return;
         }
-        let grounded = self.base().is_on_floor();
+        let grounded = self.is_on_floor_or_platform();
         let side_velocity = self.base().get_velocity();
         if let Some(ref mut anim_tree) = self.upper_anim_tree {
             if side_velocity.z.abs() > 0.0 && grounded {
@@ -1251,7 +1266,7 @@ impl Player {
         }
     }
     async fn throw_landing_damage_routine(mut this: Gd<Self>) {
-        while this.is_instance_valid() && !this.bind().base().is_on_floor() {
+        while this.is_instance_valid() && !this.bind().is_on_floor_or_platform() {
             let Some(mut tree) = this.bind().base().get_tree_or_null() else {
                 return;
             };

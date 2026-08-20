@@ -6,6 +6,8 @@ pub mod player;
 pub mod progress_bar;
 pub mod river;
 pub mod round_manager;
+pub mod single_platform;
+pub mod temporary_obsticle_manager;
 pub mod throwable;
 pub mod throwable_spawner;
 pub mod victory_screen_manager;

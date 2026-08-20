@@ -239,8 +239,11 @@ impl Player {
             }
         }
     }
-    pub fn place_on_one_way_platform(&mut self) {
+    pub fn place_on_one_way_platform(&mut self, pos: Vector3) {
         self.on_one_way_platform = true;
+        let mut self_pos = self.base().get_position();
+        self_pos.y = pos.y - 0.9;
+        self.base_mut().set_position(self_pos);
     }
     pub fn displace_from_one_way_platform(&mut self) {
         self.on_one_way_platform = false;
@@ -510,7 +513,7 @@ impl Player {
             && !self.knock_back
             && self.duck_meter_manager.can_duck_jump()
         {
-            velocity.y = self.jump_force;
+            velocity.y = self.jump_force * 1.2;
             self.duck_jumped = true;
             let this = self.to_gd();
             let _guard = self.base_mut();

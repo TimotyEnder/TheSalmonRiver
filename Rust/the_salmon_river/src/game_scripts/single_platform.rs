@@ -59,7 +59,9 @@ impl SinglePlatform {
                 .get_parent()
                 .and_then(|player| player.try_cast::<Player>().ok())
             {
-                player.bind_mut().place_on_one_way_platform();
+                player
+                    .bind_mut()
+                    .place_on_one_way_platform(self.base().get_global_position());
             }
         }
     }

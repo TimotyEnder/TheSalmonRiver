@@ -3363,10 +3363,10 @@ parameters/conditions/salmon_punch = false
 parameters/conditions/throw = false
 
 [node name="PlayerHitBox" type="Area3D" parent="." unique_id=337895282]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6636777, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9960754, 0)
 
 [node name="PlayerHitboxCollider" type="CollisionShape3D" parent="PlayerHitBox" unique_id=1422745037]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.0029959679, 0)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.63020515, 0)
 shape = SubResource("CapsuleShape3D_juxdh")
 debug_color = Color(0.3264353, 0.6243242, 9.62615e-07, 1)
 

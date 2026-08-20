@@ -24,6 +24,7 @@ impl INode3D for TemporaryObsticleManager {
                 "triple_platform",
                 "single_platform_single_saw",
                 "double_platform_double_saw",
+                "single_platform_double_saw",
             ],
             last_chosen_index: 1,
         }

@@ -906,7 +906,7 @@ tracks/4/path = NodePath("SawPlatform:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0.0026603937, 1.0026604),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(-1.9073489e-06, 13.148777, 19.363977), Vector3(-2.8610232e-06, 7.396454, 8.006188)]
@@ -942,7 +942,7 @@ tracks/7/path = NodePath("SawPlatform2:rotation")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(0, 1, 1.2666667, 1.5333333, 1.7666667),
+"times": PackedFloat32Array(-0.005320715, 0.99733967, 1.2666667, 1.5333333, 1.7666667),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector3(0.2617994, 0, 0), Vector3(0.2617994, 0, 0), Vector3(-0.17453292, 0, 0), Vector3(0.08726646, 0, 0), Vector3(0, 0, 0)]
@@ -986,7 +986,7 @@ tracks/0/path = NodePath("SinglePlatform3:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.53333336, 2),
+"times": PackedFloat32Array(0.0026603937, 0.53599375, 2.0026603),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 2.6809998, -3.515), Vector3(0, 2.6809998, -3.515), Vector3(0, 5.786, -13.415)]
@@ -998,7 +998,7 @@ tracks/1/path = NodePath("SinglePlatform2:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.53333336, 1.9973396),
+"times": PackedFloat32Array(0.0026603937, 0.53599375, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681223, 3.5150175), Vector3(0, 5.786, 13.415)]
@@ -1010,7 +1010,7 @@ tracks/2/path = NodePath("SawPlatform:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 1, 2),
+"times": PackedFloat32Array(-1.07102096e-07, 1.0026603, 2.0026603),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(-2.8610232e-06, 7.396454, 8.006188), Vector3(0, 7.396, 12.491), Vector3(0, 12.226, 15.976)]
@@ -1022,7 +1022,7 @@ tracks/3/path = NodePath("SawPlatform2:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 1, 2),
+"times": PackedFloat32Array(0.0026602745, 1.0026603, 2.0026603),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 7.396, -8.006), Vector3(0, 7.396, -12.491), Vector3(0, 12.226, -15.976)]
@@ -1323,7 +1323,7 @@ tracks/1/path = NodePath("SinglePlatform:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 1.0666667),
+"times": PackedFloat32Array(0.0026603937, 1.0693271),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
@@ -1365,7 +1365,7 @@ tracks/1/path = NodePath("SinglePlatform:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5666667, 2),
+"times": PackedFloat32Array(0.002660334, 0.56932706, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0)]
@@ -1378,6 +1378,186 @@ tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0.56666666),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"disable_collider"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_cbgmd"]
+resource_name = "single_platform_double_saw"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SinglePlatform:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.0666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 14.299952, 0), Vector3(0, 2.9426746, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SawPlatform:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-1.9073489e-06, 13.148777, 19.363977), Vector3(-2.8610232e-06, 7.396454, 8.006188)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SawPlatform2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 13.149, -19.364), Vector3(0, 7.396, -8.006)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SinglePlatform:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.0666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SawPlatform:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1, 1.2666667, 1.5333333, 1.7666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.2617994, 0, 0), Vector3(-0.26179937, 0, 0), Vector3(0.17453292, 0, 0), Vector3(-0.08726646, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SawPlatform2:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.0026604, 1.2719873, 1.538654, 1.7719873),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.2617994, 0, 0), Vector3(0.2617994, 0, 0), Vector3(-0.17453292, 0, 0), Vector3(0.08726646, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("SinglePlatform")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(1.0666667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"enable_collider"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_1w6v2"]
+resource_name = "single_platform_double_saw_exit"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SawPlatform2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.0026604, 2.0026603),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-2.8610232e-06, 7.396454, 8.006188), Vector3(0, 7.396, 12.491), Vector3(0, 12.226, 15.976)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SawPlatform:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0026603816, 1.0026604, 2.0026603),
+"transitions": PackedFloat32Array(1, 1.035265, 1, 1),
+"update": 0,
+"values": [Vector3(-2.8610232e-06, 7.396454, 8.006188), Vector3(0, 7.396, -8.006), Vector3(0, 7.396, -12.491), Vector3(0, 12.226, -15.976)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SinglePlatform:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5666667, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 2.9426746, 0), Vector3(0, 2.9426746, 0), Vector3(-9.536743e-07, 6.32084, -15.339635)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SawPlatform2:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1, 1.9973397),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.2617994, 0, 0), Vector3(0.2617994, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SawPlatform:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1, 1.9973397),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SinglePlatform:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.5666667, 1.9973397),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0)]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("SinglePlatform")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -1763,6 +1943,8 @@ _data = {
 &"idle": SubResource("Animation_wsu2k"),
 &"single_platform_center": SubResource("Animation_k12tt"),
 &"single_platform_center_exit": SubResource("Animation_h1bgf"),
+&"single_platform_double_saw": SubResource("Animation_cbgmd"),
+&"single_platform_double_saw_exit": SubResource("Animation_1w6v2"),
 &"single_platform_single_saw": SubResource("Animation_ee4r6"),
 &"single_platform_single_saw_exit": SubResource("Animation_gt3je"),
 &"triple_platform": SubResource("Animation_hibaj"),
@@ -1789,6 +1971,12 @@ animation = &"single_platform_center"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_k12tt"]
 animation = &"single_platform_center_exit"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gt3je"]
+animation = &"single_platform_double_saw"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3pmx8"]
+animation = &"single_platform_double_saw_exit"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fevyy"]
 animation = &"single_platform_single_saw"
@@ -1865,6 +2053,18 @@ advance_condition = &"exit"
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_neg2b"]
+advance_mode = 2
+advance_condition = &"single_platform_double_saw"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r33sp"]
+advance_mode = 2
+advance_condition = &"exit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hdf80"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_c4elv"]
 states/Start/position = Vector2(182, 232)
 states/double_platform/node = SubResource("AnimationNodeAnimation_6iyac")
@@ -1881,16 +2081,20 @@ states/single_platform_center/node = SubResource("AnimationNodeAnimation_wsu2k")
 states/single_platform_center/position = Vector2(376, 173)
 states/single_platform_center_exit/node = SubResource("AnimationNodeAnimation_k12tt")
 states/single_platform_center_exit/position = Vector2(376, 82)
+states/single_platform_double_saw/node = SubResource("AnimationNodeAnimation_gt3je")
+states/single_platform_double_saw/position = Vector2(900, 544)
+states/single_platform_double_saw_exit/node = SubResource("AnimationNodeAnimation_3pmx8")
+states/single_platform_double_saw_exit/position = Vector2(1094, 466)
 states/single_platform_single_saw/node = SubResource("AnimationNodeAnimation_fevyy")
 states/single_platform_single_saw/position = Vector2(355, 340)
 states/single_platform_single_saw_exit/node = SubResource("AnimationNodeAnimation_hibaj")
 states/single_platform_single_saw_exit/position = Vector2(77, 299)
 states/triple_platform/node = SubResource("AnimationNodeAnimation_h1bgf")
-states/triple_platform/position = Vector2(676, 312)
+states/triple_platform/position = Vector2(886, 323)
 states/triple_platform_exit/node = SubResource("AnimationNodeAnimation_b3802")
 states/triple_platform_exit/position = Vector2(886, 254)
-transitions = ["idle", "single_platform_center", SubResource("AnimationNodeStateMachineTransition_fevyy"), "single_platform_center", "single_platform_center_exit", SubResource("AnimationNodeStateMachineTransition_hibaj"), "single_platform_center_exit", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "idle", "double_platform", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "double_platform", "double_platform_exit", SubResource("AnimationNodeStateMachineTransition_gt3je"), "double_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_6bp64"), "idle", "triple_platform", SubResource("AnimationNodeStateMachineTransition_u50mg"), "triple_platform", "triple_platform_exit", SubResource("AnimationNodeStateMachineTransition_cbgmd"), "triple_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_1w6v2"), "idle", "single_platform_single_saw", SubResource("AnimationNodeStateMachineTransition_ueoa1"), "single_platform_single_saw", "single_platform_single_saw_exit", SubResource("AnimationNodeStateMachineTransition_6vcvc"), "single_platform_single_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_7k868"), "idle", "double_platform_double_saw", SubResource("AnimationNodeStateMachineTransition_hpc6h"), "double_platform_double_saw", "double_platform_double_saw_exit", SubResource("AnimationNodeStateMachineTransition_kltya"), "double_platform_double_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_e08e2")]
-graph_offset = Vector2(-167, 177)
+transitions = ["idle", "single_platform_center", SubResource("AnimationNodeStateMachineTransition_fevyy"), "single_platform_center", "single_platform_center_exit", SubResource("AnimationNodeStateMachineTransition_hibaj"), "single_platform_center_exit", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "idle", "double_platform", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "double_platform", "double_platform_exit", SubResource("AnimationNodeStateMachineTransition_gt3je"), "double_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_6bp64"), "idle", "triple_platform", SubResource("AnimationNodeStateMachineTransition_u50mg"), "triple_platform", "triple_platform_exit", SubResource("AnimationNodeStateMachineTransition_cbgmd"), "triple_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_1w6v2"), "idle", "single_platform_single_saw", SubResource("AnimationNodeStateMachineTransition_ueoa1"), "single_platform_single_saw", "single_platform_single_saw_exit", SubResource("AnimationNodeStateMachineTransition_6vcvc"), "single_platform_single_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_7k868"), "idle", "double_platform_double_saw", SubResource("AnimationNodeStateMachineTransition_hpc6h"), "double_platform_double_saw", "double_platform_double_saw_exit", SubResource("AnimationNodeStateMachineTransition_kltya"), "double_platform_double_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_e08e2"), "idle", "single_platform_double_saw", SubResource("AnimationNodeStateMachineTransition_neg2b"), "single_platform_double_saw", "single_platform_double_saw_exit", SubResource("AnimationNodeStateMachineTransition_r33sp"), "single_platform_double_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_hdf80")]
+graph_offset = Vector2(-238, 136)
 
 [node name="Root" type="Node3D" unique_id=236819951]
 
@@ -2005,6 +2209,7 @@ parameters/conditions/double_platform = false
 parameters/conditions/double_platform_double_saw = false
 parameters/conditions/exit = false
 parameters/conditions/single_platform_center = false
+parameters/conditions/single_platform_double_saw = false
 parameters/conditions/single_platform_single_saw = false
 parameters/conditions/triple_platform = false
 

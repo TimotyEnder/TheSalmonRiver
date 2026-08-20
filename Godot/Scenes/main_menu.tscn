@@ -296,7 +296,7 @@ modulate_color = Color(0.7121294, 0.7121294, 0.71212935, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yhxw7"]
 texture = ExtResource("6_t1dhk")
-modulate_color = Color(0.1764706, 0.22352941, 0.2784314, 1)
+modulate_color = Color(0.13725491, 0.23137255, 0.34117648, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_trj04"]
 texture = ExtResource("6_t1dhk")
@@ -426,7 +426,6 @@ player_controls_panel_grid = NodePath("PlayerControlsPanel")
 player_num_counter_label = NodePath("MatchSettingsPanel/LabelCounterNumPlayers")
 match_time_counter_label = NodePath("MatchSettingsPanel/LabelCounterMatchLength")
 rounds_to_win_counter_label = NodePath("MatchSettingsPanel/LabelCounterRoundsToWin")
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -696,9 +695,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 671.0
-offset_top = 839.0
+offset_top = 833.0
 offset_right = -679.0
-offset_bottom = -4.0
+offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_jjvhh")

@@ -10,7 +10,7 @@
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pakvc"]
 texture = ExtResource("1_ydf4m")
-modulate_color = Color(0.1764706, 0.22352941, 0.2784314, 1)
+modulate_color = Color(0.13725491, 0.23137255, 0.34117648, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cqqpn"]
 texture = ExtResource("1_ydf4m")

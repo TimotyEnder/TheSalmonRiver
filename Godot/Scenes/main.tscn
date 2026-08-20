@@ -6,6 +6,7 @@
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="5_kry3j"]
 [ext_resource type="PackedScene" uid="uid://ba0h40da8dnny" path="res://Prefabs/Ui/pause_menu.tscn" id="6_6bp64"]
 [ext_resource type="Script" uid="uid://cofw7sywoopgu" path="res://rich-text-3d-godot-a81f50a2c49f0600c1188b0de8fba12a205e6c7f/addons/rich_text_3d/rich_text_3d.gd" id="6_21xkr"]
+[ext_resource type="PackedScene" uid="uid://c3ycy0bdsjpso" path="res://Prefabs/single_platform.tscn" id="7_6bp64"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ynf5e"]
 render_priority = 0
@@ -643,6 +644,505 @@ shading_mode = 0
 size = Vector2(0.7, 0.5)
 orientation = 2
 
+[sub_resource type="Animation" id="Animation_jkdf5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SinglePlatform:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 14.299952, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SinglePlatform2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 13.178156, 2.6887977)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SinglePlatform3:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 13.178, -2.689)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SinglePlatform:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SinglePlatform2:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SinglePlatform3:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_b3802"]
+resource_name = "double_platform"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SinglePlatform2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5666667, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SinglePlatform2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.5666667, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 6.2150717, 12.329562), Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681223, 3.5150175)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SinglePlatform2")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"enable_collider"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SinglePlatform3:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.5666667, 1.9999999),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.2617994, 0, 0), Vector3(0.2617994, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SinglePlatform3:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1.5666667, 1.9999999),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 6.215, -12.33), Vector3(0, 2.681, -3.515), Vector3(0, 2.681, -3.515)]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SinglePlatform3")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"enable_collider"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_fevyy"]
+resource_name = "double_platform_exit"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SinglePlatform2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.53333336, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681223, 3.5150175), Vector3(0, 5.786, 13.415)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SinglePlatform2:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.53333336, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.2617994, 0, 0), Vector3(0.2617994, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SinglePlatform3:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.53333336, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 2.6809998, -3.515), Vector3(0, 2.6809998, -3.515), Vector3(0, 5.786, -13.415)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SinglePlatform3:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.53333336, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0)]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SinglePlatform2")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"disable_collider"
+}]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SinglePlatform3")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"disable_collider"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_wsu2k"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SinglePlatform:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 14.299952, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SinglePlatform2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 13.178156, 2.6887977)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SinglePlatform3:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 13.178, -2.689)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SinglePlatform:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SinglePlatform2:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SinglePlatform3:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("SinglePlatform")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"disable_collider"
+}]
+}
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("SinglePlatform2")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"disable_collider"
+}]
+}
+tracks/8/type = "method"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("SinglePlatform3")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"disable_collider"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_k12tt"]
+resource_name = "single_platform_center"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SinglePlatform:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.0666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 14.299952, 0), Vector3(0, 2.9426746, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SinglePlatform:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.0666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SinglePlatform")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1.0666667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"enable_collider"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_h1bgf"]
+resource_name = "single_platform_center_exit"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SinglePlatform:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5666667, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 2.9426746, 0), Vector3(0, 2.9426746, 0), Vector3(-9.536743e-07, 6.32084, -15.339635)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SinglePlatform:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5666667, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SinglePlatform")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.56666666),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"disable_collider"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k12tt"]
+_data = {
+&"RESET": SubResource("Animation_jkdf5"),
+&"double_platform": SubResource("Animation_b3802"),
+&"double_platform_exit": SubResource("Animation_fevyy"),
+&"idle": SubResource("Animation_wsu2k"),
+&"single_platform_center": SubResource("Animation_k12tt"),
+&"single_platform_center_exit": SubResource("Animation_h1bgf")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6iyac"]
+animation = &"double_platform"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fdnlq"]
+animation = &"double_platform_exit"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jkdf5"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wsu2k"]
+animation = &"single_platform_center"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_k12tt"]
+animation = &"single_platform_center_exit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fevyy"]
+advance_mode = 2
+advance_condition = &"single_platform_center"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hibaj"]
+advance_mode = 2
+advance_condition = &"exit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pdsj5"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ee4r6"]
+advance_mode = 2
+advance_condition = &"double_platform"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gt3je"]
+advance_mode = 2
+advance_condition = &"exit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3pmx8"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_c4elv"]
+states/Start/position = Vector2(194, 120)
+states/double_platform/node = SubResource("AnimationNodeAnimation_6iyac")
+states/double_platform/position = Vector2(610, 173)
+states/double_platform_exit/node = SubResource("AnimationNodeAnimation_fdnlq")
+states/double_platform_exit/position = Vector2(610, 82)
+states/idle/node = SubResource("AnimationNodeAnimation_jkdf5")
+states/idle/position = Vector2(469, 239)
+states/single_platform_center/node = SubResource("AnimationNodeAnimation_wsu2k")
+states/single_platform_center/position = Vector2(376, 173)
+states/single_platform_center_exit/node = SubResource("AnimationNodeAnimation_k12tt")
+states/single_platform_center_exit/position = Vector2(376, 82)
+transitions = ["idle", "single_platform_center", SubResource("AnimationNodeStateMachineTransition_fevyy"), "single_platform_center", "single_platform_center_exit", SubResource("AnimationNodeStateMachineTransition_hibaj"), "single_platform_center_exit", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "idle", "double_platform", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "double_platform", "double_platform_exit", SubResource("AnimationNodeStateMachineTransition_gt3je"), "double_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_3pmx8")]
+
 [node name="Root" type="Node3D" unique_id=236819951]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1831742261]
@@ -679,7 +1179,8 @@ parameters/conditions/left = false
 parameters/conditions/right = false
 parameters/conditions/up = false
 
-[node name="RoundManager" type="RoundManager" parent="." unique_id=1510891354]
+[node name="RoundManager" type="RoundManager" parent="." unique_id=1510891354 node_paths=PackedStringArray("temp_obsticle_manager")]
+temp_obsticle_manager = NodePath("../TemporaryObsticleManager")
 
 [node name="CountDownText" type="Label3D" parent="RoundManager" unique_id=1653012386]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 7.413319, 0)
@@ -732,3 +1233,25 @@ player_position3 = NodePath("../PlayerPosition3")
 player_position4 = NodePath("../PlayerPosition4")
 
 [node name="PauseMenuCanvas" parent="." unique_id=171649780 instance=ExtResource("6_6bp64")]
+
+[node name="TemporaryObsticleManager" type="TemporaryObsticleManager" parent="." unique_id=627713457]
+
+[node name="SinglePlatform" parent="TemporaryObsticleManager" unique_id=890487601 instance=ExtResource("7_6bp64")]
+transform = Transform3D(0.5, 0, 0, 0, 0.49999997, 0, 0, 0, 0.49999997, 0, 14.299952, 0)
+
+[node name="SinglePlatform2" parent="TemporaryObsticleManager" unique_id=922538390 instance=ExtResource("7_6bp64")]
+transform = Transform3D(0.5, 0, 0, 0, 0.49999997, 0, 0, 0, 0.49999997, 0, 13.178156, 2.6887977)
+
+[node name="SinglePlatform3" parent="TemporaryObsticleManager" unique_id=810416917 instance=ExtResource("7_6bp64")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 13.178, -2.689)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TemporaryObsticleManager" unique_id=948268273]
+libraries/ = SubResource("AnimationLibrary_k12tt")
+
+[node name="AnimationTree" type="AnimationTree" parent="TemporaryObsticleManager/AnimationPlayer" unique_id=1647503903]
+root_node = NodePath("../..")
+tree_root = SubResource("AnimationNodeStateMachine_c4elv")
+anim_player = NodePath("..")
+parameters/conditions/double_platform = false
+parameters/conditions/exit = false
+parameters/conditions/single_platform_center = false

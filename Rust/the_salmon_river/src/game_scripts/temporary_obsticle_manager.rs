@@ -1,5 +1,5 @@
 use godot::{
-    classes::{AnimationTree, INode3D, RandomNumberGenerator},
+    classes::{AnimationPlayer, AnimationTree, INode3D, RandomNumberGenerator},
     prelude::*,
 };
 
@@ -25,12 +25,9 @@ impl INode3D for TemporaryObsticleManager {
     fn ready(&mut self) {
         self.animation_tree = self
             .base()
-            .find_child("AnimationPlayer")
-            .and_then(|player| {
-                player
-                    .get_child(0)
-                    .and_then(|tree| tree.try_cast::<AnimationTree>().ok())
-            });
+            .get_node_as::<AnimationPlayer>("AnimationPlayer")
+            .get_child(0)
+            .and_then(|tree| tree.try_cast::<AnimationTree>().ok());
     }
 }
 
@@ -45,7 +42,9 @@ impl TemporaryObsticleManager {
                 tree.set(
                     &format!("parameters/conditions/{}", self.animation_triggers[index]),
                     &false.to_variant(),
-                )
+                );
+                let debug = format!("parameters/conditions/{}", self.animation_triggers[index]);
+                godot_print!("{debug}");
             });
             let mut tree = tree.clone();
             let timer = self.base().get_tree().create_timer(2.0);
@@ -67,6 +66,7 @@ impl TemporaryObsticleManager {
                     "parameters/conditions/{}",
                     this.bind_mut().animation_triggers[animation_trigger_chosen]
                 );
+                godot_print!("{trigger_str}");
                 tree.set("parameters/conditions/exit", &false.to_variant());
                 tree.set(&trigger_str, &true.to_variant());
             });

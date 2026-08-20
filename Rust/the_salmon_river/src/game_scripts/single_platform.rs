@@ -43,13 +43,15 @@ impl INode3D for SinglePlatform {
 impl SinglePlatform {
     #[func]
     pub fn enable_collider(&mut self) {
-        self.collider_enabled = false;
+        self.collider_enabled = true;
     }
     #[func]
     pub fn disable_collider(&mut self) {
-        self.collider_enabled = true;
+        self.collider_enabled = false;
     }
     pub fn on_oneway_area_enter(&mut self, area: Gd<Area3D>) {
+        let debug = self.collider_enabled;
+        godot_print!("{debug}");
         if self.base().get_global_position().y < area.get_global_position().y
             && self.collider_enabled
         {

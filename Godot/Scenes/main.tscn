@@ -633,14 +633,14 @@ states/start_anim/node = SubResource("AnimationNodeAnimation_344ge")
 states/start_anim/position = Vector2(403, 145)
 transitions = ["countdown", "go", SubResource("AnimationNodeStateMachineTransition_k12tt"), "Start", "start_anim", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "start_anim", "countdown", SubResource("AnimationNodeStateMachineTransition_b3802"), "go", "exit_anim", SubResource("AnimationNodeStateMachineTransition_h1bgf")]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_21xkr"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6bp64"]
 resource_local_to_scene = true
 transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 shading_mode = 0
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_6bp64"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_344ge"]
 size = Vector2(0.7, 0.5)
 orientation = 2
 
@@ -1129,8 +1129,11 @@ advance_condition = &"exit"
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6bp64"]
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_c4elv"]
-states/Start/position = Vector2(194, 120)
+states/Start/position = Vector2(182, 232)
 states/double_platform/node = SubResource("AnimationNodeAnimation_6iyac")
 states/double_platform/position = Vector2(610, 173)
 states/double_platform_exit/node = SubResource("AnimationNodeAnimation_fdnlq")
@@ -1141,7 +1144,8 @@ states/single_platform_center/node = SubResource("AnimationNodeAnimation_wsu2k")
 states/single_platform_center/position = Vector2(376, 173)
 states/single_platform_center_exit/node = SubResource("AnimationNodeAnimation_k12tt")
 states/single_platform_center_exit/position = Vector2(376, 82)
-transitions = ["idle", "single_platform_center", SubResource("AnimationNodeStateMachineTransition_fevyy"), "single_platform_center", "single_platform_center_exit", SubResource("AnimationNodeStateMachineTransition_hibaj"), "single_platform_center_exit", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "idle", "double_platform", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "double_platform", "double_platform_exit", SubResource("AnimationNodeStateMachineTransition_gt3je"), "double_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_3pmx8")]
+transitions = ["idle", "single_platform_center", SubResource("AnimationNodeStateMachineTransition_fevyy"), "single_platform_center", "single_platform_center_exit", SubResource("AnimationNodeStateMachineTransition_hibaj"), "single_platform_center_exit", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "idle", "double_platform", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "double_platform", "double_platform_exit", SubResource("AnimationNodeStateMachineTransition_gt3je"), "double_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_6bp64")]
+graph_offset = Vector2(-149, -27)
 
 [node name="Root" type="Node3D" unique_id=236819951]
 
@@ -1201,8 +1205,8 @@ parameters/conditions/count = false
 
 [node name="RoundLabel" type="MeshInstance3D" parent="RoundManager" unique_id=1855228584]
 transform = Transform3D(-7.17814e-07, 0, 10.826355, 0, 16.421669, 0, -16.421669, 0, -4.7323502e-07, 0, 4.8183417, 0)
-material_override = SubResource("StandardMaterial3D_21xkr")
-mesh = SubResource("PlaneMesh_6bp64")
+material_override = SubResource("StandardMaterial3D_6bp64")
+mesh = SubResource("PlaneMesh_344ge")
 script = ExtResource("6_21xkr")
 text = "ROUND 0!
 0000

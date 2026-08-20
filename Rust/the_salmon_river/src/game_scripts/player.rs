@@ -455,6 +455,34 @@ impl Player {
                 crate::sound_utils::SoundEffect::PlayerJump,
                 sound_effect_position,
             );
+            let scene = load::<PackedScene>("res://Prefabs/ground_particles.tscn");
+            if let Some(mut ground_particles) = scene
+                .instantiate()
+                .and_then(|root| root.try_cast::<Node3D>().ok())
+            {
+                if let Some(mut root) = self.base().get_tree().get_current_scene() {
+                    root.add_child(&ground_particles);
+                }
+                self.base().find_child("LeftFoot").and_then(|foot| {
+                    foot.try_cast::<Node3D>().ok().and_then(|foot3d| {
+                        Some(ground_particles.set_position(foot3d.get_global_position()))
+                    })
+                });
+                let Some(mut particles) = ground_particles
+                    .get_child(0)
+                    .and_then(|particles| particles.try_cast::<GpuParticles3D>().ok())
+                else {
+                    return;
+                };
+                particles.set_emitting(true);
+                let timer = self.base().get_tree().create_timer(1.0);
+                godot::task::spawn(async move {
+                    Signal::from_object_signal(&timer, "timeout")
+                        .to_future::<()>()
+                        .await;
+                    ground_particles.call_deferred("queue_free", &[]);
+                });
+            }
             velocity.y = self.jump_force;
         }
         if !input.is_key_pressed(self.jump_key) {

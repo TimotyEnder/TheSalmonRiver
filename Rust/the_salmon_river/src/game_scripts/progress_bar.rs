@@ -105,7 +105,6 @@ impl ProgressBar3D {
             let mut scale = main.get_scale();
             scale.x = self.initial_scale.x * val;
             main.set_scale(scale);
-            let scale = main.get_scale();
         }
     }
     pub fn reset(&mut self) {

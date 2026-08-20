@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://cvu04m44dxvbc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b4vev"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="Gradient" id="Gradient_ac8vi"]
+offsets = PackedFloat32Array(0, 0.49226806, 0.7396907, 0.7551546, 1)
+colors = PackedColorArray(0.101960786, 0.2627451, 0.2, 1, 0.101960786, 0.2627451, 0.2, 1, 0.101960786, 0.2627451, 0.2, 1, 0.23921569, 0.07450981, 0.007843138, 1, 0.23921569, 0.07450981, 0.007843138, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_w76bn"]
+gradient = SubResource("Gradient_ac8vi")
+
+[sub_resource type="Curve" id="Curve_ac8vi"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.70772946, 0.70059884), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_5dphn"]
+curve = SubResource("Curve_ac8vi")
+
+[sub_resource type="Curve" id="Curve_5dphn"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ac8vi"]
+curve = SubResource("Curve_5dphn")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_avi41"]
+emission_shape = 2
+emission_sphere_radius = 0.3
+angle_min = -720.0
+angle_max = 950.5
+direction = Vector3(0, 1, 0)
+spread = 15.275
+initial_velocity_min = 2.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, -10, 0)
+scale_min = 2.0
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_5dphn")
+scale_over_velocity_curve = SubResource("CurveTexture_ac8vi")
+color_initial_ramp = SubResource("GradientTexture1D_w76bn")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_ba2sc"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="GroundParticles" type="Node3D" unique_id=1205258932]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=642333712]
+material_override = SubResource("StandardMaterial3D_b4vev")
+emitting = false
+amount = 5
+one_shot = true
+explosiveness = 0.8
+process_material = SubResource("ParticleProcessMaterial_avi41")
+draw_pass_1 = SubResource("BoxMesh_ba2sc")

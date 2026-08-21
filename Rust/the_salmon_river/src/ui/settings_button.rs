@@ -3,7 +3,7 @@ use godot::{
     prelude::*,
 };
 
-use crate::game_managers::audio_manager::AudioManager;
+use crate::game_managers::audio_manager::{AudioManager, AudioPlayBuilder};
 
 #[derive(GodotClass)]
 #[class(base=Button)]
@@ -53,9 +53,9 @@ impl SettingsButton {
             .base()
             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
         if let Some(mut audio) = audio {
-            audio.bind_mut().play_sound(
-                crate::sound_utils::SoundEffect::UIAccept,
-                self.base().get_global_position(),
+            audio.bind_mut().play_sound_built(
+                AudioPlayBuilder::play_sound_effect(crate::sound_utils::SoundEffect::UIAccept)
+                    .at_position(self.base().get_global_position()),
             );
         }
         if let Some(ref mut settings) = self.settings_panel {

@@ -3,7 +3,10 @@ use godot::{
     prelude::*,
 };
 
-use crate::{game_managers::audio_manager::AudioManager, sound_utils::SoundEffect};
+use crate::{
+    game_managers::audio_manager::{AudioManager, AudioPlayBuilder},
+    sound_utils::SoundEffect,
+};
 
 #[derive(GodotClass)]
 #[class(base=Button)]
@@ -32,9 +35,10 @@ impl ApplicationExitButton {
             .base()
             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
         if let Some(mut audio) = audio_manager {
-            audio
-                .bind_mut()
-                .play_sound(SoundEffect::UICancel, self.base().get_global_position());
+            audio.bind_mut().play_sound_built(
+                AudioPlayBuilder::play_sound_effect(SoundEffect::UICancel)
+                    .at_position(self.base().get_global_position()),
+            );
         }
         self.base_mut().get_tree().call_deferred("quit", &[]);
     }

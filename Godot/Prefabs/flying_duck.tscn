@@ -237,6 +237,20 @@ tracks/5/keys = {
 "update": 0,
 "values": [Vector3(1, 1, 1), Vector3(1, 1, 1), Vector3(1, 1, 1)]
 }
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.33333334),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_wing_flap_sound"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_k12tt"]
 _data = {
@@ -255,7 +269,7 @@ states/flying/node = SubResource("AnimationNodeAnimation_usl8d")
 states/flying/position = Vector2(423, 113)
 transitions = ["Start", "flying", SubResource("AnimationNodeStateMachineTransition_5vpr7")]
 
-[node name="FlyingDuck" type="Node3D" unique_id=830437567]
+[node name="FlyingDuck" type="FlyingDuck" unique_id=836059744]
 transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, 0, 0, 0)
 
 [node name="Node" type="Node3D" parent="." unique_id=137689537]

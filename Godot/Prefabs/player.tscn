@@ -3371,7 +3371,7 @@ shape = SubResource("CapsuleShape3D_juxdh")
 debug_color = Color(0.3264353, 0.6243242, 9.62615e-07, 1)
 
 [node name="PlayerLabel" type="Label3D" parent="." unique_id=2045841596]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 3.6388261, -0.04098952)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.88888264, 3.6388261, -0.040989555)
 modulate = Color(1, 1, 1, 0.49019608)
 text = "P0"
 font = ExtResource("2_juxdh")
@@ -3541,6 +3541,7 @@ mesh = SubResource("BoxMesh_s6dll")
 
 [node name="DuckPoofParticles" type="GPUParticles3D" parent="." unique_id=1569583201]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6169777, 0)
+visible = false
 emitting = false
 amount = 35
 lifetime = 0.25

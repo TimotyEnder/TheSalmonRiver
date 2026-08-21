@@ -3,7 +3,10 @@ use godot::{
     prelude::*,
 };
 
-use crate::{game_managers::audio_manager::AudioManager, game_scripts::game_utils::vec3_to_vec2};
+use crate::{
+    game_managers::audio_manager::{AudioManager, AudioPlayBuilder},
+    game_scripts::game_utils::vec3_to_vec2,
+};
 
 #[derive(GodotClass)]
 #[class(base=StaticBody3D)]
@@ -94,9 +97,13 @@ impl River {
                 .base()
                 .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
             if let Some(mut audio) = audio {
-                audio.bind_mut().play_sound_debounced_randomized_pitch(
-                    crate::sound_utils::SoundEffect::WaterSplash,
-                    vec3_to_vec2(pos),
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::WaterSplash,
+                    )
+                    .debounced()
+                    .with_randomized_pitch_range(0.9, 1.1)
+                    .at_position(vec3_to_vec2(pos)),
                 );
             }
             let timer = self.base().get_tree().create_timer(2.0);

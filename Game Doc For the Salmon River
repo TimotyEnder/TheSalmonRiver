@@ -5,7 +5,6 @@ Game Doc For the Salmon River:
 todo:
 more characters cosmetically  add a character theme select button as well. Maybe change the default character a bit, give him more detail.
 
-add different jump particles based on terrain.
+add sounds to the new enviroment stuff like saw blade and  flying duck.
 
-think about the duck effects, both particles and animations. How to make a poof without obscuring the screen?
-or make it not spammable or remove the particles
+add sounds to the river, looping and low

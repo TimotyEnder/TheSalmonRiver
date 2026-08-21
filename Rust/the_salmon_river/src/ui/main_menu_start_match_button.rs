@@ -3,7 +3,10 @@ use godot::{
     prelude::*,
 };
 
-use crate::{game_managers::audio_manager::AudioManager, ui::pregame_panel::PregamePanel};
+use crate::{
+    game_managers::audio_manager::{AudioManager, AudioPlayBuilder},
+    ui::pregame_panel::PregamePanel,
+};
 #[derive(GodotClass)]
 #[class(base=Button)]
 
@@ -41,9 +44,11 @@ impl MainMenuStartMatchButton {
             if pregame.bind_mut().start_game()
                 && let Some(mut audio) = audio
             {
-                audio.bind_mut().play_sound(
-                    crate::sound_utils::SoundEffect::MatchStartSound,
-                    self.base().get_global_position(),
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::MatchStartSound,
+                    )
+                    .at_position(self.base().get_global_position()),
                 );
                 //tree.change_scene_to_file("res://Scenes/victory_screen.tscn"); //debug
                 tree.change_scene_to_file("res://Scenes/main.tscn");

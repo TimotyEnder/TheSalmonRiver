@@ -3,7 +3,10 @@ use godot::{
     prelude::*,
 };
 
-use crate::{game_managers::audio_manager::AudioManager, sound_utils::SoundEffect};
+use crate::{
+    game_managers::audio_manager::{AudioManager, AudioPlayBuilder},
+    sound_utils::SoundEffect,
+};
 
 #[derive(GodotClass)]
 #[class(base=Button)]
@@ -46,10 +49,16 @@ impl PanelEnablingButton {
             && let Some(mut audio) = audio_manager
         {
             if self.disable_panel {
-                audio.bind_mut().play_sound(SoundEffect::UICancel, position);
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(SoundEffect::UICancel)
+                        .at_position(position),
+                );
                 controls_panel.set_visible(false);
             } else {
-                audio.bind_mut().play_sound(SoundEffect::UIAccept, position);
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(SoundEffect::UIAccept)
+                        .at_position(position),
+                );
                 controls_panel.set_visible(true);
             }
         }

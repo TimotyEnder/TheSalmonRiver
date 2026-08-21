@@ -3,7 +3,10 @@ use godot::{
     prelude::*,
 };
 
-use crate::{game_managers::audio_manager::AudioManager, sound_utils::SoundEffect};
+use crate::{
+    game_managers::audio_manager::{AudioManager, AudioPlayBuilder},
+    sound_utils::SoundEffect,
+};
 
 #[derive(GodotClass)]
 #[class(base=Control)]
@@ -77,13 +80,15 @@ impl LabelCounter {
             if self.current_selection_pos < (self.possible_values.len() - 1) {
                 self.current_selection_pos += 1;
                 self.update_label();
-                audio
-                    .bind_mut()
-                    .play_sound(SoundEffect::UIIncrement, self.base().get_global_position());
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(SoundEffect::UIIncrement)
+                        .at_position(self.base().get_global_position()),
+                );
             } else {
-                audio
-                    .bind_mut()
-                    .play_sound(SoundEffect::UICancel, self.base().get_global_position());
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(SoundEffect::UICancel)
+                        .at_position(self.base().get_global_position()),
+                );
             }
         }
     }
@@ -95,13 +100,15 @@ impl LabelCounter {
             if self.current_selection_pos > 0 {
                 self.current_selection_pos -= 1;
                 self.update_label();
-                audio
-                    .bind_mut()
-                    .play_sound(SoundEffect::UIDecrement, self.base().get_global_position());
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(SoundEffect::UIDecrement)
+                        .at_position(self.base().get_global_position()),
+                );
             } else {
-                audio
-                    .bind_mut()
-                    .play_sound(SoundEffect::UICancel, self.base().get_global_position());
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(SoundEffect::UICancel)
+                        .at_position(self.base().get_global_position()),
+                );
             }
         }
     }

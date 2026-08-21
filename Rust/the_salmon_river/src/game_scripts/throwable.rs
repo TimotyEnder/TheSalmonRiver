@@ -1,5 +1,5 @@
 use crate::{
-    game_managers::audio_manager::AudioManager,
+    game_managers::audio_manager::{AudioManager, AudioPlayBuilder},
     game_scripts::{
         game_utils::{Direction, vec3_to_vec2},
         player::Player,
@@ -88,9 +88,11 @@ impl Throwable {
                             .base()
                             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
                         if let Some(mut audio) = audio {
-                            audio.bind_mut().play_sound(
-                                crate::sound_utils::SoundEffect::ThrowableGrabbed,
-                                vec3_to_vec2(self.base().get_global_position()),
+                            audio.bind_mut().play_sound_built(
+                                AudioPlayBuilder::play_sound_effect(
+                                    crate::sound_utils::SoundEffect::ThrowableGrabbed,
+                                )
+                                .at_position(vec3_to_vec2(self.base().get_global_position())),
                             );
                         }
                     }
@@ -135,9 +137,10 @@ impl Throwable {
         if let Some(ref inner) = self.throwable_inner
             && let Some(mut audio) = audio
         {
-            audio
-                .bind_mut()
-                .play_sound(inner.sound_effect_on_ability(), sound_position);
+            audio.bind_mut().play_sound_built(
+                AudioPlayBuilder::play_sound_effect(inner.sound_effect_on_ability())
+                    .at_position(sound_position),
+            );
         }
     }
     pub fn drop_itself(&mut self) {
@@ -244,9 +247,10 @@ impl Throwable {
                 .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
             let sound_pos = vec3_to_vec2(self.base().get_global_position());
             if let Some(mut audio) = audio {
-                audio
-                    .bind_mut()
-                    .play_sound(throwability.sound_effect_on_break(), sound_pos);
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(throwability.sound_effect_on_break())
+                        .at_position(sound_pos),
+                );
             }
         }
     }

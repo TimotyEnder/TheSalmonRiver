@@ -1,4 +1,5 @@
 pub mod duck_meter_manager;
+pub mod flying_duck;
 pub mod game_utils;
 pub mod leaderboard;
 pub mod match_manager;
@@ -6,6 +7,8 @@ pub mod player;
 pub mod progress_bar;
 pub mod river;
 pub mod round_manager;
+pub mod saw_blade;
+pub mod saw_platform;
 pub mod single_platform;
 pub mod temporary_obsticle_manager;
 pub mod throwable;

@@ -6,7 +6,9 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
 size = Vector3(1, 0.74602795, 7.4772606)
 
-[node name="SinglePlatform" type="SinglePlatform" unique_id=890487601]
+[node name="SinglePlatform" type="SinglePlatform" unique_id=890487601 node_paths=PackedStringArray("duck1", "duck2")]
+duck1 = NodePath("FlyingDuck")
+duck2 = NodePath("FlyingDuck2")
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="Log" parent="." unique_id=693505904 instance=ExtResource("1_6ym4l")]

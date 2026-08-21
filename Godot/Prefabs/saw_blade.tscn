@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://nsgr63dvj8wl" path="res://VoxelAssets/Environment/saw.gltf" id="1_s3uvf"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ba2sc"]
-size = Vector3(5.694824, 16.048218, 16.036865)
+size = Vector3(5.694824, 11.069916, 11.068909)
 
 [sub_resource type="Animation" id="Animation_s3uvf"]
 length = 0.001
@@ -54,7 +54,7 @@ states/spin/node = SubResource("AnimationNodeAnimation_s3uvf")
 states/spin/position = Vector2(383, 187)
 transitions = ["Start", "spin", SubResource("AnimationNodeStateMachineTransition_7upug")]
 
-[node name="SawBlade" type="Node3D" unique_id=1304262265]
+[node name="SawBlade" type="SawBlade" unique_id=709276107]
 
 [node name="saw" parent="." unique_id=265036316 instance=ExtResource("1_s3uvf")]
 transform = Transform3D(0.09, 0, 0, 0, 0.09, 0, 0, 0, 0.09, 0.31580994, -1.436762, -0.0045769215)
@@ -62,7 +62,7 @@ transform = Transform3D(0.09, 0, 0, 0, 0.09, 0, 0, 0, 0.09, 0.31580994, -1.43676
 [node name="InstantDeathSawBlade" type="Area3D" parent="saw" unique_id=839030673]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="saw/InstantDeathSawBlade" unique_id=934238596]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4465332, 16.007586, 0.011023872)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4465332, 16.161594, 0.15045868)
 shape = SubResource("BoxShape3D_ba2sc")
 debug_color = Color(0.9862477, 0, 0.3282248, 1)
 

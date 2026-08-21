@@ -6,7 +6,7 @@ use godot::global::Key;
 use godot::prelude::*;
 use godot::signal::ConnectHandle;
 
-use crate::game_managers::audio_manager::AudioManager;
+use crate::game_managers::audio_manager::{AudioManager, AudioPlayBuilder};
 use crate::game_managers::player_control_scheme::PlayerControlScheme;
 use crate::game_scripts::duck_meter_manager::DuckMeterManager;
 use crate::game_scripts::game_utils::{
@@ -211,9 +211,9 @@ impl Player {
             .base()
             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
         if let Some(mut audio) = audio {
-            audio.bind_mut().play_sound(
-                crate::sound_utils::SoundEffect::PlayerGrab,
-                vec3_to_vec2(self.base().get_global_position()),
+            audio.bind_mut().play_sound_built(
+                AudioPlayBuilder::play_sound_effect(crate::sound_utils::SoundEffect::PlayerGrab)
+                    .at_position(vec3_to_vec2(self.base().get_global_position())),
             );
         }
     }
@@ -224,19 +224,31 @@ impl Player {
             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
         if let Some(mut audio) = audio {
             if self.walking_on_water {
-                audio.bind_mut().play_sound_debounced_randomized_pitch(
-                    crate::sound_utils::SoundEffect::WaterFootStep,
-                    vec3_to_vec2(self.base().get_global_position()),
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::WaterFootStep,
+                    )
+                    .debounced()
+                    .with_randomized_pitch_range(0.9, 1.1)
+                    .at_position(vec3_to_vec2(self.base().get_global_position())),
                 );
             } else if self.walking_on_rock {
-                audio.bind_mut().play_sound_debounced_randomized_pitch(
-                    crate::sound_utils::SoundEffect::StoneFootStep,
-                    vec3_to_vec2(self.base().get_global_position()),
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::StoneFootStep,
+                    )
+                    .debounced()
+                    .with_randomized_pitch_range(0.9, 1.1)
+                    .at_position(vec3_to_vec2(self.base().get_global_position())),
                 );
             } else {
-                audio.bind_mut().play_sound_debounced_randomized_pitch(
-                    crate::sound_utils::SoundEffect::PlayerFootStep,
-                    vec3_to_vec2(self.base().get_global_position()),
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::PlayerFootStep,
+                    )
+                    .debounced()
+                    .with_randomized_pitch_range(0.9, 1.1)
+                    .at_position(vec3_to_vec2(self.base().get_global_position())),
                 );
             }
         }
@@ -489,9 +501,9 @@ impl Player {
                     .await;
                 this.bind_mut().jumping = false;
             });
-            audio.bind_mut().play_sound(
-                crate::sound_utils::SoundEffect::PlayerJump,
-                sound_effect_position,
+            audio.bind_mut().play_sound_built(
+                AudioPlayBuilder::play_sound_effect(crate::sound_utils::SoundEffect::PlayerJump)
+                    .at_position(sound_effect_position),
             );
             let scene = load::<PackedScene>("res://Prefabs/ground_particles.tscn");
             if let Some(mut ground_particles) = scene
@@ -561,9 +573,12 @@ impl Player {
         {
             if !self.ducked {
                 self.ducked = true;
-                audio.bind_mut().play_sound_randomized_pitch(
-                    crate::sound_utils::SoundEffect::PlayerDuckQuack,
-                    sound_effect_position,
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::PlayerDuckQuack,
+                    )
+                    .with_randomized_pitch_range(0.9, 1.1)
+                    .at_position(sound_effect_position),
                 );
                 if let Some(ref mut particles) = self.duck_pafrticles {
                     particles.restart();
@@ -723,9 +738,11 @@ impl Player {
                 .base()
                 .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
             if let Some(mut audio) = audio {
-                audio.bind_mut().play_sound(
-                    crate::sound_utils::SoundEffect::WingFlapDuck,
-                    vec3_to_vec2(bind.base().get_global_position()),
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::WingFlapDuck,
+                    )
+                    .at_position(vec3_to_vec2(bind.base().get_global_position())),
                 );
             }
             if let Some(ref mut duck_particles) = bind.duck_pafrticles {
@@ -767,9 +784,11 @@ impl Player {
                 .base()
                 .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
             if let Some(mut audio) = audio {
-                audio.bind_mut().play_sound(
-                    crate::sound_utils::SoundEffect::PlayerPunchSwoosh1,
-                    vec3_to_vec2(bind.base().get_global_position()),
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::PlayerPunchSwoosh1,
+                    )
+                    .at_position(vec3_to_vec2(bind.base().get_global_position())),
                 );
             }
             bind.is_throwing = true;
@@ -877,23 +896,32 @@ impl Player {
                 && let Some(mut audio) = audio
             {
                 if salmon {
-                    audio.bind_mut().play_sound_randomized_pitch(
-                        crate::sound_utils::SoundEffect::PlayerPunchSwoosh,
-                        vec3_to_vec2(this_pos),
+                    audio.bind_mut().play_sound_built(
+                        AudioPlayBuilder::play_sound_effect(
+                            crate::sound_utils::SoundEffect::PlayerPunchSwoosh,
+                        )
+                        .with_randomized_pitch_range(0.9, 1.1)
+                        .at_position(vec3_to_vec2(this_pos)),
                     );
                     upper_anim.set("parameters/conditions/salmon_punch", &true.to_variant());
                 } else {
                     if right_punch {
-                        audio.bind_mut().play_sound_randomized_pitch(
-                            crate::sound_utils::SoundEffect::PlayerPunchSwoosh,
-                            vec3_to_vec2(this_pos),
+                        audio.bind_mut().play_sound_built(
+                            AudioPlayBuilder::play_sound_effect(
+                                crate::sound_utils::SoundEffect::PlayerPunchSwoosh,
+                            )
+                            .with_randomized_pitch_range(0.9, 1.1)
+                            .at_position(vec3_to_vec2(this_pos)),
                         );
                         upper_anim.set("parameters/conditions/r_punch", &true.to_variant());
                         right_punch = false;
                     } else if !right_punch {
-                        audio.bind_mut().play_sound_randomized_pitch(
-                            crate::sound_utils::SoundEffect::PlayerPunchSwoosh1,
-                            vec3_to_vec2(this_pos),
+                        audio.bind_mut().play_sound_built(
+                            AudioPlayBuilder::play_sound_effect(
+                                crate::sound_utils::SoundEffect::PlayerPunchSwoosh1,
+                            )
+                            .with_randomized_pitch_range(0.9, 1.1)
+                            .at_position(vec3_to_vec2(this_pos)),
                         );
                         upper_anim.set("parameters/conditions/l_punch", &true.to_variant());
                         right_punch = true;
@@ -1099,15 +1127,21 @@ impl Player {
         if let Some(mut audio) = audio_manager {
             if should_knockback {
                 godot::task::spawn(Self::knockback_routine(this, knock_dir, false));
-                audio.bind_mut().play_sound_randomized_pitch(
-                    crate::sound_utils::SoundEffect::PlayerKnockDown,
-                    position2d,
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::PlayerKnockDown,
+                    )
+                    .with_randomized_pitch_range(0.9, 1.1)
+                    .at_position(position2d),
                 );
                 return;
             } else {
-                audio.bind_mut().play_sound_randomized_pitch(
-                    crate::sound_utils::SoundEffect::PlayerPunch,
-                    position2d,
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::PlayerPunch,
+                    )
+                    .with_randomized_pitch_range(0.9, 1.1)
+                    .at_position(position2d),
                 );
             }
         }
@@ -1166,9 +1200,12 @@ impl Player {
                 .base()
                 .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
             if let Some(mut audio) = audio {
-                audio.bind_mut().play_sound_randomized_pitch(
-                    crate::sound_utils::SoundEffect::ThrowTechPlayer,
-                    vec3_to_vec2(bind.base().get_global_position()),
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::ThrowTechPlayer,
+                    )
+                    .with_randomized_pitch_range(0.9, 1.1)
+                    .at_position(vec3_to_vec2(bind.base().get_global_position())),
                 );
             }
             if let Some(ref mut anim) = bind.lower_anim_tree {
@@ -1219,9 +1256,12 @@ impl Player {
                 .base()
                 .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
             if let Some(mut audio) = audio {
-                audio.bind_mut().play_sound_randomized_pitch(
-                    crate::sound_utils::SoundEffect::PlayerDeathBlow,
-                    vec3_to_vec2(bind.base().get_global_position()),
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::PlayerDeathBlow,
+                    )
+                    .with_randomized_pitch_range(0.9, 1.1)
+                    .at_position(vec3_to_vec2(bind.base().get_global_position())),
                 );
             }
             if let Some(ref mut label) = bind.player_label {
@@ -1312,9 +1352,11 @@ impl Player {
             .base()
             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
         if let Some(mut audio) = audio {
-            audio.bind_mut().play_sound(
-                crate::sound_utils::SoundEffect::ThrowLandPlayer,
-                vec3_to_vec2(this.bind().base().get_global_position()),
+            audio.bind_mut().play_sound_built(
+                AudioPlayBuilder::play_sound_effect(
+                    crate::sound_utils::SoundEffect::ThrowLandPlayer,
+                )
+                .at_position(vec3_to_vec2(this.bind().base().get_global_position())),
             );
         }
         this.bind_mut().thrown_by_another_player = false;
@@ -1814,9 +1856,11 @@ impl Player {
                         .base()
                         .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
                     if let Some(mut audio) = audio {
-                        audio.bind_mut().play_sound(
-                            crate::sound_utils::SoundEffect::PlayerGotGrabbed,
-                            vec3_to_vec2(self.base().get_global_position()),
+                        audio.bind_mut().play_sound_built(
+                            AudioPlayBuilder::play_sound_effect(
+                                crate::sound_utils::SoundEffect::PlayerGotGrabbed,
+                            )
+                            .at_position(vec3_to_vec2(self.base().get_global_position())),
                         );
                     }
                     if let Some(ref mut low_anim) = self.lower_anim_tree {

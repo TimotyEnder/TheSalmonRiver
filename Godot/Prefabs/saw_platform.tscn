@@ -31,7 +31,9 @@ color = Color(2.929, 2.929, 0, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_e6bpr"]
 size = Vector3(0.145, 0.145, 0.145)
 
-[node name="SawPlatform" type="Node3D" unique_id=1289983603]
+[node name="SawPlatform" type="SawPlatform" unique_id=1797122626 node_paths=PackedStringArray("duck", "saw")]
+duck = NodePath("FlyingDuck")
+saw = NodePath("SawBlade")
 
 [node name="saw_attachment" parent="." unique_id=888041055 instance=ExtResource("1_xmj15")]
 transform = Transform3D(0.295, 0, 0, 0, 0.20492423, -0.21220523, 0, 0.21220523, 0.20492423, -0.1674551, -6.5142035, -2.998742)

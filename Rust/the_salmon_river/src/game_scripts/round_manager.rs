@@ -9,7 +9,10 @@ use crate::game_scripts::{
     game_utils::player_color_based_on_number, temporary_obsticle_manager::TemporaryObsticleManager,
 };
 use crate::{
-    game_managers::{audio_manager::AudioManager, game_manager::GameManager},
+    game_managers::{
+        audio_manager::{AudioManager, AudioPlayBuilder},
+        game_manager::GameManager,
+    },
     game_scripts::game_utils::vec3_to_vec2,
 };
 
@@ -81,9 +84,11 @@ impl INode3D for RoundManager {
                             text.push_str(&format!("[color=#{}]{}[/color] ", color, score));
                         }
                         label.set("text", &text.to_variant());
-                        audio.bind_mut().play_sound(
-                            crate::sound_utils::SoundEffect::MatchStartJingle,
-                            vec3_to_vec2(self.base().get_global_position()),
+                        audio.bind_mut().play_sound_built(
+                            AudioPlayBuilder::play_sound_effect(
+                                crate::sound_utils::SoundEffect::MatchStartJingle,
+                            )
+                            .at_position(vec3_to_vec2(self.base().get_global_position())),
                         );
                     }
                 }
@@ -142,9 +147,9 @@ impl RoundManager {
             .base()
             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
         if let Some(mut audio) = audio {
-            audio.bind_mut().play_sound(
-                crate::sound_utils::SoundEffect::CountdownTick,
-                vec3_to_vec2(self.base().get_global_position()),
+            audio.bind_mut().play_sound_built(
+                AudioPlayBuilder::play_sound_effect(crate::sound_utils::SoundEffect::CountdownTick)
+                    .at_position(vec3_to_vec2(self.base().get_global_position())),
             );
         }
     }
@@ -271,9 +276,11 @@ impl RoundManager {
             && let Some(mut audio) = audio
         {
             gm.bind_mut().round_tie();
-            audio.bind_mut().play_sound(
-                crate::sound_utils::SoundEffect::MatchTieJingle,
-                vec3_to_vec2(sound_pos),
+            audio.bind_mut().play_sound_built(
+                AudioPlayBuilder::play_sound_effect(
+                    crate::sound_utils::SoundEffect::MatchTieJingle,
+                )
+                .at_position(vec3_to_vec2(sound_pos)),
             );
             self.run_round_timer = false;
             label.set_visible(true);
@@ -301,9 +308,11 @@ impl RoundManager {
         {
             gm.bind_mut().player_won_round(winner);
             if let Some(mut audio) = audio {
-                audio.bind_mut().play_sound(
-                    crate::sound_utils::SoundEffect::MatchWinnerJingle,
-                    vec3_to_vec2(sound_pos),
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::MatchWinnerJingle,
+                    )
+                    .at_position(vec3_to_vec2(sound_pos)),
                 );
             }
             self.run_round_timer = false;

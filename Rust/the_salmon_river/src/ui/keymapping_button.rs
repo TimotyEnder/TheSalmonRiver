@@ -5,7 +5,8 @@ use godot::{
 };
 
 use crate::{
-    game_managers::audio_manager::AudioManager, sound_utils::SoundEffect,
+    game_managers::audio_manager::{AudioManager, AudioPlayBuilder},
+    sound_utils::SoundEffect,
     ui::player_controls_panel::PlayerControlsPanel,
 };
 
@@ -61,14 +62,16 @@ impl KeyMappingButton {
         if key_code != Key::ESCAPE {
             self.key_saved = Some(key_code);
             if !from_load {
-                audio
-                    .bind_mut()
-                    .play_sound(SoundEffect::UIDecrement, self.base().get_global_position());
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(SoundEffect::UIDecrement)
+                        .at_position(self.base().get_global_position()),
+                );
             }
         } else if !from_load {
-            audio
-                .bind_mut()
-                .play_sound(SoundEffect::UICancel, self.base().get_global_position());
+            audio.bind_mut().play_sound_built(
+                AudioPlayBuilder::play_sound_effect(SoundEffect::UICancel)
+                    .at_position(self.base().get_global_position()),
+            );
         }
         self.is_listening = false;
         self.set_label_to_keycode();
@@ -86,9 +89,10 @@ impl KeyMappingButton {
             .base()
             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
         if let Some(mut audio) = audio {
-            audio
-                .bind_mut()
-                .play_sound(SoundEffect::UIIncrement, self.base().get_global_position());
+            audio.bind_mut().play_sound_built(
+                AudioPlayBuilder::play_sound_effect(SoundEffect::UIIncrement)
+                    .at_position(self.base().get_global_position()),
+            );
         }
         self.is_listening = true;
         self.base_mut().set_text("PRESS");

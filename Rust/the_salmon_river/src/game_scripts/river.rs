@@ -14,6 +14,7 @@ pub struct River {
     base: Base<StaticBody3D>,
     #[export]
     splash_area: Option<Gd<Area3D>>,
+    river_spawned: bool,
 }
 
 #[godot_api]
@@ -22,6 +23,7 @@ impl IStaticBody3D for River {
         Self {
             base,
             splash_area: None,
+            river_spawned: false,
         }
     }
     fn ready(&mut self) {
@@ -35,6 +37,23 @@ impl IStaticBody3D for River {
                 .signals()
                 .area_exited()
                 .connect_other(&this, Self::create_water_splash);
+        }
+    }
+    fn process(&mut self, _delta: f32) {
+        if !self.river_spawned {
+            self.river_spawned = true;
+            let audio = self
+                .base()
+                .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+            if let Some(mut audio) = audio {
+                audio.bind_mut().play_sound_build_with_player_handle(
+                    AudioPlayBuilder::play_sound_effect(
+                        crate::sound_utils::SoundEffect::RiverSound,
+                    )
+                    .at_position(vec3_to_vec2(self.base().get_global_position()))
+                    .with_volume(0.2),
+                );
+            }
         }
     }
 }

@@ -3,6 +3,9 @@ Game Doc For the Salmon River:
 
 
 todo:
-think of random events that change the map maybe? way more interesting that straight up different maps
-tree falls and makes a platform? maybe ducks hold platforms for a bit?
 more characters cosmetically  add a character theme select button as well. Maybe change the default character a bit, give him more detail.
+
+add different jump particles based on terrain.
+
+think about the duck effects, both particles and animations. How to make a poof without obscuring the screen?
+or make it not spammable or remove the particles

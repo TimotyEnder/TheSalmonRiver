@@ -909,7 +909,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0.0026603937, 1.0026604),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(-1.9073489e-06, 13.148777, 19.363977), Vector3(-2.8610232e-06, 7.396454, 8.006188)]
+"values": [Vector3(-1.9073489e-06, 13.148777, 19.363977), Vector3(0, 7.396, 6.296)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -933,7 +933,7 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 13.149, -19.364), Vector3(0, 7.396, -8.006)]
+"values": [Vector3(0, 13.149, -19.364), Vector3(0, 7.396, -6.296)]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
@@ -1013,7 +1013,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(-1.07102096e-07, 1.0026603, 2.0026603),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(-2.8610232e-06, 7.396454, 8.006188), Vector3(0, 7.396, 12.491), Vector3(0, 12.226, 15.976)]
+"values": [Vector3(0, 7.396, 6.296), Vector3(0, 7.396, 12.491), Vector3(0, 12.226, 15.976)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -1025,7 +1025,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0.0026602745, 1.0026603, 2.0026603),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 7.396, -8.006), Vector3(0, 7.396, -12.491), Vector3(0, 12.226, -15.976)]
+"values": [Vector3(0, 7.396, -6.296), Vector3(0, 7.396, -12.491), Vector3(0, 12.226, -15.976)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -1410,7 +1410,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(-1.9073489e-06, 13.148777, 19.363977), Vector3(-2.8610232e-06, 7.396454, 8.006188)]
+"values": [Vector3(-1.9073489e-06, 13.148777, 19.363977), Vector3(0, 7.396, 6.296)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -1422,7 +1422,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 13.149, -19.364), Vector3(0, 7.396, -8.006)]
+"values": [Vector3(0, 13.149, -19.364), Vector3(0, 7.396, -6.296)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -1488,7 +1488,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 1.0026604, 2.0026603),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(-2.8610232e-06, 7.396454, 8.006188), Vector3(0, 7.396, 12.491), Vector3(0, 12.226, 15.976)]
+"values": [Vector3(0, 7.396, 6.296), Vector3(0, 7.396, 12.491), Vector3(0, 12.226, 15.976)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1497,10 +1497,10 @@ tracks/1/path = NodePath("SawPlatform:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0026603816, 1.0026604, 2.0026603),
-"transitions": PackedFloat32Array(1, 1.035265, 1, 1),
+"times": PackedFloat32Array(0, 1.0026604, 2.0026603),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(-2.8610232e-06, 7.396454, 8.006188), Vector3(0, 7.396, -8.006), Vector3(0, 7.396, -12.491), Vector3(0, 12.226, -15.976)]
+"values": [Vector3(0, 7.396, -6.296), Vector3(0, 7.396, -12.491), Vector3(0, 12.226, -15.976)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false

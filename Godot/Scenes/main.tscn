@@ -1026,10 +1026,10 @@ tracks/0/path = NodePath("SinglePlatform3:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.0026603937, 0.53599375, 2.0026603),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.0026603937, 0.53333336, 0.53599375, 1.9973396, 2.0026603),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 2.6809998, -3.515), Vector3(0, 2.6809998, -3.515), Vector3(0, 5.786, -13.415)]
+"values": [Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681, 3.515), Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681, 3.515), Vector3(0, 5.786, 13.415), Vector3(0, 5.786, 13.415)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1062,7 +1062,7 @@ tracks/3/path = NodePath("SawPlatform2:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.0026602745, 1.0026603, 2.0026603),
+"times": PackedFloat32Array(0, 1.0026604, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 7.396, -6.296), Vector3(0, 7.396, -12.491), Vector3(0, 12.226, -15.976)]
@@ -2294,7 +2294,7 @@ states/triple_platform/position = Vector2(886, 323)
 states/triple_platform_exit/node = SubResource("AnimationNodeAnimation_b3802")
 states/triple_platform_exit/position = Vector2(886, 254)
 transitions = ["idle", "single_platform_center", SubResource("AnimationNodeStateMachineTransition_fevyy"), "single_platform_center", "single_platform_center_exit", SubResource("AnimationNodeStateMachineTransition_hibaj"), "single_platform_center_exit", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "idle", "double_platform", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "double_platform", "double_platform_exit", SubResource("AnimationNodeStateMachineTransition_gt3je"), "double_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_6bp64"), "idle", "triple_platform", SubResource("AnimationNodeStateMachineTransition_u50mg"), "triple_platform", "triple_platform_exit", SubResource("AnimationNodeStateMachineTransition_cbgmd"), "triple_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_1w6v2"), "idle", "single_platform_single_saw", SubResource("AnimationNodeStateMachineTransition_ueoa1"), "single_platform_single_saw", "single_platform_single_saw_exit", SubResource("AnimationNodeStateMachineTransition_6vcvc"), "single_platform_single_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_7k868"), "idle", "double_platform_double_saw", SubResource("AnimationNodeStateMachineTransition_hpc6h"), "double_platform_double_saw", "double_platform_double_saw_exit", SubResource("AnimationNodeStateMachineTransition_kltya"), "double_platform_double_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_e08e2"), "idle", "single_platform_double_saw", SubResource("AnimationNodeStateMachineTransition_neg2b"), "single_platform_double_saw", "single_platform_double_saw_exit", SubResource("AnimationNodeStateMachineTransition_r33sp"), "single_platform_double_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_hdf80")]
-graph_offset = Vector2(-238, 136)
+graph_offset = Vector2(134, 8)
 
 [node name="Root" type="Node3D" unique_id=236819951]
 

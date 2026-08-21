@@ -9,8 +9,8 @@ use crate::sound_utils::SoundEffect;
 #[class(base=Node2D)]
 pub struct AudioManager {
     base: Base<Node2D>,
-    next_effect_time: u64,
-    debounce_duration: u64,
+    next_effect_time_ms: u64,
+    debounce_duration_ms: u64,
 }
 
 #[godot_api]
@@ -18,8 +18,8 @@ impl INode2D for AudioManager {
     fn init(base: Base<Node2D>) -> Self {
         Self {
             base,
-            next_effect_time: 0,
-            debounce_duration: 200,
+            next_effect_time_ms: 0,
+            debounce_duration_ms: 100,
         }
     }
     fn ready(&mut self) {
@@ -46,10 +46,10 @@ impl AudioManager {
     pub fn play_sound_built(&mut self, builder: AudioPlayBuilder) {
         let now = Time::singleton().get_ticks_msec();
         if builder.debounced {
-            if now <= self.next_effect_time {
+            if now <= self.next_effect_time_ms {
                 return;
             }
-            self.next_effect_time = now + self.debounce_duration;
+            self.next_effect_time_ms = now + self.debounce_duration_ms;
         }
 
         let stream: Gd<AudioStream> = load(builder.sound_effect.to_sound_effect_path());
@@ -73,10 +73,10 @@ impl AudioManager {
     ) -> Option<Gd<AudioStreamPlayer2D>> {
         let now = Time::singleton().get_ticks_msec();
         if builder.debounced {
-            if now <= self.next_effect_time {
+            if now <= self.next_effect_time_ms {
                 return None;
             }
-            self.next_effect_time = now + self.debounce_duration;
+            self.next_effect_time_ms = now + self.debounce_duration_ms;
         }
 
         let stream: Gd<AudioStream> = load(builder.sound_effect.to_sound_effect_path());

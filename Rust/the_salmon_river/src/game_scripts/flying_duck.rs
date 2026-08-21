@@ -47,7 +47,7 @@ impl FlyingDuck {
                     audio.bind_mut().play_sound_built(
                         AudioPlayBuilder::play_sound_effect(WingFlapDuck)
                             .at_position(vec3_to_vec2(sound_pos))
-                            .with_volume(0.2),
+                            .debounced(),
                     );
                 });
             }

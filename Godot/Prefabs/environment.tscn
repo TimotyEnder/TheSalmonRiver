@@ -28,6 +28,13 @@ size = Vector3(1.8640137, 1.5594711, 2.2324219)
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
 size = Vector3(11.288399, 0.72766113, 5.7378016)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rai8w"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0.446)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s6dll"]
+size = Vector3(0.025634766, 10.289673, 30.380524)
+
 [node name="Environment" type="Node3D" unique_id=1750905010]
 
 [node name="River" type="River" parent="." unique_id=1420182557 node_paths=PackedStringArray("splash_area")]
@@ -155,6 +162,7 @@ transform = Transform3D(0.9952754, 0.09709187, -2.0651925e-10, -0.09709187, 0.99
 size = Vector3(7.5808105, 1.6069336, 6.4954834)
 
 [node name="TreesForeground" type="Node3D" parent="." unique_id=2125719518]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.39023542, 0, 0)
 
 [node name="tree" parent="TreesForeground" unique_id=405094748 instance=ExtResource("4_akyan")]
 transform = Transform3D(0.14503187, -0.007576648, -0.078315735, 0.010324551, 0.16464575, 0.003191257, 0.07800105, -0.007705505, 0.14519455, -5.6300097, 0.56246966, 1.4885092)
@@ -169,7 +177,7 @@ transform = Transform3D(0.14391772, -0.022908678, 0.07738139, 0.020891594, 0.163
 transform = Transform3D(0.020949634, 0.001341526, 0.16365917, 0.004435214, 0.16492918, -0.0019196856, -0.16360451, 0.0046429173, 0.020904599, -5.236726, 0.8462944, 6.6094294)
 
 [node name="TreesForeground1" type="Node3D" parent="." unique_id=998294309]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -1, -0.39023542, 0, 0)
 
 [node name="tree" parent="TreesForeground1" unique_id=1161854455 instance=ExtResource("4_akyan")]
 transform = Transform3D(0.14636981, -0.016649107, 0.07432145, 0.010155158, 0.16383801, 0.016702408, -0.07548339, -0.010242328, 0.14636378, -5.438206, 0.57946754, 1.2566074)
@@ -220,3 +228,8 @@ transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.923137
 
 [node name="tree14" parent="BackTrees" unique_id=1233103070 instance=ExtResource("4_akyan")]
 transform = Transform3D(0.11, 0, 0, 0, 0.11, 0, 0, 0, 0.11, -10.694557, 0.92313755, -7.795829)
+
+[node name="BGFilter" type="MeshInstance3D" parent="." unique_id=618229270]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6932516, 5.8166227, -0.023474216)
+material_override = SubResource("StandardMaterial3D_rai8w")
+mesh = SubResource("BoxMesh_s6dll")

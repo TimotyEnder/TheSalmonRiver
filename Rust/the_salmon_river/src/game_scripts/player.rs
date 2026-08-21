@@ -254,10 +254,12 @@ impl Player {
         }
     }
     pub fn place_on_one_way_platform(&mut self, pos: Vector3) {
-        self.on_one_way_platform = true;
-        let mut self_pos = self.base().get_position();
-        self_pos.y = pos.y - 0.9;
-        self.base_mut().set_position(self_pos);
+        if !self.knock_back {
+            self.on_one_way_platform = true;
+            let mut self_pos = self.base().get_position();
+            self_pos.y = pos.y - 0.9;
+            self.base_mut().set_position(self_pos);
+        }
     }
     pub fn displace_from_one_way_platform(&mut self) {
         self.on_one_way_platform = false;

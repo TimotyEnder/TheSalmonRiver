@@ -1026,10 +1026,10 @@ tracks/0/path = NodePath("SinglePlatform3:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0026603937, 0.53333336, 0.53599375, 1.9973396, 2.0026603),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.53333336, 1.9973396),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681, 3.515), Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681, 3.515), Vector3(0, 5.786, 13.415), Vector3(0, 5.786, 13.415)]
+"values": [Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681223, 3.5150175), Vector3(0, 5.786, 13.415)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1041,7 +1041,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0.0026603937, 0.53599375, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681223, 3.5150175), Vector3(0, 5.786, 13.415)]
+"values": [Vector3(0, 2.681, -3.515), Vector3(0, 2.681, -3.515), Vector3(0, 5.786, -13.415)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -1077,7 +1077,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.53333336, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0)]
+"values": [Vector3(0, 0, 0), Vector3(0.2617994, 0, 0), Vector3(0.2617994, 0, 0)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -1089,7 +1089,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.53333336, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0.2617994, 0, 0), Vector3(0.2617994, 0, 0)]
+"values": [Vector3(0, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false

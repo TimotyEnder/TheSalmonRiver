@@ -426,6 +426,7 @@ player_controls_panel_grid = NodePath("PlayerControlsPanel")
 player_num_counter_label = NodePath("MatchSettingsPanel/LabelCounterNumPlayers")
 match_time_counter_label = NodePath("MatchSettingsPanel/LabelCounterMatchLength")
 rounds_to_win_counter_label = NodePath("MatchSettingsPanel/LabelCounterRoundsToWin")
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -494,10 +495,10 @@ vertical_alignment = 1
 [node name="LabelCounterNumPlayers" type="LabelCounter" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel" unique_id=10791052]
 possible_values = PackedFloat32Array(2, 3, 4)
 layout_mode = 0
-offset_left = 428.0
-offset_top = -1.0
-offset_right = 623.0
-offset_bottom = 133.0
+offset_left = 424.0
+offset_top = 1.0
+offset_right = 619.0
+offset_bottom = 135.0
 
 [node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterNumPlayers" unique_id=669725494]
 layout_mode = 0
@@ -548,9 +549,9 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.56600004
 anchor_right = 0.56600004
-offset_left = -133.23608
+offset_left = -134.23608
 offset_top = -1.0
-offset_right = 61.763916
+offset_right = 60.763916
 offset_bottom = 133.0
 
 [node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterMatchLength" unique_id=2009862976]
@@ -602,10 +603,10 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.56600004
 anchor_right = 0.56600004
-offset_left = 314.76392
-offset_top = -1.0
-offset_right = 509.76392
-offset_bottom = 133.0
+offset_left = 330.76392
+offset_top = 2.0
+offset_right = 525.7639
+offset_bottom = 136.0
 
 [node name="Label" type="RichTextLabel" parent="CanvasLayer/PlayerControlsPanel/MatchSettingsPanel/LabelCounterRoundsToWin" unique_id=1452310554]
 layout_mode = 0

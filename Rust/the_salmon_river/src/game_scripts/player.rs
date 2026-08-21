@@ -506,8 +506,14 @@ impl Player {
                         Some(ground_particles.set_position(foot3d.get_global_position()))
                     })
                 });
+                let mut child_index = 0;
+                if self.on_one_way_platform {
+                    child_index = 2;
+                } else if self.walking_on_rock {
+                    child_index = 1;
+                }
                 let Some(mut particles) = ground_particles
-                    .get_child(0)
+                    .get_child(child_index)
                     .and_then(|particles| particles.try_cast::<GpuParticles3D>().ok())
                 else {
                     return;

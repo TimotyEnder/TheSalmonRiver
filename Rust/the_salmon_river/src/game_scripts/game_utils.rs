@@ -66,3 +66,35 @@ pub fn vec3_to_vec2(input: Vector3) -> Vector2 {
         y: input.y,
     }
 }
+#[derive(GodotConvert, Var, Export, Clone, Copy, Debug)]
+#[godot(via = GString)]
+pub enum PlayerCharacterType {
+    Bear,
+    Moose,
+    Beaver,
+    Wolf,
+    Boar,
+    Totoro,
+}
+impl PlayerCharacterType {
+    pub fn node_name(&self) -> &'static str {
+        match self {
+            Self::Bear => "bear",
+            Self::Boar => "boar",
+            Self::Moose => "moose",
+            Self::Beaver => "beaver",
+            Self::Wolf => "wolf",
+            _ => "totoro",
+        }
+    }
+    pub fn color(&self) -> Color {
+        match self {
+            Self::Bear => Color::from_html("#753F2F").unwrap_or_default(),
+            Self::Boar => Color::from_html("#695648").unwrap_or_default(),
+            Self::Moose => Color::from_html("#411A01").unwrap_or_default(),
+            Self::Beaver => Color::from_html("#663931").unwrap_or_default(),
+            Self::Wolf => Color::from_html("#474747").unwrap_or_default(),
+            _ => Color::from_html("#676767").unwrap_or_default(),
+        }
+    }
+}

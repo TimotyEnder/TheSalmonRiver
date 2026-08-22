@@ -1,6 +1,6 @@
 use godot::classes::{
     AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, GpuParticles3D, ICharacterBody3D,
-    Input, Label3D, SceneTreeTimer, Time,
+    Input, Label3D, Material, MeshInstance3D, SceneTreeTimer, StandardMaterial3D, Time,
 };
 use godot::global::Key;
 use godot::prelude::*;
@@ -10,7 +10,7 @@ use crate::game_managers::audio_manager::{AudioManager, AudioPlayBuilder};
 use crate::game_managers::player_control_scheme::PlayerControlScheme;
 use crate::game_scripts::duck_meter_manager::DuckMeterManager;
 use crate::game_scripts::game_utils::{
-    Direction, complementary_color, player_color_based_on_number, vec3_to_vec2,
+    Direction, PlayerCharacterType, complementary_color, player_color_based_on_number, vec3_to_vec2,
 };
 use crate::game_scripts::progress_bar::ProgressBar3D;
 use crate::game_scripts::round_manager::RoundManager;
@@ -184,6 +184,7 @@ impl ICharacterBody3D for Player {
         self.ready_groups();
         self.ready_particle_system();
         self.ready_round_manager_signals();
+        self.assign_character_type(PlayerCharacterType::Totoro);
     }
     fn process(&mut self, delta: f64) {
         self.health_check();
@@ -266,6 +267,35 @@ impl Player {
     }
     pub fn assign_player_num(&mut self, player_num: u8) {
         self.player_num = player_num;
+    }
+    pub fn assign_character_type(&mut self, player_character_type: PlayerCharacterType) {
+        let character_chosen = self.base().find_child("PlayerHead").and_then(|head| {
+            head.find_child("PlayerHeadMeshes").and_then(|meshes| {
+                meshes
+                    .find_child(player_character_type.node_name())
+                    .and_then(|char_type| char_type.try_cast::<Node3D>().ok())
+            })
+        });
+        if let Some(mut character) = character_chosen {
+            character.set_visible(true);
+        }
+        let mut meshes: Vec<Gd<MeshInstance3D>> =
+            ["LeftHand", "RightHand", "LeftFoot", "RightFoot"]
+                .iter()
+                .filter_map(|name| {
+                    self.base().find_child(*name).and_then(|node| {
+                        node.find_child(&format!("{}Mesh", name))
+                            .and_then(|mesh| mesh.try_cast::<MeshInstance3D>().ok())
+                    })
+                })
+                .collect();
+        meshes.iter_mut().for_each(|mesh| {
+            let target_color = player_character_type.color();
+            let mut material = StandardMaterial3D::new_gd();
+            material.set_albedo(target_color);
+            let shared: Gd<Material> = material.upcast();
+            mesh.set_material_override(&shared);
+        });
     }
     #[signal]
     pub fn on_throwable_throw(dir: Direction);

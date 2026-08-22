@@ -5,6 +5,7 @@ use godot::prelude::*;
 use crate::game_managers::game::Game;
 use crate::game_managers::player_control_scheme::PlayerControlScheme;
 use crate::game_managers::save_manager::SaveManager;
+use crate::game_scripts::game_utils::PlayerCharacterType::{self, Bear};
 use crate::settings_state::SettingsState;
 
 #[derive(GodotClass)]
@@ -15,6 +16,7 @@ pub struct GameManager {
     control_schemes: Vec<Gd<PlayerControlScheme>>,
     settings_state: Gd<SettingsState>,
     save_manager: Gd<SaveManager>,
+    character_types: Vec<PlayerCharacterType>,
 }
 
 #[godot_api]
@@ -26,6 +28,7 @@ impl INode for GameManager {
             control_schemes: Vec::new(),
             save_manager: Gd::from_object(SaveManager {}),
             settings_state: Gd::from_object(SettingsState::default()),
+            character_types: vec![Bear; 4],
         }
     }
 
@@ -157,5 +160,11 @@ impl GameManager {
         } else {
             return 0;
         }
+    }
+    pub fn set_player_character_type(&mut self, player_num: u8, char_type: PlayerCharacterType) {
+        self.character_types[player_num as usize] = char_type;
+    }
+    pub fn get_player_character_type(&self, player_num: u8) -> PlayerCharacterType {
+        self.character_types[player_num as usize]
     }
 }

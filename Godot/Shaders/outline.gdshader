@@ -7,7 +7,7 @@ render_mode cull_front, unshaded;
 // so "thickness" is always measured in real screen pixels.
 
 uniform vec4 outline_color : source_color = vec4(0.075, 0.05, 0.04, 1.0);
-uniform float thickness : hint_range(0.0, 32.0) = 3.0; // pixels
+uniform float thickness : hint_range(0.0, 32.0) = 10.0; // pixels
 uniform float depth_offset : hint_range(0.0, 1.0) = 0.02; // push hull back so it doesn't z-fight with the mesh
 
 void vertex() {

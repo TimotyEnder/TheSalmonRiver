@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c81mshrk4c46q"
-path.s3tc="res://.godot/imported/totoro_0.png-18cb82ecb9a05ce7f67dc06d7b7077e8.s3tc.ctex"
+uid="uid://owsbr7nv23x1"
+path.s3tc="res://.godot/imported/leshik_0.png-c08d0efdf72612695fa230f45e4590a6.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "87761e8e43949208ba5a5c8eb7dbf558"
+"md5": "e48a022e66bb6c904068c2a7a5f2402f"
 }
 
 [deps]
 
-source_file="res://VoxelAssets/PlayerModels/totoro_0.png"
-dest_files=["res://.godot/imported/totoro_0.png-18cb82ecb9a05ce7f67dc06d7b7077e8.s3tc.ctex"]
+source_file="res://VoxelAssets/PlayerModels/leshik_0.png"
+dest_files=["res://.godot/imported/leshik_0.png-c08d0efdf72612695fa230f45e4590a6.s3tc.ctex"]
 
 [params]
 

@@ -7,6 +7,7 @@ use godot::prelude::*;
 use godot::signal::ConnectHandle;
 
 use crate::game_managers::audio_manager::{AudioManager, AudioPlayBuilder};
+use crate::game_managers::game_manager::GameManager;
 use crate::game_managers::player_control_scheme::PlayerControlScheme;
 use crate::game_scripts::duck_meter_manager::DuckMeterManager;
 use crate::game_scripts::game_utils::{
@@ -184,7 +185,7 @@ impl ICharacterBody3D for Player {
         self.ready_groups();
         self.ready_particle_system();
         self.ready_round_manager_signals();
-        self.assign_character_type(PlayerCharacterType::Totoro);
+        self.ready_chosen_character_type();
     }
     fn process(&mut self, delta: f64) {
         self.health_check();
@@ -1654,6 +1655,14 @@ impl Player {
                         .map(|mut n| n.set_visible(false));
                 }
             };
+        }
+    }
+    fn ready_chosen_character_type(&mut self) {
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
+        if let Some(gm) = gm {
+            self.assign_character_type(gm.bind().get_player_character_type(self.player_num));
         }
     }
     fn scale_healthbar_with_health(&mut self) {

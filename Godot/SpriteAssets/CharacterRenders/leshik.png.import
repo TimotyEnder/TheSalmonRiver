@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ds1kuf23ehxiy"
-path="res://.godot/imported/totoro.png-96b97ff7f135d78c8cdf2cbcec643439.ctex"
+uid="uid://drlke4s1p2q4d"
+path="res://.godot/imported/leshik.png-6689b779dfeae925bb3f6f1192c1c595.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://SpriteAssets/CharacterRenders/totoro.png"
-dest_files=["res://.godot/imported/totoro.png-96b97ff7f135d78c8cdf2cbcec643439.ctex"]
+source_file="res://SpriteAssets/CharacterRenders/leshik.png"
+dest_files=["res://.godot/imported/leshik.png-6689b779dfeae925bb3f6f1192c1c595.ctex"]
 
 [params]
 

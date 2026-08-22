@@ -6,8 +6,8 @@ use godot::{
 
 use crate::{
     game_managers::{game_manager::GameManager, player_control_scheme::PlayerControlScheme},
-    game_scripts::game_utils::player_color_based_on_number,
-    ui::keymapping_button::KeyMappingButton,
+    game_scripts::game_utils::{PlayerCharacterType, player_color_based_on_number},
+    ui::{character_selector::CharacterSelector, keymapping_button::KeyMappingButton},
 };
 
 #[derive(GodotClass)]
@@ -22,6 +22,7 @@ pub struct PlayerControlsPanel {
     key_mapping_button_grab_throw: Option<Gd<KeyMappingButton>>,
     player_label: Option<Gd<RichTextLabel>>,
     player_num_assigned: Option<u8>,
+    character_selector: Option<Gd<CharacterSelector>>,
 }
 
 #[godot_api]
@@ -37,6 +38,7 @@ impl IPanel for PlayerControlsPanel {
             key_mapping_button_right: None,
             player_label: None,
             player_num_assigned: None,
+            character_selector: None,
         }
     }
     fn ready(&mut self) {
@@ -95,6 +97,15 @@ impl IPanel for PlayerControlsPanel {
                     .connect_other_mut(&this, Self::asign_controls_to_game_manager);
                 button.bind_mut().set_parent_control_panel(this.clone());
             });
+        }
+        self.character_selector = self
+            .base()
+            .find_child("CharacterSelector")
+            .and_then(|cs| cs.try_cast::<CharacterSelector>().ok());
+        if let Some(ref mut cs) = self.character_selector {
+            cs.signals()
+                .value_changed()
+                .connect_other(&this, Self::assign_player_character);
         }
     }
 }
@@ -230,6 +241,18 @@ impl PlayerControlsPanel {
                     button.bind_mut().exclusivity_reset();
                 }
             });
+        }
+    }
+    pub fn assign_player_character(&mut self) {
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
+        if let Some(mut gm) = gm
+            && let Some(ref mut char_selector) = self.character_selector
+            && let Some(num) = self.player_num_assigned
+        {
+            let char_type = PlayerCharacterType::from_str(&char_selector.bind().get_value());
+            gm.bind_mut().set_player_character_type(num, char_type);
         }
     }
 }

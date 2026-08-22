@@ -1,4 +1,8 @@
 use godot::prelude::*;
+
+use crate::game_scripts::game_utils::PlayerCharacterType::{
+    Bear, Beaver, Boar, Leshik, Moose, Wolf,
+};
 pub fn player_color_based_on_number(player_num: u8) -> Color {
     // Golden ratio conjugate for optimal hue spacing
     const GOLDEN_CONJUGATE: f32 = 0.618033988749895; // (sqrt(5) - 1) / 2
@@ -74,7 +78,7 @@ pub enum PlayerCharacterType {
     Beaver,
     Wolf,
     Boar,
-    Totoro,
+    Leshik,
 }
 impl PlayerCharacterType {
     pub fn node_name(&self) -> &'static str {
@@ -84,7 +88,7 @@ impl PlayerCharacterType {
             Self::Moose => "moose",
             Self::Beaver => "beaver",
             Self::Wolf => "wolf",
-            _ => "totoro",
+            _ => "leshik",
         }
     }
     pub fn color(&self) -> Color {
@@ -94,7 +98,17 @@ impl PlayerCharacterType {
             Self::Moose => Color::from_html("#411A01").unwrap_or_default(),
             Self::Beaver => Color::from_html("#663931").unwrap_or_default(),
             Self::Wolf => Color::from_html("#474747").unwrap_or_default(),
-            _ => Color::from_html("#676767").unwrap_or_default(),
+            _ => Color::from_html("#2D421D").unwrap_or_default(),
+        }
+    }
+    pub fn from_str(str: &str) -> Self {
+        match str {
+            "bear" => Bear,
+            "beaver" => Beaver,
+            "wolf" => Wolf,
+            "boar" => Boar,
+            "moose" => Moose,
+            _ => Leshik,
         }
     }
 }

@@ -1,4 +1,5 @@
 pub mod application_exit_button;
+pub mod character_selector;
 pub mod keymapping_button;
 pub mod label_counter;
 pub mod main_menu_start_match_button;

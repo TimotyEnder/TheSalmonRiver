@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bsejn3eh5pmcl"
-path.s3tc="res://.godot/imported/beaver_0.png-2e5c6cbc49a70457dc95b3be6a9c017c.s3tc.ctex"
+uid="uid://c81mshrk4c46q"
+path.s3tc="res://.godot/imported/totoro_0.png-18cb82ecb9a05ce7f67dc06d7b7077e8.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "d7f91b0097be7a012d722319194db2d8"
+"md5": "87761e8e43949208ba5a5c8eb7dbf558"
 }
 
 [deps]
 
-source_file="res://VoxelAssets/Beaver/beaver_0.png"
-dest_files=["res://.godot/imported/beaver_0.png-2e5c6cbc49a70457dc95b3be6a9c017c.s3tc.ctex"]
+source_file="res://VoxelAssets/PlayerModels/totoro_0.png"
+dest_files=["res://.godot/imported/totoro_0.png-18cb82ecb9a05ce7f67dc06d7b7077e8.s3tc.ctex"]
 
 [params]
 

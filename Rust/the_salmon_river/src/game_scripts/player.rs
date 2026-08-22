@@ -538,7 +538,9 @@ impl Player {
                     Signal::from_object_signal(&timer, "timeout")
                         .to_future::<()>()
                         .await;
-                    ground_particles.call_deferred("queue_free", &[]);
+                    if ground_particles.is_instance_valid() {
+                        ground_particles.call_deferred("queue_free", &[]);
+                    }
                 });
             }
             velocity.y = self.jump_force;

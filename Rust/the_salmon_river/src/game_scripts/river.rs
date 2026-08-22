@@ -130,7 +130,9 @@ impl River {
                 Signal::from_object_signal(&timer, "timeout")
                     .to_future::<()>()
                     .await;
-                water_splash.queue_free();
+                if water_splash.is_instance_valid() {
+                    water_splash.queue_free();
+                }
             });
         }
     }

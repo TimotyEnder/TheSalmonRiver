@@ -371,6 +371,7 @@ impl Player {
             && let Some(ref mut ability_container) = self.in_hand_ability_container
         {
             let find_name = format!("{}Effect", inner.visual_node_name());
+            ability_container.set_visible(true);
             self.current_in_hand_ability_icon = ability_container
                 .find_child(&find_name)
                 .and_then(|current| current.try_cast::<Node3D>().ok());
@@ -878,7 +879,7 @@ impl Player {
             let Some(mut tree) = bind.base().get_tree_or_null() else {
                 return;
             };
-            timer = tree.create_timer(0.1);
+            timer = tree.create_timer(0.5);
         }
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
@@ -890,6 +891,9 @@ impl Player {
             let mut bind = this.bind_mut();
             if let Some(ref mut container_anim_tree) = bind.in_hand_ability_container_anim_tree {
                 container_anim_tree.set("parameters/conditions/ding", &false.to_variant());
+            }
+            if let Some(ref mut ability_container) = bind.in_hand_ability_container {
+                ability_container.set_visible(false);
             }
             bind.is_using_throwable_ability = false;
         }
@@ -1993,7 +1997,7 @@ impl Player {
         }
     }
     fn handle_punch(&mut self, area: Gd<Area3D>) {
-        if !self.ducked && !self.duck_jumping && !self.is_grab && !self.grabbed_by_another_player {
+        if !self.ducked && !self.duck_jumping && !self.grabbed_by_another_player {
             let player_opt = area
                 .get_parent()
                 .and_then(|hand| hand.get_parent())

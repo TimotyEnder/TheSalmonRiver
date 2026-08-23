@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dx2ynseyn3ntg" path="res://SpriteAssets/UI/arrowBrown_right.png" id="5_a0iur"]
 [ext_resource type="Texture2D" uid="uid://csjqybxstqdpm" path="res://SpriteAssets/UI/arrowBrown_left.png" id="6_ydf4m"]
 [ext_resource type="Texture2D" uid="uid://dcvjuu38tdkom" path="res://SpriteAssets/UI/iconCross_brown.png" id="7_ydf4m"]
+[ext_resource type="Texture2D" uid="uid://dt5ewp4py5e1q" path="res://SpriteAssets/UI/scroller_circle.png" id="8_oiq4k"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pakvc"]
 texture = ExtResource("1_ydf4m")
@@ -53,6 +54,13 @@ content_margin_top = 4.0
 texture = ExtResource("4_cqqpn")
 expand_margin_top = 4.0
 modulate_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_5t6oc"]
+diffuse_texture = ExtResource("8_oiq4k")
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_3850x"]
+diffuse_texture = ExtResource("8_oiq4k")
+specular_color = Color(0.5211406, 0.5211406, 0.5211405, 1)
 
 [node name="SettingsCanvas" type="CanvasLayer" unique_id=1298181767]
 
@@ -111,6 +119,18 @@ offset_bottom = 379.0
 theme_override_fonts/normal_font = ExtResource("1_lmfad")
 theme_override_font_sizes/normal_font_size = 80
 text = "RESOLUTION:"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="SettingsPanel" unique_id=1325283116]
+layout_mode = 0
+offset_left = 111.0
+offset_top = 430.0
+offset_right = 539.0
+offset_bottom = 533.0
+theme_override_fonts/normal_font = ExtResource("1_lmfad")
+theme_override_font_sizes/normal_font_size = 80
+text = "SFX VOLUME:"
 scroll_active = false
 vertical_alignment = 1
 
@@ -246,3 +266,13 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_xp13l")
 icon = ExtResource("7_ydf4m")
 icon_alignment = 1
 expand_icon = true
+
+[node name="VolumeSlider" type="HSlider" parent="SettingsPanel" unique_id=230781992]
+layout_mode = 0
+offset_left = 556.0
+offset_top = 340.0
+offset_right = 880.0
+offset_bottom = 622.0
+theme_override_icons/grabber = SubResource("CanvasTexture_5t6oc")
+theme_override_icons/grabber_highlight = SubResource("CanvasTexture_3850x")
+ticks_on_borders = true

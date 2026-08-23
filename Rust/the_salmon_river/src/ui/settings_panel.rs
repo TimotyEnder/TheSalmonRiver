@@ -1,10 +1,10 @@
 use godot::{
-    classes::{DisplayServer, IPanel, Panel},
+    classes::{DisplayServer, IPanel, Panel, Slider},
     prelude::*,
 };
 
 use crate::{
-    game_managers::game_manager::GameManager,
+    game_managers::{audio_manager::AudioManager, game_manager::GameManager},
     settings_state::SettingsState,
     ui::{
         string_label_selector::StringLabelSelector,
@@ -18,6 +18,7 @@ pub struct SettingsPanel {
     base: Base<Panel>,
     sc_resolution: Option<Gd<StringLabelSelector>>,
     sc_window_type: Option<Gd<StringLabelSelector>>,
+    slider_game_volume: Option<Gd<Slider>>,
 }
 
 #[godot_api]
@@ -27,6 +28,7 @@ impl IPanel for SettingsPanel {
             base,
             sc_resolution: None,
             sc_window_type: None,
+            slider_game_volume: None,
         }
     }
     fn ready(&mut self) {
@@ -77,9 +79,16 @@ impl SettingsPanel {
     fn change_settings(&mut self) {
         if let Some(ref mut window_type) = self.sc_window_type
             && let Some(ref mut resolution) = self.sc_resolution
+            && let Some(slider) = self.slider_game_volume
         {
             let resolution = Resolution::parse_from_string(resolution.bind().get_value());
             let window_mode = parse_window_mode_from_string(window_type.bind().get_value());
+            let audio = self
+                .base()
+                .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+            if let Some(mut audio) = audio {
+                audio.bind_mut().set_game_volume(slider.get_value() as f32);
+            }
             DisplayServer::singleton().window_set_mode(window_mode);
             DisplayServer::singleton().window_set_size(Vector2i {
                 x: resolution.width,
@@ -92,6 +101,7 @@ impl SettingsPanel {
                 let mut settings_to_save = Gd::from_object(SettingsState::default());
                 settings_to_save.bind_mut().resolution = resolution;
                 settings_to_save.bind_mut().window_mode = window_mode;
+                settings_to_save.bind_mut().game_volume_percent = slider.get_value() as f32;
                 gm.bind_mut().save_settings_state(settings_to_save);
             }
         }

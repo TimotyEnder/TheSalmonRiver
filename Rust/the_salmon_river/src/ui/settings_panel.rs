@@ -40,12 +40,17 @@ impl IPanel for SettingsPanel {
             .base()
             .find_child("StringSelectorWindowType")
             .and_then(|sc| sc.try_cast::<StringLabelSelector>().ok());
+        self.slider_game_volume = self
+            .base()
+            .find_child("VolumeSlider")
+            .and_then(|slider| slider.try_cast::<Slider>().ok());
         let gm = self
             .base()
             .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if let Some(mut gm) = gm
             && let Some(ref mut window_type) = self.sc_window_type
             && let Some(ref mut resolution) = self.sc_resolution
+            && let Some(ref mut slider) = self.slider_game_volume
         {
             let settings = gm.bind_mut().request_settings_state();
             if resolution
@@ -55,12 +60,14 @@ impl IPanel for SettingsPanel {
                     .bind_mut()
                     .load_value(parse_window_mode_to_string(settings.bind().window_mode))
             {
+                slider.set_value(settings.bind().game_volume_percent as f64);
                 self.change_settings();
             }
         }
         let this = self.to_gd();
         if let Some(ref mut window_type) = self.sc_window_type
             && let Some(ref mut resolution) = self.sc_resolution
+            && let Some(ref mut slider) = self.slider_game_volume
         {
             window_type
                 .signals()
@@ -70,16 +77,26 @@ impl IPanel for SettingsPanel {
                 .signals()
                 .value_changed()
                 .connect_other(&this, Self::change_settings);
+            slider
+                .signals()
+                .drag_ended()
+                .connect_other(&this, Self::volume_slider_changed);
         }
     }
 }
 
 #[godot_api]
 impl SettingsPanel {
+    fn volume_slider_changed(&mut self, value_changed: bool) {
+        if value_changed {
+            self.change_settings();
+        }
+    }
     fn change_settings(&mut self) {
+        godot_print!("Settings Changing");
         if let Some(ref mut window_type) = self.sc_window_type
             && let Some(ref mut resolution) = self.sc_resolution
-            && let Some(slider) = self.slider_game_volume
+            && let Some(ref slider) = self.slider_game_volume
         {
             let resolution = Resolution::parse_from_string(resolution.bind().get_value());
             let window_mode = parse_window_mode_from_string(window_type.bind().get_value());

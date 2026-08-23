@@ -1,9 +1,16 @@
 use godot::{
-    classes::{AudioStream, AudioStreamPlayer2D, RandomNumberGenerator, Time},
+    classes::{AudioServer, AudioStream, AudioStreamPlayer2D, RandomNumberGenerator, Time},
+    global::linear_to_db,
     prelude::*,
 };
 
 use crate::sound_utils::SoundEffect;
+
+const MASTER_BUS_INDEX: i32 = 0;
+
+fn linear_to_db_f32(linear: f32) -> f32 {
+    linear_to_db(linear as f64) as f32
+}
 
 #[derive(GodotClass)]
 #[class(base=Node2D)]
@@ -36,7 +43,14 @@ impl INode2D for AudioManager {
 
 impl AudioManager {
     pub fn set_game_volume(&mut self, from_0_to_100: f32) {
-        self.game_volume = from_0_to_100 / 100.0;
+        self.game_volume = (from_0_to_100 / 100.0).clamp(0.0, 1.0);
+        AudioServer::singleton().set_bus_volume_db(
+            MASTER_BUS_INDEX,
+            linear_to_db_f32(self.game_volume),
+        );
+    }
+    pub fn get_game_volume(&self) -> f32 {
+        self.game_volume
     }
     pub fn wipe_zombie_audio_players(&mut self) {
         self.base_mut()
@@ -68,7 +82,7 @@ impl AudioManager {
                 random.randf_range(builder.randomise_range_from, builder.randomise_range_to),
             );
         }
-        player.set_volume_db(builder.sound_volume);
+        player.set_volume_db(linear_to_db_f32(builder.sound_volume));
         self.base_mut().add_child(&player);
         player.play();
     }
@@ -94,7 +108,7 @@ impl AudioManager {
                 random.randf_range(builder.randomise_range_from, builder.randomise_range_to),
             );
         }
-        player.set_volume_db(builder.sound_volume * self.game_volume);
+        player.set_volume_db(linear_to_db_f32(builder.sound_volume));
         self.base_mut().add_child(&player);
         player.play();
         Some(player)
@@ -123,8 +137,8 @@ impl AudioPlayBuilder {
             position: Vector2::ZERO,
         }
     }
-    pub fn with_volume(mut self, volume_db: f32) -> Self {
-        self.sound_volume = volume_db;
+    pub fn with_volume(mut self, volume_linear: f32) -> Self {
+        self.sound_volume = volume_linear;
         self
     }
     pub fn with_randomized_pitch_range(mut self, from: f32, to: f32) -> Self {

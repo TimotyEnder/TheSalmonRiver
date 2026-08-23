@@ -2,6 +2,7 @@ use godot::classes::{INode, Node};
 use godot::global::Key;
 use godot::prelude::*;
 
+use crate::game_managers::audio_manager::AudioManager;
 use crate::game_managers::game::Game;
 use crate::game_managers::player_control_scheme::PlayerControlScheme;
 use crate::game_managers::save_manager::SaveManager;
@@ -39,11 +40,24 @@ impl INode for GameManager {
             .bind_mut()
             .load_control_schemes_from_file();
         self.settings_state = self.save_manager.bind().load_settings_state();
+        self.base_mut()
+            .call_deferred("apply_audio_settings", &[]);
     }
 }
 
 #[godot_api]
 impl GameManager {
+    #[func]
+    pub fn apply_audio_settings(&mut self) {
+        if let Some(mut audio) = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal")
+        {
+            audio
+                .bind_mut()
+                .set_game_volume(self.settings_state.bind().game_volume_percent);
+        }
+    }
     #[func]
     pub fn create_game(&mut self, num_players: u8, rounds_to_win: u32, round_time: u32) {
         self.current_game = Some(Game::new(

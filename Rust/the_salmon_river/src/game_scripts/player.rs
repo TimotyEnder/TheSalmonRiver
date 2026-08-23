@@ -1734,6 +1734,13 @@ impl Player {
         (to_ret, instant_knock_down)
     }
     pub fn salmon_ability(&mut self) {
+        let heal_partcles = self.base().find_child("PlayerHead").and_then(|ph| {
+            ph.find_child("HealParticles")
+                .and_then(|hp| hp.try_cast::<GpuParticles3D>().ok())
+        });
+        if let Some(mut hp) = heal_partcles {
+            hp.set_emitting(true);
+        }
         self.additional_next_punch_damage = 2;
         self.salmon_ability_timer_entries += 1;
         if let Some(ref mut right_particles) = self.right_hand_fire_particles {

@@ -17,6 +17,7 @@ use crate::game_scripts::progress_bar::ProgressBar3D;
 use crate::game_scripts::round_manager::RoundManager;
 use crate::game_scripts::throwable::Throwable;
 
+const PLAYER_VELOCITY_LIMIT: f32 = 10.0;
 #[derive(GodotClass)]
 #[class(base=CharacterBody3D)]
 pub struct Player {
@@ -100,8 +101,6 @@ pub struct Player {
     on_one_way_platform: bool,
     wind_velocity: Vector3,
 }
-
-const MAX_WIND_VELOCITY: f32 = 5.0;
 
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -463,9 +462,8 @@ impl Player {
     pub fn heal(&mut self, amount: u8) {
         self.health = (self.health + amount).min(self.max_health);
     }
-    pub fn add_wind(&mut self, wind_delta: Vector3) {
-        self.wind_velocity += wind_delta;
-        self.wind_velocity = self.wind_velocity.limit_length(Some(MAX_WIND_VELOCITY));
+    pub fn add_wind_force(&mut self, wind_delta: Vector3) {
+        self.wind_velocity = wind_delta;
     }
     pub fn reset_wind(&mut self) {
         self.wind_velocity = Vector3::ZERO;
@@ -653,6 +651,7 @@ impl Player {
         }
         velocity += self.wind_velocity;
         self.wind_velocity = self.wind_velocity.move_toward(Vector3::ZERO, delta as f32);
+        velocity = velocity.limit_length(Some(PLAYER_VELOCITY_LIMIT));
         self.base_mut().set_velocity(velocity);
         self.base_mut().move_and_slide();
     }

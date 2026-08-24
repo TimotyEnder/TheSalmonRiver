@@ -3364,10 +3364,10 @@ parameters/conditions/single_platform_single_saw = false
 parameters/conditions/triple_platform = false
 
 [node name="SawPlatform" parent="TemporaryObsticleManager" unique_id=1289983603 instance=ExtResource("8_344ge")]
-transform = Transform3D(1, 0, 0, 0, 0.96592563, 0.25881898, 0, -0.25881898, 0.96592563, -1.9073489e-06, 13.148777, 19.363977)
+transform = Transform3D(0.725, 0, 0, 0, 0.7002962, 0.18764381, 0, -0.18764381, 0.7002962, -1.9073489e-06, 13.148777, 19.363977)
 
 [node name="SawPlatform2" parent="TemporaryObsticleManager" unique_id=1121251746 instance=ExtResource("8_344ge")]
-transform = Transform3D(1, 0, 0, 0, 0.96592563, -0.25881898, 0, 0.25881898, 0.96592563, 0, 13.149, -19.364)
+transform = Transform3D(0.725, 0, 0, 0, 0.7002962, -0.18764381, 0, 0.18764381, 0.7002962, 0, 13.149, -19.364)
 
 [node name="FanPlatform" parent="TemporaryObsticleManager" unique_id=399753351 instance=ExtResource("9_ynf5e")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.9073486e-06, 19.647036, 6.395191)

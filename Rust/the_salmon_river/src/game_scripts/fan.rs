@@ -47,8 +47,8 @@ impl INode3D for Fan {
         self.rigid_bodies.retain(|rb| rb.is_instance_valid());
 
         self.character_bodies.iter_mut().for_each(|player| {
-            let wind_delta = direction_vector * (self.push_force * 2.0 * delta);
-            player.bind_mut().add_wind(wind_delta);
+            let wind_delta = direction_vector * (self.push_force * 40.0 * delta);
+            player.bind_mut().add_wind_force(wind_delta);
         });
         self.rigid_bodies.iter_mut().for_each(|rb| {
             let force = direction_vector * self.push_force;

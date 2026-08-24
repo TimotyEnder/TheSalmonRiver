@@ -1,5 +1,6 @@
+use crate::game_scripts::player::Player;
 use godot::{
-    classes::{Area3D, CharacterBody3D, INode3D, RigidBody3D},
+    classes::{Area3D, INode3D, RigidBody3D},
     prelude::*,
 };
 
@@ -9,7 +10,7 @@ pub struct Fan {
     base: Base<Node3D>,
     wind_area: Option<Gd<Area3D>>,
     rigid_bodies: Vec<Gd<RigidBody3D>>,
-    character_bodies: Vec<Gd<CharacterBody3D>>,
+    character_bodies: Vec<Gd<Player>>,
     push_force: f32,
 }
 
@@ -21,7 +22,7 @@ impl INode3D for Fan {
             wind_area: None,
             rigid_bodies: Vec::new(),
             character_bodies: Vec::new(),
-            push_force: 0.1,
+            push_force: 1.0,
         }
     }
     fn ready(&mut self) {
@@ -39,17 +40,19 @@ impl INode3D for Fan {
                 .connect_other(&this, Self::area_exited);
         }
     }
-    fn process(&mut self, _delta: f32) {
+    fn physics_process(&mut self, delta: f32) {
         let direction_vector = self.base().get_global_basis().col_a();
 
-        self.character_bodies.iter_mut().for_each(|cb| {
-            let mut velocity = cb.get_velocity();
-            velocity += direction_vector * self.push_force;
-            cb.set_velocity(velocity);
+        self.character_bodies.retain(|cb| cb.is_instance_valid());
+        self.rigid_bodies.retain(|rb| rb.is_instance_valid());
+
+        self.character_bodies.iter_mut().for_each(|player| {
+            let wind_delta = direction_vector * (self.push_force * 2.0 * delta);
+            player.bind_mut().add_wind(wind_delta);
         });
         self.rigid_bodies.iter_mut().for_each(|rb| {
             let force = direction_vector * self.push_force;
-            rb.apply_force(force * 100.0);
+            rb.apply_force(force * 10.0);
         });
     }
 }
@@ -68,12 +71,12 @@ impl Fan {
             }
         } else if area.get_name().contains("Player") {
             godot_print!("Player entered fan");
-            if let Some(cb) = area
+            if let Some(player) = area
                 .get_parent()
-                .and_then(|parent| parent.try_cast::<CharacterBody3D>().ok())
+                .and_then(|parent| parent.try_cast::<Player>().ok())
             {
                 godot_print!("Player added");
-                self.character_bodies.push(cb);
+                self.character_bodies.push(player);
             }
         }
     }
@@ -91,11 +94,16 @@ impl Fan {
             }
         } else if area.get_name().contains("Player") {
             godot_print!("Player exited fan");
-            if let Some(cb) = area
+            if let Some(mut player) = area
                 .get_parent()
-                .and_then(|parent| parent.try_cast::<CharacterBody3D>().ok())
+                .and_then(|parent| parent.try_cast::<Player>().ok())
             {
-                if let Some(pos) = self.character_bodies.iter().position(|cbbit| *cbbit == cb) {
+                player.bind_mut().reset_wind();
+                if let Some(pos) = self
+                    .character_bodies
+                    .iter()
+                    .position(|cbbit| *cbbit == player)
+                {
                     self.character_bodies.remove(pos);
                     godot_print!("Player removed");
                 }

@@ -19,6 +19,7 @@ use crate::game_scripts::throwable::Throwable;
 
 #[derive(GodotClass)]
 #[class(base=CharacterBody3D)]
+const MAX_WIND_VELOCTY: f32 = 20.0;
 pub struct Player {
     salmon_ability_timer_entries: u8,
     player_drop_timer_timed_in_hand_num: u8,
@@ -98,7 +99,9 @@ pub struct Player {
     throw_tech_time: bool,
     throw_tech_force: f32,
     on_one_way_platform: bool,
+    wind_velocity: Vector3,
 }
+
 #[godot_api]
 impl ICharacterBody3D for Player {
     fn init(base: Base<CharacterBody3D>) -> Self {
@@ -172,6 +175,7 @@ impl ICharacterBody3D for Player {
             walking_on_rock: false,
             walking_on_water: false,
             player_drop_timer_timed_in_hand_num: 0,
+            wind_velocity: Vector3::ZERO,
         }
     }
     fn ready(&mut self) {
@@ -458,6 +462,27 @@ impl Player {
     pub fn heal(&mut self, amount: u8) {
         self.health = (self.health + amount).min(self.max_health);
     }
+    pub fn add_wind(&mut self, wind_delta: Vector3) {
+        self.wind_velocity += wind_delta;
+        [
+            self.wind_velocity.z,
+            self.wind_velocity.x,
+            self.wind_velocity.y,
+        ]
+        .each_mut()
+        .iter_mut()
+        .for_each(|velocity_vector| {
+            velocity_vector = max(
+                &velocity_vector.to_variant(),
+                &MAX_WIND_VELOCTY.to_variant(),
+                &[],
+            )
+            .to();
+        });
+    }
+    pub fn reset_wind(&mut self) {
+        self.wind_velocity = Vector3::ZERO;
+    }
     pub fn damage(&mut self, amount: u8) {
         self.health = self.health.saturating_sub(amount);
     }
@@ -483,6 +508,8 @@ impl Player {
             velocity.y -= 20.0 * delta as f32;
         } else if !self.jumping {
             velocity.y = 0.0;
+        } else if self.wind_velocity == Vector3::ZERO {
+            velocity.z = 0.0;
         }
         let mut speed_to_use = self.speed;
         if self.player_throwable_in_hand.is_some() {
@@ -637,6 +664,8 @@ impl Player {
                 particles.restart();
             }
         }
+        velocity += self.wind_velocity;
+        self.wind_velocity = self.wind_velocity.move_toward(Vector3::ZERO, delta as f32);
         self.base_mut().set_velocity(velocity);
         self.base_mut().move_and_slide();
     }

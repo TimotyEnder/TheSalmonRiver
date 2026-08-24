@@ -37,6 +37,7 @@ pub enum SoundEffect {
     ThrowTechPlayer = 31,
     SawBlade = 32,
     RiverSound = 33,
+    FanNoise = 34,
 }
 impl SoundEffect {
     pub fn to_sound_effect_path(&self) -> &'static str {
@@ -75,6 +76,7 @@ impl SoundEffect {
             SoundEffect::ThrowTechPlayer => "res://SoundAssets/throw_tech_player.ogg",
             SoundEffect::SawBlade => "res://SoundAssets/saw.ogg",
             SoundEffect::RiverSound => "res://SoundAssets/river.ogg",
+            SoundEffect::FanNoise => "res://SoundAssets/fan.ogg",
         }
     }
 }

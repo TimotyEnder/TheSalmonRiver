@@ -1,5 +1,6 @@
 pub mod duck_meter_manager;
 pub mod fan;
+pub mod fan_platform;
 pub mod flying_duck;
 pub mod game_utils;
 pub mod leaderboard;

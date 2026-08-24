@@ -4,7 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://ch26fylyux8ac" path="res://Prefabs/flying_duck.tscn" id="2_v1rb8"]
 [ext_resource type="PackedScene" uid="uid://bw157wta7ux8o" path="res://Prefabs/fan.tscn" id="3_v1rb8"]
 
-[node name="FanPlatform" type="Node3D" unique_id=399753351]
+[node name="FanPlatform" type="FanPlatform" unique_id=116859120 node_paths=PackedStringArray("fan")]
+fan = NodePath("Fan")
 
 [node name="saw_attachment" parent="." unique_id=888041055 instance=ExtResource("1_6gkp4")]
 transform = Transform3D(0.295, 0, 0, 0, 0.20492423, -0.21220523, 0, 0.21220523, 0.20492423, 0.7684759, -6.564426, -2.9502428)

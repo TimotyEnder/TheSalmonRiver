@@ -1422,6 +1422,20 @@ tracks/8/keys = {
 "update": 0,
 "values": [Vector3(0.5, 0.5, 0.5)]
 }
+tracks/9/type = "method"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("FanPlatform")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"unmute"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_e08e2"]
 resource_name = "double_platform_fan_left_exit"
@@ -1540,6 +1554,20 @@ tracks/8/keys = {
 "args": [],
 "method": &"disable_collider"
 }, {
+"args": [],
+"method": &"mute"
+}]
+}
+tracks/9/type = "method"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("FanPlatform")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
 "args": [],
 "method": &"mute"
 }]
@@ -1666,6 +1694,20 @@ tracks/8/keys = {
 "method": &"enable_collider"
 }]
 }
+tracks/9/type = "method"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("FanPlatform")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"unmute"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_r33sp"]
 resource_name = "double_platform_fan_right_exit"
@@ -1784,6 +1826,20 @@ tracks/8/keys = {
 "args": [],
 "method": &"disable_collider"
 }, {
+"args": [],
+"method": &"mute"
+}]
+}
+tracks/9/type = "method"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("FanPlatform")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
 "args": [],
 "method": &"mute"
 }]
@@ -2318,6 +2374,20 @@ tracks/5/keys = {
 "update": 0,
 "values": [Vector3(0.5, 0.5, 0.5)]
 }
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("FanPlatform")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"unmute"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_6vcvc"]
 resource_name = "single_platform_fan_left_exit"
@@ -2398,6 +2468,20 @@ tracks/5/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0.5, 0.5, 0.5)]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("FanPlatform")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"mute"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_7k868"]
@@ -2480,6 +2564,20 @@ tracks/5/keys = {
 "update": 0,
 "values": [Vector3(0.5, 0.5, 0.5)]
 }
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("FanPlatform")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"unmute"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_hpc6h"]
 resource_name = "single_platform_fan_right_exit"
@@ -2560,6 +2658,20 @@ tracks/5/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0.5, 0.5, 0.5)]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("FanPlatform")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"mute"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_ee4r6"]
@@ -3364,10 +3476,10 @@ parameters/conditions/single_platform_single_saw = false
 parameters/conditions/triple_platform = false
 
 [node name="SawPlatform" parent="TemporaryObsticleManager" unique_id=1289983603 instance=ExtResource("8_344ge")]
-transform = Transform3D(0.725, 0, 0, 0, 0.7002962, 0.18764381, 0, -0.18764381, 0.7002962, -1.9073489e-06, 13.148777, 19.363977)
+transform = Transform3D(0.725, 0, 0, 0, 0.70029616, 0.1876438, 0, -0.1876438, 0.70029616, -1.9073489e-06, 13.148777, 19.363977)
 
 [node name="SawPlatform2" parent="TemporaryObsticleManager" unique_id=1121251746 instance=ExtResource("8_344ge")]
-transform = Transform3D(0.725, 0, 0, 0, 0.7002962, -0.18764381, 0, 0.18764381, 0.7002962, 0, 13.149, -19.364)
+transform = Transform3D(0.725, 0, 0, 0, 0.70029616, -0.1876438, 0, 0.1876438, 0.70029616, 0, 13.149, -19.364)
 
 [node name="FanPlatform" parent="TemporaryObsticleManager" unique_id=399753351 instance=ExtResource("9_ynf5e")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.9073486e-06, 19.647036, 6.395191)

@@ -1,6 +1,9 @@
-use crate::game_scripts::player::Player;
+use crate::{
+    game_managers::audio_manager::{AudioManager, AudioPlayBuilder},
+    game_scripts::{game_utils::vec3_to_vec2, player::Player},
+};
 use godot::{
-    classes::{Area3D, INode3D, RigidBody3D},
+    classes::{Area3D, AudioStreamPlayer2D, INode3D, RigidBody3D},
     prelude::*,
 };
 
@@ -11,6 +14,7 @@ pub struct Fan {
     wind_area: Option<Gd<Area3D>>,
     rigid_bodies: Vec<Gd<RigidBody3D>>,
     character_bodies: Vec<Gd<Player>>,
+    audio_player_handle: Option<Gd<AudioStreamPlayer2D>>,
     push_force: f32,
 }
 
@@ -23,6 +27,7 @@ impl INode3D for Fan {
             rigid_bodies: Vec::new(),
             character_bodies: Vec::new(),
             push_force: 1.0,
+            audio_player_handle: None,
         }
     }
     fn ready(&mut self) {
@@ -59,6 +64,23 @@ impl INode3D for Fan {
 
 #[godot_api]
 impl Fan {
+    pub fn play_sound(&mut self) {
+        let audio = self
+            .base()
+            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+        if let Some(mut audio) = audio {
+            self.audio_player_handle = audio.bind_mut().play_sound_build_with_player_handle(
+                AudioPlayBuilder::play_sound_effect(crate::sound_utils::SoundEffect::FanNoise)
+                    .at_position(vec3_to_vec2(self.base().get_global_position()))
+                    .with_volume(3.0),
+            );
+        }
+    }
+    pub fn stop_sound(&mut self) {
+        if let Some(ref mut handle) = self.audio_player_handle {
+            handle.call_deferred("queue_free", &[]);
+        }
+    }
     fn area_entered(&mut self, area: Gd<Area3D>) {
         if area.get_name().contains("Throwable") {
             godot_print!("Throwable entered fan");

@@ -635,14 +635,14 @@ states/start_anim/node = SubResource("AnimationNodeAnimation_344ge")
 states/start_anim/position = Vector2(403, 145)
 transitions = ["countdown", "go", SubResource("AnimationNodeStateMachineTransition_k12tt"), "Start", "start_anim", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "start_anim", "countdown", SubResource("AnimationNodeStateMachineTransition_b3802"), "go", "exit_anim", SubResource("AnimationNodeStateMachineTransition_h1bgf")]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_344ge"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ynf5e"]
 resource_local_to_scene = true
 transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 shading_mode = 0
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_ynf5e"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_hptm8"]
 size = Vector2(0.7, 0.5)
 orientation = 2
 
@@ -1221,50 +1221,50 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SinglePlatform2:position")
+tracks/0/path = NodePath("SinglePlatform2:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.0026603937, 0.53599375, 2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681223, 3.5150175), Vector3(0, 5.786, 13.415)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("SinglePlatform2:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.53333336, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0.2617994, 0, 0), Vector3(0.2617994, 0, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SinglePlatform2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0026603937, 0.53599375, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681223, 3.5150175), Vector3(0, 5.786, 13.415)]
+}
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("SinglePlatform3:position")
+tracks/2/path = NodePath("SinglePlatform3:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.53333336, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 2.6809998, -3.515), Vector3(0, 2.6809998, -3.515), Vector3(0, 5.786, -13.415)]
+"values": [Vector3(0, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("SinglePlatform3:rotation")
+tracks/3/path = NodePath("SinglePlatform3:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.53333336, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0)]
+"values": [Vector3(0, 2.6809998, -3.515), Vector3(0, 2.6809998, -3.515), Vector3(0, 5.786, -13.415)]
 }
 tracks/4/type = "method"
 tracks/4/imported = false
@@ -1290,6 +1290,494 @@ tracks/5/path = NodePath("SinglePlatform3")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"disable_collider"
+}, {
+"args": [],
+"method": &"mute"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_kltya"]
+resource_name = "double_platform_fan_left"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SinglePlatform2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5666667, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SinglePlatform2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.5666667, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 6.2150717, 12.329562), Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681223, 3.5150175)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SinglePlatform3:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.5666667, 1.9976742),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.2617994, 0, 0), Vector3(0.2617994, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SinglePlatform3:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.5666667, 1.9976742),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 6.215, -12.33), Vector3(0, 2.681, -3.515), Vector3(0, 2.681, -3.515)]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SinglePlatform2")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"unmute"
+}, {
+"args": [],
+"method": &"enable_collider"
+}]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SinglePlatform3")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"unmute"
+}, {
+"args": [],
+"method": &"enable_collider"
+}]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("FanPlatform:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-1.9073486e-06, 19.647036, 6.395191), Vector3(-1.9073486e-06, 8.576966, 6.7976494)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("FanPlatform:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("FanPlatform:scale")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.5, 0.5, 0.5)]
+}
+
+[sub_resource type="Animation" id="Animation_e08e2"]
+resource_name = "double_platform_fan_left_exit"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FanPlatform:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.16580628, 0, 0), Vector3(0.16580628, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FanPlatform:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-1.9073486e-06, 8.576966, 6.7976494), Vector3(-1.9073486e-06, 11.838376, 13.241308)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FanPlatform:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.5, 0.5, 0.5)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SinglePlatform2:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.010000002, 0.53333336, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.2617994, 0, 0), Vector3(0.2617994, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SinglePlatform2:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.012660384, 0.54599375, 2.01),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681223, 3.5150175), Vector3(0, 5.786, 13.415)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SinglePlatform3:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.008333445, 0.5416668, 2.0083334),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("SinglePlatform3:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.008333325, 0.5416667, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 2.6809998, -3.515), Vector3(0, 2.6809998, -3.515), Vector3(0, 5.786, -13.415)]
+}
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("SinglePlatform2")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.008333445, 2.0083334),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"disable_collider"
+}, {
+"args": [],
+"method": &"mute"
+}]
+}
+tracks/8/type = "method"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("SinglePlatform3")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"disable_collider"
+}, {
+"args": [],
+"method": &"mute"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_neg2b"]
+resource_name = "double_platform_fan_right"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SinglePlatform3:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.008333445, 1.5583333, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.2617994, 0, 0), Vector3(0.2617994, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SinglePlatform2:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.5666667, 1.9999999),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SinglePlatform2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.5666667, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 6.2150717, 12.329562), Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681223, 3.5150175)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SinglePlatform3:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.5666667, 1.9976742),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 6.215, -12.33), Vector3(0, 2.681, -3.515), Vector3(0, 2.681, -3.515)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("FanPlatform:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 19.647, -6.395), Vector3(0, 8.577, -6.798)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("FanPlatform:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 3.1415927, 0), Vector3(0, 3.1415927, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("FanPlatform:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.5, 0.5, 0.5)]
+}
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("SinglePlatform2")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"unmute"
+}, {
+"args": [],
+"method": &"enable_collider"
+}]
+}
+tracks/8/type = "method"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("SinglePlatform3")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"unmute"
+}, {
+"args": [],
+"method": &"enable_collider"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_r33sp"]
+resource_name = "double_platform_fan_right_exit"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SinglePlatform3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.53333336, 1.9916667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 2.6809998, -3.515), Vector3(0, 2.6809998, -3.515), Vector3(0, 5.786, -13.415)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SinglePlatform3:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.53333336, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.2617994, 0, 0), Vector3(-0.2617994, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SinglePlatform2:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5233334, 1.99),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.2617994, 0, 0), Vector3(0.2617994, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SinglePlatform2:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.53333336, 1.9973396),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 2.681223, 3.5150175), Vector3(0, 2.681223, 3.5150175), Vector3(0, 5.786, 13.415)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("FanPlatform:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2, 1.1083333),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 3.1415927, 0), Vector3(0.16580628, 3.1415927, 0), Vector3(0.16580628, 3.1415927, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("FanPlatform:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.1083333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 8.577, -6.798), Vector3(0, 11.838, -13.241)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("FanPlatform:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.5, 0.5, 0.5)]
+}
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("SinglePlatform2")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"disable_collider"
+}, {
+"args": [],
+"method": &"mute"
+}]
+}
+tracks/8/type = "method"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("SinglePlatform3")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
 "times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "values": [{
@@ -2044,7 +2532,7 @@ tracks/3/path = NodePath("FanPlatform:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2, 1.1),
+"times": PackedFloat32Array(-0.00833334, 0.19166666, 1.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector3(0, 3.1415927, 0), Vector3(0.16580628, 3.1415927, 0), Vector3(0.16580628, 3.1415927, 0)]
@@ -2056,7 +2544,7 @@ tracks/4/path = NodePath("FanPlatform:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 1.1),
+"times": PackedFloat32Array(-0.00833334, 1.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(0, 8.577, -6.798), Vector3(0, 11.838, -13.241)]
@@ -2068,7 +2556,7 @@ tracks/5/path = NodePath("FanPlatform:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(-0.00833334),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0.5, 0.5, 0.5)]
@@ -2501,6 +2989,10 @@ _data = {
 &"double_platform_double_saw": SubResource("Animation_3pmx8"),
 &"double_platform_double_saw_exit": SubResource("Animation_u50mg"),
 &"double_platform_exit": SubResource("Animation_fevyy"),
+&"double_platform_fan_left": SubResource("Animation_kltya"),
+&"double_platform_fan_left_exit": SubResource("Animation_e08e2"),
+&"double_platform_fan_right": SubResource("Animation_neg2b"),
+&"double_platform_fan_right_exit": SubResource("Animation_r33sp"),
 &"idle": SubResource("Animation_wsu2k"),
 &"single_platform_center": SubResource("Animation_k12tt"),
 &"single_platform_center_exit": SubResource("Animation_h1bgf"),
@@ -2527,6 +3019,18 @@ animation = &"double_platform_double_saw_exit"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fdnlq"]
 animation = &"double_platform_exit"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6vcvc"]
+animation = &"double_platform_fan_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7k868"]
+animation = &"double_platform_fan_left_exit"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hpc6h"]
+animation = &"double_platform_fan_right"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kltya"]
+animation = &"double_platform_fan_right_exit"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jkdf5"]
 animation = &"idle"
@@ -2666,6 +3170,30 @@ advance_condition = &"exit"
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kwxat"]
+advance_mode = 2
+advance_condition = &"double_platform_fan_left"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_aa8k8"]
+advance_mode = 2
+advance_condition = &"exit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kqrg6"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nwwfm"]
+advance_mode = 2
+advance_condition = &"double_platform_fan_right"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s8vy0"]
+advance_mode = 2
+advance_condition = &"exit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jut3y"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_c4elv"]
 states/End/position = Vector2(1414, 72)
 states/Start/position = Vector2(182, 232)
@@ -2677,6 +3205,14 @@ states/double_platform_double_saw_exit/node = SubResource("AnimationNodeAnimatio
 states/double_platform_double_saw_exit/position = Vector2(773, 570)
 states/double_platform_exit/node = SubResource("AnimationNodeAnimation_fdnlq")
 states/double_platform_exit/position = Vector2(610, 82)
+states/double_platform_fan_left/node = SubResource("AnimationNodeAnimation_6vcvc")
+states/double_platform_fan_left/position = Vector2(117, 451)
+states/double_platform_fan_left_exit/node = SubResource("AnimationNodeAnimation_7k868")
+states/double_platform_fan_left_exit/position = Vector2(-8, 480)
+states/double_platform_fan_right/node = SubResource("AnimationNodeAnimation_hpc6h")
+states/double_platform_fan_right/position = Vector2(259, 538)
+states/double_platform_fan_right_exit/node = SubResource("AnimationNodeAnimation_kltya")
+states/double_platform_fan_right_exit/position = Vector2(171, 608)
 states/idle/node = SubResource("AnimationNodeAnimation_jkdf5")
 states/idle/position = Vector2(469, 239)
 states/single_platform_center/node = SubResource("AnimationNodeAnimation_wsu2k")
@@ -2703,8 +3239,8 @@ states/triple_platform/node = SubResource("AnimationNodeAnimation_h1bgf")
 states/triple_platform/position = Vector2(886, 323)
 states/triple_platform_exit/node = SubResource("AnimationNodeAnimation_b3802")
 states/triple_platform_exit/position = Vector2(886, 254)
-transitions = ["idle", "single_platform_center", SubResource("AnimationNodeStateMachineTransition_fevyy"), "single_platform_center", "single_platform_center_exit", SubResource("AnimationNodeStateMachineTransition_hibaj"), "single_platform_center_exit", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "idle", "double_platform", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "double_platform", "double_platform_exit", SubResource("AnimationNodeStateMachineTransition_gt3je"), "double_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_6bp64"), "idle", "triple_platform", SubResource("AnimationNodeStateMachineTransition_u50mg"), "triple_platform", "triple_platform_exit", SubResource("AnimationNodeStateMachineTransition_cbgmd"), "triple_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_1w6v2"), "idle", "single_platform_single_saw", SubResource("AnimationNodeStateMachineTransition_ueoa1"), "single_platform_single_saw", "single_platform_single_saw_exit", SubResource("AnimationNodeStateMachineTransition_6vcvc"), "single_platform_single_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_7k868"), "idle", "double_platform_double_saw", SubResource("AnimationNodeStateMachineTransition_hpc6h"), "double_platform_double_saw", "double_platform_double_saw_exit", SubResource("AnimationNodeStateMachineTransition_kltya"), "double_platform_double_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_e08e2"), "idle", "single_platform_double_saw", SubResource("AnimationNodeStateMachineTransition_neg2b"), "single_platform_double_saw", "single_platform_double_saw_exit", SubResource("AnimationNodeStateMachineTransition_r33sp"), "single_platform_double_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_hdf80"), "idle", "single_platform_fan_left", SubResource("AnimationNodeStateMachineTransition_jwpg7"), "single_platform_fan_left", "single_platform_fan_left_exit", SubResource("AnimationNodeStateMachineTransition_k2e45"), "single_platform_fan_left_exit", "idle", SubResource("AnimationNodeStateMachineTransition_536cc"), "idle", "single_platform_fan_right", SubResource("AnimationNodeStateMachineTransition_aqgau"), "single_platform_fan_right", "single_platform_fan_right_exit", SubResource("AnimationNodeStateMachineTransition_8cuat"), "single_platform_fan_right_exit", "idle", SubResource("AnimationNodeStateMachineTransition_o1aky")]
-graph_offset = Vector2(134, 8)
+transitions = ["idle", "single_platform_center", SubResource("AnimationNodeStateMachineTransition_fevyy"), "single_platform_center", "single_platform_center_exit", SubResource("AnimationNodeStateMachineTransition_hibaj"), "single_platform_center_exit", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "idle", "double_platform", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "double_platform", "double_platform_exit", SubResource("AnimationNodeStateMachineTransition_gt3je"), "double_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_6bp64"), "idle", "triple_platform", SubResource("AnimationNodeStateMachineTransition_u50mg"), "triple_platform", "triple_platform_exit", SubResource("AnimationNodeStateMachineTransition_cbgmd"), "triple_platform_exit", "idle", SubResource("AnimationNodeStateMachineTransition_1w6v2"), "idle", "single_platform_single_saw", SubResource("AnimationNodeStateMachineTransition_ueoa1"), "single_platform_single_saw", "single_platform_single_saw_exit", SubResource("AnimationNodeStateMachineTransition_6vcvc"), "single_platform_single_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_7k868"), "idle", "double_platform_double_saw", SubResource("AnimationNodeStateMachineTransition_hpc6h"), "double_platform_double_saw", "double_platform_double_saw_exit", SubResource("AnimationNodeStateMachineTransition_kltya"), "double_platform_double_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_e08e2"), "idle", "single_platform_double_saw", SubResource("AnimationNodeStateMachineTransition_neg2b"), "single_platform_double_saw", "single_platform_double_saw_exit", SubResource("AnimationNodeStateMachineTransition_r33sp"), "single_platform_double_saw_exit", "idle", SubResource("AnimationNodeStateMachineTransition_hdf80"), "idle", "single_platform_fan_left", SubResource("AnimationNodeStateMachineTransition_jwpg7"), "single_platform_fan_left", "single_platform_fan_left_exit", SubResource("AnimationNodeStateMachineTransition_k2e45"), "single_platform_fan_left_exit", "idle", SubResource("AnimationNodeStateMachineTransition_536cc"), "idle", "single_platform_fan_right", SubResource("AnimationNodeStateMachineTransition_aqgau"), "single_platform_fan_right", "single_platform_fan_right_exit", SubResource("AnimationNodeStateMachineTransition_8cuat"), "single_platform_fan_right_exit", "idle", SubResource("AnimationNodeStateMachineTransition_o1aky"), "idle", "double_platform_fan_left", SubResource("AnimationNodeStateMachineTransition_kwxat"), "double_platform_fan_left", "double_platform_fan_left_exit", SubResource("AnimationNodeStateMachineTransition_aa8k8"), "double_platform_fan_left_exit", "idle", SubResource("AnimationNodeStateMachineTransition_kqrg6"), "idle", "double_platform_fan_right", SubResource("AnimationNodeStateMachineTransition_nwwfm"), "double_platform_fan_right", "double_platform_fan_right_exit", SubResource("AnimationNodeStateMachineTransition_s8vy0"), "double_platform_fan_right_exit", "idle", SubResource("AnimationNodeStateMachineTransition_jut3y")]
+graph_offset = Vector2(-231, 201)
 
 [node name="Root" type="Node3D" unique_id=236819951]
 
@@ -2721,7 +3257,7 @@ transform = Transform3D(-0.00668736, -0.90484244, 0.42569408, -0.014212694, 0.42
 
 [node name="Environment" parent="." unique_id=1750905010 instance=ExtResource("2_21xkr")]
 
-[node name="ThrowableSpawner" type="ThrowableSpawner" parent="." unique_id=453820178]
+[node name="ThrowableSpawner" type="ThrowableSpawner" parent="." unique_id=1140140678]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7953838, 0)
 
 [node name="ThrowableArrow" type="Node3D" parent="ThrowableSpawner" unique_id=724866588]
@@ -2742,7 +3278,7 @@ parameters/conditions/left = false
 parameters/conditions/right = false
 parameters/conditions/up = false
 
-[node name="RoundManager" type="RoundManager" parent="." unique_id=1510891354 node_paths=PackedStringArray("temp_obsticle_manager")]
+[node name="RoundManager" type="RoundManager" parent="." unique_id=2111248283 node_paths=PackedStringArray("temp_obsticle_manager")]
 temp_obsticle_manager = NodePath("../TemporaryObsticleManager")
 
 [node name="CountDownText" type="Label3D" parent="RoundManager" unique_id=1653012386]
@@ -2764,8 +3300,8 @@ parameters/conditions/count = false
 
 [node name="RoundLabel" type="MeshInstance3D" parent="RoundManager" unique_id=1855228584]
 transform = Transform3D(-7.17814e-07, 0, 10.826355, 0, 16.421669, 0, -16.421669, 0, -4.7323502e-07, 1.23056, 4.8183417, -5.3789485e-08)
-material_override = SubResource("StandardMaterial3D_344ge")
-mesh = SubResource("PlaneMesh_ynf5e")
+material_override = SubResource("StandardMaterial3D_ynf5e")
+mesh = SubResource("PlaneMesh_hptm8")
 script = ExtResource("6_21xkr")
 text = "ROUND 0!
 0000
@@ -2789,7 +3325,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.432837, 6.2910438)
 [node name="PlayerPosition4" type="Node3D" parent="." unique_id=2050486479]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3939853, -6.7523866)
 
-[node name="MatchManager" type="MatchManager" parent="." unique_id=191466617 node_paths=PackedStringArray("player_position1", "player_position2", "player_position3", "player_position4")]
+[node name="MatchManager" type="MatchManager" parent="." unique_id=1145138215 node_paths=PackedStringArray("player_position1", "player_position2", "player_position3", "player_position4")]
 player_position1 = NodePath("../PlayerPosition1")
 player_position2 = NodePath("../PlayerPosition2")
 player_position3 = NodePath("../PlayerPosition3")
@@ -2797,7 +3333,7 @@ player_position4 = NodePath("../PlayerPosition4")
 
 [node name="PauseMenuCanvas" parent="." unique_id=171649780 instance=ExtResource("6_6bp64")]
 
-[node name="TemporaryObsticleManager" type="TemporaryObsticleManager" parent="." unique_id=627713457]
+[node name="TemporaryObsticleManager" type="TemporaryObsticleManager" parent="." unique_id=150936059]
 
 [node name="SinglePlatform" parent="TemporaryObsticleManager" unique_id=890487601 instance=ExtResource("7_6bp64")]
 transform = Transform3D(0.5, 0, 0, 0, 0.49999997, 0, 0, 0, 0.49999997, 0, 14.299952, 0)
@@ -2817,6 +3353,8 @@ tree_root = SubResource("AnimationNodeStateMachine_c4elv")
 anim_player = NodePath("..")
 parameters/conditions/double_platform = false
 parameters/conditions/double_platform_double_saw = false
+parameters/conditions/double_platform_fan_left = false
+parameters/conditions/double_platform_fan_right = false
 parameters/conditions/exit = false
 parameters/conditions/single_platform_center = false
 parameters/conditions/single_platform_double_saw = false
@@ -2826,10 +3364,10 @@ parameters/conditions/single_platform_single_saw = false
 parameters/conditions/triple_platform = false
 
 [node name="SawPlatform" parent="TemporaryObsticleManager" unique_id=1289983603 instance=ExtResource("8_344ge")]
-transform = Transform3D(0.61, 0, 0, 0, 0.58921474, 0.15787962, 0, -0.15787962, 0.58921474, -1.9073489e-06, 13.148777, 19.363977)
+transform = Transform3D(1, 0, 0, 0, 0.96592563, 0.25881898, 0, -0.25881898, 0.96592563, -1.9073489e-06, 13.148777, 19.363977)
 
 [node name="SawPlatform2" parent="TemporaryObsticleManager" unique_id=1121251746 instance=ExtResource("8_344ge")]
-transform = Transform3D(0.61, 0, 0, 0, 0.58921474, -0.15787962, 0, 0.15787962, 0.58921474, 0, 13.149, -19.364)
+transform = Transform3D(1, 0, 0, 0, 0.96592563, -0.25881898, 0, 0.25881898, 0.96592563, 0, 13.149, -19.364)
 
 [node name="FanPlatform" parent="TemporaryObsticleManager" unique_id=399753351 instance=ExtResource("9_ynf5e")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -1.9073486e-06, 19.647036, 6.395191)

@@ -19,7 +19,6 @@ use crate::game_scripts::throwable::Throwable;
 
 #[derive(GodotClass)]
 #[class(base=CharacterBody3D)]
-const MAX_WIND_VELOCTY: f32 = 20.0;
 pub struct Player {
     salmon_ability_timer_entries: u8,
     player_drop_timer_timed_in_hand_num: u8,
@@ -101,6 +100,8 @@ pub struct Player {
     on_one_way_platform: bool,
     wind_velocity: Vector3,
 }
+
+const MAX_WIND_VELOCITY: f32 = 5.0;
 
 #[godot_api]
 impl ICharacterBody3D for Player {
@@ -464,21 +465,7 @@ impl Player {
     }
     pub fn add_wind(&mut self, wind_delta: Vector3) {
         self.wind_velocity += wind_delta;
-        [
-            self.wind_velocity.z,
-            self.wind_velocity.x,
-            self.wind_velocity.y,
-        ]
-        .each_mut()
-        .iter_mut()
-        .for_each(|velocity_vector| {
-            velocity_vector = max(
-                &velocity_vector.to_variant(),
-                &MAX_WIND_VELOCTY.to_variant(),
-                &[],
-            )
-            .to();
-        });
+        self.wind_velocity = self.wind_velocity.limit_length(Some(MAX_WIND_VELOCITY));
     }
     pub fn reset_wind(&mut self) {
         self.wind_velocity = Vector3::ZERO;

@@ -2,7 +2,7 @@ use godot::classes::{
     AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, GpuParticles3D, ICharacterBody3D,
     Input, Label3D, Material, MeshInstance3D, SceneTreeTimer, StandardMaterial3D, Time,
 };
-use godot::global::Key;
+use godot::global::{Key, max, min};
 use godot::prelude::*;
 use godot::signal::ConnectHandle;
 
@@ -490,7 +490,14 @@ impl Player {
         }
         if !self.is_punching && !self.hit_stun && !self.knock_back && !self.is_dashing && !self.dead
         {
-            velocity.z = 0.0;
+            //velocity.z = 0.0;
+            if velocity.z < 0.0 {
+                let var_name = velocity.z + self.speed;
+                velocity.z = min(&(var_name).to_variant(), &0.0.to_variant(), &[]).to();
+            } else if velocity.z > 0.0 {
+                let var_name = velocity.z - self.speed;
+                velocity.z = max(&(var_name).to_variant(), &0.0.to_variant(), &[]).to();
+            }
         }
         if input.is_key_pressed(self.left_key)
             && !self.is_punching

@@ -19,7 +19,7 @@ impl INode3D for TemporaryObsticleManager {
             base,
             animation_tree: None,
             animation_triggers: vec![
-                /*"single_platform_center",
+                "single_platform_center",
                 "double_platform",
                 "triple_platform",
                 "single_platform_single_saw",
@@ -28,7 +28,7 @@ impl INode3D for TemporaryObsticleManager {
                 "single_platform_fan_left",
                 "single_platform_fan_right",
                 "double_platform_fan_left",
-                "double_platform_fan_right",*/
+                "double_platform_fan_right",
                 "double_platform_fan_right_saw_left",
                 "double_platform_fan_left_saw_right",
             ],

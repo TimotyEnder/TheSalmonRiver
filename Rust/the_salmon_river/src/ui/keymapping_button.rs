@@ -92,7 +92,8 @@ impl KeyMappingButton {
     }
     fn set_label_to_input_mapping(&mut self) {
         if let Some(key_code) = self.input_mapping_saved {
-            self.base_mut().set_text(&format!("{:?}", key_code));
+            self.base_mut()
+                .set_text(&format!("{}", key_code.to_string()));
             self.signals().on_key_changed().emit();
         }
     }

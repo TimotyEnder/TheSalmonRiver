@@ -120,75 +120,26 @@ impl Debug for InputMapping {
         }
     }
 }
-/*// ── Imports ─────────────────────────────────────────────
-use godot::classes::{Input, InputMap, InputEvent, InputEventKey,
-    InputEventJoypadButton, InputEventJoypadMotion};
-use godot::global::{JoyButton, JoyAxis};
-
-// ── Enums (godot::global) ───────────────────────────────
-JoyButton::A | B | X | Y | Back | Guide | Start
-  | LeftStick | RightStick | LeftShoulder | RightShoulder
-  | DpadUp | DpadDown | DpadLeft | DpadRight | Invalid // Invalid = -1 sentinel
-JoyAxis::LeftX | LeftY | RightX | RightY
-  | TriggerLeft | TriggerRight | Invalid
-
-// ord round-trip (matches your Key serialization pattern):
-JoyButton::try_from_ord(ord as i32); let ord = btn.ord();
-
-// ── Polling (Input singleton) ───────────────────────────
-let input = Input::singleton();
-input.is_joy_button_pressed(device_id, JoyButton::A) -> bool;
-input.get_joy_axis(device_id, JoyAxis::LeftX) -> f32;      // -1.0..1.0, NO deadzone
-let pads = input.get_connected_joypads() -> PackedInt32Array; // device ids
-input.is_joy_known(device_id) -> bool;                     // has standard mapping
-
-// ── Hotplug signal (on Input singleton) ─────────────────
-input.signals().joy_connection_changed()
-    .connect_other(&this, |dev: i32, connected: bool| { /* ... */ });
-
-// ── Rumble ──────────────────────────────────────────────
-input.start_joy_vibration(device_id, weak_magnitude: f64,
-                          strong_magnitude: f64, duration_secs: f64);
-input.stop_joy_vibration(device_id);
-
-// ── Event-side (_input / rebinding capture) ─────────────
-fn input(&mut self, event: Gd<InputEvent>) {
-    if let Some(k) = event.try_cast::<InputEventKey>().ok() {
-        k.get_keycode();            // what you do now
-    } else if let Some(b) = event.try_cast::<InputEventJoypadButton>().ok() {
-        b.get_button_index();       // JoyButton
-        b.get_device();             // i32, -1 = "all devices"
-    } else if let Some(m) = event.try_cast::<InputEventJoypadMotion>().ok() {
-        m.get_axis();               // JoyAxis
-        m.get_axis_value();         // f32, sign = direction
+impl ToString for InputMapping {
+    fn to_string(&self) -> String {
+        match self {
+            Self::Keyboard(key) => format!("{:?}", key),
+            Self::GamepadButton(button, device_id) => format!("Gmpd#{} {:?}", device_id, button),
+            Self::GamepadAxis(axis, value, device_id) => match *axis {
+                JoyAxis::LEFT_X => format!("Gmpd#{} (L) {}", device_id, {
+                    if *value > 0.0 { "Right" } else { "Left" }
+                }),
+                JoyAxis::LEFT_Y => format!("Gmpd#{} (L) {}", device_id, {
+                    if *value > 0.0 { "Down" } else { "Up" }
+                }),
+                JoyAxis::RIGHT_X => format!("Gmpd#{} (R) {}", device_id, {
+                    if *value > 0.0 { "Right" } else { "Left" }
+                }),
+                JoyAxis::RIGHT_Y => format!("Gmpd#{} (R) {}", device_id, {
+                    if *value > 0.0 { "Down" } else { "Up" }
+                }),
+                _ => format!("Gmpd#{} {:?}", device_id, axis),
+            },
+        }
     }
 }
-
-// Constructing events:
-let mut ev = InputEventJoypadButton::new_gd();
-ev.set_device(0);                   // omit/set -1 = any device
-ev.set_button_index(JoyButton::A);
-let mut mv = InputEventJoypadMotion::new_gd();
-mv.set_axis(JoyAxis::LeftX);
-mv.set_axis_value(1.0);
-
-// ── Route B: runtime InputMap actions ───────────────────
-let mut im = InputMap::singleton();
-im.add_action("p1_jump");           // StringName, str literal ok
-im.action_set_deadzone("p1_jump", 0.3);
-im.action_add_event("p1_jump", &ev);          // stack multiple: key + pad
-im.action_erase_events("p1_jump");            // before re-adding on rebind
-im.has_action("p1_jump") -> bool;
-
-// Polling actions (deadzone applied automatically):
-input.is_action_pressed("p1_jump") -> bool;
-input.is_action_just_pressed("p1_jump") -> bool;
-input.is_action_released("p1_jump") -> bool;
-input.get_action_strength("p1_jump") -> f32;  // analog 0..1
-
-// ── Common idioms ───────────────────────────────────────
-// digital threshold on raw axis:
-let x = input.get_joy_axis(dev, JoyAxis::LeftX);
-if x.abs() > 0.25 { /* moving at strength x */ }
-// analog movement onto your z axis:
-velocity.z += -x * speed_to_use;              // +X stick = right = -z in your code */

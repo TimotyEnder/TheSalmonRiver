@@ -399,13 +399,13 @@ impl Player {
     pub fn is_on_floor_or_platform(&self) -> bool {
         self.base().is_on_floor() || self.on_one_way_platform
     }
-    pub fn load_control_scheeme(&mut self, control: Gd<PlayerControlScheme>) {
-        self.jump_key = InputMapping::Keyboard(control.bind().jump_key);
-        self.duck_key = InputMapping::Keyboard(control.bind().duck_key);
-        self.left_key = InputMapping::Keyboard(control.bind().left_key);
-        self.right_key = InputMapping::Keyboard(control.bind().right_key);
-        self.grab_throw_key = InputMapping::Keyboard(control.bind().grab_throw_key);
-        self.punch_use_key = InputMapping::Keyboard(control.bind().punch_use_key);
+    pub fn load_control_scheeme(&mut self, control: PlayerControlScheme) {
+        self.jump_key = control.jump_key;
+        self.duck_key = control.duck_key;
+        self.left_key = control.left_key;
+        self.right_key = control.right_key;
+        self.grab_throw_key = control.grab_throw_key;
+        self.punch_use_key = control.punch_use_key;
     }
     pub fn set_facing_right_status(&mut self, status: bool) {
         self.facing_right = status;

@@ -22,10 +22,10 @@ impl IRefCounted for SaveManager {
 
 #[godot_api]
 impl SaveManager {
-    pub fn save_control_schemes(&self, control_schemes: Vec<Gd<PlayerControlScheme>>) {
+    pub fn save_control_schemes(&self, control_schemes: &Vec<PlayerControlScheme>) {
         let mut all = Dictionary::<u8, Variant>::new();
         for (i, scheme) in control_schemes.iter().enumerate() {
-            all.set(i as u8 + 1, &scheme.bind().to_dict().to_variant());
+            all.set(i as u8 + 1, &scheme.to_dict().to_variant());
         }
         if let Some(mut file) = FileAccess::open(SAVE_PATH_CONTROLLSCHEMES, ModeFlags::WRITE) {
             file.store_string(&Json::stringify(&all.to_variant()));
@@ -40,7 +40,7 @@ impl SaveManager {
         }
         godot_print!("saved settings to {SAVE_PATH_SETTINGS}");
     }
-    pub fn load_control_schemes_from_file(&self) -> Vec<Gd<PlayerControlScheme>> {
+    pub fn load_control_schemes_from_file(&self) -> Vec<PlayerControlScheme> {
         let mut to_ret = Vec::new();
         let Some(file) = FileAccess::open(SAVE_PATH_CONTROLLSCHEMES, ModeFlags::READ) else {
             return to_ret;
@@ -54,9 +54,7 @@ impl SaveManager {
             if let Some(scheme_var) = all.get(&key)
                 && let Ok(scheme_dict) = scheme_var.try_to::<Dictionary<Variant, Variant>>()
             {
-                to_ret.push(Gd::from_object(PlayerControlScheme::from_dict(
-                    &scheme_dict,
-                )));
+                to_ret.push(PlayerControlScheme::from_dict(&scheme_dict));
             }
         }
         godot_print!("controlschemes loaded from {SAVE_PATH_CONTROLLSCHEMES}");

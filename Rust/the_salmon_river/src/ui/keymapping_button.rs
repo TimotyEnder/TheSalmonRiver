@@ -114,18 +114,18 @@ impl KeyMappingButton {
             parent.bind_mut().exclusivety_reset(id);
         }
     }
-    pub fn get_input_mapping_saved(&self) -> Key {
-        if let Some(InputMapping::Keyboard(key)) = self.input_mapping_saved {
-            return key;
+    pub fn get_input_mapping_saved(&self) -> InputMapping {
+        if let Some(input_mapping) = self.input_mapping_saved {
+            return input_mapping;
         } else {
-            return Key::NONE;
+            return Keyboard(Key::NONE);
         }
     }
     pub fn has_input_mapping_saved(&self) -> bool {
-        if let Some(InputMapping::Keyboard(key)) = self.input_mapping_saved {
-            return key != Key::NONE;
-        } else {
-            return false;
+        match self.input_mapping_saved {
+            Some(InputMapping::Keyboard(key)) => key != Key::NONE,
+            Some(_) => true,
+            None => false,
         }
     }
     pub fn exclusivity_reset(&mut self) {

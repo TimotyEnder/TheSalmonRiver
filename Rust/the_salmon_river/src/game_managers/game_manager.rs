@@ -14,7 +14,7 @@ use crate::settings_state::SettingsState;
 pub struct GameManager {
     base: Base<Node>,
     current_game: Option<Game>,
-    control_schemes: Vec<Gd<PlayerControlScheme>>,
+    control_schemes: Vec<PlayerControlScheme>,
     settings_state: Gd<SettingsState>,
     save_manager: Gd<SaveManager>,
     character_types: Vec<PlayerCharacterType>,
@@ -65,7 +65,7 @@ impl GameManager {
         ));
         self.save_manager
             .bind_mut()
-            .save_control_schemes(self.control_schemes.clone());
+            .save_control_schemes(&self.control_schemes);
     }
 
     pub fn player_won_round(&mut self, player_num: u8) {
@@ -129,32 +129,30 @@ impl GameManager {
             .save_settings_state(self.settings_state.clone());
     }
 
-    pub fn request_player_controls(&mut self, player_num: u8) -> Gd<PlayerControlScheme> {
+    pub fn request_player_controls(&mut self, player_num: u8) -> PlayerControlScheme {
         while self.control_schemes.len() < player_num as usize {
-            self.control_schemes
-                .push(Gd::from_object(PlayerControlScheme {
-                    jump_key: Key::NONE,
-                    left_key: Key::NONE,
-                    right_key: Key::NONE,
-                    duck_key: Key::NONE,
-                    punch_use_key: Key::NONE,
-                    grab_throw_key: Key::NONE,
-                }));
+            self.control_schemes.push(PlayerControlScheme {
+                jump_key: super::input_mapping::InputMapping::Keyboard(Key::NONE),
+                left_key: super::input_mapping::InputMapping::Keyboard(Key::NONE),
+                right_key: super::input_mapping::InputMapping::Keyboard(Key::NONE),
+                duck_key: super::input_mapping::InputMapping::Keyboard(Key::NONE),
+                punch_use_key: super::input_mapping::InputMapping::Keyboard(Key::NONE),
+                grab_throw_key: super::input_mapping::InputMapping::Keyboard(Key::NONE),
+            });
         }
         return self.control_schemes[player_num as usize - 1].clone();
     }
 
-    pub fn save_player_controls(&mut self, player_num: u8, control: Gd<PlayerControlScheme>) {
+    pub fn save_player_controls(&mut self, player_num: u8, control: PlayerControlScheme) {
         while self.control_schemes.len() < player_num as usize {
-            self.control_schemes
-                .push(Gd::from_object(PlayerControlScheme {
-                    jump_key: Key::NONE,
-                    left_key: Key::NONE,
-                    right_key: Key::NONE,
-                    duck_key: Key::NONE,
-                    punch_use_key: Key::NONE,
-                    grab_throw_key: Key::NONE,
-                }));
+            self.control_schemes.push(PlayerControlScheme {
+                jump_key: super::input_mapping::InputMapping::Keyboard(Key::NONE),
+                left_key: super::input_mapping::InputMapping::Keyboard(Key::NONE),
+                right_key: super::input_mapping::InputMapping::Keyboard(Key::NONE),
+                duck_key: super::input_mapping::InputMapping::Keyboard(Key::NONE),
+                punch_use_key: super::input_mapping::InputMapping::Keyboard(Key::NONE),
+                grab_throw_key: super::input_mapping::InputMapping::Keyboard(Key::NONE),
+            });
         }
         self.control_schemes[player_num as usize - 1] = control;
     }

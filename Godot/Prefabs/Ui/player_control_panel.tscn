@@ -3,6 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://c5quwm33vrxy1" path="res://SpriteAssets/UI/panel_brown.png" id="1_al7co"]
 [ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="1_h8mub"]
 [ext_resource type="Texture2D" uid="uid://7162q2h0fafq" path="res://SpriteAssets/UI/buttonSquare_brown.png" id="3_al7co"]
+[ext_resource type="Texture2D" uid="uid://bi2cjmbwl40ft" path="res://SpriteAssets/UI/buttonLong_brown.png" id="3_suk64"]
+[ext_resource type="Texture2D" uid="uid://b6rnlowyno72d" path="res://SpriteAssets/UI/buttonLong_brown_pressed.png" id="4_xyjwt"]
 [ext_resource type="Texture2D" uid="uid://jkoi0wjhfttk" path="res://SpriteAssets/UI/buttonSquare_brown_pressed.png" id="4_y3j07"]
 [ext_resource type="Texture2D" uid="uid://cpu75x8mj53g5" path="res://SpriteAssets/CharacterRenders/bear.png" id="5_y3j07"]
 [ext_resource type="Texture2D" uid="uid://bg4wwplsyk7y6" path="res://SpriteAssets/CharacterRenders/beaver.png" id="6_8xdot"]
@@ -17,21 +19,21 @@
 texture = ExtResource("1_al7co")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ce3w2"]
-texture = ExtResource("3_al7co")
+texture = ExtResource("3_suk64")
 expand_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n45e2"]
 content_margin_top = 4.0
-texture = ExtResource("4_y3j07")
+texture = ExtResource("4_xyjwt")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_opfnp"]
-texture = ExtResource("3_al7co")
+texture = ExtResource("3_suk64")
 expand_margin_bottom = 4.0
 modulate_color = Color(0.86036915, 0.8603692, 0.8603692, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y3j07"]
 content_margin_top = 4.0
-texture = ExtResource("4_y3j07")
+texture = ExtResource("4_xyjwt")
 expand_margin_top = 4.0
 modulate_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
 
@@ -83,9 +85,9 @@ custom_maximum_size = Vector2(300, -1)
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = 39.0
+offset_left = 28.0
 offset_top = 64.0
-offset_right = 199.0
+offset_right = 228.0
 offset_bottom = -29.54245
 grow_vertical = 2
 scale = Vector2(0.99682665, 0.6368836)
@@ -165,15 +167,14 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(91.86, 104.06)
 custom_maximum_size = Vector2(600.305, -1)
 layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -242.0
-offset_top = 74.0
-offset_right = -9.261444
-offset_bottom = -31.579956
-grow_horizontal = 0
+offset_left = 121.0
+offset_top = 64.00001
+offset_right = -0.38519287
+offset_bottom = -30.62445
+grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.99682665, 0.6368836)
 theme_override_constants/h_separation = 4

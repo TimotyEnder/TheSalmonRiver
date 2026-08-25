@@ -51,28 +51,36 @@ impl InputMapping {
         }
         dict
     }
+    /* fn key_from_variant(value: Variant) -> Key {
+    let ord = value
+        .try_to::<i64>()
+        .or_else(|_| value.try_to::<f64>().map(|f| f as i64))
+        .unwrap_or(0);
+    Key::try_from_ord(ord as i32).unwrap_or(Key::NONE)*/
     pub fn from_dict(dict: Dictionary<Variant, Variant>) -> Self {
         let Some(type_str) = dict.get("type").and_then(|v| v.try_to::<GString>().ok()) else {
             return InputMapping::Keyboard(Key::NONE);
         };
         match type_str.to_string().as_str() {
             "keyboard" => {
-                let key_ord = dict
-                    .get("key")
-                    .and_then(|v| v.try_to::<i32>().ok())
+                let value = dict.get("key").unwrap_or_default();
+                let key_ord = value
+                    .try_to::<i64>()
+                    .or_else(|_| value.try_to::<f64>().map(|f| f as i64))
                     .unwrap_or(0);
-                InputMapping::Keyboard(Key::from_ord(key_ord))
+                InputMapping::Keyboard(Key::from_ord(key_ord as i32))
             }
             "gamepad_button" => {
                 let button_ord = dict
                     .get("button")
                     .and_then(|v| v.try_to::<i32>().ok())
                     .unwrap_or(0);
-                let device = dict
-                    .get("device")
-                    .and_then(|v| v.try_to::<i32>().ok())
+                let value = dict.get("device").unwrap_or_default();
+                let device = value
+                    .try_to::<i64>()
+                    .or_else(|_| value.try_to::<f64>().map(|f| f as i64))
                     .unwrap_or(0);
-                InputMapping::GamepadButton(JoyButton::from_ord(button_ord), device)
+                InputMapping::GamepadButton(JoyButton::from_ord(button_ord), device as i32)
             }
             "gamepad_axis" => {
                 let axis_ord = dict
@@ -83,11 +91,12 @@ impl InputMapping {
                     .get("value")
                     .and_then(|v| v.try_to::<f32>().ok())
                     .unwrap_or(0.0);
-                let device = dict
-                    .get("device")
-                    .and_then(|v| v.try_to::<i32>().ok())
+                let device_value = dict.get("device").unwrap_or_default();
+                let device = device_value
+                    .try_to::<i64>()
+                    .or_else(|_| device_value.try_to::<f64>().map(|f| f as i64))
                     .unwrap_or(0);
-                InputMapping::GamepadAxis(JoyAxis::from_ord(axis_ord), value, device)
+                InputMapping::GamepadAxis(JoyAxis::from_ord(axis_ord), value, device as i32)
             }
             _ => InputMapping::Keyboard(Key::NONE),
         }

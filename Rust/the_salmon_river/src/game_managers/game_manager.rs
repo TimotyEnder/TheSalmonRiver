@@ -40,14 +40,12 @@ impl INode for GameManager {
             .bind_mut()
             .load_control_schemes_from_file();
         self.settings_state = self.save_manager.bind().load_settings_state();
-        self.base_mut()
-            .call_deferred("apply_audio_settings", &[]);
+        self.base_mut().call_deferred("apply_audio_settings", &[]);
     }
 }
 
 #[godot_api]
 impl GameManager {
-    #[func]
     pub fn apply_audio_settings(&mut self) {
         if let Some(mut audio) = self
             .base()
@@ -58,7 +56,7 @@ impl GameManager {
                 .set_game_volume(self.settings_state.bind().game_volume_percent);
         }
     }
-    #[func]
+
     pub fn create_game(&mut self, num_players: u8, rounds_to_win: u32, round_time: u32) {
         self.current_game = Some(Game::new(
             num_players,
@@ -69,19 +67,19 @@ impl GameManager {
             .bind_mut()
             .save_control_schemes(self.control_schemes.clone());
     }
-    #[func]
+
     pub fn player_won_round(&mut self, player_num: u8) {
         if let Some(ref mut game) = self.current_game {
             game.log_player_win(player_num);
         }
     }
-    #[func]
+
     pub fn round_tie(&mut self) {
         if let Some(ref mut game) = self.current_game {
             game.log_tie();
         }
     }
-    #[func]
+
     pub fn get_current_round_number_one_based(&self) -> u32 {
         if let Some(ref game) = self.current_game {
             return game.get_current_round() + 1 as u32;
@@ -89,7 +87,7 @@ impl GameManager {
             return 0;
         }
     }
-    #[func]
+
     pub fn get_player_count(&mut self) -> u32 {
         if let Some(ref game) = self.current_game {
             return game.get_player_number() as u32;
@@ -97,7 +95,7 @@ impl GameManager {
             return 0;
         }
     }
-    #[func]
+
     pub fn get_player_score(&self, player_num: u8) -> u32 {
         if let Some(ref game) = self.current_game {
             return game.get_score_for_player(player_num);
@@ -105,32 +103,32 @@ impl GameManager {
             return 0;
         }
     }
-    #[func]
+
     pub fn get_round_timer_secs(&self) -> u32 {
         if let Some(ref game) = self.current_game {
             return game.get_round_time() as u32;
         }
         return 0;
     }
-    #[func]
+
     pub fn get_rounds_to_win(&self) -> u32 {
         if let Some(ref game) = self.current_game {
             return game.get_rounds_to_win() as u32;
         }
         return 0;
     }
-    #[func]
+
     pub fn request_settings_state(&mut self) -> Gd<SettingsState> {
         self.settings_state.clone()
     }
-    #[func]
+
     pub fn save_settings_state(&mut self, state: Gd<SettingsState>) {
         self.settings_state = state;
         self.save_manager
             .bind_mut()
             .save_settings_state(self.settings_state.clone());
     }
-    #[func]
+
     pub fn request_player_controls(&mut self, player_num: u8) -> Gd<PlayerControlScheme> {
         while self.control_schemes.len() < player_num as usize {
             self.control_schemes
@@ -145,7 +143,7 @@ impl GameManager {
         }
         return self.control_schemes[player_num as usize - 1].clone();
     }
-    #[func]
+
     pub fn save_player_controls(&mut self, player_num: u8, control: Gd<PlayerControlScheme>) {
         while self.control_schemes.len() < player_num as usize {
             self.control_schemes
@@ -160,14 +158,14 @@ impl GameManager {
         }
         self.control_schemes[player_num as usize - 1] = control;
     }
-    #[func]
+
     pub fn is_game_finished(&self) -> bool {
         if let Some(ref game) = self.current_game {
             return game.get_winner().is_some();
         }
         return false;
     }
-    #[func]
+
     pub fn get_winner(&self) -> u8 {
         if let Some(ref game) = self.current_game {
             return game.get_winner().unwrap_or(0);

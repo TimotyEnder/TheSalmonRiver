@@ -146,7 +146,7 @@ impl PlayerControlsPanel {
                 button_right,
             ]
             .iter()
-            .all(|button| button.bind().has_key_saved());
+            .all(|button| button.bind().has_input_mapping_saved());
             return result;
         } else {
             return false;
@@ -160,24 +160,42 @@ impl PlayerControlsPanel {
             && let Some(ref mut button_right) = self.key_mapping_button_right
             && let Some(ref mut button_punch_use) = self.key_mapping_button_punch_use
         {
-            button_jump
-                .bind_mut()
-                .save_key(control.bind().jump_key, true);
-            button_duck
-                .bind_mut()
-                .save_key(control.bind().duck_key, true);
-            button_left
-                .bind_mut()
-                .save_key(control.bind().left_key, true);
-            button_right
-                .bind_mut()
-                .save_key(control.bind().right_key, true);
-            button_punch_use
-                .bind_mut()
-                .save_key(control.bind().punch_use_key, true);
-            button_grab_throw
-                .bind_mut()
-                .save_key(control.bind().grab_throw_key, true);
+            button_jump.bind_mut().save_input_mapping(
+                crate::game_managers::input_mapping::InputMapping::Keyboard(
+                    control.bind().jump_key,
+                ),
+                true,
+            );
+            button_duck.bind_mut().save_input_mapping(
+                crate::game_managers::input_mapping::InputMapping::Keyboard(
+                    control.bind().duck_key,
+                ),
+                true,
+            );
+            button_left.bind_mut().save_input_mapping(
+                crate::game_managers::input_mapping::InputMapping::Keyboard(
+                    control.bind().left_key,
+                ),
+                true,
+            );
+            button_right.bind_mut().save_input_mapping(
+                crate::game_managers::input_mapping::InputMapping::Keyboard(
+                    control.bind().right_key,
+                ),
+                true,
+            );
+            button_punch_use.bind_mut().save_input_mapping(
+                crate::game_managers::input_mapping::InputMapping::Keyboard(
+                    control.bind().punch_use_key,
+                ),
+                true,
+            );
+            button_grab_throw.bind_mut().save_input_mapping(
+                crate::game_managers::input_mapping::InputMapping::Keyboard(
+                    control.bind().grab_throw_key,
+                ),
+                true,
+            );
         }
     }
     pub fn asign_controls_to_game_manager(&mut self) {
@@ -211,12 +229,14 @@ impl PlayerControlsPanel {
             && let Some(ref button_right) = self.key_mapping_button_right
             && let Some(ref button_punch_use) = self.key_mapping_button_punch_use
         {
-            control_scheme.bind_mut().jump_key = button_jump.bind().get_key_saved();
-            control_scheme.bind_mut().left_key = button_left.bind().get_key_saved();
-            control_scheme.bind_mut().right_key = button_right.bind().get_key_saved();
-            control_scheme.bind_mut().duck_key = button_duck.bind().get_key_saved();
-            control_scheme.bind_mut().punch_use_key = button_punch_use.bind().get_key_saved();
-            control_scheme.bind_mut().grab_throw_key = button_grab_throw.bind().get_key_saved();
+            control_scheme.bind_mut().jump_key = button_jump.bind().get_input_mapping_saved();
+            control_scheme.bind_mut().left_key = button_left.bind().get_input_mapping_saved();
+            control_scheme.bind_mut().right_key = button_right.bind().get_input_mapping_saved();
+            control_scheme.bind_mut().duck_key = button_duck.bind().get_input_mapping_saved();
+            control_scheme.bind_mut().punch_use_key =
+                button_punch_use.bind().get_input_mapping_saved();
+            control_scheme.bind_mut().grab_throw_key =
+                button_grab_throw.bind().get_input_mapping_saved();
         }
         control_scheme
     }

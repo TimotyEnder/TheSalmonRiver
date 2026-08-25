@@ -1,6 +1,6 @@
 use godot::classes::{
     AnimationTree, Area3D, CharacterBody3D, CollisionShape3D, GpuParticles3D, ICharacterBody3D,
-    Input, Label3D, Material, MeshInstance3D, SceneTreeTimer, StandardMaterial3D, Time,
+    Label3D, Material, MeshInstance3D, SceneTreeTimer, StandardMaterial3D, Time,
 };
 use godot::global::{Key, max, min};
 use godot::prelude::*;
@@ -8,6 +8,7 @@ use godot::signal::ConnectHandle;
 
 use crate::game_managers::audio_manager::{AudioManager, AudioPlayBuilder};
 use crate::game_managers::game_manager::GameManager;
+use crate::game_managers::input_mapping::InputMapping;
 use crate::game_managers::player_control_scheme::PlayerControlScheme;
 use crate::game_scripts::duck_meter_manager::DuckMeterManager;
 use crate::game_scripts::game_utils::{
@@ -45,18 +46,12 @@ pub struct Player {
     hit_stun_hits: u8,
     hitstun_force: f32,
     knock_back_force: f32,
-    #[export]
-    jump_key: Key,
-    #[export]
-    left_key: Key,
-    #[export]
-    right_key: Key,
-    #[export]
-    duck_key: Key,
-    #[export]
-    punch_use_key: Key,
-    #[export]
-    grab_throw_key: Key,
+    jump_key: InputMapping,
+    left_key: InputMapping,
+    right_key: InputMapping,
+    duck_key: InputMapping,
+    punch_use_key: InputMapping,
+    grab_throw_key: InputMapping,
     body_mesh: Option<Gd<Node3D>>,
     body_collider: Option<Gd<CollisionShape3D>>,
     hitbox: Option<Gd<Area3D>>,
@@ -136,12 +131,12 @@ impl ICharacterBody3D for Player {
             is_throwing: false,
             is_dashing: false,
             is_using_throwable_ability: false,
-            jump_key: Key::W,
-            left_key: Key::A,
-            right_key: Key::D,
-            duck_key: Key::S,
-            punch_use_key: Key::F,
-            grab_throw_key: Key::G,
+            jump_key: InputMapping::Keyboard(Key::W),
+            left_key: InputMapping::Keyboard(Key::A),
+            right_key: InputMapping::Keyboard(Key::D),
+            duck_key: InputMapping::Keyboard(Key::S),
+            punch_use_key: InputMapping::Keyboard(Key::F),
+            grab_throw_key: InputMapping::Keyboard(Key::G),
             is_grab: false,
             is_punching: false,
             right_punch: false,
@@ -405,12 +400,12 @@ impl Player {
         self.base().is_on_floor() || self.on_one_way_platform
     }
     pub fn load_control_scheeme(&mut self, control: Gd<PlayerControlScheme>) {
-        self.jump_key = control.bind().jump_key;
-        self.duck_key = control.bind().duck_key;
-        self.left_key = control.bind().left_key;
-        self.right_key = control.bind().right_key;
-        self.grab_throw_key = control.bind().grab_throw_key;
-        self.punch_use_key = control.bind().punch_use_key;
+        self.jump_key = InputMapping::Keyboard(control.bind().jump_key);
+        self.duck_key = InputMapping::Keyboard(control.bind().duck_key);
+        self.left_key = InputMapping::Keyboard(control.bind().left_key);
+        self.right_key = InputMapping::Keyboard(control.bind().right_key);
+        self.grab_throw_key = InputMapping::Keyboard(control.bind().grab_throw_key);
+        self.punch_use_key = InputMapping::Keyboard(control.bind().punch_use_key);
     }
     pub fn set_facing_right_status(&mut self, status: bool) {
         self.facing_right = status;
@@ -486,7 +481,6 @@ impl Player {
             .base()
             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
         let sound_effect_position = vec3_to_vec2(self.base().get_global_position());
-        let input = Input::singleton();
         let mut velocity = self.base().get_velocity();
         // Apply gravity
         if !self.on_one_way_platform {
@@ -511,7 +505,7 @@ impl Player {
                 velocity.z = max(&(var_name).to_variant(), &0.0.to_variant(), &[]).to();
             }
         }
-        if input.is_key_pressed(self.left_key)
+        if self.left_key.is_actuated()
             && !self.is_punching
             && !self.hit_stun
             && !self.is_dashing
@@ -523,7 +517,7 @@ impl Player {
                 self.facing_right = false;
             }
         }
-        if input.is_key_pressed(self.right_key)
+        if self.right_key.is_actuated()
             && !self.is_punching
             && !self.hit_stun
             && !self.is_dashing
@@ -536,7 +530,7 @@ impl Player {
             }
         }
 
-        if input.is_key_pressed(self.jump_key)
+        if self.jump_key.is_actuated()
             && self.is_on_floor_or_platform()
             && !self.jumped
             && !self.hit_stun
@@ -596,10 +590,10 @@ impl Player {
             }
             velocity.y = self.jump_force;
         }
-        if !input.is_key_pressed(self.jump_key) {
+        if !self.jump_key.is_actuated() {
             self.jumped = false;
         }
-        if input.is_key_pressed(self.duck_key)
+        if self.duck_key.is_actuated()
             && !self.is_on_floor_or_platform()
             && !self.duck_jumped
             && !self.dead
@@ -615,7 +609,7 @@ impl Player {
         if self.is_on_floor_or_platform() {
             self.duck_jumped = false;
         }
-        if input.is_key_pressed(self.duck_key)
+        if self.duck_key.is_actuated()
             && self.is_on_floor_or_platform()
             && !self.hit_stun
             && !self.is_grab
@@ -641,7 +635,7 @@ impl Player {
             }
             velocity.z = 0.0;
         }
-        if !input.is_key_pressed(self.duck_key) && self.ducked
+        if !self.duck_key.is_actuated() && self.ducked
             || !self.duck_meter_manager.can_duck() && self.ducked
         {
             self.ducked = false;
@@ -745,8 +739,7 @@ impl Player {
         self.base_mut().set_scale(scale);
     }
     fn action_process(&mut self) {
-        let input = Input::singleton();
-        if input.is_key_pressed(self.punch_use_key)
+        if self.punch_use_key.is_actuated()
             && !self.ducked
             && !self.is_punching
             && !self.is_using_throwable_ability
@@ -768,7 +761,7 @@ impl Player {
                 let _guard = self.base_mut();
                 godot::task::spawn(Self::use_routine(this));
             }
-        } else if input.is_key_pressed(self.grab_throw_key)
+        } else if self.grab_throw_key.is_actuated()
             && !self.ducked
             && !self.is_throwing
             && !self.is_grab
@@ -853,6 +846,9 @@ impl Player {
             if let Some(ref mut upper_anim) = bind.upper_anim_tree {
                 upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
                 upper_anim.set("parameters/conditions/throw", &true.to_variant());
+            }
+            if let Some(ref mut player_label) = bind.player_label {
+                player_label.set_visible(false);
             }
             let Some(mut tree) = bind.base().get_tree_or_null() else {
                 return;

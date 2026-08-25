@@ -35,18 +35,18 @@ impl InputMapping {
         match self {
             InputMapping::Keyboard(key) => {
                 dict.set("type", "keyboard");
-                dict.set("key", *key);
+                dict.set("key", &(*key).ord().to_variant());
             }
             InputMapping::GamepadButton(button, device) => {
                 dict.set("type", "gamepad_button");
-                dict.set("button", *button);
-                dict.set("device", *device);
+                dict.set("button", &(*button).ord().to_variant());
+                dict.set("device", &(*device).to_variant());
             }
             InputMapping::GamepadAxis(axis, value, device) => {
                 dict.set("type", "gamepad_axis");
-                dict.set("axis", *axis);
-                dict.set("value", *value);
-                dict.set("device", *device);
+                dict.set("axis", &(*axis).ord().to_variant());
+                dict.set("value", &(*value).to_variant());
+                dict.set("device", &(*device).to_variant());
             }
         }
         dict
@@ -57,28 +57,28 @@ impl InputMapping {
         };
         match type_str.to_string().as_str() {
             "keyboard" => {
-                let key = dict
+                let key_ord = dict
                     .get("key")
-                    .and_then(|v| v.try_to::<Key>().ok())
-                    .unwrap_or(Key::NONE);
-                InputMapping::Keyboard(key)
+                    .and_then(|v| v.try_to::<i32>().ok())
+                    .unwrap_or(0);
+                InputMapping::Keyboard(Key::from_ord(key_ord))
             }
             "gamepad_button" => {
-                let button = dict
+                let button_ord = dict
                     .get("button")
-                    .and_then(|v| v.try_to::<JoyButton>().ok())
-                    .unwrap_or(JoyButton::INVALID);
+                    .and_then(|v| v.try_to::<i32>().ok())
+                    .unwrap_or(0);
                 let device = dict
                     .get("device")
                     .and_then(|v| v.try_to::<i32>().ok())
                     .unwrap_or(0);
-                InputMapping::GamepadButton(button, device)
+                InputMapping::GamepadButton(JoyButton::from_ord(button_ord), device)
             }
             "gamepad_axis" => {
-                let axis = dict
+                let axis_ord = dict
                     .get("axis")
-                    .and_then(|v| v.try_to::<JoyAxis>().ok())
-                    .unwrap_or(JoyAxis::INVALID);
+                    .and_then(|v| v.try_to::<i32>().ok())
+                    .unwrap_or(0);
                 let value = dict
                     .get("value")
                     .and_then(|v| v.try_to::<f32>().ok())
@@ -87,7 +87,7 @@ impl InputMapping {
                     .get("device")
                     .and_then(|v| v.try_to::<i32>().ok())
                     .unwrap_or(0);
-                InputMapping::GamepadAxis(axis, value, device)
+                InputMapping::GamepadAxis(JoyAxis::from_ord(axis_ord), value, device)
             }
             _ => InputMapping::Keyboard(Key::NONE),
         }

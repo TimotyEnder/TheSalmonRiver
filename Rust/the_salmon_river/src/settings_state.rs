@@ -20,7 +20,7 @@ impl IRefCounted for SettingsState {
     fn init(_base: Base<RefCounted>) -> Self {
         Self {
             resolution: Resolution {
-                width: 1980,
+                width: 1920,
                 height: 1080,
             },
             window_mode: WindowMode::FULLSCREEN,

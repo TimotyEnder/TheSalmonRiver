@@ -847,8 +847,8 @@ impl Player {
                 upper_anim.set("parameters/conditions/in_hand", &false.to_variant());
                 upper_anim.set("parameters/conditions/throw", &true.to_variant());
             }
-            if let Some(ref mut player_label) = bind.player_label {
-                player_label.set_visible(false);
+            if let Some(ref mut ability_container) = bind.in_hand_ability_container {
+                ability_container.set_visible(false);
             }
             let Some(mut tree) = bind.base().get_tree_or_null() else {
                 return;

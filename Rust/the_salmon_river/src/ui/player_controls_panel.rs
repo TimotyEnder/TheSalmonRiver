@@ -181,17 +181,13 @@ impl PlayerControlsPanel {
         }
     }
     pub fn asign_controls_to_game_manager(&mut self) {
-        if self.all_controls_assigned()
-        //just in case lol
-        {
-            let gm = self
-                .base()
-                .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
-            if let Some(mut gm) = gm {
-                if let Some(player_num) = self.player_num_assigned {
-                    gm.bind_mut()
-                        .save_player_controls(player_num, self.generate_control_scheme());
-                }
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
+        if let Some(mut gm) = gm {
+            if let Some(player_num) = self.player_num_assigned {
+                gm.bind_mut()
+                    .save_player_controls(player_num, self.generate_control_scheme());
             }
         }
     }

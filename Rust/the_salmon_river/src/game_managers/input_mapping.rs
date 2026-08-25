@@ -20,9 +20,9 @@ impl InputMapping {
             InputMapping::Keyboard(key) => return input.is_key_label_pressed(*key),
             InputMapping::GamepadAxis(axis, value, device_id) => {
                 return if *value > 0.0 {
-                    input.get_joy_axis(*device_id, *axis) > *value
+                    input.get_joy_axis(*device_id, *axis) >= *value
                 } else {
-                    input.get_joy_axis(*device_id, *axis) < *value
+                    input.get_joy_axis(*device_id, *axis) <= *value
                 };
             }
             InputMapping::GamepadButton(button, device_id) => {

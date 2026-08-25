@@ -51,7 +51,7 @@ impl IButton for KeyMappingButton {
                 self.save_input_mapping(GamepadButton(b.get_button_index(), b.get_device()), false);
             } else if let Some(m) = event.clone().try_cast::<InputEventJoypadMotion>().ok() {
                 if m.get_axis_value().abs() > 0.5 {
-                    let value = if m.get_axis_value() > 0.0 { 1.0 } else { -1.0 };
+                    let value = if m.get_axis_value() > 0.0 { 0.5 } else { -0.5 };
                     self.save_input_mapping(
                         GamepadAxis(m.get_axis(), value, m.get_device()),
                         false,

@@ -162,16 +162,16 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="BindKeyMapping" type="GridContainer" parent="." unique_id=1478222436]
-custom_minimum_size = Vector2(138.925, 104.06)
-custom_maximum_size = Vector2(600, -1)
+custom_minimum_size = Vector2(91.86, 104.06)
+custom_maximum_size = Vector2(600.305, -1)
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -122.0
+offset_left = -242.0
 offset_top = 74.0
-offset_right = 16.925018
+offset_right = -9.261444
 offset_bottom = -31.579956
 grow_horizontal = 0
 grow_vertical = 2
@@ -179,7 +179,6 @@ scale = Vector2(0.99682665, 0.6368836)
 theme_override_constants/h_separation = 4
 
 [node name="KeyMappingButtonJump" type="KeyMappingButton" parent="BindKeyMapping" unique_id=1584517554]
-custom_maximum_size = Vector2(100, 100)
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -195,7 +194,6 @@ autowrap_trim_flags = 192
 clip_text = true
 
 [node name="KeyMappingButtonLeft" type="KeyMappingButton" parent="BindKeyMapping" unique_id=814355852]
-custom_maximum_size = Vector2(100, 100)
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -211,7 +209,6 @@ autowrap_trim_flags = 192
 clip_text = true
 
 [node name="KeyMappingButtonRight" type="KeyMappingButton" parent="BindKeyMapping" unique_id=1556355667]
-custom_maximum_size = Vector2(100, 100)
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -227,7 +224,6 @@ autowrap_trim_flags = 192
 clip_text = true
 
 [node name="KeyMappingButtonDuck" type="KeyMappingButton" parent="BindKeyMapping" unique_id=2031186137]
-custom_maximum_size = Vector2(100, 100)
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -243,7 +239,6 @@ autowrap_trim_flags = 192
 clip_text = true
 
 [node name="KeyMappingButtonPunchUse" type="KeyMappingButton" parent="BindKeyMapping" unique_id=295785401]
-custom_maximum_size = Vector2(100, 100)
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -259,7 +254,6 @@ autowrap_trim_flags = 192
 clip_text = true
 
 [node name="KeyMappingButtonGrabThrow" type="KeyMappingButton" parent="BindKeyMapping" unique_id=863975001]
-custom_maximum_size = Vector2(100, 100)
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3

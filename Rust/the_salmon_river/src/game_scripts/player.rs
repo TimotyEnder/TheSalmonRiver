@@ -17,6 +17,7 @@ use crate::game_scripts::game_utils::{
 use crate::game_scripts::progress_bar::ProgressBar3D;
 use crate::game_scripts::round_manager::RoundManager;
 use crate::game_scripts::throwable::Throwable;
+use crate::throwables::winners_cup::WinnersCup;
 
 const PLAYER_VELOCITY_LIMIT: f32 = 10.0;
 #[derive(GodotClass)]
@@ -422,6 +423,50 @@ impl Player {
             );
         }
         self.scale_duckbar();
+    }
+    pub fn give_winners_cup_in_hand(&mut self) {
+        let scene = load::<PackedScene>("res://Prefabs/throwable.tscn");
+        if let Some(mut throwable) = scene
+            .instantiate()
+            .and_then(|instance| instance.try_cast::<Throwable>().ok())
+        {
+            throwable
+                .bind_mut()
+                .become_throwable(Box::new(WinnersCup {}));
+            if let Some(mut root) = self.base().get_tree().get_current_scene() {
+                root.add_child(&throwable);
+            }
+            self.pick_up_throwable();
+            self.signals()
+                .on_throwable_throw()
+                .connect_other(&throwable, Throwable::on_thrown);
+            self.base_mut()
+                .call_deferred("hold_throwable", &[throwable.to_variant()]);
+            self.set_player_drop_timer_timed_in_hand_num(0);
+            throwable.bind_mut().thrower_id = Some(self.player_num);
+            if !throwable.bind().thrown {
+                let pickup_area_opt = self.base().find_child("RightHand").and_then(|rh| {
+                    rh.find_child("PickUpArea")
+                        .and_then(|pua| pua.try_cast::<Node3D>().ok())
+                });
+                if let Some(pickup_area) = pickup_area_opt {
+                    throwable.call_deferred("reparent", &[pickup_area.to_variant()]);
+                    throwable.call_deferred("set_position", &[Vector3::ZERO.to_variant()]);
+                    throwable.bind_mut().in_hand = true;
+                }
+                let audio = self
+                    .base()
+                    .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+                if let Some(mut audio) = audio {
+                    audio.bind_mut().play_sound_built(
+                        AudioPlayBuilder::play_sound_effect(
+                            crate::sound_utils::SoundEffect::ThrowableGrabbed,
+                        )
+                        .at_position(vec3_to_vec2(self.base().get_global_position())),
+                    );
+                }
+            }
+        }
     }
     pub fn pick_up_throwable(&mut self) {
         self.in_hand = true;
@@ -1665,18 +1710,30 @@ impl Player {
                 .connect_other(&this, Self::on_round_timeout);
         } else {
             //means player is in a scene with no round manager
-            self.can_move = true;
-            self.can_act = true;
-            self.can_dmg = false;
-            self.infinite_duck = true;
-            if let Some(ref mut label) = self.player_label {
-                for child in label.get_children().iter_shared() {
-                    child
-                        .try_cast::<Node3D>()
-                        .ok()
-                        .map(|mut n| n.set_visible(false));
-                }
-            };
+            self.ready_winner_screen_properties();
+        }
+    }
+    fn ready_winner_screen_properties(&mut self) {
+        self.can_move = true;
+        self.can_act = true;
+        self.can_dmg = false;
+        self.infinite_duck = true;
+        if let Some(ref mut label) = self.player_label {
+            for child in label.get_children().iter_shared() {
+                child
+                    .try_cast::<Node3D>()
+                    .ok()
+                    .map(|mut n| n.set_visible(false));
+            }
+        };
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
+        if let Some(gm) = gm {
+            let winner_id = gm.bind().get_winner();
+            if self.player_num == winner_id {
+                self.give_winners_cup_in_hand();
+            }
         }
     }
     fn ready_chosen_character_type(&mut self) {

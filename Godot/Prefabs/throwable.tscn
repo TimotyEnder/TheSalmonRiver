@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://0it7070plwa8" path="res://VoxelAssets/Throwables/IceChunk.gltf" id="1_r447o"]
 [ext_resource type="PackedScene" uid="uid://c3lxdj1odxlc" path="res://VoxelAssets/Throwables/Log.gltf" id="2_1yhin"]
 [ext_resource type="PackedScene" uid="uid://q77euy4nq86g" path="res://VoxelAssets/Throwables/Salmon.gltf" id="3_qhpb6"]
+[ext_resource type="PackedScene" uid="uid://bn7chmib6m87x" path="res://VoxelAssets/Throwables/WinnersCup.gltf" id="4_1yhin"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c4elv"]
 
@@ -74,6 +75,22 @@ collision_mode = 1
 collision_friction = 1.0
 collision_bounce = 0.2
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7qa0y"]
+emission_shape = 1
+emission_sphere_radius = 0.5
+direction = Vector3(1, 1, 1)
+spread = 180.0
+initial_velocity_min = 2.5
+initial_velocity_max = 2.5
+angular_velocity_min = -1.6093254e-05
+angular_velocity_max = -1.6093254e-05
+gravity = Vector3(0, -20, 0)
+color = Color(0.74455523, 0.64957196, 0.31118155, 1)
+color_ramp = SubResource("GradientTexture1D_qhpb6")
+collision_mode = 1
+collision_friction = 1.0
+collision_bounce = 0.2
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_kry3j"]
 size = Vector3(0.7802124, 1, 0.78619385)
 
@@ -137,6 +154,23 @@ lifetime = 2.0
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_idx6p")
+draw_pass_1 = SubResource("BoxMesh_rai8w")
+draw_skin = SubResource("Skin_c4elv")
+
+[node name="WinnersCup" type="Node3D" parent="." unique_id=1086723221]
+
+[node name="WinnersCupMesh" parent="WinnersCup" unique_id=1109836532 instance=ExtResource("4_1yhin")]
+transform = Transform3D(-0.04, 0, -3.496911e-09, 0, 0.04, 0, 3.496911e-09, 0, -0.04, 7.283599e-09, -0.32372755, 0.041830428)
+
+[node name="BreakParticles" type="GPUParticles3D" parent="WinnersCup" unique_id=1004178033]
+material_override = SubResource("StandardMaterial3D_ba2sc")
+material_overlay = SubResource("StandardMaterial3D_doogp")
+emitting = false
+amount = 20
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_7qa0y")
 draw_pass_1 = SubResource("BoxMesh_rai8w")
 draw_skin = SubResource("Skin_c4elv")
 

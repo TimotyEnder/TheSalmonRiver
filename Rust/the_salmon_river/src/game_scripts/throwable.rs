@@ -16,10 +16,10 @@ pub struct Throwable {
     base: Base<RigidBody3D>,
     hitbox_area: Option<Gd<Area3D>>,
     throw_force: f32,
-    in_hand: bool,
-    thrown: bool,
+    pub in_hand: bool,
+    pub thrown: bool,
     pub throwable_inner: Option<Box<dyn Throwability>>,
-    thrower_id: Option<u8>,
+    pub thrower_id: Option<u8>,
 }
 #[godot_api]
 impl IRigidBody3D for Throwable {
@@ -179,7 +179,7 @@ impl Throwable {
             .body_entered()
             .connect_other(&this, Self::on_physics_collision);
     }
-    fn on_thrown(&mut self, dir: Direction) {
+    pub fn on_thrown(&mut self, dir: Direction) {
         self.thrown = true;
         // let scene_root_opt = self.base().get_tree().get_current_scene();
         // if let Some(scene_root) = scene_root_opt {

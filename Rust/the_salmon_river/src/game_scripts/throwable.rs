@@ -51,7 +51,7 @@ impl IRigidBody3D for Throwable {
 impl Throwable {
     #[func]
     fn on_hitbox_entered(&mut self, area: Gd<Area3D>) {
-        if area.get_name().contains("Grab") {
+        if area.get_name().contains("Grab") && !self.in_hand {
             let grab_player = area.get_parent().and_then(|hand| {
                 hand.get_parent()
                     .and_then(|player| player.try_cast::<Player>().ok())

@@ -1,5 +1,5 @@
 use godot::{
-    classes::{DisplayServer, IPanel, Panel, Slider},
+    classes::{Button, DisplayServer, IPanel, Panel, Slider},
     prelude::*,
 };
 
@@ -7,6 +7,7 @@ use crate::{
     game_managers::{audio_manager::AudioManager, game_manager::GameManager},
     settings_state::SettingsState,
     ui::{
+        settings_button::SettingsButton,
         string_label_selector::StringLabelSelector,
         ui_utils::{Resolution, parse_window_mode_from_string, parse_window_mode_to_string},
     },
@@ -19,6 +20,8 @@ pub struct SettingsPanel {
     sc_resolution: Option<Gd<StringLabelSelector>>,
     sc_window_type: Option<Gd<StringLabelSelector>>,
     slider_game_volume: Option<Gd<Slider>>,
+    focus_grab_flag: bool,
+    settings_button: Option<Gd<SettingsButton>>,
 }
 
 #[godot_api]
@@ -29,6 +32,8 @@ impl IPanel for SettingsPanel {
             sc_resolution: None,
             sc_window_type: None,
             slider_game_volume: None,
+            focus_grab_flag: false,
+            settings_button: None,
         }
     }
     fn ready(&mut self) {
@@ -83,10 +88,42 @@ impl IPanel for SettingsPanel {
                 .connect_other(&this, Self::volume_slider_changed);
         }
     }
+    fn process(&mut self, _delta: f32) {
+        if self.base().is_visible() && !self.focus_grab_flag {
+            self.focus_grab_flag = true;
+            self.focus_first_button_child();
+        }
+        if !self.base().is_visible() && self.focus_grab_flag {
+            self.focus_grab_flag = false;
+            self.reestablish_focus_back();
+        }
+    }
 }
 
 #[godot_api]
 impl SettingsPanel {
+    pub fn set_settings_button(&mut self, button: Gd<SettingsButton>) {
+        self.settings_button = Some(button);
+    }
+    fn focus_first_button_child(&mut self) {
+        for child in self
+            .base()
+            .get_children_ex()
+            .include_internal(true)
+            .done()
+            .iter_shared()
+        {
+            let cast_attempt = child.try_cast::<Button>().ok();
+            if let Some(mut button) = cast_attempt {
+                button.grab_focus();
+            }
+        }
+    }
+    fn reestablish_focus_back(&mut self) {
+        if let Some(ref mut settings_button) = self.settings_button {
+            settings_button.grab_focus();
+        }
+    }
     fn volume_slider_changed(&mut self, value_changed: bool) {
         if value_changed {
             self.change_settings();

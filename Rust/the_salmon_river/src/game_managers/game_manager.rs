@@ -46,6 +46,7 @@ impl INode for GameManager {
 
 #[godot_api]
 impl GameManager {
+    #[func]
     pub fn apply_audio_settings(&mut self) {
         if let Some(mut audio) = self
             .base()

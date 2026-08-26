@@ -87,8 +87,17 @@ impl KeyMappingButton {
                     .at_position(self.base().get_global_position()),
             );
         }
-        self.is_listening = false;
         self.set_label_to_input_mapping();
+        Self::reset_is_listening(self.to_gd());
+    }
+    fn reset_is_listening(mut this: Gd<Self>) {
+        let timer = this.get_tree().create_timer(0.1);
+        godot::task::spawn(async move {
+            Signal::from_object_signal(&timer, "timeout")
+                .to_future::<()>()
+                .await;
+            this.bind_mut().is_listening = false;
+        });
     }
     fn set_label_to_input_mapping(&mut self) {
         if let Some(key_code) = self.input_mapping_saved {
@@ -99,20 +108,22 @@ impl KeyMappingButton {
     }
 
     fn on_click(&mut self) {
-        let id = self.base().instance_id();
-        let audio = self
-            .base()
-            .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
-        if let Some(mut audio) = audio {
-            audio.bind_mut().play_sound_built(
-                AudioPlayBuilder::play_sound_effect(SoundEffect::UIIncrement)
-                    .at_position(self.base().get_global_position()),
-            );
-        }
-        self.is_listening = true;
-        self.base_mut().set_text("PRESS");
-        if let Some(ref mut parent) = self.parent_panel {
-            parent.bind_mut().exclusivety_reset(id);
+        if !self.is_listening {
+            self.is_listening = true;
+            let id = self.base().instance_id();
+            let audio = self
+                .base()
+                .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+            if let Some(mut audio) = audio {
+                audio.bind_mut().play_sound_built(
+                    AudioPlayBuilder::play_sound_effect(SoundEffect::UIIncrement)
+                        .at_position(self.base().get_global_position()),
+                );
+            }
+            self.base_mut().set_text("PRESS");
+            if let Some(ref mut parent) = self.parent_panel {
+                parent.bind_mut().exclusivety_reset(id);
+            }
         }
     }
     pub fn get_input_mapping_saved(&self) -> InputMapping {

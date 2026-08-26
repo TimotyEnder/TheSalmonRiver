@@ -25,7 +25,8 @@ modulate_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
 
 [node name="PauseMenuCanvas" type="CanvasLayer" unique_id=171649780]
 
-[node name="PauseMenuPanel" type="PauseMenuPanel" parent="." unique_id=1933688464]
+[node name="PauseMenuPanel" type="PauseMenuPanel" parent="." unique_id=1933688464 node_paths=PackedStringArray("focus_button")]
+focus_button = NodePath("GridContainer/ResumeButton")
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -99,3 +100,9 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_opfnp")
 theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_cp0ys")
 text = "QUIT"
 icon_alignment = 1
+
+[node name="Focuser" type="Focuser" parent="PauseMenuPanel" unique_id=1414823879 node_paths=PackedStringArray("to_focus")]
+to_focus = NodePath("../GridContainer/ResumeButton")
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

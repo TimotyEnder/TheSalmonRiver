@@ -1,15 +1,18 @@
 use godot::{
-    classes::{Button, CanvasLayer, IButton, Panel},
+    classes::{Button, CanvasLayer, IButton},
     prelude::*,
 };
 
-use crate::game_managers::audio_manager::{AudioManager, AudioPlayBuilder};
+use crate::{
+    game_managers::audio_manager::{AudioManager, AudioPlayBuilder},
+    ui::settings_panel::SettingsPanel,
+};
 
 #[derive(GodotClass)]
 #[class(base=Button)]
 pub struct SettingsButton {
     base: Base<Button>,
-    settings_panel: Option<Gd<Panel>>,
+    settings_panel: Option<Gd<SettingsPanel>>,
 }
 
 #[godot_api]
@@ -34,9 +37,11 @@ impl IButton for SettingsButton {
                 });
             self.settings_panel = settings
                 .find_child("SettingsPanel")
-                .and_then(|panel| panel.try_cast::<Panel>().ok());
+                .and_then(|panel| panel.try_cast::<SettingsPanel>().ok());
+            let this = self.to_gd();
             if let Some(ref mut settings) = self.settings_panel {
                 settings.set_visible(false);
+                settings.bind_mut().set_settings_button(this);
             }
         }
         let this = self.to_gd();

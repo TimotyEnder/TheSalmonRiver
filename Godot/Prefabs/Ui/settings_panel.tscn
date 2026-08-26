@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://csjqybxstqdpm" path="res://SpriteAssets/UI/arrowBrown_left.png" id="6_ydf4m"]
 [ext_resource type="Texture2D" uid="uid://dcvjuu38tdkom" path="res://SpriteAssets/UI/iconCross_brown.png" id="7_ydf4m"]
 [ext_resource type="Texture2D" uid="uid://dt5ewp4py5e1q" path="res://SpriteAssets/UI/scroller_circle.png" id="8_oiq4k"]
+[ext_resource type="Texture2D" uid="uid://bi2cjmbwl40ft" path="res://SpriteAssets/UI/buttonLong_brown.png" id="9_5t6oc"]
+[ext_resource type="Texture2D" uid="uid://b6rnlowyno72d" path="res://SpriteAssets/UI/buttonLong_brown_pressed.png" id="10_6myxc"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pakvc"]
 texture = ExtResource("1_ydf4m")
@@ -61,6 +63,24 @@ diffuse_texture = ExtResource("8_oiq4k")
 [sub_resource type="CanvasTexture" id="CanvasTexture_3850x"]
 diffuse_texture = ExtResource("8_oiq4k")
 specular_color = Color(0.5211406, 0.5211406, 0.5211405, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_16hvj"]
+texture = ExtResource("9_5t6oc")
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vr1f0"]
+content_margin_top = 4.0
+texture = ExtResource("10_6myxc")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t1dhk"]
+texture = ExtResource("9_5t6oc")
+expand_margin_bottom = 4.0
+modulate_color = Color(0.7162962, 0.71629626, 0.7162961, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5egv6"]
+content_margin_top = 4.0
+texture = ExtResource("10_6myxc")
+modulate_color = Color(0.7121294, 0.7121294, 0.71212935, 1)
 
 [node name="SettingsCanvas" type="CanvasLayer" unique_id=1298181767]
 
@@ -285,3 +305,20 @@ theme_override_icons/grabber = SubResource("CanvasTexture_5t6oc")
 theme_override_icons/grabber_highlight = SubResource("CanvasTexture_3850x")
 value = 100.0
 ticks_on_borders = true
+
+[node name="ApplyButton" type="Button" parent="SettingsPanel" unique_id=1583210262]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.9990001
+anchor_bottom = 1.0
+offset_left = 303.0
+offset_top = 809.0
+offset_right = -301.5625
+offset_bottom = -46.0
+theme_override_fonts/font = ExtResource("1_lmfad")
+theme_override_font_sizes/font_size = 90
+theme_override_styles/normal = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_vr1f0")
+theme_override_styles/hover = SubResource("StyleBoxTexture_t1dhk")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_5egv6")
+text = "APPLY"

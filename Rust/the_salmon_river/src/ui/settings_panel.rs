@@ -22,6 +22,7 @@ pub struct SettingsPanel {
     slider_game_volume: Option<Gd<Slider>>,
     focus_grab_flag: bool,
     settings_button: Option<Gd<SettingsButton>>,
+    apply_button: Option<Gd<Button>>,
 }
 
 #[godot_api]
@@ -34,6 +35,7 @@ impl IPanel for SettingsPanel {
             slider_game_volume: None,
             focus_grab_flag: false,
             settings_button: None,
+            apply_button: None,
         }
     }
     fn ready(&mut self) {
@@ -70,22 +72,15 @@ impl IPanel for SettingsPanel {
             }
         }
         let this = self.to_gd();
-        if let Some(ref mut window_type) = self.sc_window_type
-            && let Some(ref mut resolution) = self.sc_resolution
-            && let Some(ref mut slider) = self.slider_game_volume
-        {
-            window_type
+        self.apply_button = self
+            .base()
+            .find_child("ApplyButton")
+            .and_then(|ab| ab.try_cast::<Button>().ok());
+        if let Some(ref mut button) = self.apply_button {
+            button
                 .signals()
-                .value_changed()
+                .button_up()
                 .connect_other(&this, Self::change_settings);
-            resolution
-                .signals()
-                .value_changed()
-                .connect_other(&this, Self::change_settings);
-            slider
-                .signals()
-                .drag_ended()
-                .connect_other(&this, Self::volume_slider_changed);
         }
     }
     fn process(&mut self, _delta: f32) {
@@ -122,11 +117,6 @@ impl SettingsPanel {
     fn reestablish_focus_back(&mut self) {
         if let Some(ref mut settings_button) = self.settings_button {
             settings_button.grab_focus();
-        }
-    }
-    fn volume_slider_changed(&mut self, value_changed: bool) {
-        if value_changed {
-            self.change_settings();
         }
     }
     fn change_settings(&mut self) {

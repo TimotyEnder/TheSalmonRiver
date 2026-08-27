@@ -7,7 +7,10 @@ use godot::{
 use crate::{
     game_managers::{game_manager::GameManager, player_control_scheme::PlayerControlScheme},
     game_scripts::game_utils::{PlayerCharacterType, player_color_based_on_number},
-    ui::{character_selector::CharacterSelector, keymapping_button::KeyMappingButton},
+    ui::{
+        character_selector::CharacterSelector, keymapping_button::KeyMappingButton,
+        label_counter::LabelCounter,
+    },
 };
 
 #[derive(GodotClass)]
@@ -23,6 +26,7 @@ pub struct PlayerControlsPanel {
     player_label: Option<Gd<RichTextLabel>>,
     player_num_assigned: Option<u8>,
     character_selector: Option<Gd<CharacterSelector>>,
+    team_selector: Option<Gd<LabelCounter>>,
 }
 
 #[godot_api]
@@ -39,6 +43,7 @@ impl IPanel for PlayerControlsPanel {
             player_label: None,
             player_num_assigned: None,
             character_selector: None,
+            team_selector: None,
         }
     }
     fn ready(&mut self) {
@@ -107,27 +112,54 @@ impl IPanel for PlayerControlsPanel {
                 .value_changed()
                 .connect_other(&this, Self::assign_player_character);
         }
+        self.team_selector = self
+            .base()
+            .find_child("LabelCounterTeam")
+            .and_then(|node| node.try_cast::<LabelCounter>().ok());
+        if let Some(ref mut team) = self.team_selector {
+            team.signals()
+                .value_changed()
+                .connect_other(&this, Self::on_team_change);
+        }
     }
 }
 
 #[godot_api]
 impl PlayerControlsPanel {
-    pub fn assign_player(&mut self, player_num: u8) {
-        self.player_num_assigned = Some(player_num);
-        if let Some(ref mut label) = self.player_label {
+    fn on_team_change(&mut self) {
+        self.update_player_label();
+    }
+    fn update_player_label(&mut self) {
+        if let Some(ref mut label) = self.player_label
+            && let Some(player_num) = self.player_num_assigned
+            && let Some(ref mut team) = self.team_selector
+        {
             label.set_text(&format!(
                 "[color=#{}]PLAYER {}[/color]",
-                player_color_based_on_number(player_num).to_html(),
+                player_color_based_on_number(team.bind_mut().get_value() as u8).to_html(),
                 player_num.to_string()
             ));
         }
+    }
+    pub fn assign_player(&mut self, player_num: u8) {
+        self.player_num_assigned = Some(player_num);
         let gm = self
             .base()
             .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
 
-        if let Some(mut gm) = gm {
+        if let Some(mut gm) = gm
+            && let Some(ref mut team_selector) = self.team_selector
+        {
+            team_selector.bind_mut().set_value(player_num as usize - 1);
             self.load_control_scheme(gm.bind_mut().request_player_controls(player_num));
         }
+        self.update_player_label();
+    }
+    pub fn chosen_team(&self) -> u8 {
+        if let Some(ref team) = self.team_selector {
+            return team.bind().get_value() as u8;
+        }
+        0
     }
     pub fn all_controls_assigned(&self) -> bool {
         if let Some(ref button_jump) = self.key_mapping_button_jump

@@ -55,7 +55,8 @@ impl INode for MatchManager {
                     player_spawned
                         .bind_mut()
                         .load_control_scheeme(control_scheme);
-                    player_spawned.bind_mut().assign_player_num(i as u8 + 1);
+                    player_spawned
+                        .call_deferred("assign_player_num", &[(i as u8 + 1).to_variant()]);
                     let facing_right: bool = (i + 1) % 2 != 0;
                     player_spawned
                         .bind_mut()

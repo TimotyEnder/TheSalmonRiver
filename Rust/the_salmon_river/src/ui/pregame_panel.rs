@@ -5,7 +5,10 @@ use godot::{
 
 use crate::{
     game_managers::game_manager::GameManager,
-    ui::{label_counter::LabelCounter, player_controls_panel::PlayerControlsPanel},
+    ui::{
+        label_counter::LabelCounter, player_controls_panel::PlayerControlsPanel,
+        ui_utils::distinct_elements_in_vec,
+    },
 };
 
 #[derive(GodotClass)]
@@ -73,6 +76,11 @@ impl IPanel for PregamePanel {
 #[godot_api]
 impl PregamePanel {
     pub fn start_game(&mut self) -> bool {
+        let chosen_teams: Vec<u8> = self
+            .player_controls_stack
+            .iter()
+            .map(|pc| pc.bind().chosen_team())
+            .collect();
         let gm = self
             .base()
             .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
@@ -80,6 +88,7 @@ impl PregamePanel {
             .player_controls_stack
             .iter()
             .all(|f| f.bind().all_controls_assigned())
+            && distinct_elements_in_vec(&chosen_teams)
             && let Some(ref mut match_time) = self.match_time_counter_label
             && let Some(ref mut player_num) = self.player_num_counter_label
             && let Some(ref mut rounds) = self.rounds_to_win_counter_label
@@ -90,6 +99,11 @@ impl PregamePanel {
                 rounds.bind().get_value() as u32,
                 match_time.bind().get_value() as u32,
             );
+            let mut index = 0;
+            for team in chosen_teams {
+                gm.bind_mut().set_player_team(index + 1, team);
+                index += 1;
+            }
             return true;
         } else {
             return false;

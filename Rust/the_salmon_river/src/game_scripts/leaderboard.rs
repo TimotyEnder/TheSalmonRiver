@@ -34,19 +34,26 @@ impl INode3D for LeaderBoard {
         let gm = self
             .base()
             .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
-        if let Some(mut gm) = gm
+        if let Some(gm) = gm
             && let Some(ref mut points_text) = self.points_text
             && let Some(ref mut winner_text) = self.winner_text
         {
-            let player_count = gm.bind_mut().get_player_count();
             let mut points_text_to_set = String::new();
-            for player_num in 1..=player_count as u8 {
-                let score = gm.bind().get_player_score(player_num);
-                let color = player_color_based_on_number(player_num).to_html();
-                points_text_to_set.push_str(&format!(
-                    "[color=#{}]PLAYER {}:{}[/color] ",
-                    color, player_num, score
-                ));
+            for team_num in 1..=4 as u8 {
+                if [1, 2, 3, 4].iter().any(|p_num| {
+                    if let Some(team) = gm.bind().get_player_team_num(*p_num) {
+                        return team == team_num;
+                    } else {
+                        return false;
+                    };
+                }) {
+                    let score = gm.bind().get_team_score(team_num);
+                    let color = player_color_based_on_number(team_num).to_html();
+                    points_text_to_set.push_str(&format!(
+                        "[color=#{}]TEAM {}:{}[/color] ",
+                        color, team_num, score
+                    ));
+                }
             }
             points_text.set("text", &points_text_to_set.to_variant());
             let winner = gm.bind().get_winner();

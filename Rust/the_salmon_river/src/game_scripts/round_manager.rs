@@ -1,5 +1,3 @@
-use std::collections::HashSet;
-
 use godot::{
     classes::{AnimationTree, INode3D, Node3D, Time},
     prelude::*,
@@ -24,7 +22,7 @@ pub struct RoundManager {
     output_text_anim: Option<Gd<AnimationTree>>,
     starting_seq_started: bool,
     players_left: u32,
-    players_alive: HashSet<u8>,
+    players_teams_alive: Vec<Vec<u8>>,
     run_round_timer: bool,
     timer_time: u64,
     timer_flag: bool,
@@ -44,7 +42,7 @@ impl INode3D for RoundManager {
             output_text_anim: None,
             starting_seq_started: false,
             players_left: 0,
-            players_alive: HashSet::new(),
+            players_teams_alive: Vec::new(),
             run_round_timer: false,
             timer_flag: false,
             timer_time: 0,
@@ -76,12 +74,13 @@ impl INode3D for RoundManager {
                 {
                     let round = gm.bind().get_current_round_number_one_based();
                     if round > 0 {
-                        let player_count = gm.bind_mut().get_player_count();
                         let mut text = format!("ROUND {}!\n", round);
-                        for player_num in 1..=player_count as u8 {
-                            let score = gm.bind().get_player_score(player_num);
-                            let color = player_color_based_on_number(player_num).to_html();
-                            text.push_str(&format!("[color=#{}]{}[/color] ", color, score));
+                        for team_num in 1..=4 as u8 {
+                            if !self.players_teams_alive[team_num as usize - 1].is_empty() {
+                                let score = gm.bind().get_team_score(team_num);
+                                let color = player_color_based_on_number(team_num).to_html();
+                                text.push_str(&format!("[color=#{}]{}[/color] ", color, score));
+                            }
                         }
                         label.set("text", &text.to_variant());
                         audio.bind_mut().play_sound_built(
@@ -224,42 +223,92 @@ impl RoundManager {
             .base()
             .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if let Some(mut gm) = gm {
+            self.players_teams_alive = vec![
+                Vec::<u8>::new(),
+                Vec::<u8>::new(),
+                Vec::<u8>::new(),
+                Vec::<u8>::new(),
+            ];
             self.players_left = gm.bind_mut().get_player_count();
             (1..=self.players_left as u8).for_each(|f| {
-                self.players_alive.insert(f);
+                if let Some(team_num) = gm.bind().get_player_team_num(f) {
+                    self.players_teams_alive[team_num as usize - 1].push(f)
+                }
             });
             self.player_health_vec = vec![-1; self.players_left as usize];
         }
     }
     pub fn report_player_death(&mut self, player_num: u8) {
-        self.players_alive.remove(&player_num);
+        for team in self.players_teams_alive.iter_mut() {
+            let posible_position_to_remove = team.iter().position(|element| *element == player_num);
+            if let Some(pos) = posible_position_to_remove {
+                team.remove(pos);
+            }
+        }
         self.players_left = self.players_left.saturating_sub(1);
         self.player_health_vec[player_num as usize - 1] = 0;
-        if self.players_left <= 1 {
-            if let Some(winner) = self.players_alive.iter().next() {
-                self.make_player_win(*winner);
+        if !self.more_than_one_team_remaining() {
+            if let Some((winner, _)) = self
+                .players_teams_alive
+                .iter()
+                .enumerate()
+                .filter(|(_, team)| !team.is_empty())
+                .next()
+            {
+                self.make_team_win(winner as u8 + 1);
             }
         }
     }
-    pub fn player_health_report(&mut self, health: u8, player_num: u8) {
+    pub fn more_than_one_team_remaining(&self) -> bool {
+        return self
+            .players_teams_alive
+            .iter()
+            .filter(|team| team.len() > 0)
+            .count()
+            > 1;
+    }
+    pub fn report_player_health(&mut self, health: u8, player_num: u8) {
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
+
         self.player_health_vec[player_num as usize - 1] = health as i8;
-        if !self.player_health_vec.contains(&-1i8) {
-            let max = self
-                .player_health_vec
-                .iter()
-                .fold(i8::MIN, |a, b| a.max(*b));
-            let winners = self
-                .player_health_vec
+        if !self.player_health_vec.contains(&-1i8)
+            && let Some(mut gm) = gm
+        {
+            let mut team_total_hp = vec![0; 4];
+            let mut players_per_team = vec![0; 4];
+            let mut index = 1;
+            for player in self.player_health_vec.iter() {
+                if let Some(team_num) = gm.bind().get_player_team_num(index) {
+                    team_total_hp[team_num as usize - 1] += player;
+                    players_per_team[team_num as usize - 1] += 1;
+                }
+                index += 1;
+            }
+            team_total_hp
+                .iter_mut()
+                .enumerate()
+                .for_each(|(index, health)| *health = *health / players_per_team[index].max(1));
+            let Some(max) = team_total_hp.iter().max() else {
+                return;
+            };
+            let winning_teams = team_total_hp
                 .iter()
                 .copied()
                 .enumerate()
-                .filter(|&(_, f)| f >= max)
+                .filter(|&(_, f)| f >= *max)
                 .map(|(i, _)| i as u8)
                 .collect::<Vec<u8>>();
-            if winners.len() > 1 {
+            if winning_teams.len() > 1 {
+                if winning_teams.len() < gm.bind().get_team_count() as usize {
+                    for team in winning_teams {
+                        gm.bind_mut().team_won_round(team + 1);
+                    }
+                }
                 self.make_tie();
             } else {
-                self.make_player_win(winners[0] as u8 + 1);
+                self.make_team_win(winning_teams[0] as u8 + 1);
             }
         }
     }
@@ -295,7 +344,7 @@ impl RoundManager {
             });
         }
     }
-    fn make_player_win(&mut self, winner: u8) {
+    fn make_team_win(&mut self, winner: u8) {
         let audio = self
             .base()
             .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
@@ -306,7 +355,7 @@ impl RoundManager {
         if let Some(mut gm) = gm
             && let Some(ref mut label) = self.output_text
         {
-            gm.bind_mut().player_won_round(winner);
+            gm.bind_mut().team_won_round(winner);
             if let Some(mut audio) = audio {
                 audio.bind_mut().play_sound_built(
                     AudioPlayBuilder::play_sound_effect(
@@ -320,7 +369,7 @@ impl RoundManager {
             label.set(
                 "text",
                 &format!(
-                    "[color=#{}]PLAYER {} WINS![/color]",
+                    "[color=#{}]TEAM {} WINS![/color]",
                     crate::game_scripts::game_utils::player_color_based_on_number(winner).to_html(),
                     winner
                 )

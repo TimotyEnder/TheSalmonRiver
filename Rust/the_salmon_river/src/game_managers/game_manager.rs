@@ -69,9 +69,9 @@ impl GameManager {
             .save_control_schemes(&self.control_schemes);
     }
 
-    pub fn player_won_round(&mut self, player_num: u8) {
+    pub fn team_won_round(&mut self, team_num: u8) {
         if let Some(ref mut game) = self.current_game {
-            game.log_player_win(player_num);
+            game.log_team_win(team_num);
         }
     }
 
@@ -96,10 +96,17 @@ impl GameManager {
             return 0;
         }
     }
-
-    pub fn get_player_score(&self, player_num: u8) -> u32 {
+    pub fn get_team_count(&self) -> u32 {
         if let Some(ref game) = self.current_game {
-            return game.get_score_for_player(player_num);
+            return game.get_team_number() as u32;
+        } else {
+            return 0;
+        }
+    }
+
+    pub fn get_team_score(&self, player_num: u8) -> u32 {
+        if let Some(ref game) = self.current_game {
+            return game.get_score_for_team(player_num);
         } else {
             return 0;
         }
@@ -160,14 +167,14 @@ impl GameManager {
 
     pub fn is_game_finished(&self) -> bool {
         if let Some(ref game) = self.current_game {
-            return game.get_winner().is_some();
+            return game.get_winning_team().is_some();
         }
         return false;
     }
 
     pub fn get_winner(&self) -> u8 {
         if let Some(ref game) = self.current_game {
-            return game.get_winner().unwrap_or(0);
+            return game.get_winning_team().unwrap_or(0);
         } else {
             return 0;
         }
@@ -176,6 +183,17 @@ impl GameManager {
         self.character_types[player_num as usize] = char_type;
     }
     pub fn get_player_character_type(&self, player_num: u8) -> PlayerCharacterType {
-        self.character_types[player_num as usize]
+        self.character_types[player_num as usize - 1]
+    }
+    pub fn get_player_team_num(&self, player_num: u8) -> Option<u8> {
+        if let Some(ref game) = self.current_game {
+            return game.get_player_team(player_num);
+        }
+        None
+    }
+    pub fn set_player_team(&mut self, player_num: u8, team_num: u8) {
+        if let Some(ref mut game) = self.current_game {
+            game.set_player_team(player_num, team_num);
+        }
     }
 }

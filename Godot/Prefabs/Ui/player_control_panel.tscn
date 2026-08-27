@@ -60,6 +60,25 @@ texture = ExtResource("4_y3j07")
 expand_margin_top = 4.0
 modulate_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bsuf8"]
+texture = ExtResource("3_al7co")
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ga4dc"]
+content_margin_top = 4.0
+texture = ExtResource("4_y3j07")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k5okk"]
+texture = ExtResource("3_al7co")
+expand_margin_bottom = 4.0
+modulate_color = Color(0.86036915, 0.8603692, 0.8603692, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p47oa"]
+content_margin_top = 4.0
+texture = ExtResource("4_y3j07")
+expand_margin_top = 4.0
+modulate_color = Color(0.85882354, 0.85882354, 0.85882354, 1)
+
 [node name="PlayerControl" type="PlayerControlsPanel" unique_id=1837124694]
 custom_minimum_size = Vector2(242, 477.74)
 custom_maximum_size = Vector2(600, -1)
@@ -72,14 +91,12 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_cp0ys")
 
 [node name="PlayerLabel" type="RichTextLabel" parent="." unique_id=968254108]
 layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 0.17300001
-offset_top = -10.0
-offset_right = -1.0
-offset_bottom = -7.154007
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 216.0
+offset_bottom = 80.0
 theme_override_fonts/normal_font = ExtResource("1_h8mub")
-theme_override_font_sizes/normal_font_size = 80
+theme_override_font_sizes/normal_font_size = 70
 bbcode_enabled = true
 text = "PLAYER 0"
 scroll_active = false
@@ -93,9 +110,9 @@ layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_left = 28.0
-offset_top = 64.0
+offset_top = 105.0
 offset_right = 228.0
-offset_bottom = -29.54245
+offset_bottom = 11.45755
 grow_vertical = 2
 scale = Vector2(0.99682665, 0.6368836)
 
@@ -177,10 +194,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 229.0
-offset_top = 64.00001
+offset_left = 229.00002
+offset_top = 96.0
 offset_right = -25.35376
-offset_bottom = -30.62445
+offset_bottom = 1.3755493
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.99682665, 0.6368836)
@@ -292,8 +309,8 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -102.73999
-offset_bottom = -102.73999
+offset_top = -69.73999
+offset_bottom = -69.73999
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -385,3 +402,81 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_gldvt")
 icon = ExtResource("12_suk64")
 alignment = 2
 icon_alignment = 1
+
+[node name="LabelCounterTeam" type="LabelCounter" parent="." unique_id=1911258685]
+possible_values = PackedFloat32Array(1, 2, 3, 4)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -130.0
+offset_top = 8.0
+offset_right = 26.0
+offset_bottom = 120.0
+grow_horizontal = 0
+scale = Vector2(0.6399997, 0.72000015)
+
+[node name="Label" type="RichTextLabel" parent="LabelCounterTeam" unique_id=404935938]
+layout_mode = 0
+offset_top = 1.0
+offset_right = 160.0
+offset_bottom = 134.0
+theme_override_fonts/normal_font = ExtResource("1_h8mub")
+theme_override_font_sizes/normal_font_size = 60
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IncButton" type="Button" parent="LabelCounterTeam" unique_id=1886670117]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 34.0
+offset_right = 141.0
+offset_bottom = 103.0
+focus_neighbor_left = NodePath("../DecButton")
+focus_neighbor_bottom = NodePath("../../BindKeyMapping/KeyMappingButtonJump")
+theme_override_fonts/font = ExtResource("1_h8mub")
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = SubResource("StyleBoxTexture_bsuf8")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ga4dc")
+theme_override_styles/hover = SubResource("StyleBoxTexture_k5okk")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_p47oa")
+icon = ExtResource("11_g1ol6")
+alignment = 2
+icon_alignment = 1
+
+[node name="DecButton" type="Button" parent="LabelCounterTeam" unique_id=895094736]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 33.0
+offset_right = 51.0
+offset_bottom = 102.0
+focus_neighbor_right = NodePath("../IncButton")
+focus_neighbor_bottom = NodePath("../../BindKeyMapping/KeyMappingButtonJump")
+theme_override_fonts/font = ExtResource("1_h8mub")
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = SubResource("StyleBoxTexture_bsuf8")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ga4dc")
+theme_override_styles/hover = SubResource("StyleBoxTexture_k5okk")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_p47oa")
+icon = ExtResource("12_suk64")
+alignment = 2
+icon_alignment = 1
+
+[node name="TeamLabel" type="RichTextLabel" parent="." unique_id=1984001919]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -202.0
+offset_top = 40.0
+offset_right = -125.0
+offset_bottom = 72.0
+grow_horizontal = 0
+theme_override_fonts/normal_font = ExtResource("1_h8mub")
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "TEAM:"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1

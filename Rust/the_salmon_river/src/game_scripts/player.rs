@@ -70,6 +70,9 @@ pub struct Player {
     #[export]
     #[var(pub)]
     player_num: u8,
+    #[export]
+    #[var(pub)]
+    team_num: u8,
     player_label: Option<Gd<Label3D>>,
     player_healthbar: Option<Gd<ProgressBar3D>>,
     player_duck_bar: Option<Gd<ProgressBar3D>>,
@@ -142,6 +145,7 @@ impl ICharacterBody3D for Player {
             is_punching: false,
             right_punch: false,
             player_num: 1,
+            team_num: 1,
             player_label: None,
             duck_pafrticles: None,
             hit_stun_routine_entries: 0,
@@ -173,19 +177,6 @@ impl ICharacterBody3D for Player {
             player_drop_timer_timed_in_hand_num: 0,
             wind_velocity: Vector3::ZERO,
         }
-    }
-    fn ready(&mut self) {
-        self.ready_throwable_systems();
-        self.ready_health_systems();
-        self.ready_duck_meter_systems();
-        self.ready_body();
-        self.ready_animations();
-        self.ready_hitbox();
-        self.ready_label();
-        self.ready_groups();
-        self.ready_particle_system();
-        self.ready_round_manager_signals();
-        self.ready_chosen_character_type();
     }
     fn process(&mut self, delta: f64) {
         self.health_check();
@@ -266,8 +257,18 @@ impl Player {
     pub fn displace_from_one_way_platform(&mut self) {
         self.on_one_way_platform = false;
     }
+    #[func]
     pub fn assign_player_num(&mut self, player_num: u8) {
         self.player_num = player_num;
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
+        if let Some(mut gm) = gm {
+            if let Some(team_num) = gm.bind_mut().get_player_team_num(player_num) {
+                self.team_num = team_num;
+            }
+        }
+        self.player_ready();
     }
     pub fn assign_character_type(&mut self, player_character_type: PlayerCharacterType) {
         let character_chosen = self.base().find_child("PlayerHead").and_then(|head| {
@@ -389,7 +390,7 @@ impl Player {
         if let Some(ref mut round_manager) = self.round_manager {
             round_manager
                 .bind_mut()
-                .player_health_report(self.health, self.player_num);
+                .report_player_health(self.health, self.player_num);
             self.can_act = false;
             self.can_move = false;
         }
@@ -397,6 +398,19 @@ impl Player {
 }
 
 impl Player {
+    fn player_ready(&mut self) {
+        self.ready_throwable_systems();
+        self.ready_health_systems();
+        self.ready_duck_meter_systems();
+        self.ready_body();
+        self.ready_animations();
+        self.ready_hitbox();
+        self.ready_label();
+        self.ready_groups();
+        self.ready_particle_system();
+        self.ready_round_manager_signals();
+        self.ready_chosen_character_type();
+    }
     pub fn is_on_floor_or_platform(&self) -> bool {
         self.base().is_on_floor() || self.on_one_way_platform
     }
@@ -443,7 +457,7 @@ impl Player {
             self.base_mut()
                 .call_deferred("hold_throwable", &[throwable.to_variant()]);
             self.set_player_drop_timer_timed_in_hand_num(0);
-            throwable.bind_mut().thrower_id = Some(self.player_num);
+            throwable.bind_mut().thrower_team_id = Some(self.player_num);
             if !throwable.bind().thrown {
                 let pickup_area_opt = self.base().find_child("RightHand").and_then(|rh| {
                     rh.find_child("PickUpArea")
@@ -1606,7 +1620,7 @@ impl Player {
         if let Some(ref mut label) = self.player_label {
             let label_string = format!("P{}", self.player_num.to_string());
             label.set_text(&label_string);
-            label.set_modulate(player_color_based_on_number(self.player_num));
+            label.set_modulate(player_color_based_on_number(self.team_num));
         }
     }
     fn ready_groups(&mut self) {
@@ -1644,7 +1658,7 @@ impl Player {
         if let Some(ref mut healthbar) = self.player_healthbar {
             healthbar
                 .bind_mut()
-                .set_color(player_color_based_on_number(self.player_num));
+                .set_color(player_color_based_on_number(self.team_num));
         }
     }
     fn ready_duck_meter_systems(&mut self) {
@@ -1657,7 +1671,7 @@ impl Player {
             duckbar
                 .bind_mut()
                 .set_color(complementary_color(player_color_based_on_number(
-                    self.player_num,
+                    self.team_num,
                 )));
         }
     }
@@ -1951,7 +1965,9 @@ impl Player {
                     .get_parent()
                     .and_then(|player| player.try_cast::<Player>().ok())
             });
-            if let Some(mut grabber) = other_player_opt {
+            if let Some(mut grabber) = other_player_opt
+                && self.team_num != grabber.bind().team_num
+            {
                 //throw tech if both players grabbing rn
                 if grabber.bind_mut().is_trying_to_grab_now() && self.is_trying_to_grab_now() {
                     let self_node = self.to_gd().upcast::<Node3D>();
@@ -2090,6 +2106,9 @@ impl Player {
             );
             let mut additional_stun_hits = 0;
             if let Some(mut player) = player_opt {
+                if player.bind().team_num == self.team_num {
+                    return;
+                }
                 let (dmg, knock) = player.bind_mut().calculate_punch_damage();
                 self.damage(dmg);
                 if knock {
@@ -2134,7 +2153,7 @@ impl Player {
         if !self.ducked
             && !self.duck_jumping
             && let Some(mut throwable) = throwable_opt
-            && throwable.bind().does_player_hitstun(self.player_num)
+            && throwable.bind().does_player_hitstun(self.team_num)
         {
             if let Some(ref mut inner) = throwable.bind_mut().throwable_inner {
                 self.damage(inner.deal_dmg());

@@ -118,22 +118,30 @@ impl VotingPressurePlate {
         }
     }
     fn update_label_text(&mut self, seconds_left_string: String) {
-        if let Some(ref mut label) = self.label {
+        let gm = self
+            .base()
+            .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
+
+        if let Some(ref mut label) = self.label
+            && let Some(gm) = gm
+        {
             let mut text_to_set = self.plate_success_condition_label.to_string() + " ";
             text_to_set += &seconds_left_string;
             text_to_set += "\n";
             for player_num in 1..=self.players_entered.len() {
-                text_to_set += &format!(
-                    "|[color=#{}]P{}[/color]|",
-                    {
-                        if self.players_entered[player_num - 1] {
-                            player_color_based_on_number(player_num as u8).to_html()
-                        } else {
-                            Color::WHITE.to_html()
-                        }
-                    },
-                    player_num
-                );
+                if let Some(team) = gm.bind().get_player_team_num(player_num as u8) {
+                    text_to_set += &format!(
+                        "|[color=#{}]P{}[/color]|",
+                        {
+                            if self.players_entered[player_num - 1] {
+                                player_color_based_on_number(team).to_html()
+                            } else {
+                                Color::WHITE.to_html()
+                            }
+                        },
+                        player_num
+                    );
+                }
             }
             label.set("text", &text_to_set.to_variant());
         }

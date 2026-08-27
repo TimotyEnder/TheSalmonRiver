@@ -19,7 +19,7 @@ pub struct Throwable {
     pub in_hand: bool,
     pub thrown: bool,
     pub throwable_inner: Option<Box<dyn Throwability>>,
-    pub thrower_id: Option<u8>,
+    pub thrower_team_id: Option<u8>,
 }
 #[godot_api]
 impl IRigidBody3D for Throwable {
@@ -31,7 +31,7 @@ impl IRigidBody3D for Throwable {
             in_hand: false,
             thrown: false,
             throwable_inner: None,
-            thrower_id: None,
+            thrower_team_id: None,
         }
     }
     fn ready(&mut self) {
@@ -66,12 +66,12 @@ impl Throwable {
                         .connect_other(&this, Self::on_thrown);
                     //player.bind_mut().hold_throwable(this);
                     player.call_deferred("hold_throwable", &[this.to_variant()]);
-                    let player_num = {
+                    let team_num = {
                         let player_script = player.bind();
-                        player_script.get_player_num()
+                        player_script.get_team_num()
                     };
                     player.bind_mut().set_player_drop_timer_timed_in_hand_num(0);
-                    self.thrower_id = Some(player_num);
+                    self.thrower_team_id = Some(team_num);
                     if !self.thrown {
                         let pickup_area_opt = player.find_child("RightHand").and_then(|rh| {
                             rh.find_child("PickUpArea")
@@ -254,9 +254,9 @@ impl Throwable {
             }
         }
     }
-    pub fn does_player_hitstun(&self, player_num: u8) -> bool {
-        if let Some(thrower) = self.thrower_id {
-            return self.thrown && thrower != player_num;
+    pub fn does_player_hitstun(&self, team_num: u8) -> bool {
+        if let Some(thrower) = self.thrower_team_id {
+            return self.thrown && thrower != team_num;
         } else {
             false
         }

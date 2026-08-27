@@ -84,6 +84,7 @@ impl LabelCounter {
                     AudioPlayBuilder::play_sound_effect(SoundEffect::UIIncrement)
                         .at_position(self.base().get_global_position()),
                 );
+                self.signals().value_changed().emit();
             } else {
                 audio.bind_mut().play_sound_built(
                     AudioPlayBuilder::play_sound_effect(SoundEffect::UICancel)
@@ -104,6 +105,7 @@ impl LabelCounter {
                     AudioPlayBuilder::play_sound_effect(SoundEffect::UIDecrement)
                         .at_position(self.base().get_global_position()),
                 );
+                self.signals().value_changed().emit();
             } else {
                 audio.bind_mut().play_sound_built(
                     AudioPlayBuilder::play_sound_effect(SoundEffect::UICancel)
@@ -114,5 +116,9 @@ impl LabelCounter {
     }
     pub fn get_value(&self) -> f32 {
         self.possible_values[self.current_selection_pos]
+    }
+    pub fn set_value(&mut self, new_pos: usize) {
+        self.current_selection_pos = new_pos;
+        self.update_label();
     }
 }

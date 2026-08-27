@@ -1,30 +1,62 @@
 pub struct Game {
-    winning_player_number: Option<u8>,
+    winning_team_number: Option<u8>,
     rounds_to_win: usize,
-    rounds_by_player_number: Vec<usize>,
+    rounds_by_team: Vec<usize>,
     current_round: usize,
     round_time_in_sec: usize,
+    teams: Vec<Vec<u8>>,
+    player_num: u8,
 }
 impl Game {
     pub fn new(number_of_players: u8, rounds_to_win: usize, round_time_in_sec: usize) -> Self {
         Self {
-            winning_player_number: None,
+            winning_team_number: None,
             rounds_to_win,
-            rounds_by_player_number: vec![0; number_of_players as usize],
+            rounds_by_team: vec![0; 4 as usize],
             current_round: 0,
             round_time_in_sec: round_time_in_sec,
+            teams: vec![vec![1], vec![2], vec![3], vec![4]],
+            player_num: number_of_players,
         }
     }
+    pub fn set_player_team(&mut self, player_num: u8, team_num: u8) {
+        for team in self.teams.iter_mut() {
+            let posible_position_to_remove = team.iter().position(|element| *element == player_num);
+            if let Some(pos) = posible_position_to_remove {
+                team.remove(pos);
+            }
+        }
+        self.teams[team_num as usize - 1].push(player_num);
+    }
+    pub fn get_player_team(&self, player_num: u8) -> Option<u8> {
+        let mut index: u8 = 0;
+        for team in self.teams.iter() {
+            if team.contains(&player_num) {
+                return Some(index + 1);
+            }
+            index += 1;
+        }
+        return None;
+    }
     pub fn get_player_number(&self) -> usize {
-        self.rounds_by_player_number.len()
+        self.player_num as usize
     }
-    pub fn get_winner(&self) -> Option<u8> {
-        self.winning_player_number
+    pub fn get_team_number(&self) -> usize {
+        let mut count = 0;
+        for team in self.teams.iter() {
+            if !team.is_empty() {
+                count += 1;
+            }
+        }
+        count
     }
-    pub fn log_player_win(&mut self, player_num: u8) {
-        self.rounds_by_player_number[player_num as usize - 1] += 1;
-        if self.rounds_by_player_number[player_num as usize - 1] >= self.rounds_to_win {
-            self.winning_player_number = Some(player_num);
+    pub fn get_winning_team(&self) -> Option<u8> {
+        self.winning_team_number
+    }
+    pub fn log_team_win(&mut self, team_num: u8) {
+        self.rounds_by_team[team_num as usize - 1] += 1;
+        if self.rounds_by_team[team_num as usize - 1] >= self.rounds_to_win {
+            self.winning_team_number = Some(team_num);
         }
         self.current_round += 1;
     }
@@ -34,9 +66,9 @@ impl Game {
     pub fn get_current_round(&self) -> u32 {
         self.current_round as u32
     }
-    pub fn get_score_for_player(&self, player_num: u8) -> u32 {
-        self.rounds_by_player_number
-            .get(player_num as usize - 1)
+    pub fn get_score_for_team(&self, team_num: u8) -> u32 {
+        self.rounds_by_team
+            .get(team_num as usize - 1)
             .copied()
             .unwrap_or(0) as u32
     }

@@ -82,3 +82,7 @@ impl Default for Resolution {
         }
     }
 }
+
+pub fn distinct_elements_in_vec(teams: &Vec<u8>) -> bool {
+    return teams.iter().any(|element| *element != teams[0]);
+}

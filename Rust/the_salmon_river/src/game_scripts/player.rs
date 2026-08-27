@@ -11,6 +11,7 @@ use crate::game_managers::game_manager::GameManager;
 use crate::game_managers::input_mapping::InputMapping;
 use crate::game_managers::player_control_scheme::PlayerControlScheme;
 use crate::game_scripts::duck_meter_manager::DuckMeterManager;
+use crate::game_scripts::game_utils::PlayerCharacterType::Bear;
 use crate::game_scripts::game_utils::{
     Direction, PlayerCharacterType, complementary_color, player_color_based_on_number, vec3_to_vec2,
 };
@@ -23,6 +24,7 @@ const PLAYER_VELOCITY_LIMIT: f32 = 10.0;
 #[derive(GodotClass)]
 #[class(base=CharacterBody3D)]
 pub struct Player {
+    character_type: PlayerCharacterType,
     salmon_ability_timer_entries: u8,
     player_drop_timer_timed_in_hand_num: u8,
     walking_on_water: bool,
@@ -106,6 +108,7 @@ impl ICharacterBody3D for Player {
     fn init(base: Base<CharacterBody3D>) -> Self {
         Self {
             base,
+            character_type: Bear,
             on_one_way_platform: false,
             salmon_ability_timer_entries: 0,
             can_move: false,
@@ -271,6 +274,7 @@ impl Player {
         self.player_ready();
     }
     pub fn assign_character_type(&mut self, player_character_type: PlayerCharacterType) {
+        self.character_type = player_character_type;
         let character_chosen = self.base().find_child("PlayerHead").and_then(|head| {
             head.find_child("PlayerHeadMeshes").and_then(|meshes| {
                 meshes
@@ -278,9 +282,12 @@ impl Player {
                     .and_then(|char_type| char_type.try_cast::<Node3D>().ok())
             })
         });
+        self.set_legs_and_arms_to_color(player_character_type.color());
         if let Some(mut character) = character_chosen {
             character.set_visible(true);
         }
+    }
+    fn set_legs_and_arms_to_color(&mut self, color: Color) {
         let mut meshes: Vec<Gd<MeshInstance3D>> =
             ["LeftHand", "RightHand", "LeftFoot", "RightFoot"]
                 .iter()
@@ -292,7 +299,7 @@ impl Player {
                 })
                 .collect();
         meshes.iter_mut().for_each(|mesh| {
-            let target_color = player_character_type.color();
+            let target_color = color;
             let mut material = StandardMaterial3D::new_gd();
             material.set_albedo(target_color);
             let shared: Gd<Material> = material.upcast();
@@ -1368,6 +1375,16 @@ impl Player {
         let timer;
         {
             let mut bind = this.bind_mut();
+            if let Some(mut death_anim) = bind.base().find_child("DeathPlayer").and_then(|player| {
+                player
+                    .get_child(0)
+                    .and_then(|tree| tree.try_cast::<AnimationTree>().ok())
+            }) {
+                death_anim.set("parameters/conditions/dead", &true.to_variant());
+            }
+            let mut death_color = bind.character_type.color();
+            death_color = death_color.darkened(0.2);
+            bind.set_legs_and_arms_to_color(death_color);
             let audio = bind
                 .base()
                 .try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
@@ -1959,7 +1976,7 @@ impl Player {
         return self.throw_tech_time;
     }
     fn handle_grab(&mut self, area: Gd<Area3D>) {
-        if !self.knock_back {
+        if !self.knock_back && !self.dead {
             let other_player_opt = area.get_parent().and_then(|left_hand| {
                 left_hand
                     .get_parent()

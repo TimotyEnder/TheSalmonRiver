@@ -180,7 +180,7 @@ impl GameManager {
         }
     }
     pub fn set_player_character_type(&mut self, player_num: u8, char_type: PlayerCharacterType) {
-        self.character_types[player_num as usize] = char_type;
+        self.character_types[player_num as usize - 1] = char_type;
     }
     pub fn get_player_character_type(&self, player_num: u8) -> PlayerCharacterType {
         self.character_types[player_num as usize - 1]

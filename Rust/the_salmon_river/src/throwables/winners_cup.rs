@@ -1,4 +1,4 @@
-use crate::throwables::throwability::Throwability;
+use crate::{sound_utils::SoundEffect::WinnerConfetti, throwables::throwability::Throwability};
 
 pub struct WinnersCup {}
 impl Throwability for WinnersCup {
@@ -7,8 +7,7 @@ impl Throwability for WinnersCup {
     }
 
     fn use_ability(&mut self, player: &mut crate::game_scripts::player::Player) {
-        //confetti particles
-        todo!()
+        player.spawn_confetti();
     }
 
     fn visual_node_name(&self) -> &'static str {
@@ -20,6 +19,6 @@ impl Throwability for WinnersCup {
     }
 
     fn sound_effect_on_ability(&self) -> crate::sound_utils::SoundEffect {
-        todo!()
+        WinnerConfetti
     }
 }

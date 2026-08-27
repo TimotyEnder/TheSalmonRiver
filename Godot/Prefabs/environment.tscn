@@ -118,7 +118,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.308563, 0.48890555, 0.0286
 collision_mask = 3
 
 [node name="GrassRiverBankMesh" parent="BackBank" unique_id=141046389 instance=ExtResource("2_hl628")]
-transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -2.976632, -0.5272394, -5.9604638e-08)
+transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -2.976632, -0.5272394, -0.018129883)
 
 [node name="LeftBankCollider" type="CollisionShape3D" parent="BackBank" unique_id=721452294]
 transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.03365323)
@@ -134,7 +134,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.308563, 0.48890555, -6.793
 collision_mask = 3
 
 [node name="GrassRiverBankMesh" parent="BackBank2" unique_id=7491024 instance=ExtResource("2_hl628")]
-transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -2.976632, -0.5272394, 0.03279298)
+transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -2.976632, -0.5272394, 0.08670418)
 
 [node name="LeftBankCollider" type="CollisionShape3D" parent="BackBank2" unique_id=1891525737]
 transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.03365323)
@@ -150,7 +150,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.308563, 0.48890555, 6.7565
 collision_mask = 3
 
 [node name="GrassRiverBankMesh" parent="BackBank3" unique_id=1356473860 instance=ExtResource("2_hl628")]
-transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -2.976632, -0.5272394, -5.9604638e-08)
+transform = Transform3D(0.21281703, 0, 8.88942e-16, 0, 0.1, 0, -8.881784e-16, 0, 0.213, -2.976632, -0.5272394, -0.046498355)
 
 [node name="LeftBankCollider" type="CollisionShape3D" parent="BackBank3" unique_id=952714300]
 transform = Transform3D(0.9952754, 0.097091876, -2.065228e-10, -0.097091876, 0.9952754, -4.2440202e-09, -2.065157e-10, 4.2440202e-09, 1, -1.7403331, -0.15133691, -0.03365323)

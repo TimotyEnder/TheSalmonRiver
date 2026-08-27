@@ -83,6 +83,7 @@ pub struct Player {
     additional_next_punch_damage: u8,
     max_health: u8,
     throwable_in_hand: Option<Gd<Throwable>>,
+    pending_confetti_position: Vector3,
     player_throwable_in_hand: Option<Gd<Player>>,
     duck_meter_manager: DuckMeterManager,
     duck_jumping: bool,
@@ -159,6 +160,7 @@ impl ICharacterBody3D for Player {
             additional_next_punch_damage: 0,
             player_healthbar: None,
             throwable_in_hand: None,
+            pending_confetti_position: Vector3::ZERO,
             player_duck_bar: None,
             duck_meter_manager: DuckMeterManager::new(100, 2, 5, 50),
             duck_jumping: false,
@@ -344,7 +346,7 @@ impl Player {
                     });
                 }
             }
-        } else if area_name.contains("InstantDeath") {
+        } else if area_name.contains("InstantDeath") && !self.grabbed_by_another_player {
             self.health = 0;
             let force = self.knock_back_force;
             let dir = self
@@ -445,6 +447,34 @@ impl Player {
         }
         self.scale_duckbar();
     }
+    pub fn spawn_confetti(&mut self) {
+        let scene = load::<PackedScene>("res://Prefabs/confetti_particles.tscn");
+        if let Some(mut confetti) = scene
+            .instantiate()
+            .and_then(|scene| scene.try_cast::<Node3D>().ok())
+        {
+            let particles = confetti
+                .get_child(0)
+                .and_then(|p| p.try_cast::<GpuParticles3D>().ok());
+            let position = self.pending_confetti_position;
+            if let Some(mut root) = self.base().get_tree().get_current_scene() {
+                root.call_deferred("add_child", &[confetti.to_variant()]);
+            }
+            confetti.call_deferred("set_global_position", &[position.to_variant()]);
+            if let Some(mut particles) = particles {
+                particles.call_deferred("set_emitting", &[true.to_variant()]);
+            }
+            let timer = self.base().get_tree().create_timer(2.0);
+            godot::task::spawn(async move {
+                Signal::from_object_signal(&timer, "timeout")
+                    .to_future::<()>()
+                    .await;
+                if confetti.is_instance_valid() {
+                    confetti.queue_free();
+                }
+            });
+        }
+    }
     pub fn give_winners_cup_in_hand(&mut self) {
         let scene = load::<PackedScene>("res://Prefabs/throwable.tscn");
         if let Some(mut throwable) = scene
@@ -455,7 +485,7 @@ impl Player {
                 .bind_mut()
                 .become_throwable(Box::new(WinnersCup {}));
             if let Some(mut root) = self.base().get_tree().get_current_scene() {
-                root.add_child(&throwable);
+                root.call_deferred("add_child", &[throwable.to_variant()]);
             }
             self.pick_up_throwable();
             self.signals()
@@ -815,6 +845,16 @@ impl Player {
                 let _guard = self.base_mut();
                 godot::task::spawn(Self::punch_routine(this));
             } else {
+                let throwable_position = if let Some(t) = &self.throwable_in_hand {
+                    if t.is_inside_tree() {
+                        t.get_global_position()
+                    } else {
+                        self.base().get_global_position()
+                    }
+                } else {
+                    self.base().get_global_position()
+                };
+                self.pending_confetti_position = throwable_position;
                 if let Some(mut throwable) = self.throwable_in_hand.take() {
                     throwable.bind_mut().use_ability(self);
                     self.in_hand = false;
@@ -1172,6 +1212,9 @@ impl Player {
         Signal::from_object_signal(&timer, "timeout")
             .to_future::<()>()
             .await;
+        if !this.is_instance_valid() {
+            return;
+        }
         let timer;
         {
             let mut bind = this.bind_mut();
@@ -1375,13 +1418,6 @@ impl Player {
         let timer;
         {
             let mut bind = this.bind_mut();
-            if let Some(mut death_anim) = bind.base().find_child("DeathPlayer").and_then(|player| {
-                player
-                    .get_child(0)
-                    .and_then(|tree| tree.try_cast::<AnimationTree>().ok())
-            }) {
-                death_anim.set("parameters/conditions/dead", &true.to_variant());
-            }
             let mut death_color = bind.character_type.color();
             death_color = death_color.darkened(0.2);
             bind.set_legs_and_arms_to_color(death_color);
@@ -1762,7 +1798,7 @@ impl Player {
             .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
         if let Some(gm) = gm {
             let winner_id = gm.bind().get_winner();
-            if self.player_num == winner_id {
+            if self.team_num == winner_id {
                 self.give_winners_cup_in_hand();
             }
         }

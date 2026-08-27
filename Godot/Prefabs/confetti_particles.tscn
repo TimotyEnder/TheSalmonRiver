@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://beo06nr41s5qq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rai8w"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="Curve" id="Curve_hae45"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.06355933, 0.70786524), -0.3615934, -0.3615934, 0, 0, Vector2(0.45762715, 0.5842697), 0.0, 0.0, 0, 0, Vector2(1, 0.57303375), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_l6rdt"]
+curve = SubResource("Curve_hae45")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s6dll"]
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(1, 4, 1)
+spread = 180.0
+initial_velocity_min = 2.0
+initial_velocity_max = 2.0
+velocity_limit_curve = SubResource("CurveTexture_l6rdt")
+gravity = Vector3(0, -1, 0)
+hue_variation_min = -1.0
+hue_variation_max = 0.99999994
+
+[sub_resource type="QuadMesh" id="QuadMesh_ba2sc"]
+size = Vector2(0.1, 0.1)
+
+[node name="ConfettiParticles" type="Node3D" unique_id=622407132]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=1002430577]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_rai8w")
+emitting = false
+amount = 200
+lifetime = 10.0
+one_shot = true
+explosiveness = 0.98
+process_material = SubResource("ParticleProcessMaterial_s6dll")
+draw_pass_1 = SubResource("QuadMesh_ba2sc")

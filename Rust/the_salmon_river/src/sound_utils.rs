@@ -38,6 +38,7 @@ pub enum SoundEffect {
     SawBlade = 32,
     RiverSound = 33,
     FanNoise = 34,
+    WinnerConfetti = 35,
 }
 impl SoundEffect {
     pub fn to_sound_effect_path(&self) -> &'static str {
@@ -77,6 +78,7 @@ impl SoundEffect {
             SoundEffect::SawBlade => "res://SoundAssets/saw.ogg",
             SoundEffect::RiverSound => "res://SoundAssets/river.ogg",
             SoundEffect::FanNoise => "res://SoundAssets/fan.ogg",
+            SoundEffect::WinnerConfetti => "res://SoundAssets/confetti.ogg",
         }
     }
 }

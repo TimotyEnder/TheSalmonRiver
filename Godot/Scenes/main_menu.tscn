@@ -431,6 +431,7 @@ player_controls_panel_grid = NodePath("PlayerControlsPanel")
 player_num_counter_label = NodePath("MatchSettingsPanel/LabelCounterNumPlayers")
 match_time_counter_label = NodePath("MatchSettingsPanel/LabelCounterMatchLength")
 rounds_to_win_counter_label = NodePath("MatchSettingsPanel/LabelCounterRoundsToWin")
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

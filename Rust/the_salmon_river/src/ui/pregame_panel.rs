@@ -1,13 +1,14 @@
 use godot::{
-    classes::{BoxContainer, IPanel, Panel},
+    classes::{BoxContainer, Button, IPanel, Panel},
     prelude::*,
 };
 
 use crate::{
     game_managers::game_manager::GameManager,
     ui::{
-        label_counter::LabelCounter, player_controls_panel::PlayerControlsPanel,
-        ui_utils::distinct_elements_in_vec,
+        label_counter::LabelCounter,
+        player_controls_panel::PlayerControlsPanel,
+        ui_utils::{distinct_elements_in_vec, spawn_popus_dialog},
     },
 };
 
@@ -24,7 +25,10 @@ pub struct PregamePanel {
     match_time_counter_label: Option<Gd<LabelCounter>>,
     #[export]
     rounds_to_win_counter_label: Option<Gd<LabelCounter>>,
-
+    #[export]
+    button_to_refocus_from_popup: Option<Gd<Button>>,
+    #[export]
+    canvas_node: Option<Gd<Node>>,
     current_amount_of_player_controls: usize,
 }
 
@@ -39,6 +43,8 @@ impl IPanel for PregamePanel {
             player_num_counter_label: None,
             match_time_counter_label: None,
             rounds_to_win_counter_label: None,
+            button_to_refocus_from_popup: None,
+            canvas_node: None,
         }
     }
     fn ready(&mut self) {}
@@ -84,29 +90,49 @@ impl PregamePanel {
         let gm = self
             .base()
             .try_get_node_as::<GameManager>("/root/GameManagerGlobal");
-        if self
-            .player_controls_stack
-            .iter()
-            .all(|f| f.bind().all_controls_assigned())
-            && distinct_elements_in_vec(&chosen_teams)
-            && let Some(ref mut match_time) = self.match_time_counter_label
-            && let Some(ref mut player_num) = self.player_num_counter_label
-            && let Some(ref mut rounds) = self.rounds_to_win_counter_label
-            && let Some(mut gm) = gm
+        if let Some(ref mut canvas) = self.canvas_node
+            && let Some(ref mut button) = self.button_to_refocus_from_popup
         {
-            gm.bind_mut().create_game(
-                player_num.bind().get_value() as u8,
-                rounds.bind().get_value() as u32,
-                match_time.bind().get_value() as u32,
-            );
-            let mut index = 0;
-            for team in chosen_teams {
-                gm.bind_mut().set_player_team(index + 1, team);
-                index += 1;
+            if self
+                .player_controls_stack
+                .iter()
+                .all(|f| f.bind().all_controls_assigned())
+            {
+                if distinct_elements_in_vec(&chosen_teams) {
+                    if let Some(ref mut match_time) = self.match_time_counter_label
+                        && let Some(ref mut player_num) = self.player_num_counter_label
+                        && let Some(ref mut rounds) = self.rounds_to_win_counter_label
+                        && let Some(mut gm) = gm
+                    {
+                        gm.bind_mut().create_game(
+                            player_num.bind().get_value() as u8,
+                            rounds.bind().get_value() as u32,
+                            match_time.bind().get_value() as u32,
+                        );
+                        let mut index = 0;
+                        for team in chosen_teams {
+                            gm.bind_mut().set_player_team(index + 1, team);
+                            index += 1;
+                        }
+                        return true;
+                    }
+                } else {
+                    spawn_popus_dialog(
+                        canvas.clone(),
+                        button.clone(),
+                        "To start a game there needs to be more than 1 team playing!",
+                    );
+                    return false;
+                }
+            } else {
+                spawn_popus_dialog(
+                    canvas.clone(),
+                    button.clone(),
+                    "Not all players have all of their controls binded. Make sure all controls are bound!",
+                );
+                return false;
             }
-            return true;
-        } else {
-            return false;
         }
+        return false;
     }
 }

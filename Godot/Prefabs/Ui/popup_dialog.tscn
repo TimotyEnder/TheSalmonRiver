@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://ll4n3uus4pm1"]
+
+[ext_resource type="Texture2D" uid="uid://c5quwm33vrxy1" path="res://SpriteAssets/UI/panel_brown.png" id="1_c6j3r"]
+[ext_resource type="FontFile" uid="uid://d23t5uwh4yrfp" path="res://Fonts/Micro_5/Micro5-Regular.ttf" id="2_c2gtn"]
+[ext_resource type="Texture2D" uid="uid://bi2cjmbwl40ft" path="res://SpriteAssets/UI/buttonLong_brown.png" id="3_3qdev"]
+[ext_resource type="Texture2D" uid="uid://b6rnlowyno72d" path="res://SpriteAssets/UI/buttonLong_brown_pressed.png" id="4_58xrg"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_s6dll"]
+texture = ExtResource("1_c6j3r")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_16hvj"]
+texture = ExtResource("3_3qdev")
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vr1f0"]
+content_margin_top = 4.0
+texture = ExtResource("4_58xrg")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t1dhk"]
+texture = ExtResource("3_3qdev")
+expand_margin_bottom = 4.0
+modulate_color = Color(0.7162962, 0.71629626, 0.7162961, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5egv6"]
+content_margin_top = 4.0
+texture = ExtResource("4_58xrg")
+modulate_color = Color(0.7121294, 0.7121294, 0.71212935, 1)
+
+[node name="PopupDialog" type="Control" unique_id=1264388856]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="." unique_id=2009704368]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -228.0
+offset_right = 264.0
+offset_bottom = 244.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_s6dll")
+
+[node name="Button" type="PopupDialogButton" parent="Panel" unique_id=200444666]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 112.0
+offset_top = 352.0
+offset_right = -120.0
+offset_bottom = -29.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_c2gtn")
+theme_override_font_sizes/font_size = 90
+theme_override_styles/normal = SubResource("StyleBoxTexture_16hvj")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_vr1f0")
+theme_override_styles/hover = SubResource("StyleBoxTexture_t1dhk")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_5egv6")
+text = "OK
+"
+
+[node name="Text" type="RichTextLabel" parent="Panel" unique_id=59877990]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.763
+offset_left = 24.0
+offset_top = 32.0
+offset_right = -24.0
+offset_bottom = -8.136017
+theme_override_fonts/normal_font = ExtResource("2_c2gtn")
+theme_override_font_sizes/normal_font_size = 49
+text = "DIALOG POPUP TEXT"
+horizontal_alignment = 1
+vertical_alignment = 1

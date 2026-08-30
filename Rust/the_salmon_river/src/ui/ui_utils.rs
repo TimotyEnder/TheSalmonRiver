@@ -1,8 +1,12 @@
-use std::str::FromStr;
-
+use godot::classes::{Control, RichTextLabel};
+use godot::prelude::*;
 use godot::{
     classes::{
-        class_macros::private::virtuals::ZipReader::{GString, Vector2i},
+        Button, Node, PackedScene,
+        class_macros::private::virtuals::{
+            Xrvrs::Gd,
+            ZipReader::{GString, Vector2i},
+        },
         display_server::WindowMode,
     },
     meta::{
@@ -11,6 +15,11 @@ use godot::{
     },
     register::property::SimpleVar,
 };
+use std::str::FromStr;
+
+use crate::game_managers::audio_manager::{AudioManager, AudioPlayBuilder};
+use crate::sound_utils::SoundEffect::UIerrorSound;
+use crate::ui::popup_dialog_button::PopupDialogButton;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Resolution {
     pub width: i32,
@@ -85,4 +94,41 @@ impl Default for Resolution {
 
 pub fn distinct_elements_in_vec(teams: &Vec<u8>) -> bool {
     return teams.iter().any(|element| *element != teams[0]);
+}
+pub fn spawn_popus_dialog(
+    mut scene_root: Gd<Node>,
+    button_to_refocus_after_close: Gd<Button>,
+    dialog_text: &'static str,
+) {
+    let scene = load::<PackedScene>("res://Prefabs/Ui/popup_dialog.tscn");
+    let audio = scene_root.try_get_node_as::<AudioManager>("/root/AudioManagerGlobal");
+
+    if let Some(popup) = scene
+        .instantiate()
+        .and_then(|popup_root| popup_root.try_cast::<Control>().ok())
+        && let Some(mut audio) = audio
+    {
+        scene_root.add_child(&popup);
+        audio.bind_mut().play_sound_built(
+            AudioPlayBuilder::play_sound_effect(UIerrorSound).at_position(Vector2::ZERO),
+        );
+        let Some(mut text) = popup.find_child("Panel").and_then(|panel| {
+            panel
+                .find_child("Text")
+                .and_then(|txt| txt.try_cast::<RichTextLabel>().ok())
+        }) else {
+            return;
+        };
+        let Some(mut button) = popup.find_child("Panel").and_then(|panel| {
+            panel
+                .find_child("Button")
+                .and_then(|txt| txt.try_cast::<PopupDialogButton>().ok())
+        }) else {
+            return;
+        };
+        text.set_text(dialog_text);
+        button
+            .bind_mut()
+            .assign_refocus_button(button_to_refocus_after_close);
+    }
 }

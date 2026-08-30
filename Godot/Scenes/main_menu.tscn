@@ -426,11 +426,13 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_t1dhk")
 theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_5egv6")
 text = "QUIT"
 
-[node name="PlayerControlsPanel" type="PregamePanel" parent="CanvasLayer" unique_id=979058209 node_paths=PackedStringArray("player_controls_panel_grid", "player_num_counter_label", "match_time_counter_label", "rounds_to_win_counter_label")]
+[node name="PlayerControlsPanel" type="PregamePanel" parent="CanvasLayer" unique_id=979058209 node_paths=PackedStringArray("player_controls_panel_grid", "player_num_counter_label", "match_time_counter_label", "rounds_to_win_counter_label", "button_to_refocus_from_popup", "canvas_node")]
 player_controls_panel_grid = NodePath("PlayerControlsPanel")
 player_num_counter_label = NodePath("MatchSettingsPanel/LabelCounterNumPlayers")
 match_time_counter_label = NodePath("MatchSettingsPanel/LabelCounterMatchLength")
 rounds_to_win_counter_label = NodePath("MatchSettingsPanel/LabelCounterRoundsToWin")
+button_to_refocus_from_popup = NodePath("PlayButton")
+canvas_node = NodePath("..")
 visible = false
 anchors_preset = 15
 anchor_right = 1.0

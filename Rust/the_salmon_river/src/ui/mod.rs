@@ -7,6 +7,7 @@ pub mod main_menu_start_match_button;
 pub mod panel_enabling_button;
 pub mod pause_menu_panel;
 pub mod player_controls_panel;
+pub mod popup_dialog_button;
 pub mod pregame_panel;
 pub mod scene_changing_button;
 pub mod settings_button;

@@ -44,10 +44,8 @@ impl INode2D for AudioManager {
 impl AudioManager {
     pub fn set_game_volume(&mut self, from_0_to_100: f32) {
         self.game_volume = (from_0_to_100 / 100.0).clamp(0.0, 1.0);
-        AudioServer::singleton().set_bus_volume_db(
-            MASTER_BUS_INDEX,
-            linear_to_db_f32(self.game_volume),
-        );
+        AudioServer::singleton()
+            .set_bus_volume_db(MASTER_BUS_INDEX, linear_to_db_f32(self.game_volume));
     }
     pub fn get_game_volume(&self) -> f32 {
         self.game_volume

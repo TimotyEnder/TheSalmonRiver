@@ -2008,7 +2008,7 @@ impl Player {
         ));
         godot::task::spawn(Self::throw_landing_damage_routine(this));
     }
-    pub fn is_trying_to_grab_now(&mut self) -> bool {
+    pub fn is_trying_to_grab_now(&self) -> bool {
         return self.throw_tech_time;
     }
     fn handle_grab(&mut self, area: Gd<Area3D>) {

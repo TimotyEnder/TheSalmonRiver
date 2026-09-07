@@ -92,6 +92,7 @@ pub struct Player {
     left_hand_fire_particles: Option<Gd<GpuParticles3D>>,
     right_hand_fire_particles: Option<Gd<GpuParticles3D>>,
     grabbed_by_another_player: bool,
+    grabbed_by_another_player_num: u8,
     thrown_by_another_player: bool,
     on_thrown_by_another_conn: Option<ConnectHandle>,
     in_hand_ability_container: Option<Gd<Node3D>>,
@@ -181,6 +182,7 @@ impl ICharacterBody3D for Player {
             walking_on_water: false,
             player_drop_timer_timed_in_hand_num: 0,
             wind_velocity: Vector3::ZERO,
+            grabbed_by_another_player_num: 0,
         }
     }
     fn process(&mut self, delta: f64) {
@@ -801,7 +803,8 @@ impl Player {
             self.flip();
         }
     }
-    fn set_grabbed_by_another_player_status(&mut self, status: bool) {
+    fn set_grabbed_by_another_player_status(&mut self, status: bool, num: u8) {
+        self.grabbed_by_another_player_num = num;
         self.grabbed_by_another_player = status;
         if let Some(ref mut label) = self.player_label {
             if self.grabbed_by_another_player {
@@ -1965,7 +1968,7 @@ impl Player {
             upp_anim.set("parameters/conditions/hit", &false.to_variant());
             upp_anim.set("parameters/conditions/knock", &false.to_variant());
         }
-        self.set_grabbed_by_another_player_status(false);
+        self.set_grabbed_by_another_player_status(false, 0);
     }
     fn on_thrown_by_another_player(&mut self, dir: Direction) {
         self.disconnect_grabbed_connections();
@@ -1990,7 +1993,7 @@ impl Player {
             self.base_mut()
                 .call_deferred("reparent", &[scene_root.to_variant()]);
         }
-        self.set_grabbed_by_another_player_status(false);
+        self.set_grabbed_by_another_player_status(false, 0);
         self.base_mut().set_velocity(Vector3::ZERO);
         self.base_mut().set_rotation(Vector3::ZERO);
         self.base_mut().set_scale(Vector3::ONE);
@@ -2026,7 +2029,9 @@ impl Player {
                     let self_node = self.to_gd().upcast::<Node3D>();
                     grabber.bind_mut().handle_throw_tech(self_node);
                     self.handle_throw_tech(grabber.upcast::<Node3D>());
-                } else if grabber.bind().can_pick_up_throwable() {
+                } else if grabber.bind().can_pick_up_throwable()
+                    && grabber.bind().grabbed_by_another_player_num != self.player_num
+                {
                     grabber.bind_mut().pick_up_throwable();
                     self.disconnect_grabbed_connections();
                     let this = self.to_gd();
@@ -2048,7 +2053,10 @@ impl Player {
                         local_pos.y -= 1.5;
                         self.base_mut()
                             .call_deferred("set_position", &[local_pos.to_variant()]);
-                        self.set_grabbed_by_another_player_status(true);
+                        self.set_grabbed_by_another_player_status(
+                            true,
+                            grabber.bind().get_player_num(),
+                        );
                     }
                     let audio = self
                         .base()

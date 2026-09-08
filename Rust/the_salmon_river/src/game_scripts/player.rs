@@ -1108,7 +1108,9 @@ impl Player {
         }
         {
             let mut bind = this.bind_mut();
-            bind.speed = original_speed;
+            if original_speed > 0.0 {
+                bind.speed = original_speed;
+            }
             let mut velocity = bind.base().get_velocity();
             velocity.z = 0.0;
             bind.base_mut().set_velocity(velocity);

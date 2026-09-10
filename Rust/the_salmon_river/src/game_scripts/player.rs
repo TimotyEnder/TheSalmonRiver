@@ -1029,7 +1029,7 @@ impl Player {
         if !this.is_instance_valid() {
             return;
         }
-        let original_speed;
+        //let original_speed;
         let speed_timer;
         {
             let mut bind = this.bind_mut();
@@ -1050,7 +1050,7 @@ impl Player {
             }
 
             bind.is_punching = true;
-            original_speed = bind.speed;
+            //original_speed = bind.speed;
             bind.speed *= 0.0;
             let mut right_punch = bind.right_punch;
             let audio = bind
@@ -1108,9 +1108,7 @@ impl Player {
         }
         {
             let mut bind = this.bind_mut();
-            if original_speed > 0.0 {
-                bind.speed = original_speed;
-            }
+            bind.speed = 3.0;
             let mut velocity = bind.base().get_velocity();
             velocity.z = 0.0;
             bind.base_mut().set_velocity(velocity);
@@ -2025,6 +2023,7 @@ impl Player {
             });
             if let Some(mut grabber) = other_player_opt
                 && self.team_num != grabber.bind().team_num
+                && !self.hit_stun
             {
                 //throw tech if both players grabbing rn
                 if grabber.bind_mut().is_trying_to_grab_now() && self.is_trying_to_grab_now() {

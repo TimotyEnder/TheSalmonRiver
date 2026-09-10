@@ -947,8 +947,20 @@ tracks/39/keys = {
 "update": 1,
 "values": [ExtResource("6_m62uw")]
 }
+tracks/40/type = "value"
+tracks/40/imported = false
+tracks/40/enabled = true
+tracks/40/path = NodePath("Duck/SpeechMesh:visible")
+tracks/40/interp = 1
+tracks/40/loop_wrap = true
+tracks/40/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
-[sub_resource type="Image" id="Image_qvmbc"]
+[sub_resource type="Image" id="Image_405c5"]
 data = {
 "data": PackedByteArray("AAAA19fXj1Y7dT8vdT8v////ZjkxZ2dn////iE04X19fR0dHAAAA2aBmZjkxj1Y7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
 "format": "RGB8",
@@ -959,7 +971,7 @@ data = {
 
 [sub_resource type="ImageTexture" id="ImageTexture_b30ri"]
 resource_name = "0"
-image = SubResource("Image_qvmbc")
+image = SubResource("Image_405c5")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bugnh"]
 render_priority = 0
@@ -1260,7 +1272,7 @@ tracks/22/keys = {
 
 [sub_resource type="Animation" id="Animation_kry3j"]
 resource_name = "duck"
-length = 0.001
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -1356,6 +1368,18 @@ tracks/7/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Duck/SpeechMesh:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.20000002),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="Animation" id="Animation_knrd4"]
@@ -1505,8 +1529,20 @@ tracks/11/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Duck/SpeechMesh:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
-[sub_resource type="Image" id="Image_405c5"]
+[sub_resource type="Image" id="Image_i3mxk"]
 data = {
 "data": PackedByteArray("AAAA19fXj1Y7dT8vdT8v////ZjkxZ2dn////iE04X19fR0dHAAAA2aBmZjkxj1Y7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
 "format": "RGB8",
@@ -1517,7 +1553,7 @@ data = {
 
 [sub_resource type="ImageTexture" id="ImageTexture_n5mvp"]
 resource_name = "0"
-image = SubResource("Image_405c5")
+image = SubResource("Image_i3mxk")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m62uw"]
 resource_name = "Material.1"
@@ -1528,7 +1564,7 @@ emission_enabled = true
 emission = Color(0.7539839, 0.75398386, 0.75398386, 1)
 metadata/_gltf_primary_texture_coord = 0
 
-[sub_resource type="Image" id="Image_i3mxk"]
+[sub_resource type="Image" id="Image_qvmbc"]
 data = {
 "data": PackedByteArray("AAAAS2kvLUIdLUIdS2kvZ2dnZ2dn19fXj1Y7////dT8vdT8vZjkx////X19fR0dH9/f3AAAA2aBmAKAAX19fZjkxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
 "format": "RGB8",
@@ -1539,7 +1575,7 @@ data = {
 
 [sub_resource type="ImageTexture" id="ImageTexture_ms580"]
 resource_name = "0"
-image = SubResource("Image_i3mxk")
+image = SubResource("Image_qvmbc")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2gvwi"]
 render_priority = 0
@@ -2538,7 +2574,7 @@ states/knock_back/position = Vector2(610.3959, 340)
 states/run/node = SubResource("AnimationNodeAnimation_kry3j")
 states/run/position = Vector2(272, 4)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_21xkr"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_6bp64"), "idle", "duck", SubResource("AnimationNodeStateMachineTransition_344ge"), "idle", "jump", SubResource("AnimationNodeStateMachineTransition_ynf5e"), "duck", "idle", SubResource("AnimationNodeStateMachineTransition_hptm8"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_d1ilt"), "jump", "idle", SubResource("AnimationNodeStateMachineTransition_6iyac"), "run", "jump", SubResource("AnimationNodeStateMachineTransition_fdnlq"), "jump", "run", SubResource("AnimationNodeStateMachineTransition_jkdf5"), "jump", "duck", SubResource("AnimationNodeStateMachineTransition_wsu2k"), "duck", "jump", SubResource("AnimationNodeStateMachineTransition_k12tt"), "duck", "run", SubResource("AnimationNodeStateMachineTransition_h1bgf"), "run", "duck", SubResource("AnimationNodeStateMachineTransition_b3802"), "run", "hit", SubResource("AnimationNodeStateMachineTransition_5wxv7"), "jump", "hit", SubResource("AnimationNodeStateMachineTransition_y5hcb"), "idle", "hit", SubResource("AnimationNodeStateMachineTransition_2nftw"), "duck", "hit", SubResource("AnimationNodeStateMachineTransition_knrd4"), "hit", "run", SubResource("AnimationNodeStateMachineTransition_hck1p"), "hit", "idle", SubResource("AnimationNodeStateMachineTransition_juxdh"), "hit", "jump", SubResource("AnimationNodeStateMachineTransition_4qbli"), "hit", "duck", SubResource("AnimationNodeStateMachineTransition_08u7w"), "hit", "knock_back", SubResource("AnimationNodeStateMachineTransition_vjsh3"), "knock_back", "jump", SubResource("AnimationNodeStateMachineTransition_7c0pg"), "knock_back", "idle", SubResource("AnimationNodeStateMachineTransition_unxwf"), "knock_back", "duck", SubResource("AnimationNodeStateMachineTransition_0u5bp"), "knock_back", "run", SubResource("AnimationNodeStateMachineTransition_di5ps"), "knock_back", "hit", SubResource("AnimationNodeStateMachineTransition_qkk0s"), "idle", "knock_back", SubResource("AnimationNodeStateMachineTransition_y6xdh"), "duck", "knock_back", SubResource("AnimationNodeStateMachineTransition_ygfkb"), "jump", "knock_back", SubResource("AnimationNodeStateMachineTransition_l3blc"), "run", "knock_back", SubResource("AnimationNodeStateMachineTransition_1q4fu"), "jump", "duck_jump", SubResource("AnimationNodeStateMachineTransition_375py"), "duck_jump", "jump", SubResource("AnimationNodeStateMachineTransition_3rsih"), "duck_jump", "death", SubResource("AnimationNodeStateMachineTransition_6qop4"), "knock_back", "death", SubResource("AnimationNodeStateMachineTransition_km78l"), "jump", "death", SubResource("AnimationNodeStateMachineTransition_v447a"), "idle", "death", SubResource("AnimationNodeStateMachineTransition_3c3ic"), "hit", "death", SubResource("AnimationNodeStateMachineTransition_abtri"), "duck", "death", SubResource("AnimationNodeStateMachineTransition_nvkvw"), "run", "death", SubResource("AnimationNodeStateMachineTransition_wy7bf"), "death", "death 2", SubResource("AnimationNodeStateMachineTransition_of3e5"), "death 2", "death", SubResource("AnimationNodeStateMachineTransition_u81v3")]
-graph_offset = Vector2(-14.604126, 33)
+graph_offset = Vector2(535.3959, 203)
 
 [sub_resource type="Animation" id="Animation_21xkr"]
 length = 0.001
@@ -3889,7 +3925,7 @@ states/salmon_punch/position = Vector2(-208.1626, 160.67705)
 states/throw/node = SubResource("AnimationNodeAnimation_6iyac")
 states/throw/position = Vector2(843, 36)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_fevyy"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_hibaj"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_pdsj5"), "in_hand", "throw", SubResource("AnimationNodeStateMachineTransition_ee4r6"), "throw", "idle", SubResource("AnimationNodeStateMachineTransition_gt3je"), "idle", "punch", SubResource("AnimationNodeStateMachineTransition_3pmx8"), "idle", "left_punch", SubResource("AnimationNodeStateMachineTransition_u50mg"), "left_punch", "idle", SubResource("AnimationNodeStateMachineTransition_cbgmd"), "punch", "idle", SubResource("AnimationNodeStateMachineTransition_1w6v2"), "idle", "grab", SubResource("AnimationNodeStateMachineTransition_ueoa1"), "grab", "idle", SubResource("AnimationNodeStateMachineTransition_6vcvc"), "idle", "in_hand", SubResource("AnimationNodeStateMachineTransition_7k868"), "run", "punch", SubResource("AnimationNodeStateMachineTransition_bo1nx"), "punch", "run", SubResource("AnimationNodeStateMachineTransition_8gbba"), "left_punch", "run", SubResource("AnimationNodeStateMachineTransition_jjvhh"), "run", "left_punch", SubResource("AnimationNodeStateMachineTransition_kry3j"), "left_punch", "punch", SubResource("AnimationNodeStateMachineTransition_hpc6h"), "punch", "left_punch", SubResource("AnimationNodeStateMachineTransition_kltya"), "run", "grab", SubResource("AnimationNodeStateMachineTransition_e08e2"), "grab", "run", SubResource("AnimationNodeStateMachineTransition_neg2b"), "left_punch", "hit", SubResource("AnimationNodeStateMachineTransition_kgmex"), "punch", "hit", SubResource("AnimationNodeStateMachineTransition_2xbkd"), "grab", "hit", SubResource("AnimationNodeStateMachineTransition_3vpsw"), "idle", "hit", SubResource("AnimationNodeStateMachineTransition_m62uw"), "run", "hit", SubResource("AnimationNodeStateMachineTransition_b30ri"), "hit", "run", SubResource("AnimationNodeStateMachineTransition_ms580"), "hit", "grab", SubResource("AnimationNodeStateMachineTransition_q7l0e"), "hit", "punch", SubResource("AnimationNodeStateMachineTransition_0fs2y"), "hit", "left_punch", SubResource("AnimationNodeStateMachineTransition_wphcr"), "hit", "idle", SubResource("AnimationNodeStateMachineTransition_and0b"), "hit", "knock_back", SubResource("AnimationNodeStateMachineTransition_405c5"), "knock_back", "run", SubResource("AnimationNodeStateMachineTransition_i3mxk"), "knock_back", "idle", SubResource("AnimationNodeStateMachineTransition_qvmbc"), "knock_back", "punch", SubResource("AnimationNodeStateMachineTransition_qjulh"), "knock_back", "hit", SubResource("AnimationNodeStateMachineTransition_evqxc"), "knock_back", "grab", SubResource("AnimationNodeStateMachineTransition_6gc6r"), "left_punch", "knock_back", SubResource("AnimationNodeStateMachineTransition_jxrwi"), "run", "knock_back", SubResource("AnimationNodeStateMachineTransition_s2pui"), "grab", "knock_back", SubResource("AnimationNodeStateMachineTransition_acf7d"), "punch", "knock_back", SubResource("AnimationNodeStateMachineTransition_0srn8"), "idle", "knock_back", SubResource("AnimationNodeStateMachineTransition_ba8jc"), "in_hand", "knock_back", SubResource("AnimationNodeStateMachineTransition_131b1"), "throw", "knock_back", SubResource("AnimationNodeStateMachineTransition_qelst"), "throw", "hit", SubResource("AnimationNodeStateMachineTransition_ob8dk"), "run", "in_hand", SubResource("AnimationNodeStateMachineTransition_faewp"), "in_hand", "idle", SubResource("AnimationNodeStateMachineTransition_da5es"), "hit", "death", SubResource("AnimationNodeStateMachineTransition_bskuj"), "run", "death", SubResource("AnimationNodeStateMachineTransition_is11r"), "throw", "death", SubResource("AnimationNodeStateMachineTransition_6oobh"), "in_hand", "death", SubResource("AnimationNodeStateMachineTransition_iw52j"), "grab", "death", SubResource("AnimationNodeStateMachineTransition_70pgm"), "punch", "death", SubResource("AnimationNodeStateMachineTransition_vde2o"), "left_punch", "death", SubResource("AnimationNodeStateMachineTransition_ntesv"), "death", "death 2", SubResource("AnimationNodeStateMachineTransition_7mgnq"), "death 2", "death", SubResource("AnimationNodeStateMachineTransition_pr31v"), "idle", "death", SubResource("AnimationNodeStateMachineTransition_nxvyj"), "grab", "in_hand", SubResource("AnimationNodeStateMachineTransition_nkjwp"), "knock_back", "death", SubResource("AnimationNodeStateMachineTransition_gymre"), "salmon_punch", "knock_back", SubResource("AnimationNodeStateMachineTransition_cqtoq"), "salmon_punch", "hit", SubResource("AnimationNodeStateMachineTransition_35hf2"), "hit", "salmon_punch", SubResource("AnimationNodeStateMachineTransition_i3a4b"), "run", "salmon_punch", SubResource("AnimationNodeStateMachineTransition_i5nxq"), "salmon_punch", "run", SubResource("AnimationNodeStateMachineTransition_guy6h"), "idle", "salmon_punch", SubResource("AnimationNodeStateMachineTransition_6crtv"), "salmon_punch", "idle", SubResource("AnimationNodeStateMachineTransition_gojqb"), "salmon_punch", "death", SubResource("AnimationNodeStateMachineTransition_1x77x")]
-graph_offset = Vector2(-350.1626, -53.322952)
+graph_offset = Vector2(147.8374, -168.32294)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_juxdh"]
 height = 2.0480957
@@ -4055,6 +4091,13 @@ albedo_color = Color(0.26, 0.221, 0.14299999, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_s6dll"]
 size = Vector3(0.47662354, 0.09082031, 0.35302734)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ajuh"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.6443417, 0.7305439, 0.4198952, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_doogp"]
+size = Vector3(0.056762695, 0.05810547, 0.2055664)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s6dll"]
 angle_min = -385.5
@@ -4551,6 +4594,23 @@ transform = Transform3D(-0.9640954, -0.26555613, 8.742278e-08, -0.26555613, 0.96
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23477021, 0.0018013716, 0.00644812)
 material_override = SubResource("StandardMaterial3D_y5hcb")
 mesh = SubResource("BoxMesh_s6dll")
+
+[node name="SpeechMesh" type="Node3D" parent="Duck" unique_id=454626833]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Duck/SpeechMesh" unique_id=172808898]
+transform = Transform3D(1, 0, 0, 0, 0.93715954, 0.34890103, 0, -0.34890103, 0.93715954, -0.0062236786, 0.15665615, -0.49847478)
+material_override = SubResource("StandardMaterial3D_4ajuh")
+mesh = SubResource("BoxMesh_doogp")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Duck/SpeechMesh" unique_id=1073136498]
+transform = Transform3D(1, 0, 0, 0, 0.9999887, 0.0047574937, 0, -0.0047574937, 0.9999887, -0.0062236786, 0.27969548, -0.5284634)
+material_override = SubResource("StandardMaterial3D_4ajuh")
+mesh = SubResource("BoxMesh_doogp")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Duck/SpeechMesh" unique_id=1514030230]
+transform = Transform3D(1, 0, 0, 0, 0.9372819, -0.34857202, 0, 0.34857202, 0.9372819, -0.0062236786, 0.40221983, -0.5078593)
+material_override = SubResource("StandardMaterial3D_4ajuh")
+mesh = SubResource("BoxMesh_doogp")
 
 [node name="DuckPoofParticles" type="GPUParticles3D" parent="." unique_id=1569583201]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6169777, 0)

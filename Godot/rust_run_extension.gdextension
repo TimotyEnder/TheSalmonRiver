@@ -2,6 +2,9 @@
 entry_symbol = "gdext_rust_init"
 compatibility_minimum = 4.1
 reloadable = true
+
 [libraries]
-linux.debug.x86_64 =     "res://../Rust/the_salmon_river/target/debug/libthe_salmon_river.so"
-linux.release.x86_64 =   "res://../Rust/the_salmon_river/target/release/libthe_salmon_river.so"
+linux.debug.x86_64 =     "res://bin/libthe_salmon_river.linux.debug.so"
+linux.release.x86_64 =   "res://bin/libthe_salmon_river.linux.so"
+windows.debug.x86_64 =   "res://bin/libthe_salmon_river.windows.dll"
+windows.release.x86_64 = "res://bin/libthe_salmon_river.windows.dll"
